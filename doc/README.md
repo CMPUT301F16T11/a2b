@@ -49,7 +49,7 @@ lmao
 ┌┌┌┌┌┌┌┌┌┌██████████████┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
 ┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
 
-- Bill Gates on talking about his predictions of A2B
+-John Symborski (CCID: symborsk)
 
 
 
