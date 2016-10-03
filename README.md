@@ -44,8 +44,7 @@ lmao
 ┌┌┌┌┌┌┌┌┌██████████████████┌┌┌┌┌┌┌┌┌┌┌┌┌
 ┌┌┌┌┌┌┌┌┌┌██████████████┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
 ┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
-
-- Bill Gates on talking about his predictions of A2B
+- John Symborski (CCID: symborsk)
 
 - "The new a2b app is likely to overtake the once unstoppable 
 uber in one short weeks time" - Dallin Toth (CCID: toth)
