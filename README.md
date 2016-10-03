@@ -5,7 +5,7 @@ CMPUT301 project with a heck of a name.
 "New super team programmers create github repo for project"
 	"rumours that some members have even made pull requests"
 
-lmao
+lmao - Kelvin Liang CCID: liangmah
 
 ┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
 ┌┌┌┌┌┌┌┌┌┌┌█████┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌┌
