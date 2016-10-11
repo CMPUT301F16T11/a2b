@@ -4,7 +4,7 @@ import org.junit.Test;
 import java.net.Authenticator;
 import static org.junit.Assert.*;
 
-public class Story6UnitTest {
+public class Story10UnitTest {
 
 /* Based on US 02.01.01
    Jamie missed her bus and wants to be home on time for the first episode of "Luke Cage." 
@@ -31,5 +31,5 @@ public class Story6UnitTest {
       Request request = user.getLatestRideRequests();
       request.confirmRequest();
       assertEquals(request.isConfirmed(), true);
-    
+
     }
