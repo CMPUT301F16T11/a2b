@@ -4,7 +4,7 @@ import org.junit.Test;
 import java.net.Authenticator;
 import static org.junit.Assert.*;
 
-public class Story6UnitTest {
+public class Story8UnitTest {
 
 /* Based on US 01.08.01
    Meeri is in a highly populated part of the city at a time when not 
