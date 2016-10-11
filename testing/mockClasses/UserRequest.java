@@ -43,6 +43,10 @@ public class UserRequest {
         this.startLocation = startLocation;
     }
 
+    public float getFareEstimation(String startLocation, String endLocation) {
+        return fare;
+    }
+
 
 
 }
