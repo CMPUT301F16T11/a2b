@@ -1,15 +1,17 @@
 package com.cmput301f16t11.a2b;
 
 public class Driver {
-	Int rating;
+	int rating;
 	String name;
 
-	Driver(String name, Int rating) {
+	Driver(String name, int rating) {
 		this.rating = rating;
 		this.name = name;
 	}
 
-	public Int getRating() {
+	public int getRating() {
 		return rating;
 	}
+
+
 }

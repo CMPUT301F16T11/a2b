@@ -11,12 +11,14 @@ public class UserRequest {
     Number fare;
     long timeCreatedInMillis;
     Number requestId;
+    boolean accepted;
 
     UserRequest(String start, String end, Number intitialFare){
         startLocation = start;
         endLocation = end;
         fare = intitialFare;
         timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
+        accepted = false;
     }
 
     public String getEndLocation() {
@@ -43,8 +45,16 @@ public class UserRequest {
         this.startLocation = startLocation;
     }
 
-    public float getFareEstimation(String startLocation, String endLocation) {
+    public Number getFareEstimation(String startLocation, String endLocation) {
         return fare;
+    }
+
+    public void setAccepted(Boolean bool){
+        accepted = bool;
+    }
+
+    public boolean getAccepted(){
+        return accepted;
     }
 
 

@@ -28,4 +28,8 @@ public class User {
     public UserRequest getLatestActiveRequest(){
         return requests.get(requests.size() - 1);
     }
+
+    public ArrayList<UserRequest> getRequests(){
+        return requests;
+    }
 }

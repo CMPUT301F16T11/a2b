@@ -10,5 +10,6 @@ public class UserController {
     static public User loadUser(String un){
         return new User();
     }
+    static public Driver loadDriver(String un,int r) {return new Driver(un,r);}
 
 }
