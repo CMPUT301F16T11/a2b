@@ -3,6 +3,7 @@ package com.cmput301f16t11.a2b;
 import org.junit.Test;
 
 import java.net.Authenticator;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +34,7 @@ Driver accepting request
     public void testDriverAcceptingRequest() {
 
         user = UserController.getUser(userName);
-        ArrayList<Requests> requests = user.getUnacceptedRequests();
+        ArrayList<UserRequest> requests = user.getUnacceptedRequests();
         request = requests.get(3); // random request that Billy wants to accept
         request.accept();
         assertEquals(request.isAccepted(), true);
