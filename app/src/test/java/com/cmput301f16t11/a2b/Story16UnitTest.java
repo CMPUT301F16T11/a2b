@@ -33,9 +33,9 @@ Driver accepting request
     @Test
     public void testDriverAcceptingRequest() {
 
-        user = UserController.getUser(userName);
-        ArrayList<UserRequest> requests = user.getUnacceptedRequests();
-        request = requests.get(3); // random request that Billy wants to accept
-        request.accept();
+        Driver driver = UserController.loadUser(userName);
+        ArrayList<UserRequest> requests = user.getAllRequests();
+        UserRequest request = requests.get(3); // random request that Billy wants to accept
+
         assertEquals(request.isAccepted(), true);
     }

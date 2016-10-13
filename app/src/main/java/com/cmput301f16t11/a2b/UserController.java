@@ -12,4 +12,14 @@ public class UserController {
     }
     static public Driver loadDriver(String un,int r) {return new Driver(un,r);}
 
+   static public String getNewUserName() {
+        return "Daniel";
+    }
+   static public String getNewPass() {
+        return "OilersSuck";
+    }
+   static public String getEmail() {
+        return "mcjesus@ualberta.ca";
+    }
+
 }

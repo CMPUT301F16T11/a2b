@@ -1,4 +1,4 @@
-package com.cmput301f16t11.a2b
+package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
 import java.net.Authenticator;
@@ -22,8 +22,14 @@ public class Story10UnitTest {
     @Test
     public void testProfileCreation() {
 
-        user
+        String newName = UserController.getNewUserName();
+        String newPass = UserController.getNewPass();
+        String newEmail = UserController.getEmail();
 
+        User user = new User(newName, newPass, newEmail);
+        assertEquals(newName, user.getName());
+        assertEquals(newPass, user.getPassWord());
+        assertEquals(newEmail, user.getEmail());
     }
 
-    }
+}
