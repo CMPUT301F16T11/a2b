@@ -1,19 +1,15 @@
-package com.cmput301f16t11.a2b
-
+package com.cmput301f16t11.a2b;
 import org.junit.Test;
 import java.net.Authenticator;
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class Story8UnitTest {
 
 /* Based on US 01.08.01
-   Meeri is in a highly populated part of the city at a time when not 
-   many people need rides. She requests an a2b ride and notices that 
-   multiple drivers have accepted. She checks which driver has the 
-   highest rating and confirms that acceptance. Meeri is an excellent 
-   example of an average user making an average interaction with a2b.
-
    ToTest:
+   Acceptance of a ride once a driver accepts
    Driver Ratings
 */
 
@@ -25,12 +21,26 @@ public class Story8UnitTest {
     Number fare = 10; 
 
     @Test
-    public void testDriverRatings() {
-      Driver driver1 = new driver("Joey Fusion Fallone", 0);
-      Driver driver2 = new driver("McJesus", 5);
-      Int rating1 = driver1.getRating();
-      assertEquals(rating1, 0);
-      Int rating2 = drver2.getRating();
-      assertEquals(rating2, 5);
+    public void testAcceptance() {
+      user = UserController.loadUser(userName);
+      user.createRequest(startLocation, endLocation, fare);
+      Driver driver = new Driver("Joey Fusion Fallone", 0);
+        ArrayList<UserRequest> requests = driver.getAllRequests();
+        UserRequest request = requests.get(0);
+        driver.acceptRequest(request);
+        assertTrue(driver.hasAccepted(request));
+        user.addAcceptedRequest(request);
+        assertTrue(user.hasAcceptedRequests());
+    }
 
+
+    // think this was meant for a different test
+    // @Test
+    // public void testDriverRatings() {
+    //   Driver driver1 = new driver("Joey Fusion Fallone", 0);
+    //   Driver driver2 = new driver("McJesus", 5);
+    //   Int rating1 = driver1.getRating();
+    //   assertEquals(rating1, 0);
+    //   Int rating2 = drver2.getRating();
+    //   assertEquals(rating2, 5);
     }

@@ -1,23 +1,17 @@
-package com.cmput301f16t11.a2b
+package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
 import java.net.Authenticator;
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class Story2UnitTest {
 
 /* Based on US 01.02.01
-   Jamie had a rough night. She was at a fundraiser for a charitable event 
-   but under the stress of her upcoming report due at work, she started to 
-   grab a drink or two at the toonie bar. Now she has had far too much to 
-   drink, definitely too much to drive home. She usually uses a2b in situations 
-   like this, but she cannot for the life of her remember if she already called a 
-   car through a2b. Frustrated, she pulls out her phone and pulls up current requests 
-   under her account. Jamie is an excellent example of an average a2b user with 
-   an average request.
 
    To Test:
-   Jamie logs in
+   Logging in
    Check Open requests
 */
 
@@ -28,7 +22,7 @@ public class Story2UnitTest {
    String userName = "Jamie_SoDrunk";
    String passWord = "oneDrinkTooMany";
    // assuming we might have a class for ride information
-   ArrayList<requests> requests = new ArrayList<requests>();
+  UserRequest requests;
 
    @Test
    public void user_auth_and_load() throws Exception{
@@ -46,11 +40,20 @@ public class Story2UnitTest {
     // don't know how I should test if it displays
     @Test
     public void testCheckRequests() {
+        String startLocation2 = "12345 123 st Nw EDmonton";
+        String endLocation2 = "54321 321 st Nw edmonton";
+        Number fare2 = 20;
     	user = UserController.loadUser(userName);
     	user.createRequest(startLocation,endLocation,fare);
-    	requests = user.getLatestActiveRequest()
-    	assertEquals(requests.getStartLocation(), startLocation);
-    	assertEquals(requests.getEndLocation(), endLocation);
-    	assertEquals(requests.getFare(), fare);
+        user.createRequest(startLocation2, endLocation2, fare2);
+    	requests = user.getAllRequests().get(0);
+        assertEquals(requests.getStartLocation(), startLocation);
+        assertEquals(requests.getEndLocation(), endLocation);
+        assertEquals(requests.getFare(), fare);
+        UserRequest requests2 = user.getAllRequests().get(1);
+        assertEquals(requests2.getStartLocation(), startLocation2);
+        assertEquals(requests2.getEndLocation(), endLocation2);
+        assertEquals(requests2.getFare(), fare2);
+
     }
 }
