@@ -62,6 +62,10 @@ public class User {
         return requests;
     }
 
+
+    public void notifyUser(UserRequest r) {
+    }
+    
     public ArrayList<UserRequest> getAllRequests() {
         return requests;
     }
@@ -70,5 +74,6 @@ public class User {
     }
     public boolean hasAcceptedRequests() {
         return true;
+
     }
 }

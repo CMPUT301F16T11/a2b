@@ -58,5 +58,7 @@ public class UserRequest {
     }
 
 
-
+    public boolean sentNotification() {
+        return true;
+    }
 }

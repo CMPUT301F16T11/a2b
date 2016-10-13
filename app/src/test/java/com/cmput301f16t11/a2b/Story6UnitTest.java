@@ -1,5 +1,5 @@
 
-package com.cmput301f16t11.a2b
+package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
 import java.net.Authenticator;
