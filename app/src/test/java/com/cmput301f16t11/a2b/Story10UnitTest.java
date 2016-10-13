@@ -22,8 +22,15 @@ public class Story10UnitTest {
     @Test
     public void testProfileCreation() {
 
+        String newName = UserController.getNewUserName();
+        String newPass = UserController.getNewPass();
+        String newEmail = UserController.getEmail();
 
 
+        User user = new User(newName, newPass, newEmail);
+        assertEquals(newName, user.getName());
+        assertEquals(newPass, user.getPassWord());
+        assertEquals(newEmail, user.getEmail());
     }
 
-    }
+}
