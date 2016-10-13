@@ -42,7 +42,7 @@ public class User {
 
     public void notifyUser(UserRequest r) {
     }
-    
+
     public ArrayList<UserRequest> getAllRequests() {
         return requests;
     }
