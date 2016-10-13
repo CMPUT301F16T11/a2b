@@ -37,6 +37,14 @@ public class User {
 
     public String getEmail() { return email;}
 
+    public void setRequestList(ArrayList<UserRequest> requestList){
+        requests = requestList;
+    }
+
+    public void addRequest(UserRequest request){
+        requests.add(request);
+    }
+
     public void setName(String name) {this.userName = name;}
     public void setEmail(String email) {this.email = email;}
     public void setPassWord(String pass) {this.passWord = pass;}

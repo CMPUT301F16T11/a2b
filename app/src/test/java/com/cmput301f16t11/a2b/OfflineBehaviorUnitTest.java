@@ -109,6 +109,8 @@ public class OfflineBehaviorUnitTest {
         UserController.setOffline();
         //grab list of requests
         ArrayList<UserRequest> requestList = UserController.getRequestList();
+        UserRequest request = new UserRequest(start,end,fare);
+        requestList.add(request);
         //accept one of them
         requestList.get(0).setAccepted(true);
         //go online

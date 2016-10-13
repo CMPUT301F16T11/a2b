@@ -1,8 +1,8 @@
 package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
-import java.net.Authenticator;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class Story4UnitTest {
 
