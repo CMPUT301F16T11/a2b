@@ -32,4 +32,7 @@ public class User {
     public ArrayList<UserRequest> getRequests(){
         return requests;
     }
+
+    public void notifyUser(UserRequest r) {
+    }
 }

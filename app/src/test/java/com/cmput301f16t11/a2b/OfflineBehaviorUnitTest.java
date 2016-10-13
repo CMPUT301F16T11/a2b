@@ -1,5 +1,10 @@
 package com.cmput301f16t11.a2b;
 
+import java.util.ArrayList;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 /**
  * Created by tothd on 10/12/2016.
  * US 08.01.01
@@ -27,40 +32,83 @@ public class OfflineBehaviorUnitTest {
     int fare = 10;
 
     UserRequest request = new UserRequest(start,end,fare);
-
-
+    /**
+    US 08.01.01
+    As an driver, I want to see requests that I already accepted while offline.
+     */
     public void testOfflineAcceptedRequest(){
         //build a list of requests
+        UserRequest request = new UserRequest(start,end,fare);
+        UserRequest request1 = new UserRequest(start,end,fare);
+        UserRequest request2 = new UserRequest(start,end,fare);
+        ArrayList<UserRequest> requestList = new ArrayList<>();
+        requestList.add(request);
+        requestList.add(request1);
+        requestList.add(request2);
         //set them to accepted
+        request.setAccepted(true);
+        request1.setAccepted(true);
+        request2.setAccepted(true);
         //save them to a file
+        UserController.saveInFile(requestList);
         //set connection to offline
+        UserController.setOffline();
 
         //grab saved list of requests from some file???
 
         //check and see if this list same as given one using test case
+        assertTrue(requestList.equals(UserController.getRequestList()));
     }
 
+    /**
+     * US 08.02.01
+     As a rider, I want to see requests that I have made while offline.
+     */
     public void testOfflineMadeRequests(){
         //build a list of requests
+        UserRequest request = new UserRequest(start,end,fare);
+        UserRequest request1 = new UserRequest(start,end,fare);
+        UserRequest request2 = new UserRequest(start,end,fare);
+        ArrayList<UserRequest> requestList = new ArrayList<>();
+        requestList.add(request);
+        requestList.add(request1);
+        requestList.add(request2);
         //save them to a file
+        UserController.saveInFile(requestList);
         //go offline
-        //grab saved ist of requests
+        UserController.setOffline();
+        //grab saved list of requests
         //check that saved list is the same list before going offline
+        assertEquals(requestList,UserController.getRequestList());
     }
 
+    /**
+    US 08.03.01
+    As a rider, I want to make requests that will be sent once I get connectivity again.
+     */
     public void testSendMadeRequestsAfterConnection(){
         //go offline
+        UserController.setOffline();
         //create a request
+        UserRequest request = new UserRequest(start,end,fare);
         //go online
+        UserController.goOnline();
+        UserController.updateRequestList();
         //check if online list has your created request
+        assertTrue(UserController.getRequestList().contains(request));
 
     }
 
     public void testAcceptRequestsAfterConnection(){
         //go offline
+        UserController.setOffline();
         //grab list of requests
+        ArrayList<UserRequest> requestList = UserController.getRequestList();
         //accept one of them
+        requestList.get(0).setAccepted(true);
         //go online
-        //check that accepted request has been sent 
+        UserController.goOnline();
+        //check that accepted request has been sent
+        assertTrue(UserController.getRequestList().get(0).getAccepted());
     }
 }

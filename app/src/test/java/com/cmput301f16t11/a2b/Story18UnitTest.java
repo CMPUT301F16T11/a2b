@@ -2,6 +2,8 @@ package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
 
+import static junit.framework.Assert.assertEquals;
+
 /**
  * Created by tothd on 10/12/2016.
  * Based on the case
@@ -28,12 +30,12 @@ public class Story18UnitTest {
         for(UserRequest r: requestList)
         if(r.getAccepted()){
             //if there are any accepted send notification
-            driver.sendNotification(r);
+            driver.notifyUser(r);
             request = r;
         }
 
         //test if notification was sent
-        AssertEquals(request.sentNotification(),true);
+        assertEquals(request.sentNotification(),true);
 
     }
 }
