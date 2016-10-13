@@ -1,7 +1,6 @@
 package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by brianofrim on 2016-10-10.
@@ -58,7 +57,7 @@ public class User {
         return requests.get(requests.size() - 1);
     }
 
-    public ArrayList<UserRequest> getRequests(String location){
+    public ArrayList<UserRequest> getRequests(){
         return requests;
     }
 
@@ -75,5 +74,10 @@ public class User {
     public boolean hasAcceptedRequests() {
         return true;
 
+    }
+
+    public UserRequest getLatestRequest() {
+        UserRequest latestRequest = requests.get(-1);
+        return latestRequest;
     }
 }

@@ -2,7 +2,7 @@
 package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
-import java.net.Authenticator;
+
 import static org.junit.Assert.*;
 
 public class Story6UnitTest {
@@ -25,11 +25,11 @@ public class Story6UnitTest {
         user = UserController.loadUser(username);
         user.createRequest(startLocation, endLocation, fare);
         UserRequest request = user.getLatestActiveRequest();
-        fare = request.getFareEstimation();
-        assertTrue(fare > 0); // will instead put an estimation to check when fareEstimate algorithim is done
+        fare = request.getFareEstimation(startLocation, endLocation);
+        assertTrue(fare.equals(0)); // will instead put an estimation to check when fareEstimate algorithim is done
         request.setEndLocation("888 91 St NW, Edmonton, AB, T6R 2N5");
         Number fare2 = request.getFareEstimation(startLocation,endLocation);
-        assertTrue(fare2 > 0);
+        assertTrue(fare2.equals(0));
         assertTrue(fare != fare2);
     }
 

@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
@@ -21,7 +23,7 @@ public class Story18UnitTest {
     String end = "there";
     int fare = 10;
 
-
+    @Test
     public void testNotificationOfferAccepted(){
         UserRequest request = new UserRequest(start,end,fare);
         //get the list of requests

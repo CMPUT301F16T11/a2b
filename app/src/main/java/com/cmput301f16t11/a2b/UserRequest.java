@@ -45,7 +45,7 @@ public class UserRequest {
         this.startLocation = startLocation;
     }
 
-    public Number getFareEstimation() {
+    public Number getFareEstimation(String startLocation, String endLocation) {
         return fare;
     }
 
@@ -56,7 +56,6 @@ public class UserRequest {
     public boolean getAccepted(){
         return accepted;
     }
-
 
     public boolean sentNotification() {
         return true;

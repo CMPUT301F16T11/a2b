@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 
 import static junit.framework.Assert.assertEquals;
@@ -36,6 +38,7 @@ public class OfflineBehaviorUnitTest {
     US 08.01.01
     As an driver, I want to see requests that I already accepted while offline.
      */
+    @Test
     public void testOfflineAcceptedRequest(){
         //build a list of requests
         UserRequest request = new UserRequest(start,end,fare);
@@ -64,6 +67,7 @@ public class OfflineBehaviorUnitTest {
      * US 08.02.01
      As a rider, I want to see requests that I have made while offline.
      */
+    @Test
     public void testOfflineMadeRequests(){
         //build a list of requests
         UserRequest request = new UserRequest(start,end,fare);
@@ -86,6 +90,7 @@ public class OfflineBehaviorUnitTest {
     US 08.03.01
     As a rider, I want to make requests that will be sent once I get connectivity again.
      */
+    @Test
     public void testSendMadeRequestsAfterConnection(){
         //go offline
         UserController.setOffline();

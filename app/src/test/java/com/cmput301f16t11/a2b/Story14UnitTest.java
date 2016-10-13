@@ -1,10 +1,10 @@
 package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
-import java.net.Authenticator;
+
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class Story14UnitTest {
 
@@ -29,7 +29,7 @@ finding requests
 		requests.add(request2);
 		// TODO: have requests added to some over arching class
 		user = UserController.loadUser(userName);
-		ArrayList<UserRequest> retrieve = user.getRequests(myLocation);
+		ArrayList<UserRequest> retrieve = user.getRequests();
 		assertEquals(retrieve.get(0), request);
 		assertEquals(retrieve.get(1), request2);
 	}
