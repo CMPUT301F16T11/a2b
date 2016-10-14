@@ -15,8 +15,6 @@ public class UserRequest {
     boolean completed;
     boolean paymentRecived;
 
-
-
     UserRequest(String start, String end, Number intitialFare){
         startLocation = start;
         endLocation = end;
@@ -30,56 +28,46 @@ public class UserRequest {
     public String getEndLocation() {
         return endLocation;
     }
-
-    public void setEndLocation(String endLocation) {
-        this.endLocation = endLocation;
-    }
-
     public Number getFare() {
         return fare;
     }
-
-    public void setFare(Number fare) {
-        this.fare = fare;
-    }
-
     public String getStartLocation() {
         return startLocation;
+    }
+    public Number getFareEstimation(String startLocation, String endLocation) {
+        return fare;
+    }
+    public boolean getAcceptedStatus(){
+        return accepted;
     }
 
     public void setStartLocation(String startLocation) {
         this.startLocation = startLocation;
     }
-
-    public Number getFareEstimation(String startLocation, String endLocation) {
-        return fare;
+    public void setEndLocation(String endLocation) {
+        this.endLocation = endLocation;
     }
-
-    public void setAccepted(Boolean bool){
+    public void setPaymentReceived(boolean paymentRecived) {
+        this.paymentRecived = paymentRecived;
+    }
+    public void setFare(Number fare) {
+        this.fare = fare;
+    }
+    public void setAcceptedStatus(Boolean bool){
         accepted = bool;
     }
-
-    public boolean getAccepted(){
-        return accepted;
-    }
-
-    public boolean sentNotification() {
-        return true;
+    public void setCompletedStatus(boolean completed) {
+        this.completed = completed;
     }
 
     public boolean isCompleted() {
         return completed;
     }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
     public boolean isPaymentRecived() {
         return paymentRecived;
     }
 
-    public void setPaymentRecived(boolean paymentRecived) {
-        this.paymentRecived = paymentRecived;
+    public boolean sentNotification() {
+        return true;
     }
 }

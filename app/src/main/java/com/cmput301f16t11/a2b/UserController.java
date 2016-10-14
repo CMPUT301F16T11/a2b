@@ -6,19 +6,18 @@ import java.util.ArrayList;
  * Created by brianofrim on 2016-10-10.
  */
 public class UserController {
-    static public boolean auth(String un, String pw){
+    static public boolean auth(String userName, String password){
         return true;
     }
-    static public User loadUser(String un){
+    static public User loadUser(String userName){
         return new User();
     }
-    static public Driver loadDriver(String un,int r) {return new Driver(un,r);}
 
    static public String getNewUserName() {
         return "Daniel";
     }
    static public String getNewPass() {
-        return "OilersSuck";
+        return "Flamers and Oilers Suck";
     }
    static public String getEmail() {
         return "mcjesus@ualberta.ca";

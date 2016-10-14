@@ -43,8 +43,6 @@ public class Story11UnitTest extends TestCase {
     String newNumber = "780-666-9999";
     String newEmail = "buddy@gmail.com";
 
-
-
     @Override
     protected void setUp() throws Exception {
         rider.setEmail(oldEmail);
@@ -57,6 +55,7 @@ public class Story11UnitTest extends TestCase {
         assertEquals(newEmail,rider.getEmail());
 
     }
+
     @Test
     public void check_number_change() throws Exception{
         rider.setPhoneNumber(newNumber);

@@ -9,10 +9,10 @@ public class User {
 
     private ArrayList<UserRequest> requests;
     private ArrayList<UserRequest> acceptedRequests;
-    String userName;
-    String passWord;
-    String email;
-    String phoneNumber;
+    private String userName;
+    private String passWord;
+    private String email;
+    private String phoneNumber;
 
     User(){
         requests = new ArrayList<UserRequest>();
@@ -30,24 +30,26 @@ public class User {
         email = pass;
     }
 
+   //Getters
     public String getName(){
         return userName;
     }
-
     public String getPassWord() { return passWord;}
-
     public String getEmail() { return email;}
     public String getPhoneNumber() {
         return phoneNumber;
     }
+    public ArrayList<UserRequest> getRequests(){
+        return requests;
+    }
+    public ArrayList<UserRequest> getAcceptedRequests() {
+        return acceptedRequests;
+    }
+    public UserRequest getLatestActiveRequest(){ return requests.get(requests.size() - 1);}
 
-
+    //Setters
     public void setRequestList(ArrayList<UserRequest> requestList){
         requests = requestList;
-    }
-
-    public void addRequest(UserRequest request){
-        requests.add(request);
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
@@ -56,48 +58,33 @@ public class User {
     public void setEmail(String email) {this.email = email;}
     public void setPassWord(String pass) {this.passWord = pass;}
 
+    // Request transactions
     public void createRequest(String start, String end, Number fare){
         requests.add(new UserRequest(start,end,fare));
     }
+    public void addRequest(UserRequest request){
 
+        requests.add(request);
+    }
+    public void addAcceptedRequest(UserRequest request) {
+
+        acceptedRequests.add(request);
+    }
     public void removeRequest(UserRequest request) {
+
         requests.remove(request);
     }
 
     public int numberOfActiveRequests(){
+
         return requests.size();
     }
-
-    public UserRequest getLatestActiveRequest(){
-        return requests.get(requests.size() - 1);
-    }
-
-    public ArrayList<UserRequest> getRequests(){
-        return requests;
-    }
-
-
     public void notifyUser(UserRequest r) {
     }
 
-    public ArrayList<UserRequest> getAllRequests() {
-        return requests;
-    }
-    public void addAcceptedRequest(UserRequest request) {
-        acceptedRequests.add(request);
-    }
-
-    public ArrayList<UserRequest> getAcceptedRequests() {
-        return acceptedRequests;
-    }
-
-    public boolean hasAcceptedRequests() {
+    public boolean hasAcceptedRequests(UserRequest request) {
         return true;
-
     }
 
-    public UserRequest getLatestRequest() {
-        UserRequest latestRequest = requests.get(-1);
-        return latestRequest;
-    }
+
 }

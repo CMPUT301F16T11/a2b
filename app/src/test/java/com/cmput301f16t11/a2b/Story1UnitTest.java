@@ -3,9 +3,6 @@ package com.cmput301f16t11.a2b;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- * To work on unit tests, switch the Test Artifact in the Build Variants view.
- */
 public class Story1UnitTest {
     /*
 Use Case: 1

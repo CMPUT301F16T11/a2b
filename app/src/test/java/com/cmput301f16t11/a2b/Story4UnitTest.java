@@ -23,7 +23,7 @@ public class Story4UnitTest {
       user = UserController.loadUser(userName);
       user.createRequest(startLocation, endLocation, fare);
       assertEquals(1, user.numberOfActiveRequests());
-      user.removeRequest(user.getLatestRequest());
+      user.removeRequest(user.getLatestActiveRequest());
       assertEquals(0, user.numberOfActiveRequests());
     }
  }

@@ -60,19 +60,19 @@ public class Story15UnitTest extends TestCase {
 
     @Test
     public void rider_confirm_accept() throws Exception {
-        req.setAccepted(true);
-        assertTrue(req.getAccepted());
+        req.setAcceptedStatus(true);
+        assertTrue(req.getAcceptedStatus());
     }
 
     @Test
     public void driver_complete() throws Exception {
-        req.setCompleted(true);
+        req.setCompletedStatus(true);
         assertTrue(req.isCompleted());
     }
 
     @Test
     public void rider_payment_complete() throws Exception {
-        req.setPaymentRecived(true);
+        req.setPaymentReceived(true);
         assertTrue(req.isPaymentRecived());
     }
 

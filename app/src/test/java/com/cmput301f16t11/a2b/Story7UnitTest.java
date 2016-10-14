@@ -44,14 +44,14 @@ public class Story7UnitTest extends TestCase {
         rider.createRequest(startLocation,endLocation,fare);
         jamieRequest = rider.getLatestActiveRequest();
         driver.addAcceptedRequest(jamieRequest);
-        jamieRequest.setAccepted(true); // rider accepts ride
+        jamieRequest.setAcceptedStatus(true); // rider accepts ride
     }
 
 
     @Test
     public void check_completion() throws Exception{
 
-        jamieRequest.setCompleted(true); // driver completes ride
+        jamieRequest.setCompletedStatus(true); // driver completes ride
         assertEquals(true,jamieRequest.isCompleted());
 
     }
@@ -59,7 +59,7 @@ public class Story7UnitTest extends TestCase {
     @Test
     public void check_payment() throws Exception{
 
-        jamieRequest.setPaymentRecived(true); // rider pays
+        jamieRequest.setPaymentReceived(true); // rider pays
         assertEquals(true,jamieRequest.isPaymentRecived());
     }
 

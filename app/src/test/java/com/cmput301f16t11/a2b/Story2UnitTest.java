@@ -46,11 +46,11 @@ public class Story2UnitTest {
     	user = UserController.loadUser(userName);
     	user.createRequest(startLocation,endLocation,fare);
         user.createRequest(startLocation2, endLocation2, fare2);
-    	requests = user.getAllRequests().get(0);
+    	requests = user.getRequests().get(0);
         assertEquals(requests.getStartLocation(), startLocation);
         assertEquals(requests.getEndLocation(), endLocation);
         assertEquals(requests.getFare(), fare);
-        UserRequest requests2 = user.getAllRequests().get(1);
+        UserRequest requests2 = user.getRequests().get(1);
         assertEquals(requests2.getStartLocation(), startLocation2);
         assertEquals(requests2.getEndLocation(), endLocation2);
         assertEquals(requests2.getFare(), fare2);

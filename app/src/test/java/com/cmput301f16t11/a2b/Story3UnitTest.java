@@ -28,7 +28,6 @@ import static org.junit.Assert.*;
  */
 public class Story3UnitTest extends TestCase {
     String userName = "jamie";
-    String passWord = "sup3rs3cur3p455w0rd";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10.00;

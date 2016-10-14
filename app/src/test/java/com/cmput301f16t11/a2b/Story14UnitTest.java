@@ -27,7 +27,7 @@ finding requests
 		requests.add(request);
 		UserRequest request2 = new UserRequest("1212 32 st", "12322 43 ave", 23);
 		requests.add(request2);
-		// TODO: have requests added to some over arching class
+
 		user = UserController.loadUser(userName);
 		ArrayList<UserRequest> retrieve = user.getRequests();
 		assertEquals(retrieve.get(0), request);

@@ -27,41 +27,33 @@ import static org.junit.Assert.*;
  2 Request not found -> return to 1
  */
 public class Story9UnitTest extends TestCase{
-    User rider =  UserController.loadUser("some1"); // rider
-    User billy = UserController.loadUser("billy"); // diver
 
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    UserRequest req;
-
-    @Override
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        rider.createRequest(startLocation,endLocation,10.00);
-        req = rider.getLatestActiveRequest();
-
-    }
 
     @Test
     public void check_accepted_true() throws Exception{
-        req.setAccepted(true);
-        assertTrue(req.getAccepted());
+        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+        req.setAcceptedStatus(true);
+        assertTrue(req.getAcceptedStatus());
 
     }
     @Test
     public void check_completed_true() throws Exception{
-        req.setCompleted(true);
+        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+        req.setCompletedStatus(true);
         assertTrue(req.isCompleted());
     }
     @Test
     public void check_accepted_false() throws Exception{
-        req.setAccepted(false);
-        assertFalse(req.getAccepted());
+        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+        req.setAcceptedStatus(false);
+        assertFalse(req.getAcceptedStatus());
     }
     @Test
     public void check_completed_false() throws Exception{
-        req.setCompleted(false);
+        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+        req.setCompletedStatus(false);
         assertFalse(req.isCompleted());
     }
 }

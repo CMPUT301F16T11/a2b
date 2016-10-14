@@ -45,7 +45,6 @@ public class Story5UnitTest extends TestCase {
     Number fare = 10.00;
 
 
-    UserRequest jamieRequest;
     @Override
     protected void setUp() throws Exception
     {
@@ -56,7 +55,7 @@ public class Story5UnitTest extends TestCase {
         rider.createRequest(startLocation,endLocation,fare);
         UserRequest jamieRequest = rider.getLatestActiveRequest();
         driver.addAcceptedRequest(jamieRequest);
-        jamieRequest.setAccepted(true);
+        jamieRequest.setAcceptedStatus(true);
 
 
     }
