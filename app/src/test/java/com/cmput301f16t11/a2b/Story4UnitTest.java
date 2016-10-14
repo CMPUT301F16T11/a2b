@@ -2,7 +2,7 @@ package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static junit.framework.Assert.assertEquals;
 
 public class Story4UnitTest {
 
