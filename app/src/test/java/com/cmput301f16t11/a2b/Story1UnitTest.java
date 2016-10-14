@@ -1,9 +1,6 @@
 package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
-
-import java.net.Authenticator;
-
 import static org.junit.Assert.*;
 
 /**
@@ -11,20 +8,30 @@ import static org.junit.Assert.*;
  */
 public class Story1UnitTest {
     /*
-        Based on US 01.01.01
-        Billy is in a rush. It's -30 degree Celsuis outside and his car won't start because
-        he left the radio on overnight. He has a big meeting in about thirty minutes and no
-        time to waste. He remembers that last night he downloaded and signed up for the next
-        "big thing app," at the request of his friends. He loads up a2b on his phone and requests
-        a ride from his current location, his house, to his workplace. Billy is an excellent example
-        of an average a2b user with an average request.
+Use Case: 1
+Id: US 01.01.01
+Description: A casual rider's car will not start and is in a rush to arrive.
+He uses a2b by selecting the start and end locations for the trip, and then
+requesting a ride between those two locations.
 
-         Testable items:
-            Billy login
-            Open new request
-            Enter start location : home
-            Enter end location : work
-            Enter fare
+Primary Actor: The casual rider
+Supporting Actor(s): Any drivers considering the request
+Goal: To submit a request for a ride between the two locations to the a2b system.
+Pre-conditions:
+
+App has access to the internet.
+Post-conditions:
+
+A request between the two locations is submitted to a2b servers.
+Basic Flow:
+
+1 The (logged in) rider selects a starting location
+2 The rider selects an end location
+3 The rider submits the request (with a fare offer?)
+Exceptions:
+
+1 - If there is no internet connection, system displays an error, loops to step 1 (eventually will use use case 21 instead - v2.0?)
+
      */
 
     User user;

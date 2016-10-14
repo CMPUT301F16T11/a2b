@@ -12,6 +12,7 @@ public class User {
     String userName;
     String passWord;
     String email;
+    String phoneNumber;
 
     User(){
         requests = new ArrayList<UserRequest>();
@@ -36,6 +37,10 @@ public class User {
     public String getPassWord() { return passWord;}
 
     public String getEmail() { return email;}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
 
     public void setRequestList(ArrayList<UserRequest> requestList){
         requests = requestList;
@@ -44,7 +49,9 @@ public class User {
     public void addRequest(UserRequest request){
         requests.add(request);
     }
-
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     public void setName(String name) {this.userName = name;}
     public void setEmail(String email) {this.email = email;}
     public void setPassWord(String pass) {this.passWord = pass;}
@@ -79,6 +86,11 @@ public class User {
     public void addAcceptedRequest(UserRequest request) {
         acceptedRequests.add(request);
     }
+
+    public ArrayList<UserRequest> getAcceptedRequests() {
+        return acceptedRequests;
+    }
+
     public boolean hasAcceptedRequests() {
         return true;
 

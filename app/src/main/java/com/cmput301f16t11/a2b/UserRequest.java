@@ -12,6 +12,10 @@ public class UserRequest {
     long timeCreatedInMillis;
     Number requestId;
     boolean accepted;
+    boolean completed;
+    boolean paymentRecived;
+
+
 
     UserRequest(String start, String end, Number intitialFare){
         startLocation = start;
@@ -19,6 +23,8 @@ public class UserRequest {
         fare = intitialFare;
         timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         accepted = false;
+        completed = false;
+        paymentRecived = false;
     }
 
     public String getEndLocation() {
@@ -59,5 +65,21 @@ public class UserRequest {
 
     public boolean sentNotification() {
         return true;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isPaymentRecived() {
+        return paymentRecived;
+    }
+
+    public void setPaymentRecived(boolean paymentRecived) {
+        this.paymentRecived = paymentRecived;
     }
 }
