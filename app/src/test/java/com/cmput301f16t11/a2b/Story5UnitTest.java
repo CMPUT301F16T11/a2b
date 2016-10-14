@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
  Internet connection not working
  The rider should be notified that their connection is not working and given the opportunity to attempt the operation again
  */
-public class Story5UnitTest extends TestCase {
+public class Story5UnitTest{
     User rider = UserController.loadUser("jamie");
     User driver = UserController.loadUser("Ryan Gosling from Drive");
 
@@ -45,10 +45,9 @@ public class Story5UnitTest extends TestCase {
     Number fare = 10.00;
 
 
-    @Override
-    protected void setUp() throws Exception
+
+    private void setUp()
     {
-        super.setUp();
         driver.setEmail(newDriverEmail);
         driver.setPhoneNumber(newDriverPhoneNumber);
 
@@ -56,19 +55,19 @@ public class Story5UnitTest extends TestCase {
         UserRequest jamieRequest = rider.getLatestActiveRequest();
         driver.addAcceptedRequest(jamieRequest);
         jamieRequest.setAcceptedStatus(true);
-
-
     }
 
     @Test
-    public void get_driver_phonenumber() throws Exception{
+    public void get_driver_phonenumber(){
         // To do: get driver from request
+        setUp();
         assertEquals(newDriverPhoneNumber, driver.getPhoneNumber());
     }
 
     @Test
-    public void get_driver_email() throws Exception{
+    public void get_driver_email(){
         // To do: get driver from request
+        setUp();
         assertEquals(newDriverEmail, driver.getEmail());
     }
 }

@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 
  2 Valid Payment information not found -> input payment information
  */
-public class Story7UnitTest extends TestCase {
+public class Story7UnitTest{
     String userName = "jamie";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
@@ -37,10 +37,9 @@ public class Story7UnitTest extends TestCase {
     User driver = UserController.loadUser("billy");
     UserRequest jamieRequest;
 
-    @Override
-    protected void setUp() throws Exception
+
+    private void setUp()
     {
-        super.setUp();
         rider.createRequest(startLocation,endLocation,fare);
         jamieRequest = rider.getLatestActiveRequest();
         driver.addAcceptedRequest(jamieRequest);
@@ -49,16 +48,16 @@ public class Story7UnitTest extends TestCase {
 
 
     @Test
-    public void check_completion() throws Exception{
-
+    public void check_completion() {
+        setUp();
         jamieRequest.setCompletedStatus(true); // driver completes ride
         assertEquals(true,jamieRequest.isCompleted());
 
     }
 
     @Test
-    public void check_payment() throws Exception{
-
+    public void check_payment() {
+        setUp();
         jamieRequest.setPaymentReceived(true); // rider pays
         assertEquals(true,jamieRequest.isPaymentRecived());
     }

@@ -72,7 +72,7 @@ Exceptions:
     }
 
     @Test
-    public void check_request_fare()throws Exception{
+    public void check_request_fare() throws Exception{
         UserRequest request = user.getLatestActiveRequest();
         assertEquals(fare, request.getFare());
     }

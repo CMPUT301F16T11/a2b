@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  If the rider is not connected to the internet
  The data should be stored and sent as soon as the device connects
  */
-public class Story3UnitTest extends TestCase {
+public class Story3UnitTest{
     String userName = "jamie";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
@@ -35,18 +35,16 @@ public class Story3UnitTest extends TestCase {
     User driver = UserController.loadUser("Ryan Gosling from Drive");
     UserRequest jamieRequest;
 
-    @Override
-    protected void setUp() throws Exception
+    private void setUp()
     {
-        super.setUp();
         rider.createRequest(startLocation,endLocation,fare);
         jamieRequest = rider.getLatestActiveRequest();
-
     }
 
     @Test
-    public void send_and_recive_Notification() throws Exception{
+    public void send_and_recive_Notification(){
 
+        setUp();
         driver.addAcceptedRequest(jamieRequest);
         driver.notifyUser(jamieRequest);
         assertTrue(jamieRequest.sentNotification());

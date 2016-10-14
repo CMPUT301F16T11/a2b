@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
  5 Changes could not be saved -> Notify the user and return to 2
 
  */
-public class Story11UnitTest extends TestCase {
+public class Story11UnitTest{
 
     User rider =  UserController.loadUser("some1"); // rider
     String oldNumber = "780-888-9999";
@@ -43,21 +43,23 @@ public class Story11UnitTest extends TestCase {
     String newNumber = "780-666-9999";
     String newEmail = "buddy@gmail.com";
 
-    @Override
-    protected void setUp() throws Exception {
+
+    private void setUp() {
         rider.setEmail(oldEmail);
         rider.setPhoneNumber(oldNumber);
     }
 
     @Test
-    public void check_email_change() throws Exception{
+    public void check_email_change(){
+        setUp();
         rider.setEmail(newEmail);
         assertEquals(newEmail,rider.getEmail());
 
     }
 
     @Test
-    public void check_number_change() throws Exception{
+    public void check_number_change() {
+        setUp();
         rider.setPhoneNumber(newNumber);
         assertEquals(newNumber,rider.getPhoneNumber());
 

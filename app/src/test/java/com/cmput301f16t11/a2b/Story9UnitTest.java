@@ -26,32 +26,32 @@ import static org.junit.Assert.*;
 
  2 Request not found -> return to 1
  */
-public class Story9UnitTest extends TestCase{
+public class Story9UnitTest{
 
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
 
     @Test
-    public void check_accepted_true() throws Exception{
+    public void check_accepted_true(){
         UserRequest req = new UserRequest(startLocation, endLocation, 10);
         req.setAcceptedStatus(true);
         assertTrue(req.getAcceptedStatus());
 
     }
     @Test
-    public void check_completed_true() throws Exception{
+    public void check_completed_true(){
         UserRequest req = new UserRequest(startLocation, endLocation, 10);
         req.setCompletedStatus(true);
         assertTrue(req.isCompleted());
     }
     @Test
-    public void check_accepted_false() throws Exception{
+    public void check_accepted_false(){
         UserRequest req = new UserRequest(startLocation, endLocation, 10);
         req.setAcceptedStatus(false);
         assertFalse(req.getAcceptedStatus());
     }
     @Test
-    public void check_completed_false() throws Exception{
+    public void check_completed_false(){
         UserRequest req = new UserRequest(startLocation, endLocation, 10);
         req.setCompletedStatus(false);
         assertFalse(req.isCompleted());

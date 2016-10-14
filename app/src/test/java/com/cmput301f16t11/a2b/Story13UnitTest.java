@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 
  2 Cannot find location -> reset to 1
  */
-public class Story13UnitTest extends TestCase {
+public class Story13UnitTest{
     User rider1 =  UserController.loadUser("rider1"); // rider
     User rider2 =  UserController.loadUser("rider2"); // rider
     User rider3 =  UserController.loadUser("rider3"); // rider
@@ -51,10 +51,8 @@ public class Story13UnitTest extends TestCase {
     UserRequest req3;
     UserRequest req4;
 
-    @Override
-    protected void setUp() throws Exception
-    {
-        super.setUp();
+
+    private void setUp() {
         rider1.createRequest(startLocation1,endLocation1,10.00);
         rider2.createRequest(startLocation2,endLocation2,10.00);
         rider3.createRequest(startLocation3,endLocation3,10.00);
@@ -66,7 +64,8 @@ public class Story13UnitTest extends TestCase {
     }
 
     @Test
-    public void check_list_of_nearby_requests() throws Exception {
+    public void check_list_of_nearby_requests(){
+        setUp();
         ArrayList<UserRequest> nearbyRequests = RequestController.getRequestNear(startLocation1,20);
         assertEquals(4, nearbyRequests.size());
     }
