@@ -45,7 +45,7 @@ public class User {
     public ArrayList<UserRequest> getAcceptedRequests() {
         return acceptedRequests;
     }
-    public UserRequest getLatestActiveRequest(){ return requests.get(requests.size() - 1);}
+    public UserRequest getLatestActiveRequest(){return requests.get(requests.size() - 1);}
 
     //Setters
     public void setRequestList(ArrayList<UserRequest> requestList){

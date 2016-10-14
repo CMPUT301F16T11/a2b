@@ -4,31 +4,30 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class Story1UnitTest {
-    /*
-Use Case: 1
-Id: US 01.01.01
-Description: A casual rider's car will not start and is in a rush to arrive.
-He uses a2b by selecting the start and end locations for the trip, and then
-requesting a ride between those two locations.
+    /**
+        Use Case: 1
+        Id: US 01.01.01
+        Description: A casual rider's car will not start and is in a rush to arrive.
+        He uses a2b by selecting the start and end locations for the trip, and then
+        requesting a ride between those two locations.
 
-Primary Actor: The casual rider
-Supporting Actor(s): Any drivers considering the request
-Goal: To submit a request for a ride between the two locations to the a2b system.
-Pre-conditions:
+        Primary Actor: The casual rider
+        Supporting Actor(s): Any drivers considering the request
+        Goal: To submit a request for a ride between the two locations to the a2b system.
+        Pre-conditions:
 
-App has access to the internet.
-Post-conditions:
+        App has access to the internet.
+        Post-conditions:
 
-A request between the two locations is submitted to a2b servers.
-Basic Flow:
+        A request between the two locations is submitted to a2b servers.
+        Basic Flow:
 
-1 The (logged in) rider selects a starting location
-2 The rider selects an end location
-3 The rider submits the request (with a fare offer?)
-Exceptions:
+        1 The (logged in) rider selects a starting location
+        2 The rider selects an end location
+        3 The rider submits the request (with a fare offer?)
+        Exceptions:
 
-1 - If there is no internet connection, system displays an error, loops to step 1 (eventually will use use case 21 instead - v2.0?)
-
+        1 - If there is no internet connection, system displays an error, loops to step 1 (eventually will use use case 21 instead - v2.0?)
      */
 
     User user;
@@ -39,7 +38,7 @@ Exceptions:
     Number fare = 10.00;
 
     @Test
-    public void user_auth_and_load() throws Exception{
+    public void user_auth_and_load() throws {
 
 
         boolean authenticated = UserController.auth(userName,passWord);
