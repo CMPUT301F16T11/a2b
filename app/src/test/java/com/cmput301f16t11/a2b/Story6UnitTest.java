@@ -15,22 +15,23 @@ public class Story6UnitTest {
 
     User user;
     String username = "Raine";
-    String passWord = "IamAPowerUser";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 0;
 
-    @Test
-    public void testFareEstimation() {
+    public void setUp(){
+
         user = UserController.loadUser(username);
         user.createRequest(startLocation, endLocation, fare);
+    }
+
+    @Test
+    public void testFareEstimation() {
+        setUp();
+
         UserRequest request = user.getLatestActiveRequest();
         fare = request.getFareEstimation(startLocation, endLocation);
-        assertTrue(fare.equals(0)); // will instead put an estimation to check when fareEstimate algorithim is done
-        request.setEndLocation("888 91 St NW, Edmonton, AB, T6R 2N5");
-        Number fare2 = request.getFareEstimation(startLocation,endLocation);
-        assertTrue(fare2.equals(0));
-        assertTrue(fare != fare2);
+        assertEquals(15, fare); // will hard code the the correct estimation when
     }
 
 }

@@ -21,16 +21,24 @@ public class Story8UnitTest {
     Number fare = 10; 
 
     @Test
-    public void testAcceptance() {
-      user = UserController.loadUser(userName);
-      user.createRequest(startLocation, endLocation, fare);
-      Driver driver = new Driver("Joey Fusion Fallone", 0);
-        ArrayList<UserRequest> requests = driver.getAllRequests();
-        UserRequest request = requests.get(0);
-        driver.acceptRequest(request);
-        assertTrue(driver.hasAccepted(request));
+    public void testAcceptancePresent() {
+
+        user = UserController.loadUser(userName);
+        user.createRequest(startLocation, endLocation, fare);
+        User user = new User();
+        UserRequest request = new UserRequest("bottom", "here", 10);
+        assertFalse(user.hasAcceptedRequests(request));
+    }
+
+    @Test
+    public void testAcceptanceNotPresent() {
+
+        user = UserController.loadUser(userName);
+        user.createRequest(startLocation, endLocation, fare);
+        User user = new User();
+        UserRequest request = new UserRequest("bottom", "here", 10);
         user.addAcceptedRequest(request);
-        assertTrue(user.hasAcceptedRequests());
+        assertTrue(user.hasAcceptedRequests(request));
     }
 
 

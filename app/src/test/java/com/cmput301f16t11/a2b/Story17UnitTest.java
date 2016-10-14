@@ -1,9 +1,10 @@
 package com.cmput301f16t11.a2b;
 
 import org.junit.Test;
+
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class Story17UnitTest {
 
@@ -24,11 +25,11 @@ As a driver, I want to see if my acceptance was accepted.
         //Look into list of pending accepted requests
         ArrayList<UserRequest> requestList = driver.getRequests();
         UserRequest request = new UserRequest(start,end,fare);
-        request.setAccepted(true);
+        request.setAcceptedStatus(true);
         requestList.add(request);
 
         //see that a pending request has been accepted
-        assertEquals(request.getAccepted(), true);
+        assertEquals(request.getAcceptedStatus(), true);
         //assertequals on the wanted vs. actual
 
     }

@@ -49,9 +49,9 @@ public class OfflineBehaviorUnitTest {
         requestList.add(request1);
         requestList.add(request2);
         //set them to accepted
-        request.setAccepted(true);
-        request1.setAccepted(true);
-        request2.setAccepted(true);
+        request.setAcceptedStatus(true);
+        request1.setAcceptedStatus(true);
+        request2.setAcceptedStatus(true);
         //save them to a file
         UserController.saveInFile(requestList);
         //set connection to offline
@@ -104,6 +104,11 @@ public class OfflineBehaviorUnitTest {
 
     }
 
+    /**
+     *US 08.04.01
+     *As a driver, I want to accept requests that will be sent once I get connectivity again.
+     */
+    @Test
     public void testAcceptRequestsAfterConnection(){
         //go offline
         UserController.setOffline();
@@ -112,10 +117,10 @@ public class OfflineBehaviorUnitTest {
         UserRequest request = new UserRequest(start,end,fare);
         requestList.add(request);
         //accept one of them
-        requestList.get(0).setAccepted(true);
+        requestList.get(0).setAcceptedStatus(true);
         //go online
         UserController.goOnline();
         //check that accepted request has been sent
-        assertTrue(UserController.getRequestList().get(0).getAccepted());
+        assertTrue(UserController.getRequestList().get(0).getAcceptedStatus());
     }
 }

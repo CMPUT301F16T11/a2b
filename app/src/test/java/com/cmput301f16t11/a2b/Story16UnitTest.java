@@ -21,10 +21,6 @@ To test:
 Driver accepting request
 
      */
-
-    User user;
-    String userName = "billy";
-    String passWord = "billy1zth3b35t";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10.00;
@@ -33,14 +29,22 @@ Driver accepting request
     @Test
     public void testDriverAcceptingRequest() {
 
-        user = UserController.loadUser(userName);
-        ArrayList<UserRequest> requests = user.getAllRequests();
-        UserRequest request = requests.get(3); // random request that Billy wants to accept
-        Driver driver = new Driver("Joey Fusion Fallone", 0);
-        ArrayList<UserRequest> requests2 = driver.getAllRequests();
-        UserRequest request2 = requests.get(0);
-        driver.acceptRequest(request2);
-        assertTrue(driver.hasAccepted(request2));
+        // random request that Billy wants to accept
+        User user = new User();
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
+        user.addAcceptedRequest(billyRequest);
+
+        assertTrue(user.hasAcceptedRequests(billyRequest));
+    }
+
+    @Test
+    public void testDriverNotAcceptingRequest() {
+
+        // random request that Billy wants to accept
+        User user = new User();
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
+
+        assertFalse(user.hasAcceptedRequests(billyRequest));
     }
 
 }

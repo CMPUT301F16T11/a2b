@@ -11,8 +11,6 @@ import static junit.framework.Assert.assertEquals;
  * Based on the case
  * US 05.04.01
  As a driver, I want to be notified if my ride offer was accepted.
-
-
  */
 
 public class Story18UnitTest {
@@ -30,7 +28,7 @@ public class Story18UnitTest {
         ArrayList<UserRequest> requestList = driver.getRequests();
         //check if any are accepted
         for(UserRequest r: requestList)
-        if(r.getAccepted()){
+        if(request.getAcceptedStatus()){
             //if there are any accepted send notification
             driver.notifyUser(r);
             request = r;
