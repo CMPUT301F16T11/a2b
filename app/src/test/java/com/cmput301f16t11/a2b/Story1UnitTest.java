@@ -37,9 +37,12 @@ public class Story1UnitTest {
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10.00;
 
-    @Test
-    public void user_auth_and_load() throws {
+    public void setUp(){
+      user = new User();
+    }
 
+    @Test
+    public void user_auth_and_load(){
 
         boolean authenticated = UserController.auth(userName,passWord);
         if(authenticated){
@@ -52,26 +55,36 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void create_user_request() throws Exception{
+    public void create_user_request(){
 
-        user.createRequest(startLocation,endLocation,fare); // Time request was created returned
+        setUp();
+        user.createRequest(startLocation,endLocation,fare);
         assertEquals(1,user.numberOfActiveRequests());
     }
 
     @Test
-    public void check_request_start() throws Exception{
+    public void check_request_start(){
+
+        setUp();
+        user.createRequest(startLocation,endLocation,fare);
         UserRequest request = user.getLatestActiveRequest();
         assertEquals(startLocation, request.getStartLocation());
     }
 
     @Test
-    public void check_request_end() throws Exception{
+    public void check_request_end(){
+
+        setUp();
+        user.createRequest(startLocation,endLocation,fare);
         UserRequest request = user.getLatestActiveRequest();
         assertEquals(endLocation, request.getEndLocation());
     }
 
     @Test
-    public void check_request_fare() throws Exception{
+    public void check_request_fare(){
+
+        setUp();
+        user.createRequest(startLocation,endLocation,fare);
         UserRequest request = user.getLatestActiveRequest();
         assertEquals(fare, request.getFare());
     }

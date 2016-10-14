@@ -24,6 +24,12 @@ public class Story2UnitTest {
    // assuming we might have a class for ride information
   UserRequest requests;
 
+    public void setUp(){
+        user = new User();
+        user.createRequest(startLocation,endLocation,fare);
+        requests = user.getRequests().get(0);
+    }
+
    @Test
    public void user_auth_and_load() throws Exception{
 
@@ -31,29 +37,30 @@ public class Story2UnitTest {
         if(authenticated){
             user = UserController.loadUser(userName);
             assertEquals("Jamie_SoDrunk",user.getName());
-        }else{
+        }
+        else{
             fail("User not Authenticated");
         }
     }
 
-    // this tests that the request info can be retrieved properly
-    // don't know how I should test if it displays
     @Test
-    public void testCheckRequests() {
-        String startLocation2 = "12345 123 st Nw EDmonton";
-        String endLocation2 = "54321 321 st Nw edmonton";
-        Number fare2 = 20;
-    	user = UserController.loadUser(userName);
-    	user.createRequest(startLocation,endLocation,fare);
-        user.createRequest(startLocation2, endLocation2, fare2);
-    	requests = user.getRequests().get(0);
-        assertEquals(requests.getStartLocation(), startLocation);
-        assertEquals(requests.getEndLocation(), endLocation);
-        assertEquals(requests.getFare(), fare);
-        UserRequest requests2 = user.getRequests().get(1);
-        assertEquals(requests2.getStartLocation(), startLocation2);
-        assertEquals(requests2.getEndLocation(), endLocation2);
-        assertEquals(requests2.getFare(), fare2);
+    public void testStartLocation(){
 
+        setUp();
+        assertEquals(requests.getStartLocation(), startLocation);
+    }
+
+    @Test
+    public void testEndLocation(){
+
+        setUp();
+        assertEquals(requests.getEndLocation(), endLocation);
+    }
+
+    @Test
+    public void testFare(){
+
+        setUp();
+        assertEquals(requests.getFare(), fare);
     }
 }

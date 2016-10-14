@@ -24,7 +24,10 @@ public class UserController {
     }
 
     public static ArrayList<UserRequest> getRequestList() {
-        return null;
+
+        ArrayList<UserRequest> fakeList = new ArrayList<>();
+        fakeList.add(new UserRequest("start", "end", 0));
+        return fakeList;
     }
 
     public static void setOffline() {
