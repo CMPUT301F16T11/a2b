@@ -12,9 +12,13 @@ public class Story10UnitTest {
    making a new user
 */
 
+    /*
+    is this different from createUser? Probably not. Left it for now
+    However we should consider removing it.
+     */
     User user;
-    String userName = "JamieLovesLukeCage";
-    String passWord = "JamieIsMissingLukeCage";
+    String userName = "user";
+    String passWord = "pass";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10; 

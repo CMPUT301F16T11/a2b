@@ -45,40 +45,44 @@ public class Story15UnitTest{
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     UserRequest req;
 
+    /*
+    cannot find any non duplicate tests here. is this supposed to be offline?
+     */
 
-    private void setUp() throws Exception {
-        rider.createRequest(startLocation,endLocation,10.00);
-        req = rider.getLatestActiveRequest();
 
-    }
-
-    @Test
-    public void driver_accept() throws Exception {
-        setUp();
-        driver.addAcceptedRequest(req);
-        assertEquals(1,driver.getAcceptedRequests().size());
-    }
-
-    @Test
-    public void rider_confirm_accept() throws Exception {
-        setUp();
-        req.setAcceptedStatus(true);
-        assertTrue(req.getAcceptedStatus());
-    }
-
-    @Test
-    public void driver_complete() throws Exception {
-        setUp();
-        req.setCompletedStatus(true);
-        assertTrue(req.isCompleted());
-    }
-
-    @Test
-    public void rider_payment_complete() throws Exception {
-        setUp();
-        req.setPaymentReceived(true);
-        assertTrue(req.isPaymentRecived());
-    }
+//    private void setUp() throws Exception {
+//        rider.createRequest(startLocation,endLocation,10.00);
+//        req = rider.getLatestActiveRequest();
+//
+//    }
+//
+//    @Test
+//    public void testDriverAccept() throws Exception {
+//        setUp();
+//        driver.addAcceptedRequest(req);
+//        assertEquals(1,driver.getAcceptedRequests().size());
+//    }
+//
+//    @Test
+//    public void testRiderAcceptance() throws Exception {
+//        setUp();
+//        req.setAcceptedStatus(true);
+//        assertTrue(req.getAcceptedStatus());
+//    }
+//
+//    @Test
+//    public void testDriverComplete() throws Exception {
+//        setUp();
+//        req.setCompletedStatus(true);
+//        assertTrue(req.isCompleted());
+//    }
+//
+//    @Test
+//    public void testRiderPaymentComplete() throws Exception {
+//        setUp();
+//        req.setPaymentReceived(true);
+//        assertTrue(req.isPaymentRecived());
+//    }
 
 
 }

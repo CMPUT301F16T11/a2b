@@ -14,10 +14,14 @@ To Test:
 finding requests
 */
 
+	/*
+	recommend a gui test replace this.
+	 */
+
 	User user;
-	String userName = "a2bBringsMeHappiness";
-	String passWord = "allINeedIsa2b";
-	String myLocation = "nowhere";
+	String userName = "user";
+	String passWord = "pass";
+	String myLocation = "location";
 
 
 	@Test

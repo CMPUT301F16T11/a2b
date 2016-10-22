@@ -13,9 +13,9 @@ changing User info
 
     @Test
     public void testChangeInfo() {
-        User user = new User("BallingBilly", "password", "billy@ualberta.ca");
-        user.setName("Billy is dumb");
-        assertEquals("Billy is dumb", user.getName());
+        User user = new User("user", "password", "user@ualberta.ca");
+        user.setName("name1");
+        assertEquals("name1", user.getName());
         user.setPassWord("7801234567");
         assertEquals("7801234567", user.getPassWord());
         user.setEmail("test@ualberta.ca");
