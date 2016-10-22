@@ -47,5 +47,13 @@ context. Recommend a gui test replace it.
 
 15) NO TESTS RIGHT NOW - see file for more details
 
-16) testDriverAcceptingRequest
-16) testDriverNotAcceptingRequest
+16) testDriverAcceptingRequest - from rider context
+16) testDriverNotAcceptingRequest - from rider context
+
+17) See 8) - gui tests???
+
+18) testNotificationOfferAccepted
+
+locationUnitTest - looks good at a skim through 
+
+Ditto for Offline tests. 
