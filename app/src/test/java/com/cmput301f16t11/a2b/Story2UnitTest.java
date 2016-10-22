@@ -29,7 +29,7 @@ public class Story2UnitTest {
         user.createRequest(startLocation,endLocation,fare);
         requests = user.getRequests().get(0);
     }
-    
+
 
     @Test
     public void testFare(){

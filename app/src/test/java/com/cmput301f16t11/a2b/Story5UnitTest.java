@@ -34,14 +34,14 @@ import static org.junit.Assert.*;
  The rider should be notified that their connection is not working and given the opportunity to attempt the operation again
  */
 public class Story5UnitTest{
-    User rider = UserController.loadUser("jamie");
-    User driver = UserController.loadUser("Ryan Gosling from Drive");
+    User rider = UserController.loadUser("rider");
+    User driver = UserController.loadUser("driver");
 
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
 
     String newDriverPhoneNumber = "780-666-0000";
-    String newDriverEmail = "buddy@gmail.com";
+    String newDriverEmail = "user@domain.com";
     Number fare = 10.00;
 
 
@@ -58,14 +58,14 @@ public class Story5UnitTest{
     }
 
     @Test
-    public void get_driver_phonenumber(){
+    public void testGetDriverNumber(){
         // To do: get driver from request
         setUp();
         assertEquals(newDriverPhoneNumber, driver.getPhoneNumber());
     }
 
     @Test
-    public void get_driver_email(){
+    public void testGetDriverEmail(){
         // To do: get driver from request
         setUp();
         assertEquals(newDriverEmail, driver.getEmail());
