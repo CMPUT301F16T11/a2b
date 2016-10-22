@@ -34,32 +34,24 @@ public class Story7UnitTest{
     Number fare = 10.00;
 
     User rider = UserController.loadUser(userName);
-    User driver = UserController.loadUser("billy");
+    User driver = UserController.loadUser("driver");
     UserRequest request;
 
 
     private void setUp()
     {
         rider.createRequest(startLocation,endLocation,fare);
-        jamieRequest = rider.getLatestActiveRequest();
-        driver.addAcceptedRequest(jamieRequest);
-        jamieRequest.setAcceptedStatus(true); // rider accepts ride
+        request = rider.getLatestActiveRequest();
+        driver.addAcceptedRequest(request);
+        request.setAcceptedStatus(true); // rider accepts ride
     }
 
 
     @Test
-    public void check_completion() {
+    public void checkPayment() {
         setUp();
-        jamieRequest.setCompletedStatus(true); // driver completes ride
-        assertEquals(true,jamieRequest.isCompleted());
-
-    }
-
-    @Test
-    public void check_payment() {
-        setUp();
-        jamieRequest.setPaymentReceived(true); // rider pays
-        assertEquals(true,jamieRequest.isPaymentRecived());
+        request.setPaymentReceived(true); // rider pays
+        assertEquals(true,request.isPaymentRecived());
     }
 
 

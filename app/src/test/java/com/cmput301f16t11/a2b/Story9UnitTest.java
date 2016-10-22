@@ -28,32 +28,38 @@ import static org.junit.Assert.*;
  */
 public class Story9UnitTest{
 
-    String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
-    String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
 
-    @Test
-    public void check_accepted_true(){
-        UserRequest req = new UserRequest(startLocation, endLocation, 10);
-        req.setAcceptedStatus(true);
-        assertTrue(req.getAcceptedStatus());
+    /*
+    This test currently has no tests that are not tested elsewhere. Once we have gui testing it
+    may make more sense to test if the list is displaying the correct data
+     */
 
-    }
-    @Test
-    public void check_completed_true(){
-        UserRequest req = new UserRequest(startLocation, endLocation, 10);
-        req.setCompletedStatus(true);
-        assertTrue(req.isCompleted());
-    }
-    @Test
-    public void check_accepted_false(){
-        UserRequest req = new UserRequest(startLocation, endLocation, 10);
-        req.setAcceptedStatus(false);
-        assertFalse(req.getAcceptedStatus());
-    }
-    @Test
-    public void check_completed_false(){
-        UserRequest req = new UserRequest(startLocation, endLocation, 10);
-        req.setCompletedStatus(false);
-        assertFalse(req.isCompleted());
-    }
+//    String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
+//    String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+//
+//    @Test
+//    public void check_accepted_true(){
+//        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+//        req.setAcceptedStatus(true);
+//        assertTrue(req.getAcceptedStatus());
+//
+//    }
+//    @Test
+//    public void check_completed_true(){
+//        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+//        req.setCompletedStatus(true);
+//        assertTrue(req.isCompleted());
+//    }
+//    @Test
+//    public void check_accepted_false(){
+//        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+//        req.setAcceptedStatus(false);
+//        assertFalse(req.getAcceptedStatus());
+//    }
+//    @Test
+//    public void check_completed_false(){
+//        UserRequest req = new UserRequest(startLocation, endLocation, 10);
+//        req.setCompletedStatus(false);
+//        assertFalse(req.isCompleted());
+//    }
 }

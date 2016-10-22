@@ -14,14 +14,14 @@ public class Story8UnitTest {
 */
 
     User user;
-    String userName = "Meeri";
-    String passWord = "whatKindOfPersonIsNamedMeeri";
+    String userName = "user";
+    String passWord = "pass";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10; 
 
     @Test
-    public void testAcceptancePresent() {
+    public void testUserAcceptance() {
 
         user = UserController.loadUser(userName);
         user.createRequest(startLocation, endLocation, fare);
@@ -31,7 +31,7 @@ public class Story8UnitTest {
     }
 
     @Test
-    public void testAcceptanceNotPresent() {
+    public void testUserAcceptancePending() {
 
         user = UserController.loadUser(userName);
         user.createRequest(startLocation, endLocation, fare);
