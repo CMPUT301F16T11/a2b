@@ -37,7 +37,7 @@ public class RequestsUnitTest {
      As a rider, I want to request rides between two locations.*/
     @Test
     public void testUserAuthenticated(){
-
+        //TODO: build actual authenticator for given username and password
         boolean authenticated = UserController.auth(userName,passWord);
         if(authenticated){
             user = UserController.loadUser(userName);
@@ -110,14 +110,15 @@ public class RequestsUnitTest {
     public void testGetDriverNumber(){
         // To do: get driver from request
         user.setEmail(newDriverEmail);
-        assertEquals(newDriverPhoneNumber, user.getPhoneNumber());
+
+        assertEquals(newDriverEmail, user.getEmail());
     }
 
     @Test
     public void testGetDriverEmail(){
         // To do: get driver from request
         user.setPhoneNumber(newDriverPhoneNumber);
-        assertEquals(newDriverEmail, user.getEmail());
+        assertEquals(newDriverPhoneNumber, user.getPhoneNumber());
     }
     /**
      * US 01.06.01
@@ -127,7 +128,7 @@ public class RequestsUnitTest {
     public void testFareEstimation() {
         UserRequest request = user.getLatestActiveRequest();
         fare = request.getFareEstimation(startLocation, endLocation);
-        assertEquals(15, fare); // will hard code the the correct estimation when
+        assertEquals(15, fare); //TODO: will hard code the the correct estimation when
     }
 
     /**
