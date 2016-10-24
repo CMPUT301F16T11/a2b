@@ -13,13 +13,15 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class AcceptingUnitTest {
-    User rider =  UserController.loadUser("some1"); // rider
-    User driver =  UserController.loadUser("somedriver"); // rider
-    String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
-    String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    UserRequest req;
-    Number fare = 10.00;
-    String username = "username";
+
+    private User driver =  UserController.loadUser("somedriver"); // rider
+    private String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
+    private String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+    private Number fare = 10.00;
+
+    private String username = "username";
+    private User rider;
+    private UserRequest req;
 
 
     /*
@@ -31,9 +33,9 @@ public class AcceptingUnitTest {
      As a driver,  I want to accept a request I agree with and accept that offered payment upon completion.
      */
     private void setUp() throws Exception {
-        rider.createRequest(startLocation,endLocation,10.00);
-        req = rider.getLatestActiveRequest();
-
+       rider.createRequest(startLocation,endLocation,fare);
+        rider.addRequest(new UserRequest(startLocation,endLocation,fare));
+       req = rider.getLatestActiveRequest();
     }
 
     @Test
@@ -76,8 +78,9 @@ public class AcceptingUnitTest {
         // random request that Billy wants to accept
         User user = new User();
         UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
+        user.addRequest(billyRequest);
+        assertTrue(user.getRequests().size() > 0);
         user.addAcceptedRequest(billyRequest);
-
         assertTrue(user.hasAcceptedRequests(billyRequest));
     }
 
@@ -88,21 +91,10 @@ public class AcceptingUnitTest {
         User user = new User();
         UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
         user.addRequest(billyRequest);
+        assertTrue(user.getRequests().size() > 0);
         assertFalse(user.hasAcceptedRequests(billyRequest));
     }
 
-    /**
-     * US 05.03.01
-     As a driver, I want to see if my acceptance was accepted.
-     */
-     /* Based on US 05.03.01
-    As a driver, I want to see if my acceptance was accepted.
-    */
-
-    /*
-    see test story 8.
-    gui tests? - "see"
-     */
 
 
     @Test
@@ -120,6 +112,7 @@ public class AcceptingUnitTest {
         //assertequals on the wanted vs. actual
 
     }
+
     /**
      * US 05.04.01
      As a driver, I want to be notified if my ride offer was accepted.
