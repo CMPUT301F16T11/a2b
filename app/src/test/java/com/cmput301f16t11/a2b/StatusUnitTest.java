@@ -1,10 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
  Use Case: 9
  ID: US 02.01.01
@@ -26,7 +21,7 @@ import static org.junit.Assert.*;
 
  2 Request not found -> return to 1
  */
-public class Story9UnitTest{
+public class StatusUnitTest {
 
 
     /*
