@@ -13,13 +13,14 @@ public class UserProfileUnitTest {
     /**
     User profile
     */
-    private User user =  UserController.loadUser("some1"); // rider
+    private User user; 
     private String oldNumber = "780-888-9999";
     private String oldEmail = "user@domain.com";
 
 
     @Before
     private void setUp() {
+        user =  UserController.loadUser("some1");
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
     }
