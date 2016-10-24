@@ -35,7 +35,7 @@ public class SearchingUnitTest {
     private UserRequest req4;
 
     @Before
-    private void setUp() {
+    public void setUp() {
         rider1.createRequest(startLocation1,endLocation1,10.00);
         rider2.createRequest(startLocation2,endLocation2,10.00);
         rider3.createRequest(startLocation3,endLocation3,10.00);

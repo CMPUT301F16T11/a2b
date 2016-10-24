@@ -19,7 +19,7 @@ public class UserProfileUnitTest {
 
 
     @Before
-    private void setUp() {
+    public void setUp() {
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
     }

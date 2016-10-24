@@ -23,7 +23,7 @@ public class StatusUnitTest {
      As a rider or driver, I want to see the status of a request that I am involved in
      */
     @Before
-    private void setUp(){
+    public void setUp(){
         req = new UserRequest(startLocation, endLocation, 10);
     }
 
