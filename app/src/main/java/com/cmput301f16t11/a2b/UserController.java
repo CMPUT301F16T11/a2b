@@ -17,10 +17,10 @@ public class UserController {
         return "Daniel";
     }
    static public String getNewPass() {
-        return "Flamers and Oilers Suck";
+        return "";
     }
    static public String getEmail() {
-        return "mcjesus@ualberta.ca";
+        return "";
     }
 
     public static ArrayList<UserRequest> getRequestList() {
