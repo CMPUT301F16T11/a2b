@@ -2,6 +2,7 @@ package com.cmput301f16t11.a2b;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,12 +24,12 @@ public class RequestsUnitTest {
     private String newDriverPhoneNumber = "780-666-0000";
     private String newDriverEmail = "user@domain.com";
 
+    @Before
     public void setUp(){
         user = new User();
         user.createRequest(startLocation,endLocation,fare);
         request = user.getLatestActiveRequest();
     }
-
 
 
     /**
@@ -49,31 +50,22 @@ public class RequestsUnitTest {
 
     @Test
     public void createUserRequest(){
-
-        setUp();
-
         request = user.getRequests().get(0);
         assertEquals(1,user.numberOfActiveRequests());
     }
 
     @Test
     public void checkRequestStart(){
-
-        setUp();
         assertEquals(startLocation, request.getStartLocation());
     }
 
     @Test
     public void checkRequestEnd(){
-
-        setUp();
         assertEquals(endLocation, request.getEndLocation());
     }
 
     @Test
     public void checkRequestFare(){
-
-        setUp();
         assertEquals(fare, request.getFare());
     }
 
@@ -83,8 +75,6 @@ public class RequestsUnitTest {
 
     @Test
     public void testFare(){
-
-        setUp();
         assertEquals(request.getFare(), fare);
     }
 
@@ -95,8 +85,6 @@ public class RequestsUnitTest {
      */
     @Test
     public void testRiderNotification() {
-
-        setUp();
         user.addAcceptedRequest(request);
         user.notifyUser(request);
         assertTrue(request.sentNotification());
@@ -121,7 +109,6 @@ public class RequestsUnitTest {
     @Test
     public void testGetDriverNumber(){
         // To do: get driver from request
-        setUp();
         user.setEmail(newDriverEmail);
         assertEquals(newDriverPhoneNumber, user.getPhoneNumber());
     }
@@ -129,7 +116,6 @@ public class RequestsUnitTest {
     @Test
     public void testGetDriverEmail(){
         // To do: get driver from request
-        setUp();
         user.setPhoneNumber(newDriverPhoneNumber);
         assertEquals(newDriverEmail, user.getEmail());
     }
@@ -139,8 +125,6 @@ public class RequestsUnitTest {
      */
     @Test
     public void testFareEstimation() {
-        setUp();
-
         UserRequest request = user.getLatestActiveRequest();
         fare = request.getFareEstimation(startLocation, endLocation);
         assertEquals(15, fare); // will hard code the the correct estimation when
@@ -152,7 +136,6 @@ public class RequestsUnitTest {
      */
     @Test
     public void checkPayment() {
-        setUp();
         request.setPaymentReceived(true); // rider pays
         assertEquals(true,request.isPaymentRecived());
     }

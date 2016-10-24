@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +18,7 @@ public class UserProfileUnitTest {
     private String oldEmail = "user@domain.com";
 
 
+    @Before
     private void setUp() {
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
@@ -46,7 +48,6 @@ public class UserProfileUnitTest {
 
     @Test
     public void checkEmailChange(){
-        setUp();
         String newEmail = "user@domain2.com";
         user.setEmail(newEmail);
         assertEquals(newEmail,user.getEmail());
@@ -55,7 +56,6 @@ public class UserProfileUnitTest {
 
     @Test
     public void checkNumberChange() {
-        setUp();
         String newNumber = "780-666-9999";
         user.setPhoneNumber(newNumber);
         assertEquals(newNumber,user.getPhoneNumber());

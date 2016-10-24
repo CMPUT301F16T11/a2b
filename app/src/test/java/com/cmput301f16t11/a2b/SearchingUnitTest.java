@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class SearchingUnitTest {
     private UserRequest req3;
     private UserRequest req4;
 
-
+    @Before
     private void setUp() {
         rider1.createRequest(startLocation1,endLocation1,10.00);
         rider2.createRequest(startLocation2,endLocation2,10.00);
@@ -51,7 +52,6 @@ public class SearchingUnitTest {
      */
     @Test
     public void checkListOfNearbyRequests(){
-        setUp();
         ArrayList<UserRequest> nearbyRequests = RequestController.getRequestNear(startLocation1,20);
         assertEquals(4, nearbyRequests.size());
     }
@@ -63,7 +63,6 @@ public class SearchingUnitTest {
 
     @Test
     public void testGetRequests() {
-
         user = UserController.loadUser(userName);
         UserRequest request = new UserRequest("10025 125 st", "12586 58 ave", 123);
         UserRequest request2 = new UserRequest("1212 32 st", "12322 43 ave", 23);
