@@ -19,8 +19,9 @@ public class UserProfileUnitTest {
 
 
     @Before
-    private void setUp() {
+    public void setUp() {
         user =  UserController.loadUser("some1");
+
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
     }

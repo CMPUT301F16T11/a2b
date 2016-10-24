@@ -30,39 +30,39 @@ public class AcceptingUnitTest {
      * US 05.01.01
      As a driver,  I want to accept a request I agree with and accept that offered payment upon completion.
      */
-//    private void setUp() throws Exception {
-//        rider.createRequest(startLocation,endLocation,10.00);
-//        req = rider.getLatestActiveRequest();
-//
-//    }
-//
-//    @Test
-//    public void testDriverAccept() throws Exception {
-//        setUp();
-//        driver.addAcceptedRequest(req);
-//        assertEquals(1,driver.getAcceptedRequests().size());
-//    }
-//
-//    @Test
-//    public void testRiderAcceptance() throws Exception {
-//        setUp();
-//        req.setAcceptedStatus(true);
-//        assertTrue(req.getAcceptedStatus());
-//    }
-//
-//    @Test
-//    public void testDriverComplete() throws Exception {
-//        setUp();
-//        req.setCompletedStatus(true);
-//        assertTrue(req.isCompleted());
-//    }
-//
-//    @Test
-//    public void testRiderPaymentComplete() throws Exception {
-//        setUp();
-//        req.setPaymentReceived(true);
-//        assertTrue(req.isPaymentRecived());
-//    }
+    private void setUp() throws Exception {
+        rider.createRequest(startLocation,endLocation,10.00);
+        req = rider.getLatestActiveRequest();
+
+    }
+
+    @Test
+    public void testDriverAccept() throws Exception {
+        setUp();
+        driver.addAcceptedRequest(req);
+        assertEquals(1,driver.getAcceptedRequests().size());
+    }
+
+    @Test
+    public void testRiderAcceptance() throws Exception {
+        setUp();
+        req.setAcceptedStatus(true);
+        assertTrue(req.getAcceptedStatus());
+    }
+
+    @Test
+    public void testDriverComplete() throws Exception {
+        setUp();
+        req.setCompletedStatus(true);
+        assertTrue(req.isCompleted());
+    }
+
+    @Test
+    public void testRiderPaymentComplete() throws Exception {
+        setUp();
+        req.setPaymentReceived(true);
+        assertTrue(req.isPaymentRecived());
+    }
 
 
 
@@ -104,27 +104,22 @@ public class AcceptingUnitTest {
     gui tests? - "see"
      */
 
-//    User driver;
-//    String username = "username";
-//    String start = "here";
-//    String end = "there";
-//    int fare = 10;
-//
-//    @Test
-//    public void testConfirmAccepted() {
-//        //Login as driver
-//        driver = UserController.loadUser(username);
-//        //Look into list of pending accepted requests
-//        ArrayList<UserRequest> requestList = driver.getRequests();
-//        UserRequest request = new UserRequest(start,end,fare);
-//        request.setAcceptedStatus(true);
-//        requestList.add(request);
-//
-//        //see that a pending request has been accepted
-//        assertEquals(request.getAcceptedStatus(), true);
-//        //assertequals on the wanted vs. actual
-//
-//    }
+
+    @Test
+    public void testConfirmAccepted() {
+        //Login as driver
+        driver = UserController.loadUser(username);
+        //Look into list of pending accepted requests
+        ArrayList<UserRequest> requestList = driver.getRequests();
+        UserRequest request = new UserRequest(startLocation,endLocation,fare);
+        request.setAcceptedStatus(true);
+        requestList.add(request);
+
+        //see that a pending request has been accepted
+        assertEquals(request.getAcceptedStatus(), true);
+        //assertequals on the wanted vs. actual
+
+    }
     /**
      * US 05.04.01
      As a driver, I want to be notified if my ride offer was accepted.
