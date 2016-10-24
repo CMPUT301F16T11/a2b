@@ -14,58 +14,10 @@ import static org.junit.Assert.assertTrue;
 
 public class AcceptingUnitTest {
 
-    private User driver =  UserController.loadUser("somedriver"); // rider
-    private String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
-    private String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    private Number fare = 10.00;
-
-    private String username = "username";
-    private User rider;
-    private UserRequest req;
-
-
-    /*
-    cannot find any non duplicate tests here. is this supposed to be offline?
-     */
-
-    /**
-     * US 05.01.01
-     As a driver,  I want to accept a request I agree with and accept that offered payment upon completion.
-     */
-    private void setUp() throws Exception {
-       rider.createRequest(startLocation,endLocation,fare);
-        rider.addRequest(new UserRequest(startLocation,endLocation,fare));
-       req = rider.getLatestActiveRequest();
-    }
-
-    @Test
-    public void testDriverAccept() throws Exception {
-        setUp();
-        driver.addAcceptedRequest(req);
-        assertEquals(1,driver.getAcceptedRequests().size());
-    }
-
-    @Test
-    public void testRiderAcceptance() throws Exception {
-        setUp();
-        req.setAcceptedStatus(true);
-        assertTrue(req.getAcceptedStatus());
-    }
-
-    @Test
-    public void testDriverComplete() throws Exception {
-        setUp();
-        req.setCompletedStatus(true);
-        assertTrue(req.isCompleted());
-    }
-
-    @Test
-    public void testRiderPaymentComplete() throws Exception {
-        setUp();
-        req.setPaymentReceived(true);
-        assertTrue(req.isPaymentRecived());
-    }
-
+    User driver =  UserController.loadUser("somedriver"); // rider
+    String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
+    String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+    Number fare = 10.00;
 
 
     /**
@@ -95,23 +47,6 @@ public class AcceptingUnitTest {
         assertFalse(user.hasAcceptedRequests(billyRequest));
     }
 
-
-
-    @Test
-    public void testConfirmAccepted() {
-        //Login as driver
-        driver = UserController.loadUser(username);
-        //Look into list of pending accepted requests
-        ArrayList<UserRequest> requestList = driver.getRequests();
-        UserRequest request = new UserRequest(startLocation,endLocation,fare);
-        request.setAcceptedStatus(true);
-        requestList.add(request);
-
-        //see that a pending request has been accepted
-        assertEquals(request.getAcceptedStatus(), true);
-        //assertequals on the wanted vs. actual
-
-    }
 
     /**
      * US 05.04.01
