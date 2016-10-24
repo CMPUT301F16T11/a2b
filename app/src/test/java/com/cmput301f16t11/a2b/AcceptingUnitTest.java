@@ -87,7 +87,7 @@ public class AcceptingUnitTest {
         // random request that Billy wants to accept
         User user = new User();
         UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
-
+        user.addRequest(billyRequest);
         assertFalse(user.hasAcceptedRequests(billyRequest));
     }
 
