@@ -35,7 +35,7 @@ public class Story13UnitTest{
     User rider3 =  UserController.loadUser("rider3"); // rider
     User rider4 =  UserController.loadUser("rider4"); // rider
 
-    User driver = UserController.loadUser("billy"); // diver
+    User driver = UserController.loadUser("billy"); // driver
 
     String startLocation1 = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation1 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
@@ -64,7 +64,7 @@ public class Story13UnitTest{
     }
 
     @Test
-    public void check_list_of_nearby_requests(){
+    public void checkListOfNearbyRequests(){
         setUp();
         ArrayList<UserRequest> nearbyRequests = RequestController.getRequestNear(startLocation1,20);
         assertEquals(4, nearbyRequests.size());

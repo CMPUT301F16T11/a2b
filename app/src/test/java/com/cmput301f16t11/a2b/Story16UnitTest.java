@@ -12,13 +12,11 @@ import static org.junit.Assert.*;
  */
 public class Story16UnitTest {
     /*
-        Based on 05.01.01
-Billy sees another request he likes, with a fare he thinks is reasonable. He finishes 
-his donut and accepts the request. Billy is an excellent example of an average driver 
-making an average request.
+        Based on US 05.01.01
 
-To test:
-Driver accepting request
+
+        To test:
+        Driver accepting request
 
      */
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";

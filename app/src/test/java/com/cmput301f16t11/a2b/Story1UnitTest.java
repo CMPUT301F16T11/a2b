@@ -31,8 +31,8 @@ public class Story1UnitTest {
      */
 
     User user;
-    String userName = "billy";
-    String passWord = "billy1zth3b35t";
+    String userName = "user";
+    String passWord = "pass";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 10.00;
@@ -42,12 +42,12 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void user_auth_and_load(){
+    public void testUserAuthenticated(){
 
         boolean authenticated = UserController.auth(userName,passWord);
         if(authenticated){
             user = UserController.loadUser(userName);
-            assertEquals("billy",user.getName());
+            assertEquals("user",user.getName());
         }else{
             fail("User not Authenticated");
         }
@@ -55,7 +55,7 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void create_user_request(){
+    public void createUserRequest(){
 
         setUp();
         user.createRequest(startLocation,endLocation,fare);
@@ -63,7 +63,7 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void check_request_start(){
+    public void checkRequestStart(){
 
         setUp();
         user.createRequest(startLocation,endLocation,fare);
@@ -72,7 +72,7 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void check_request_end(){
+    public void checkRequestEnd(){
 
         setUp();
         user.createRequest(startLocation,endLocation,fare);
@@ -81,7 +81,7 @@ public class Story1UnitTest {
     }
 
     @Test
-    public void check_request_fare(){
+    public void checkRequestFare(){
 
         setUp();
         user.createRequest(startLocation,endLocation,fare);

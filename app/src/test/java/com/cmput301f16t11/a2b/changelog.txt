@@ -1,0 +1,59 @@
+To remove any duplicate tests some methods in the unit tests have been 
+removed. The following is a list of the current working tests in each file/US. 
+
+Since some parts of the stories involve similar procedures, duplicate tests 
+are removed. 
+
+This list exists for an easier visualization of any possible duplicate tests. 
+
+Unit Tests 
+1) userAuth
+1) createUser
+1) checkRequestStart
+1) checkRequestEnd
+1) checkRequestFare
+
+2) Test Fare 
+
+3) testRiderNotification
+
+4) testDeleteRequest
+
+5) testGetDriverNumber
+5) testGetDriverEmail
+
+6) testFareEstimation
+
+7) checkPayment
+
+8) testUserAcceptance
+8) testUserAcceptancePending
+
+9) NO TESTS RIGHT NOW – all duplicated and could not think of any to change 
+with. Did think of some gui related unit tests, see file for more details
+
+10) testProfileCreation – is this different from createUser? Probably not. 
+Left it for now
+
+11) checkEmailChange
+11) checkNumberChange
+
+12) testChangeInfo
+
+13) checkListOfNearbyRequests
+
+14) testGetRequests – some overlap here with 1) but was left in considering 
+context. Recommend a gui test replace it.
+
+15) NO TESTS RIGHT NOW - see file for more details
+
+16) testDriverAcceptingRequest - from rider context
+16) testDriverNotAcceptingRequest - from rider context
+
+17) See 8) - gui tests???
+
+18) testNotificationOfferAccepted
+
+locationUnitTest - looks good at a skim through 
+
+Ditto for Offline tests. 

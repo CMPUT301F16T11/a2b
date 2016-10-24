@@ -14,7 +14,7 @@ public class Story6UnitTest {
 */
 
     User user;
-    String username = "Raine";
+    String username = "user";
     String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
     String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     Number fare = 0;
