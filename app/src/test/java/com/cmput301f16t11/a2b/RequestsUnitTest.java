@@ -151,12 +151,12 @@ public class RequestsUnitTest {
     public void testUserAcceptancePending() {
 
         user = UserController.loadUser(userName);
-        user.createRequest(startLocation, endLocation, fare);
+        user.createRequest(startLocation, endLocation, are);
         User user = new User();
         UserRequest request = new UserRequest("bottom", "here", 10);
         user.addAcceptedRequest(request);
         assertTrue(user.hasAcceptedRequests(request));
-    }
+    }f
 
 
 }
