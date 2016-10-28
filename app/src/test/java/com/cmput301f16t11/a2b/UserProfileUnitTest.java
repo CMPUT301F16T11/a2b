@@ -31,7 +31,7 @@ public class UserProfileUnitTest {
     public void testProfileCreation() {
 
         String newName = UserController.getNewUserName();
-        String newfPass = UserController.getNewPass();
+        String newPass = UserController.getNewPass();
         String newEmail = UserController.getEmail();
 
 
