@@ -1,0 +1,9 @@
+- Added android login screen 
+- Removed all references and abilities to accept passwords
+	- include removing password textview
+- changed "email" to username 
+- removed all built in permissions requests methods in login
+- TODO (also found in code): 
+	check if user exists
+	actually log in user (set controllers etc)
+	register new accounts??? 
