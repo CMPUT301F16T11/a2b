@@ -27,7 +27,7 @@ public class UserProfileUnitTest {
     }
     /**
     US 03.01.01
-    As a user, I want a profile with a unique username and my contact information.
+    As a user, I want a proile with a unique username and my contact information.
     */
     @Test
     public void testProfileCreation() {

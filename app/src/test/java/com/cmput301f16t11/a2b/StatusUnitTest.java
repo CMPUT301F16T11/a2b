@@ -39,7 +39,7 @@ public class StatusUnitTest {
         assertTrue(req.isCompleted());
     }
     @Test
-    public void checkAcceptedFalse(){
+    public void checkAcceptedalse(){
         req.setAcceptedStatus(false);
         assertFalse(req.getAcceptedStatus());
     }
