@@ -8,4 +8,5 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="action_user_not_found">Error, User Not Found</string>
     <string name="field_required">Error, Field Is Required</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>
