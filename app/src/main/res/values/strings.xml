@@ -24,6 +24,8 @@
     <string name="signup_pwdWeak">Weak</string>
     <string name="signup_pwdGood">Good</string>
     <string name="signup_pwdStrong">Strong</string>
-    <string name="signup_pwd_specError">Please include a special character in your password</string>
-    <string name="signup_pwd_lenError">Please make sure your password is 8 characters or longer</string>
+    <string name="signup_pwd_specError">Passwords require a special character</string>
+    <string name="signup_pwd_lenError">Passwords must be 8 characters or more</string>
+    <string name="signup_usr_taken">Username not available</string>
+    <string name="signup_usr_open">Username is available</string>
 </resources>

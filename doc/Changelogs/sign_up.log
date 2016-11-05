@@ -20,3 +20,5 @@
   -----------------------------|------------------------------------------------------------------------|--------------|---------------------------|
                                |  - Added all necessary views to form to get required info              |              |                           |
   SignUpActivity               |  - Added password strength, password match, phone & email format checks|              | Brett Wilkinson           |
+                               |                                                                        |              |                           |
+  ElasticsearchUserController  |  - Added checkUserTask which should check for unique username          |              | Brett Wilkinson           |

@@ -26,8 +26,8 @@ public class User {
         requests = new ArrayList<UserRequest>();
         acceptedRequests = new ArrayList<UserRequest>();
         userName = name;
-        passWord = email;
-        email = pass;
+        passWord = pass;
+        this.email = email;
     }
 
    //Getters

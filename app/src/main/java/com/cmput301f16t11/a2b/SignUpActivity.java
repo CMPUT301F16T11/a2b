@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ public class SignUpActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add  onClickListener Stuff
+                //TODO: Add user if requirements are met, otherwise display what is still needed
                 if (uniqueUsr & matchPwd & strongPwd & properEmail & properPhone) {
 
                 }
@@ -194,12 +195,33 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Assign focus change listener to allow for unique username check & confirm proper email/phone
         usr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            int last_state;
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    //TODO: Add ElasticSearch to verify unique username
+                    //Start the AsyncTask to see if the entered username is already taken
+                    String username = usr.getText().toString();
+                    Boolean result = false;
+                    ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
+                    checkUserTask.execute(username);
+                    try {
+                        result = checkUserTask.get();
+                    } catch (Exception e) {
+                        Log.i("Error", "Failed to get result from asynctask");
+                    }
 
-                    // uniqueUsr = true;
+                    // Handle results accordingly
+                    if (!result & last_state==0) {
+                        uniqueUsr = true;
+                        usrIcon.setImageResource(R.drawable.circle_check);
+                        usrMsg.setText(R.string.signup_usr_open);
+                        last_state = 1;
+                    } else {
+                        uniqueUsr = false;
+                        usrIcon.setImageResource(R.drawable.circle_x);
+                        usrMsg.setText(R.string.signup_usr_taken);
+                        last_state=0;
+                    }
                 }
             }
         });
