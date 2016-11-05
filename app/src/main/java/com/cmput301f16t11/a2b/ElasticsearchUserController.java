@@ -7,6 +7,8 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.io.IOException;
+
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
@@ -40,7 +42,7 @@ public class ElasticsearchUserController {
                 } else {
                     return false;
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
                 return true;
             }
