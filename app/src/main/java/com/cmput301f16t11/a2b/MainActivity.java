@@ -11,8 +11,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TEMPORARY CODE - LAUNCHES LOGIN ACTIVITY FOR TESTING
-        Intent intent = new Intent(this, LoginActivity.class);
+        // TEMPORARY CODE - LAUNCHES the location activity for testing
+        Intent intent = new Intent(this, locationActivity.class);
         startActivity(intent);
     }
 }

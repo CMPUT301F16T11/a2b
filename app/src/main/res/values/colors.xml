@@ -12,4 +12,7 @@
     <color name="signup_good_on">#F57C00</color>
     <color name="signup_strong_off">#AED581</color>
     <color name="signup_strong_on">#689F38</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 </resources>

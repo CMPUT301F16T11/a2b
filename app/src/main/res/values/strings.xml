@@ -30,4 +30,10 @@
     <string name="signup_usr_taken">Username not available</string>
     <string name="signup_usr_open">Username is available</string>
     <string name="signup_usr_default">Username must be unique</string>
+    <string name="title_activity_location">Map</string>
+
+    <!--Code for google maps api -->
+     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyCcJvOdnYtQ9ES2-SQRYlHoHgGnc46Pfco
+    </string>
 </resources>
