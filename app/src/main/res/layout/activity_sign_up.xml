@@ -35,14 +35,25 @@
             android:layout_below="@id/activity_signup_usr"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
+            android:text="@string/signup_usr_default"
             android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView android:id="@+id/activity_signup_pwdSpec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_usrMsg"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:text="@string/signup_pwd_specs"
             android:textStyle="italic" />
 
         <EditText android:id="@+id/activity_signup_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/activity_signup_usr"
-            android:layout_marginTop="32dp"
+            android:layout_below="@id/activity_signup_pwdSpec"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="48dp"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -103,9 +114,9 @@
         <TextView android:id="@+id/activity_signup_pwdMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/activity_signup_pwdStrength"
             android:layout_centerHorizontal="true"
-            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/activity_signup_pwdStrength"
             android:textStyle="italic"/>
 
         <EditText android:id="@+id/activity_signup_email"
