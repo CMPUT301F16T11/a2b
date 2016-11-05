@@ -23,7 +23,11 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".SignUpActivity"
+            android:label="@string/signup_label">
+
+        </activity>
     </application>
 
 </manifest>

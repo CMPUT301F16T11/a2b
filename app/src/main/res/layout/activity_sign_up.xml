@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_sign_up"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cmput301f16t11.a2b.SignUpActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/activity_signup_usr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="48dp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:hint="@string/signup_username_hint"/>
+
+        <ImageView android:id="@+id/activity_signup_usrIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/activity_signup_usr" />
+
+        <TextView android:id="@+id/activity_signup_usrMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_usr"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <EditText android:id="@+id/activity_signup_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_usr"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="48dp"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:hint="@string/signup_pwd_hint" />
+
+        <EditText android:id="@+id/activity_signup_pwdConf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="48dp"
+            android:layout_below="@id/activity_signup_pwd"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:textSize="14sp"
+            android:hint="@string/signup_pwdConf_hint" />
+
+        <ImageView android:id="@+id/activity_signup_pwdIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/activity_signup_pwdConf" />
+
+        <LinearLayout android:id="@+id/activity_signup_pwdStrength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_below="@id/activity_signup_pwdConf"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp">
+            <TextView android:id="@+id/activity_signup_weakPwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/signup_pwdWeak"
+                android:background="@color/signup_weak_off"/>
+
+            <TextView android:id="@+id/activity_signup_goodPwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/signup_pwdGood"
+                android:background="@color/signup_good_off" />
+
+            <TextView android:id="@+id/activity_signup_strongPwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/signup_pwdStrong"
+                android:background="@color/signup_strong_off" />
+        </LinearLayout>
+
+        <TextView android:id="@+id/activity_signup_pwdMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_pwdStrength"
+            android:layout_centerHorizontal="true"
+            android:textSize="14sp"
+            android:textStyle="italic"/>
+
+        <EditText android:id="@+id/activity_signup_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_pwdConf"
+            android:layout_marginTop="64dp"
+            android:inputType="textEmailAddress"
+            android:textSize="14sp"
+            android:hint="@string/signup_email_hint"/>
+
+        <EditText android:id="@+id/activity_signup_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activity_signup_email"
+            android:layout_marginTop="16dp"
+            android:inputType="phone"
+            android:textSize="14sp"
+            android:hint="@string/signup_phone_hint" />
+
+        <Button android:id="@+id/activity_signup_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_signup_phone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/signup_button" />
+    </RelativeLayout>
+</ScrollView>

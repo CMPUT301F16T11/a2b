@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <!-- Signup Progress Bar Colors -->
+    <color name="signup_weak_off">#E57373</color>
+    <color name="signup_weak_on">#D32F2F</color>
+    <color name="signup_good_off">#FFB74D</color>
+    <color name="signup_good_on">#F57C00</color>
+    <color name="signup_strong_off">#AED581</color>
+    <color name="signup_strong_on">#689F38</color>
 </resources>

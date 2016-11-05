@@ -9,4 +9,21 @@
     <string name="action_user_not_found">Error, User Not Found</string>
     <string name="field_required">Error, Field Is Required</string>
     <string name="title_activity_profile">ProfileActivity</string>
+
+
+    <!-- Sign Up Activity -->
+    <string name="signup_label">Sign Up for A2B</string>
+    <string name="signup_username_hint">Username</string>
+    <string name="signup_pwd_hint">Password</string>
+    <string name="signup_pwdConf_hint">Confirm Password</string>
+    <string name="signup_email_hint">Email</string>
+    <string name="signup_phone_hint">Phone #</string>
+    <string name="signup_button">Sign Up</string>
+    <string name="signup_pwdConf_req">Please confirm your password</string>
+    <string name="signup_pwdConf_ok">Passwords match</string>
+    <string name="signup_pwdWeak">Weak</string>
+    <string name="signup_pwdGood">Good</string>
+    <string name="signup_pwdStrong">Strong</string>
+    <string name="signup_pwd_specError">Please include a special character in your password</string>
+    <string name="signup_pwd_lenError">Please make sure your password is 8 characters or longer</string>
 </resources>

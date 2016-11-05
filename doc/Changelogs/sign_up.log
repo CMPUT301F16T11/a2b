@@ -1,0 +1,22 @@
+                                                                                                                 
+                                                                                                                 
+                                                                       ,---,          ,----,      ,---,.         
+                                                                      '  .' \       .'   .' \   ,'  .'  \        
+                                                                     /  ;    '.   ,----,'    |,---.' .' |        
+                                                                    :  :       \  |    :  .  ;|   |  |: |        
+                                                                    :  |   /\   \ ;    |.'  / :   :  :  /        
+                                                                    |  :  ' ;.   :`----'/  ;  :   |    ;         
+                                                                    |  |  ;/  \   \ /  ;  /   |   :     \        
+                                                                    '  :  | \  \ ,';  /  /-,  |   |   . |        
+                                                                    |  |  '  '--' /  /  /.`|  '   :  '; |        
+                                                                    |  :  :     ./__;      :  |   |  | ;         
+                                                                    |  | ,'     |   :    .'   |   :   /          
+                                                                    `--''       ;   | .'      |   | ,'           
+                                                                                `---'         `----'        
+                                                                            CHANGELOG FOR TASK: #3
+
+  Classes Changed (List them)  |                            Description of changed                      |   Commit ID  |    Person who changed it  |
+                               |                                                                        |              |                           |
+  -----------------------------|------------------------------------------------------------------------|--------------|---------------------------|
+                               |  - Added all necessary views to form to get required info              |              |                           |
+  SignUpActivity               |  - Added password strength, password match, phone & email format checks|              | Brett Wilkinson           |
