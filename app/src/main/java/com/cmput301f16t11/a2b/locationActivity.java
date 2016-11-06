@@ -1,6 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,7 +59,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        context = this; // isn't this automatic? - joey
+        context = this;
         userController = new UserController(null); // TODO: actual login work
     }
 
@@ -147,7 +145,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
                 else{
 
-                    JSONMapsHelper helper = new JSONMapsHelper(mMap);
+                    JSONMapsHelper helper = new JSONMapsHelper((locationActivity)context);
                     helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
                     //TODO: confirmation of trip do something with the lat and long
                 }
@@ -212,6 +210,29 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
         setButtonListeners();
     }
+
+    public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
+        AlertDialog dlg = new AlertDialog.Builder(context).create();
+        dlg.setMessage("Trip has been made of distance: "+ distance+ "\n"+"Input fair to confirm: TODO");
+        dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        dlg.show();
+        //TODO: make an actual nice dialog to display ride confirmation and allow user to type their cost
+        //TODO: trip estimation based on the distance
+
+        mMap.addPolyline( new PolylineOptions()
+                .addAll(drawPoints)
+                .width(12)
+                .color(Color.parseColor("#05b1fb"))//Google maps blue color
+                .geodesic(true)
+        );
+    }
+
 }
 
 /**
@@ -220,10 +241,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
  * http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
  */
  class JSONMapsHelper{
-    private GoogleMap map;
+    private  locationActivity act;
 
-    public JSONMapsHelper(GoogleMap map){
-        this.map = map;
+    public JSONMapsHelper(locationActivity act){
+        this.act = act;
     }
 
     public void drawPathCoordinates(Marker startLocation, Marker endLocation){
@@ -327,7 +348,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
      * @param result result from google server request
      * @return latlng list of all te points to draw lines to
      */
-    public List<LatLng>  getDrawPath(String result) {
+    public List<LatLng> getDrawPath(String result) {
         List<LatLng> list;
         try {
             //Tranform the string into a json object
@@ -344,17 +365,30 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
+    public String getDistance(String result){
+       try{
+           JSONObject jsonObject = new JSONObject(result);
+           JSONArray array = jsonObject.getJSONArray("routes");
+           JSONObject routes = array.getJSONObject(0);
+           JSONArray legs = routes.getJSONArray("legs");
+           JSONObject steps = legs.getJSONObject(0);
+           JSONObject distance = steps.getJSONObject("distance");
+           String dist = distance.getString("text");
+           return dist;
+       }
+       catch(JSONException e){
+           e.printStackTrace();
+           return "";
+       }
+
+    }
+
     /**
      * draw all the lines on a map
      * @param result all the points to draw lines to and from
      */
     private void drawLinesOnMap(List<LatLng> result){
-        map.addPolyline( new PolylineOptions()
-                        .addAll(result)
-                        .width(12)
-                        .color(Color.parseColor("#05b1fb"))//Google maps blue color
-                        .geodesic(true)
-                    );
+
     }
 
     /**
@@ -417,7 +451,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         @Override
         protected void onPostExecute(String Result) {
             super.onPostExecute(Result);
-            drawLinesOnMap(getDrawPath(Result));
+
+            List<LatLng> paths = getDrawPath(Result);
+            String distance = getDistance(Result);
+            act.confirmDriveRequest(paths, distance);
         }
 
 
