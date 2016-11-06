@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:id="@+id/setLocationButton"
         android:layout_gravity="top|center"
-        android:text="Set Starting Point"
+        android:text="@string/set_start"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -22,9 +22,19 @@
         android:layout_height="50dp"
         android:id="@+id/editProfile"
         android:layout_gravity="bottom|right"
-        android:text="Edit Profile"
+        android:text="@string/edit_profile"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
+        android:textSize="10sp"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:id="@+id/cancelTrip"
+        android:layout_gravity="bottom|left"
+        android:text="@string/cancel_trip"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
         android:textSize="10sp"/>
 </fragment>
 

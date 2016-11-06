@@ -13,8 +13,15 @@
                                                                     |  | ,'     |   :    .'   |   :   /          
                                                                     `--''       ;   | .'      |   | ,'           
                                                                                 `---'         `----'        
-                                                                            CHANGELOG FOR TASK: 7
+                                                                            CHANGELOG FOR TASK: 7 - Main map view
+List of links used:
+http://stackoverflow.com/questions/17591147/how-to-get-current-location-in-android  
+http://stackoverflow.com/questions/18425141/android-google-maps-api-v2-zoom-to-current-location
+                                                                            
 
   Classes Changed (List them)  |                            Description of changed                      |   Commit ID  |    Person who changed it  |
                                |                                                                        |              |                           |
   -----------------------------|------------------------------------------------------------------------|--------------|---------------------------|
+  Manifest.xml;./libs;              Implemented a simple map view using google maps api and some buttons.
+  build.gradle;locationActivity;   Needed to generate key for the maps api it is in the strings xml.       1c8e3c1                         John
+-----------------------------------------------------------------------------------------------------------------------------------------------------
