@@ -22,11 +22,10 @@ public class User {
         email = "n/a";
     }
 
-    User(String name, String pass, String email) {
+    User(String name, String email) {
         requests = new ArrayList<UserRequest>();
         acceptedRequests = new ArrayList<UserRequest>();
         userName = name;
-        passWord = pass;
         this.email = email;
     }
 

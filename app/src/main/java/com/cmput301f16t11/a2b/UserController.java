@@ -6,10 +6,44 @@ import java.util.ArrayList;
  * Created by brianofrim on 2016-10-10.
  */
 public class UserController {
-    static public boolean auth(String userName, String password){
+    private User user;
+    private Mode mode;
+
+    public UserController(String username) {
+        // TODO: sign in.
+        // temp for testing:
+        user = new User("TEST", "TEST@email.com");
+    }
+
+    static public boolean auth(String username){
+        // no idea what this is... - joey
+        // is this to statically check auth?
         return true;
     }
-    static public User loadUser(String userName){
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public Mode checkMode() {
+        return this.mode;
+    }
+
+
+
+
+
+
+    // time to depreciate this???
+    static public User loadUser(String username){
         return new User();
     }
 
