@@ -176,7 +176,6 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
         setButtonListeners();
     }
 }
