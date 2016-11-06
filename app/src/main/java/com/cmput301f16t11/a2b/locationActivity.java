@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,6 +58,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         final Button editProfileButton = (Button)findViewById(R.id.editProfile);
         final Button setLocation = (Button)findViewById(R.id.setLocationButton);
         final Button cancelTrip = (Button)findViewById(R.id.cancelTrip);
+        final ToggleButton driverModeToggle = (ToggleButton) findViewById(R.id.driverModeToggle);
         cancelTrip.setEnabled(false);
 
         cancelTrip.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +143,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 //TODO: edit profile activity goes here
             }
         });
+
+//        driverModeToggle.setOnClickListener(
 
         //Listener for the map so we know when the user clicks
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
