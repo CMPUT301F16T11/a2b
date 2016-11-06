@@ -3,7 +3,7 @@ package com.cmput301f16t11.a2b;
 import java.util.ArrayList;
 
 /**
- * Created by brianofrim on 2016-10-10.
+ * Model for User class
  */
 public class User {
 
