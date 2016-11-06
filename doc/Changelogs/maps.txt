@@ -19,6 +19,7 @@ http://stackoverflow.com/questions/17591147/how-to-get-current-location-in-andro
 http://stackoverflow.com/questions/18425141/android-google-maps-api-v2-zoom-to-current-location
 http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
 http://stackoverflow.com/questions/14394366/find-distance-between-two-points-on-map-using-google-map-api-v2
+
                                                                             
 
   Classes Changed (List them)  |                            Description of changed                      |   Commit ID  |    Person who changed it  |
@@ -33,5 +34,11 @@ http://stackoverflow.com/questions/14394366/find-distance-between-two-points-on-
                                     two points(not alot of work).
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-  locationActivity                  Implmented route drawing for the google maps when the user requests the                       John
+  locationActivity                  Implmented route drawing for the google maps when the user requests the  52e3c84                John
                                     ride.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+locationActivity                      Added a simple dialog which shows the distance of the trip to the user
+                                      after they make a ride request. Added functionality ofr finding the requests                John
+                                       from a  JSON string.                                                                   
