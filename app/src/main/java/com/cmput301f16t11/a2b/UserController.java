@@ -3,7 +3,8 @@ package com.cmput301f16t11.a2b;
 import java.util.ArrayList;
 
 /**
- * Created by brianofrim on 2016-10-10.
+ * Controllers user and user functions
+ *
  */
 public class UserController {
     private User user;
