@@ -29,5 +29,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.0'
     compile 'com.google.android.gms:play-services-location:9.6.0'
     testCompile 'junit:junit:4.12'
-    compile files('/home/john/Projects/Cmput_301/Project/a2b/libs/jest-droid-2.0.1-SNAPSHOT.jar')
 }
