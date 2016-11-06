@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,6 +49,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     private Marker tripEndMarker;
     private Marker currentMarker;
     private Context context;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        context = this;
+        context = this; // isn't this automatic? - joey
+        userController = new UserController(null); // TODO: actual login work
     }
 
     /**
@@ -159,7 +162,18 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
 
-//        driverModeToggle.setOnClickListener(
+        driverModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    userController.setMode(Mode.DRIVER);
+                }
+                else {
+                    userController.setMode(Mode.RIDER);
+                }
+            }
+        });
+
 
         //Listener for the map so we know when the user clicks
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
