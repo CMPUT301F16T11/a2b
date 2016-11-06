@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class User {
 
+    private String id;
     private ArrayList<UserRequest> requests;
     private ArrayList<UserRequest> acceptedRequests;
     private String userName;
@@ -29,6 +30,15 @@ public class User {
         this.email = email;
     }
 
+    User(String name, String pass, String email, String phone) {
+        requests = new ArrayList<UserRequest>();
+        acceptedRequests = new ArrayList<UserRequest>();
+        userName = name;
+        passWord = pass;
+        this.email = email;
+        phoneNumber = phone;
+    }
+
    //Getters
     public String getName(){
         return userName;
@@ -45,8 +55,10 @@ public class User {
         return acceptedRequests;
     }
     public UserRequest getLatestActiveRequest(){return requests.get(requests.size() - 1);}
+    public String getId() {return id;}
 
     //Setters
+    public void setAcceptedRequestList(ArrayList<UserRequest> requestList) { acceptedRequests = requestList;}
     public void setRequestList(ArrayList<UserRequest> requestList){
         requests = requestList;
     }
@@ -56,6 +68,7 @@ public class User {
     public void setName(String name) {this.userName = name;}
     public void setEmail(String email) {this.email = email;}
     public void setPassWord(String pass) {this.passWord = pass;}
+    public void setId(String id) {this.id = id;}
 
     // Request transactions
     public void createRequest(String start, String end, Number fare){

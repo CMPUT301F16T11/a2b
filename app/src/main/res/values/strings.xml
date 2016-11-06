@@ -30,6 +30,14 @@
     <string name="signup_usr_taken">Username not available</string>
     <string name="signup_usr_open">Username is available</string>
     <string name="signup_usr_default">Username must be unique</string>
+    <string name="signup_phone_error">Phone number is invalid</string>
+    <string name="signup_email_error">Email is invalid</string>
+    <string name="signup_pwdMatch_error">Passwords don\'t match</string>
+    <string name="signup_pwdStr_error">Password isn\'t strong enough</string>
+    <string name="signup_creation_error">Unable to create user</string>
+    <string name="signup_usrLen_error">Please enter a username</string>
+
+
     <string name="title_activity_location">Map</string>
 
     <!--Code for google maps api -->
@@ -46,4 +54,5 @@
     <string name = "warning_message">Please place a marker before trying to set start/end trip location.</string>
     <string name = "start_location">Start Location</string>
     <string name = "end_location">End Location</string>
+
 </resources>

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -47,6 +48,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+
+    private User user;
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
@@ -113,13 +116,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            // TODO: LOG IN USER
+
+            String usr = mUsernameView.getText().toString();
+
+            ElasticsearchRequestController.GetPastRiderRequests riderTask = new ElasticsearchRequestController.GetPastRiderRequests();
+            ElasticsearchRequestController.GetPastDriverRequests driverTask = new ElasticsearchRequestController.GetPastDriverRequests();
+            riderTask.execute(usr);
+            driverTask.execute(usr);
+            try {
+                user.setRequestList(riderTask.get());
+                user.setAcceptedRequestList(driverTask.get());
+
+                //TODO: Store user object in user.sav and launch next activity
+
+            } catch (Exception e) {
+                Log.i("Error", "An AsyncTask failed to execute");
+                e.printStackTrace();
+            }
         }
     }
 
-    private boolean isUserValid(String user) {
-        //TODO: Replace this with a check for user in the db
-        return Boolean.TRUE;
+    private boolean isUserValid(String usr) {
+        ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
+        checkUserTask.execute(usr);
+        try {
+            user = checkUserTask.get();
+            // If we didn't find a user it's invalid
+            if (user==null|user.equals(new User())) {
+                return false;
+            }
+            // Found valid user
+            else {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Failed to execute asynctask");
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
