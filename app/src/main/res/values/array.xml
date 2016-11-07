@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="requestTypesArray">
+    <string-array name="requestTypesDriverArray">
         <item>Nearby Requests</item>
         <item>Accepted by Me</item>
-        <item>Created by Me</item>
+        <item>Confirmed Requests</item>
+        <item>Completed Requests</item>
+    </string-array>
+    <string-array name="requestTypesRiderArray">
+        <item>Nearby Requests</item>
+        <item>Accepted Requests</item>
+        <item>Confirmed Requests</item>
+        <item>Completed Requests</item>
+        <item>My Request</item>
     </string-array>
 
 </resources>

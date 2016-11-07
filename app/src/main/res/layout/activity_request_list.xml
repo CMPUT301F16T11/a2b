@@ -29,7 +29,6 @@
         android:id="@+id/requestSpinner"
         android:layout_marginStart="175dp"
         android:layout_alignTop="@+id/requestTitle"
-        android:entries="@array/requestTypesArray"
         />
 
     <ListView
