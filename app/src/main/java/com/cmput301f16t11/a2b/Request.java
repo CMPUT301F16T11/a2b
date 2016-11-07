@@ -21,8 +21,6 @@ public class Request {
     private User createdBy;
     private Date createdOn;
     transient ArrayList<User> driversWhoAcceptedRequest;
-
-
     private User confirmedDriver;
 
     public Request(LatLng start, LatLng end, User creator) {
