@@ -65,7 +65,10 @@
     <string name="rideComplete_endTitle">Destination:</string>
     <string name="rideComplete_fareTitle">Fare:</string>
 
-
+    <!-- Location Menu String-->
+    <string name="view_profile">View Profile</string>
+    <string name="change_role">Change Role</string>
+    <string name="sign_out">Sign Out</string>
 
     <!-- Multi Purpose Strings -->
     <string name="ok">OK</string>
