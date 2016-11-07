@@ -1,7 +1,15 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -12,12 +20,32 @@ public class UserController {
     private static User user = null;
     private static Mode mode;
 
-//    public UserController(String username) {
-//        // TODO: sign in.
-//        // temp for testing:
-//        user = new User("TEST", "TEST@email.com");
-//    }
 
+    private static String USRFILE = "user.sav";
+
+    public UserController(User u) {
+        user = u;
+    }
+
+
+    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
+        ElasticsearchRequestController.GetPastRiderRequests riderTask = new ElasticsearchRequestController.GetPastRiderRequests();
+        ElasticsearchRequestController.GetPastDriverRequests driverTask = new ElasticsearchRequestController.GetPastDriverRequests();
+        riderTask.execute(usr);
+        driverTask.execute(usr);
+        try {
+            user.setRequestList(riderTask.get());
+            user.setAcceptedRequestList(riderTask.get());
+        } catch (Exception e) {
+            Log.i("Error", "AsyncTask failed to execute");
+            e.printStackTrace();
+        }
+
+        // Saves user file after completion of asyncTasks if necessary
+        if (saveAfter) {
+            saveInFile(activity);
+        }
+    }
 
 
 //    static public boolean auth(String username){
@@ -88,7 +116,23 @@ public class UserController {
     public static void setOffline() {
     }
 
-    public static void saveInFile(ArrayList<UserRequest> requestList) {
+    /**
+     * Method to save the static user variable
+     *
+     * Stores it in internal storage as JSON in user.sav file
+     */
+    public static void saveInFile(Activity activity) {
+         try {
+             // Try to convert user to JSON and save it
+             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
+             OutputStreamWriter writer = new OutputStreamWriter(fos);
+             Gson gson = new Gson();
+             gson.toJson(user, writer);
+             writer.flush();
+         } catch (Exception e) {
+             Log.i("Error", "Couldn't save file");
+             throw new RuntimeException();
+         }
     }
 
     public static void goOnline() {

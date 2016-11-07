@@ -117,23 +117,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            String usr = mUsernameView.getText().toString();
+            // Set User Controller & Run Background tasks to get request info then save file
+            UserController.setUser(user);
+            UserController.runBackgroundTasks(user.getName(), this, true);
 
-            ElasticsearchRequestController.GetPastRiderRequests riderTask = new ElasticsearchRequestController.GetPastRiderRequests();
-            ElasticsearchRequestController.GetPastDriverRequests driverTask = new ElasticsearchRequestController.GetPastDriverRequests();
-            riderTask.execute(usr);
-            driverTask.execute(usr);
-            try {
-                user.setRequestList(riderTask.get());
-                user.setAcceptedRequestList(driverTask.get());
+            // TODO: Launch next activity (MainActivity?)
 
-                //TODO: Store user object in user.sav and launch next activity
-                // Or set user controller?
-                UserController.setUser(user);
-            } catch (Exception e) {
-                Log.i("Error", "An AsyncTask failed to execute");
-                e.printStackTrace();
-            }
         }
     }
 

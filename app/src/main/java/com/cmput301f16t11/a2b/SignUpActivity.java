@@ -86,9 +86,8 @@ public class SignUpActivity extends AppCompatActivity {
                             Boolean result = addUserTask.get();
 
                             if (result) {
-                                //TODO: Launch next activity after user creation
-                                errorMsg.setText("Added user");
-                                errorMsg.setVisibility(View.VISIBLE);
+                                //TODO: Launch next activity after user creation (MainActivity?)
+                                
                             } else {
                                 // Failed to add new user
                                 error = true;
