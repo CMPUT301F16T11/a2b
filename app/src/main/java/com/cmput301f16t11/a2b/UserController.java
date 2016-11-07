@@ -75,7 +75,7 @@ public class UserController {
             // TO DO: depricate this before production
             ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
             try{
-                user = checkUserTask.execute("*").get();// force syncronous
+                user = checkUserTask.execute("Jane Doe").get();// force syncronous
             }catch (Exception e){
                 user = new User();
             }

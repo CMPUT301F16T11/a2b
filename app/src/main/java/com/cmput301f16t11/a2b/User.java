@@ -2,14 +2,16 @@ package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Model for User class
  */
 public class User {
-
+    @JestId
     private String id;
-    private ArrayList<UserRequest> requests;
-    private ArrayList<UserRequest> acceptedRequests;
+    private transient ArrayList<UserRequest> requests;
+    private transient ArrayList<UserRequest> acceptedRequests;
     private String userName;
     private String passWord;
     private String email;
