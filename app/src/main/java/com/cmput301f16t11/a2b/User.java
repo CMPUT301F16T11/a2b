@@ -30,6 +30,15 @@ public class User {
         this.email = email;
     }
 
+    User(String name,  String email, String phone) {
+        requests = new ArrayList<UserRequest>();
+        acceptedRequests = new ArrayList<UserRequest>();
+        userName = name;
+        this.email = email;
+        phoneNumber = phone;
+    }
+
+
     User(String name, String pass, String email, String phone) {
         requests = new ArrayList<UserRequest>();
         acceptedRequests = new ArrayList<UserRequest>();

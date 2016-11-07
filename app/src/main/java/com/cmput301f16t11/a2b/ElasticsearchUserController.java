@@ -3,16 +3,27 @@ package com.cmput301f16t11.a2b;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import java.io.IOException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import io.searchbox.client.JestResult;
+import io.searchbox.core.DeleteByQuery;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 /**
  * Created by Wilky on 11/5/2016.
@@ -92,10 +103,47 @@ public class ElasticsearchUserController {
         }
     }
 
+
+    /**
+     * AsyncTask used to overwrite an existing user in the database
+     *
+     * Input: User object
+     * Output: Boolean representing elasticsearch result
+     */
+
+    public static class UpdateUserInfoTask extends AsyncTask<User, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(User... users) {
+            verifySettings();
+
+            // Pretty much the same as AddUserTask but an existing id is specified so the entry
+            // gets overwritten
+
+            Index userIndex = new Index.Builder(users[0]).index(index).type(userType).id(users[0].getId()).build();
+
+            try {
+                DocumentResult result = client.execute(userIndex);
+                if (!result.isSucceeded())  {
+                    Log.i("Error", "Elasticsearch failed to add user");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to add user to elasticsearch");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+
+    }
+
+
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
