@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PointOfInterest;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Models requests
@@ -14,12 +15,14 @@ public class Request {
     private LatLng endLocation;
     private Boolean completed;
     private User createdBy;
+    private Date createdOn;
     private ArrayList<User> driversWhoAcceptedRequest;
 
     public Request(LatLng start, LatLng end, User creator) {
         this.startLocation = start;
         this.endLocation = end;
         this.createdBy = creator;
+        this.createdOn = new Date();
         this.driversWhoAcceptedRequest = new ArrayList<User>();
     }
 
@@ -58,6 +61,10 @@ public class Request {
         return this.createdBy;
     }
 
+    public Date getCreatedon() {
+        return this.createdOn;
+    }
+
     public Boolean hasAcceptedDrivers() {
         if (this.numberOfAcceptedDrivers() > 0) {
             return Boolean.TRUE;
@@ -67,6 +74,13 @@ public class Request {
 
     public Integer numberOfAcceptedDrivers() {
         return this.driversWhoAcceptedRequest.size();
+    }
+
+    public String toString() {
+        String val = "Created by " + this.getCreatedBy() + "\n" + "Lat: " + "start: " +
+                    this.getStartLocation() + "\n" + "end: " + this.getEndLocation() +
+                    "\n" + this.getCreatedon();
+        return val;
     }
 
 }

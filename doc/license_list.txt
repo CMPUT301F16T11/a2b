@@ -1,0 +1,12 @@
+List of things that need to be licensed:
+RequestListActivity: 
+/**
+     * This work, "MainHabitActivity," contains a derivative
+     * "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
+     * used under CC-BY-SA by Joey-Michael Fallone.
+     * (Available here:
+     * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
+     */
+
+     (this might be common knowledge really, and I actually derived from my 
+     as1, not this site but just in case...)
