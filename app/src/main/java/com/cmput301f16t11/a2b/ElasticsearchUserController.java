@@ -60,7 +60,23 @@ public class ElasticsearchUserController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    return result.getSourceAsObject(User.class);
+
+
+                    User user = result.getSourceAsObject(User.class);
+
+                    // ensure that the users id is set.
+                    // this is for debugging purposes and can be removed in production
+                    if(user.getId() == null){
+                        // parse the response for the id
+                        JsonObject jsonResponse = result.getJsonObject();
+                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+                        JsonArray actualHits = hits.getAsJsonArray("hits");
+                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+                        String id = firstHit.get("_id").toString();
+                        user.setId(id);
+                    }
+
+                    return user;
                 } else {
                     return new User();
                 }
@@ -124,7 +140,7 @@ public class ElasticsearchUserController {
             try {
                 DocumentResult result = client.execute(userIndex);
                 if (!result.isSucceeded())  {
-                    Log.i("Error", "Elasticsearch failed to add user");
+                    Log.i("Error", "Elasticsearch failed to update user");
                     return false;
                 }
             } catch (Exception e) {

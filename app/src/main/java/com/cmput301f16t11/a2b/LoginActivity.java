@@ -128,7 +128,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 user.setAcceptedRequestList(driverTask.get());
 
                 //TODO: Store user object in user.sav and launch next activity
-
+                // Or set user controller?
+                UserController.setUser(user);
             } catch (Exception e) {
                 Log.i("Error", "An AsyncTask failed to execute");
                 e.printStackTrace();

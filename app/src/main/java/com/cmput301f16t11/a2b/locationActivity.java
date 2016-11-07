@@ -2,6 +2,7 @@ package com.cmput301f16t11.a2b;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -47,7 +48,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     private Marker tripEndMarker;
     private Marker currentMarker;
     private Context context;
-    private UserController userController;
+    //private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
 
         context = this;
-        userController = new UserController(null); // TODO: actual login work
+        //userController = new UserController(null); // TODO: actual login work
     }
 
     /**
@@ -156,7 +157,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: edit profile activity goes here
+                // navagate to the edit profile view
+                Intent intent = new Intent(locationActivity.this,EditProfileActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -164,10 +168,10 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    userController.setMode(Mode.DRIVER);
+                    UserController.setMode(Mode.DRIVER);
                 }
                 else {
-                    userController.setMode(Mode.RIDER);
+                    UserController.setMode(Mode.RIDER);
                 }
             }
         });
