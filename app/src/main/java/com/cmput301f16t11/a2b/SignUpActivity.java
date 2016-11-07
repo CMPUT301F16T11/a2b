@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -23,6 +27,7 @@ import java.util.regex.Pattern;
 public class SignUpActivity extends AppCompatActivity {
 
     // Views from activity_sign_up.xml
+    private TextView errorMsg;
     private EditText usr;
     private ImageView usrIcon;
     private TextView usrMsg;
@@ -37,11 +42,12 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     // Sign up data test variables
-    private Boolean uniqueUsr = false;
-    private Boolean matchPwd = false;
-    private Boolean strongPwd = false;
-    private Boolean properEmail = false;
-    private Boolean properPhone = false;
+    protected Boolean uniqueUsr = false;
+    protected Boolean matchPwd = false;
+    protected Boolean strongPwd = false;
+    protected Boolean properEmail = false;
+    protected Boolean properPhone = false;
+    protected Boolean error = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +61,56 @@ public class SignUpActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add user if requirements are met, otherwise display what is still needed
+                // Case where all criteria are met
                 if (uniqueUsr & matchPwd & strongPwd & properEmail & properPhone) {
+                    // Remove errorMsg if necessary
+                    if (error) {
+                        errorMsg.setText("");
+                        errorMsg.setVisibility(View.GONE);
+                        error = false;
+                    }
 
+                    ElasticsearchUserController.AddUserTask addUserTask = new ElasticsearchUserController.AddUserTask();
+                    User newUser = createNewUser();
+
+                    // Failed to create password hash
+                    if (newUser==null) {
+                        error = true;
+                        errorMsg.setText(R.string.signup_creation_error);
+                        errorMsg.setVisibility(View.VISIBLE);
+                    }
+                    // Attempt to add user
+                    else {
+                        addUserTask.execute(newUser);
+                        try {
+                            Boolean result = addUserTask.get();
+
+                            if (result) {
+                                //TODO: Launch next activity after user creation
+                                errorMsg.setText("Added user");
+                                errorMsg.setVisibility(View.VISIBLE);
+                            } else {
+                                // Failed to add new user
+                                error = true;
+                                errorMsg.setText(R.string.signup_creation_error);
+                                errorMsg.setVisibility(View.VISIBLE);
+                            }
+                        } catch (Exception e) {
+                            Log.i("Error", "AsyncTask failed to execute");
+                            e.printStackTrace();
+                        }
+                    }
                 }
+                // Not all criteria met -- display required error messages
+                else {
+                    error = true;
+                    displayErrorStr();
+                }
+
             }
         });
 
-        // Assign TextWatcher to determine password strength & matching passwords
+        // Assign TextWatcher to determine if criteria is met
         pwd.addTextChangedListener(new TextWatcher() {
             int last_state = 0;
             Pattern good = Pattern.compile(".*[^A-Za-z].*");
@@ -193,76 +241,120 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        // Assign focus change listener to allow for unique username check & confirm proper email/phone
-        usr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            int last_state;
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    //Start the AsyncTask to see if the entered username is already taken
-                    String username = usr.getText().toString();
-                    Boolean result = false;
-                    ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
-                    checkUserTask.execute(username);
-                    try {
-                        result = checkUserTask.get();
-                    } catch (Exception e) {
-                        Log.i("Error", "Failed to get result from asynctask");
-                    }
-
-                    // Handle results accordingly
-                    if (!result & last_state==0) {
-                        uniqueUsr = true;
-                        usrIcon.setImageResource(R.drawable.circle_check);
-                        usrMsg.setText(R.string.signup_usr_open);
-                        last_state = 1;
-                    } else {
-                        uniqueUsr = false;
-                        usrIcon.setImageResource(R.drawable.circle_x);
-                        usrMsg.setText(R.string.signup_usr_taken);
-                        last_state=0;
-                    }
-                }
-            }
-        });
-
-        email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            // Pattern of "something"@"something"."something"
-            Pattern format = Pattern.compile(".*@.*\\..*");
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                String currEmail = email.getText().toString();
-
-                // Once it is out of focus we verify if it's a proper email
-                if (!hasFocus) {
-                    // If the email format matches a proper email is entered
-                    if (format.matcher(currEmail).matches()) {
-                        properEmail = true;
-                    }
-                    // If the email no longer matches the format
-                    else if (properEmail==true) {
-                        properEmail = false;
-                    }
-                }
-            }
-        });
-
-        phone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
+        phone.addTextChangedListener(new TextWatcher() {
             Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
             Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}"); // 780-123-4567
+
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String currPhone = phone.getText().toString();
 
+                // If format matches one of the specified we can accept it
+                if (format1.matcher(currPhone).matches() | format2.matcher(currPhone).matches()) {
+                    properPhone = true;
+                }
+                // If format no longer matches toggle boolean
+                else if (properPhone) {
+                    properPhone = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        email.addTextChangedListener(new TextWatcher() {
+            // Pattern of "something"@"something"."something"
+            // Taken from http://stackoverflow.com/questions/8204680/java-regex-email on November 6, 2016
+            Pattern format = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String currEmail = email.getText().toString();
+
+                // If the email format matches a proper email is entered
+                if (format.matcher(currEmail).matches()) {
+                    properEmail = true;
+                }
+                // If the email no longer matches the format toggle boolean
+                else if (properEmail) {
+                    properEmail = false;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        // Assign focus change listener to allow for unique username check
+        usr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            int last_state = 0;
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    // If format matches one of the specified we can accept it
-                    if (format1.matcher(currPhone).matches() || format2.matcher(currPhone).matches()) {
-                        properPhone = true;
+                    String username = usr.getText().toString();
+                    // Nothing Entered
+                    if (username.equals("")|username==null) {
+                        // Toggle if necessary
+                        if (uniqueUsr) {
+                            uniqueUsr = false;
+                            usrMsg.setText(R.string.signup_usrLen_error);
+                            usrIcon.setImageResource(R.drawable.circle_x);
+                            last_state=2;
+                        }
+                        else if (last_state==0) {
+                            usrMsg.setText(R.string.signup_usrLen_error);
+                            last_state=2;
+                        }
+                        else {
+                            usrMsg.setText(R.string.signup_usrLen_error);
+                            usrIcon.setImageResource(R.drawable.circle_x);
+                            last_state=2;
+                        }
                     }
-                    // If format no longer matches toggle boolean
-                    else if (properPhone == true) {
-                        properPhone = false;
+                    // Something Entered
+                    else {
+                        User result = new User();
+                        ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
+                        checkUserTask.execute(username);
+                        try {
+                            result = checkUserTask.get();
+                        } catch (Exception e) {
+                            Log.i("Error", "Failed to get result from asynctask");
+                        }
+
+                        // Username has become unique
+                        if (result==null & last_state!=1) {
+                            uniqueUsr = true;
+                            usrIcon.setImageResource(R.drawable.circle_check);
+                            usrMsg.setText(R.string.signup_usr_open);
+                            last_state = 1;
+                        }
+                        // Username is still unique
+                        else if (result==null & last_state==1) {
+                            // Do nothing
+                        }
+                        // Username is not unique
+                        else {
+                            uniqueUsr = false;
+                            usrIcon.setImageResource(R.drawable.circle_x);
+                            usrMsg.setText(R.string.signup_usr_taken);
+                            last_state=0;
+                        }
                     }
                 }
             }
@@ -271,7 +363,39 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to create new user from given sign up information
+     *
+     * Uses password encryption method taken from
+     * http://stackoverflow.com/questions/3103652/hash-string-via-sha-256-in-java
+     * on November 6, 2016
+     *
+     * @return newUser : User, null if unable to create password hash
+     */
+    private User createNewUser() {
+        String userName = usr.getText().toString();
+        String userEmail = email.getText().toString();
+        String userPhone = phone.getText().toString();
+        String passWord;
+
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pwd.getText().toString().getBytes("UTF-8"));
+            passWord = md.digest().toString();
+        } catch (Exception e) {
+            Log.i("Error", "Failed to create password hash");
+            e.printStackTrace();
+            return null;
+        }
+
+        return new User(userName, passWord, userEmail, userPhone);
+    }
+
+    /**
+     * Method that assigns all variables to respective views
+     */
     private void assignViews() {
+        errorMsg = (TextView) findViewById(R.id.activity_signup_errorMsg);
         usr = (EditText) findViewById(R.id.activity_signup_usr);
         usrIcon = (ImageView) findViewById(R.id.activity_signup_usrIcon);
         usrMsg = (TextView) findViewById(R.id.activity_signup_usrMsg);
@@ -285,5 +409,29 @@ public class SignUpActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.activity_signup_email);
         phone = (EditText) findViewById(R.id.activity_signup_phone);
         signupButton = (Button) findViewById(R.id.activity_signup_button);
+    }
+
+    /**
+     * Method that builds & displays error string according to missing criteria
+     */
+    private void displayErrorStr() {
+        String errorStr = "";
+        if (!uniqueUsr) {
+            errorStr += getResources().getString(R.string.signup_usr_taken) + "\n";
+        }
+        if (!matchPwd) {
+            errorStr += getResources().getString(R.string.signup_pwdMatch_error) + "\n";
+        }
+        if (!strongPwd) {
+            errorStr += getResources().getString(R.string.signup_pwdStr_error) + "\n";
+        }
+        if (!properEmail) {
+            errorStr += getResources().getString(R.string.signup_email_error) + "\n";
+        }
+        if (!properPhone) {
+            errorStr += getResources().getString(R.string.signup_phone_error);
+        }
+        errorMsg.setVisibility(View.VISIBLE);
+        errorMsg.setText(errorStr);
     }
 }

@@ -36,6 +36,18 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:textSize="10sp"/>
+
+    <ToggleButton
+        android:id="@+id/driverModeToggle"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:textOff="Rider"
+        android:textOn="Driver"
+        android:textSize="10sp"/>
+
 </fragment>
 
 

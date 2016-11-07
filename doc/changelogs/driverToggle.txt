@@ -1,0 +1,9 @@
+Joey: 
+- Created Mode enum class
+- Added getters & setters to usercontroller
+- Created non static constructer to usercrontroller
+- Removed references to password in usercontroller and user
+- added toggle button to location view for driver/rider mode
+- added listener for toggle button
+- added setMode and checkMode to usercontroller
+- added work in listener to call setMode in usercontroller

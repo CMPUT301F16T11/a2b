@@ -1,0 +1,9 @@
+Joey: 
+- Added Request Model Class
+- Created getters and setters, etc 
+
+- Possible design changes: 
+	- driversWhoAcceptedRequest (ArrayList) 
+	- start & end locations (currently using LatLng types, this is is up for 
+	debate) 
+	
