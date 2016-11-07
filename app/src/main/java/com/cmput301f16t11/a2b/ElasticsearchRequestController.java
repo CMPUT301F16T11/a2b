@@ -3,6 +3,8 @@ package com.cmput301f16t11.a2b;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -10,6 +12,9 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.core.Delete;
+import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
@@ -20,7 +25,8 @@ import io.searchbox.core.SearchResult;
 public class ElasticsearchRequestController {
     private static JestDroidClient client;
     private static String index = "f16t11";
-    private static String requestType = "closedRequest";
+    private static String openRequest = "openRequest";
+    private static String closedRequest = "closedRequest";
 
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -32,7 +38,7 @@ public class ElasticsearchRequestController {
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
-                    .addType(requestType)
+                    .addType(closedRequest)
                     .build();
 
             try {
@@ -62,7 +68,7 @@ public class ElasticsearchRequestController {
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
-                    .addType(requestType)
+                    .addType(closedRequest)
                     .build();
 
             try {
@@ -81,6 +87,127 @@ public class ElasticsearchRequestController {
             return driverList;
         }
     }
+
+//    public static class GetActiveRequestsInRange extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+//        @Override
+//        // Kind of a hack but
+//        //info[0] = lat
+//        //info[1] = lon
+//        //info[2] = distance in decimal km
+//        protected ArrayList<UserRequest> doInBackground(String... info) {
+//            verifySettings();
+//
+//            ArrayList<UserRequest> activeRequestsInRange;
+//            String query_stirng = "{\n" +
+//                    "    \"filtered\" : {\n" +
+//                    "        \"query\" : {\n" +
+//                    "            \"match_all\" : {}\n" +
+//                    "        },\n" +
+//                    "        \"filter\" : {\n" +
+//                    "            \"geo_distance\" : {\n" +
+//                    "                \"distance\" : \""+ info[2] +"\",\n" +
+//                    "                \"pin.location\" : {\n" +
+//                    "                    \"lat\" : "+info[0] +",\n" +
+//                    "                    \"lon\" : "+info[1] +"\n" +
+//                    "                }\n" +
+//                    "            }\n" +
+//                    "        }\n" +
+//                    "    }\n" +
+//                    "}";
+//
+//
+//
+//        }
+//
+//    }
+
+//    public static class AddOpenRequestTask extends AsyncTask<User, Void, Boolean> {
+//        @Override
+//        protected Boolean doInBackground(Request... requests) {
+//            verifySettings();
+//
+//            Index userIndex = new Index.Builder(requests[0]).index(index).type(openRequest).build();
+//
+//            try {
+//                DocumentResult result = client.execute(userIndex);
+//                if (result.isSucceeded()) {
+//                    requests[0].setId(result.getId());
+//                } else {
+//                    Log.i("Error", "Elasticsearch failed to add user");
+//                    return false;
+//                }
+//            } catch (Exception e) {
+//                Log.i("Error", "Failed to add user to elasticsearch");
+//                e.printStackTrace();
+//                return false;
+//            }
+//
+//            return true;
+//        }
+//    }
+    /**
+     * Move a request from open to closed
+     *
+     */
+
+    public static class CloseRequest extends AsyncTask<Request, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Request... requests) {
+            verifySettings();
+
+            // Delete the request from the list of open requests
+            try {
+                DocumentResult result = client.execute(new Delete.Builder(requests[0].getId())
+                        .index(index)
+                        .type(openRequest)
+                        .build());
+                if (result.isSucceeded()) {
+                    //requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to delete open request");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to delete open request");
+                e.printStackTrace();
+                return false;
+            }
+
+            //Add the request to closed requests
+            Index requestIndex = new Index.Builder(requests[0]).index(index).type(closedRequest).id(requests[0].getId()).build();
+
+            try {
+                DocumentResult result = client.execute(requestIndex)
+                if (result.isSucceeded()) {
+                    //requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to add closed request");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to add closed request");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    /**
+     * Get the id of the first hit in jsonResponse
+     *
+     * @param jsonResponse
+     * @return string
+     */
+    private static String  getIdFromResult(JsonObject jsonResponse){
+        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+        JsonArray actualHits = hits.getAsJsonArray("hits");
+        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+        String id = firstHit.get("_id").toString();
+        return id;
+    }
+
 
     private static void verifySettings() {
         // Initialize client if necessary

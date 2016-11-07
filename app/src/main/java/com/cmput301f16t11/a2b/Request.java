@@ -6,17 +6,24 @@ import com.google.android.gms.maps.model.PointOfInterest;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Models requests
  */
 
 public class Request {
+    @JestId
+    private String id;
     private LatLng startLocation;
     private LatLng endLocation;
     private Boolean completed;
     private User createdBy;
     private Date createdOn;
-    private ArrayList<User> driversWhoAcceptedRequest;
+    transient ArrayList<User> driversWhoAcceptedRequest;
+
+
+    private User confirmedDriver;
 
     public Request(LatLng start, LatLng end, User creator) {
         this.startLocation = start;
@@ -43,6 +50,14 @@ public class Request {
         this.driversWhoAcceptedRequest.add(driver);
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setConfirmedDriver(User confirmedDriver) {
+        this.confirmedDriver = confirmedDriver;
+    }
+
 
     // getters
     public LatLng getStartLocation() {
@@ -63,6 +78,14 @@ public class Request {
 
     public Date getCreatedon() {
         return this.createdOn;
+    }
+
+    public User getConfirmedDriver() {
+        return confirmedDriver;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Boolean hasAcceptedDrivers() {
