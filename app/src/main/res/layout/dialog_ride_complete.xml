@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="32dp"
+    android:layout_marginTop="64dp"
+    android:layout_marginBottom="64dp">
+
+    <TextView android:id="@+id/dialog_rideComplete_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop = "16dp"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="@string/rideComplete_title"/>
+
+    <LinearLayout android:id="@+id/dialog_rideComplete_driverLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:layout_marginBottom="8dp">
+
+        <TextView android:id="@+id/dialog_rideComplete_driverTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_driverTitle"/>
+
+        <TextView android:id="@+id/dialog_rideComplete_driverText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Test Driver"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/dialog_rideComplete_riderLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:weightSum="3">
+
+        <TextView android:id="@+id/dialog_rideComplete_riderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_riderTitle"/>
+
+        <TextView android:id="@+id/dialog_rideComplete_riderText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Test Rider"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/dialog_rideComplete_startLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:weightSum="3">
+
+        <TextView android:id="@+id/dialog_rideComplete_startTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_startTitle"/>
+
+        <TextView android:id="@+id/dialog_rideComplete_startText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Test Pickup"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/dialog_rideComplete_endLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:weightSum="3">
+
+        <TextView android:id="@+id/dialog_rideComplete_endTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_endTitle"/>
+
+        <TextView android:id="@+id/dialog_rideComplete_endText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Test Dropoff"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/dialog_rideComplete_fareLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:weightSum="3">
+
+        <TextView android:id="@+id/dialog_rideComplete_fareTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_fareTitle"/>
+
+        <TextView android:id="@+id/dialog_rideComplete_fareText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Test Fare"/>
+    </LinearLayout>
+
+    <Button android:id="@+id/dialog_rideComplete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:textStyle="bold"
+        android:text="@string/ok" />
+
+</LinearLayout>

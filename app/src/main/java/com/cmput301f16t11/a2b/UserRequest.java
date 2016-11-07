@@ -1,11 +1,18 @@
 package com.cmput301f16t11.a2b;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Calendar;
 
 /**
  * Created by brianofrim on 2016-10-10.
+ *
+ * Edited to implement parcelable to allow userrequests to be passed to dialogs
  */
-public class UserRequest {
+public class UserRequest implements Parcelable {
+    private String driver;
+    private String rider;
     String startLocation;
     String endLocation;
     Number fare;
@@ -13,7 +20,7 @@ public class UserRequest {
     Number requestId;
     boolean accepted;
     boolean completed;
-    boolean paymentRecived;
+    boolean paymentReceived;
 
     UserRequest(String start, String end, Number intitialFare){
         startLocation = start;
@@ -22,9 +29,11 @@ public class UserRequest {
         timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         accepted = false;
         completed = false;
-        paymentRecived = false;
+        paymentReceived = false;
     }
 
+    public String getDriver() {return driver;}
+    public String getRider() {return rider;}
     public String getEndLocation() {
         return endLocation;
     }
@@ -41,6 +50,8 @@ public class UserRequest {
         return accepted;
     }
 
+    public void setDriver(String d) {driver = d;}
+    public void setRider(String r) {rider = r;}
     public void setStartLocation(String startLocation) {
         this.startLocation = startLocation;
     }
@@ -48,7 +59,7 @@ public class UserRequest {
         this.endLocation = endLocation;
     }
     public void setPaymentReceived(boolean paymentRecived) {
-        this.paymentRecived = paymentRecived;
+        this.paymentReceived = paymentRecived;
     }
     public void setFare(Number fare) {
         this.fare = fare;
@@ -64,10 +75,73 @@ public class UserRequest {
         return completed;
     }
     public boolean isPaymentRecived() {
-        return paymentRecived;
+        return paymentReceived;
     }
 
     public boolean sentNotification() {
         return true;
+    }
+
+
+    /* Parcelable Stuff */
+
+    /**
+     * Writes data to the inputted parcel
+     *
+     * Byte reading writing taken on Nov 7 2016 from
+     * http://stackoverflow.com/questions/6201311/how-to-read-write-a-boolean-when-implementing-the-parcelable-interface
+     *
+     * @param out : Parcel
+     * @param flags : int
+     */
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(driver);
+        out.writeString(rider);
+        out.writeString(startLocation);
+        out.writeString(endLocation);
+        out.writeInt((int)fare);
+        out.writeLong(timeCreatedInMillis);
+        out.writeInt((int)requestId);
+        out.writeByte((byte)(accepted?1:0));
+        out.writeByte((byte)(completed?1:0));
+        out.writeByte((byte)(paymentReceived?1:0));
+    }
+
+    /**
+     * Creator to create UserRequest based on a parcel
+     *
+     * @param in : Parcel
+     */
+    public UserRequest(Parcel in) {
+        driver = in.readString();
+        rider = in.readString();
+        startLocation = in.readString();
+        endLocation = in.readString();
+        fare = in.readInt();
+        timeCreatedInMillis = in.readLong();
+        requestId = in.readInt();
+        accepted = in.readByte() != 0;
+        completed = in.readByte() != 0;
+        paymentReceived = in.readByte() != 0;
+    }
+
+    /**
+     * Static variable to create user requests from a parcel
+     *
+     */
+    public static final Parcelable.Creator<UserRequest> CREATOR =
+            new Parcelable.Creator<UserRequest>() {
+                public UserRequest createFromParcel(Parcel in) {
+                    return new UserRequest(in);
+                }
+
+                public UserRequest[] newArray(int size) {
+                    return new UserRequest[size];
+                }
+            };
+
+    public int describeContents() {
+        // Not sure what goes here
+        return 0;
     }
 }

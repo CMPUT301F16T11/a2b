@@ -4,13 +4,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,7 +49,7 @@ import java.util.List;
 /**
  * Main activity for riders to select their pickup and drop off locations
  */
-public class locationActivity extends FragmentActivity implements OnMapReadyCallback {
+public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Marker tripStartMarker;
@@ -50,10 +58,42 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
     private Context context;
     //private UserController userController;
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.location_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.viewProfile:
+                //TODO: viewProfile
+                Intent intent = new Intent(RiderLocationActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.changeRole:
+                //TODO: change role
+                return true;
+
+            case R.id.signOut:
+                ///TODO: logout
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_rider_location);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -61,6 +101,7 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
         mapFragment.getMapAsync(this);
 
         context = this;
+
         //userController = new UserController(null); // TODO: actual login work
     }
 
@@ -68,10 +109,9 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
      * Set up all the on click listeners for this activity
      */
     private void setButtonListeners(){
-        final Button editProfileButton = (Button)findViewById(R.id.editProfile);
         final Button setLocation = (Button)findViewById(R.id.setLocationButton);
         final Button cancelTrip = (Button)findViewById(R.id.cancelTrip);
-        final ToggleButton driverModeToggle = (ToggleButton) findViewById(R.id.driverModeToggle);
+        final EditText searchBar = (EditText)findViewById(R.id.searchAddress) ;
         cancelTrip.setEnabled(false);
 
         cancelTrip.setOnClickListener(new View.OnClickListener() {
@@ -100,11 +140,22 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
             }
         });
 
+        searchBar.setOnKeyListener(new View.OnKeyListener() {
+               @Override
+               public boolean onKey(View v, int keyCode, KeyEvent event) {
+                   if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                       //search google for that event
+                       //TODO: Search address for location
+                   }
+                   return true;
+               }
+           });
+
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Do not want to spawn a warning if the end marker is not null
-                if(currentMarker == null && tripEndMarker == null){
+                if (currentMarker == null && tripEndMarker == null) {
                     AlertDialog markerWarning = new AlertDialog.Builder(context).create();
                     markerWarning.setMessage(getString(R.string.warning_message));
                     markerWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -118,64 +169,39 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                 }
 
                 //We know we are setting our start
-                else if(tripStartMarker == null){
+                else if (tripStartMarker == null) {
                     currentMarker.remove();
+                    String address = getString(R.string.start_location) + ": " + currentMarker.getTitle();
                     tripStartMarker = mMap.addMarker(new MarkerOptions()
                             .position(currentMarker.getPosition())
-                            .title(getString(R.string.start_location))
+                            .title(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
                     tripStartMarker.showInfoWindow();
                     currentMarker = null;
                     setLocation.setText(R.string.set_end);
                     cancelTrip.setEnabled(true);
-                }
-
-                else if(tripEndMarker == null){
-                   currentMarker.remove();
+                } else if (tripEndMarker == null) {
+                    currentMarker.remove();
+                    String address = getString(R.string.end_location) + ": " + currentMarker.getTitle();
                     tripEndMarker = mMap.addMarker(new MarkerOptions()
                             .position(currentMarker.getPosition())
-                            .title(getString(R.string.end_location))
+                            .title(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
                     tripEndMarker.showInfoWindow();
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                }
+                } else {
 
-                else{
-
-                    JSONMapsHelper helper = new JSONMapsHelper((locationActivity)context);
+                    JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                     helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
                     //TODO: confirmation of trip do something with the lat and long
                 }
 
             }
         });
-
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // navagate to the edit profile view
-                Intent intent = new Intent(locationActivity.this,EditProfileActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        driverModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    UserController.setMode(Mode.DRIVER);
-                }
-                else {
-                    UserController.setMode(Mode.RIDER);
-                }
-            }
-        });
-
 
         //Listener for the map so we know when the user clicks
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -190,7 +216,24 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
                     currentMarker = mMap.addMarker(new MarkerOptions()
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+
+                    try {
+                        Geocoder geoCoder = new Geocoder(context);
+                        List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                        String address = "";
+                        if(!matches.isEmpty()){
+                            address = matches.get(0).getAddressLine(0)+ matches.get(0).getLocality();
+                        }
+
+                        currentMarker.setTitle(address);
+                        currentMarker.showInfoWindow();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
+
             }
         });
     }
@@ -216,7 +259,8 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
 
     public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
         AlertDialog dlg = new AlertDialog.Builder(context).create();
-        dlg.setMessage("Trip has been made of distance: "+ distance+ "\n"+"Input fair to confirm: TODO");
+        dlg.setMessage(tripStartMarker.getTitle() +"\n" + tripEndMarker.getTitle()+ "\n"+
+        "Trip Distance: "+ distance);
         dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -244,9 +288,9 @@ public class locationActivity extends FragmentActivity implements OnMapReadyCall
  * http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
  */
  class JSONMapsHelper{
-    private  locationActivity act;
+    private  RiderLocationActivity act;
 
-    public JSONMapsHelper(locationActivity act){
+    public JSONMapsHelper(RiderLocationActivity act){
         this.act = act;
     }
 

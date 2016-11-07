@@ -1,0 +1,23 @@
+                                                                                                                 
+                                                                                                                 
+                                                                       ,---,          ,----,      ,---,.         
+                                                                      '  .' \       .'   .' \   ,'  .'  \        
+                                                                     /  ;    '.   ,----,'    |,---.' .' |        
+                                                                    :  :       \  |    :  .  ;|   |  |: |        
+                                                                    :  |   /\   \ ;    |.'  / :   :  :  /        
+                                                                    |  :  ' ;.   :`----'/  ;  :   |    ;         
+                                                                    |  |  ;/  \   \ /  ;  /   |   :     \        
+                                                                    '  :  | \  \ ,';  /  /-,  |   |   . |        
+                                                                    |  |  '  '--' /  /  /.`|  '   :  '; |        
+                                                                    |  :  :     ./__;      :  |   |  | ;         
+                                                                    |  | ,'     |   :    .'   |   :   /          
+                                                                    `--''       ;   | .'      |   | ,'           
+                                                                                `---'         `----'        
+                                                                            CHANGELOG FOR TASK: #3
+
+  Classes Changed              |                            Description of changed                      |   Commit ID  |    Person who changed it  |
+                               |                                                                        |              |                           |
+  -----------------------------|------------------------------------------------------------------------|--------------|---------------------------|
+                               | - Implemented dialog that is created by                                |              |                           |
+  RideCompleteDialog           |           RideCompleteDialog.newInstance(UserRequest)                  |              | Brett Wilkinson           |
+                               | - Display userRequest information in the dialog                        |              |                           |

@@ -57,5 +57,20 @@
     <string name="title_activity_driver_location">Map</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
 
+    <!-- RideCompleteDialog Strings -->
+    <string name="rideComplete_title">Ride Details</string>
+    <string name="rideComplete_driverTitle">Driver:</string>
+    <string name="rideComplete_riderTitle">Rider:</string>
+    <string name="rideComplete_startTitle">Pickup:</string>
+    <string name="rideComplete_endTitle">Destination:</string>
+    <string name="rideComplete_fareTitle">Fare:</string>
+
+    <!-- Location Menu String-->
+    <string name="view_profile">View Profile</string>
+    <string name="change_role">Change Role</string>
+    <string name="sign_out">Sign Out</string>
+
+    <!-- Multi Purpose Strings -->
+    <string name="ok">OK</string>
 
 </resources>
