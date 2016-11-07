@@ -77,7 +77,7 @@ public class Request {
     }
 
     public String toString() {
-        String val = "Created by " + this.getCreatedBy() + "\n" + "Lat: " + "start: " +
+        String val = "Created by " + this.getCreatedBy() + "\n" + "start: " +
                     this.getStartLocation() + "\n" + "end: " + this.getEndLocation() +
                     "\n" + this.getCreatedon();
         return val;
