@@ -71,7 +71,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         switch (item.getItemId()) {
             case R.id.viewProfile:
                 //TODO: viewProfile
-                Intent intent = new Intent(RiderLocationActivity.this, EditProfileActivity.class);
+                Intent intent = new Intent(RiderLocationActivity.this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
 
