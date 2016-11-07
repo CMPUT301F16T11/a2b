@@ -34,7 +34,9 @@
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/signup_label" />
+            android:label="@string/signup_label">
+
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
