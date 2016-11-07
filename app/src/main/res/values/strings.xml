@@ -55,4 +55,7 @@
     <string name="end_location">End Location</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
 
+    <!--Strings related to requests activity-->
+    <string name="request">Requests</string>
+
 </resources>

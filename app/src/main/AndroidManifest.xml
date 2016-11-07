@@ -43,7 +43,8 @@
         <activity
             android:name=".locationActivity"
             android:label="@string/title_activity_location" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".RequestActivity"></activity>
     </application>
 
 </manifest>
