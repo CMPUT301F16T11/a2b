@@ -42,6 +42,7 @@
 
     <!--Code for google maps api -->
      <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+         AIzaSyCcJvOdnYtQ9ES2-SQRYlHoHgGnc46Pfco
     </string>
 
     <!--Main map activtiy-->

@@ -6,14 +6,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 public class ProfileActivity extends AppCompatActivity {
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Get the user info from User controller
+        user = UserController.getUser();
+
+        //Populating text attrubutes
+        TextView userNameTV = (TextView) findViewById(R.id.userName);
+        TextView emailTV = (TextView) findViewById(R.id.emailText);
+        TextView phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTextView);
+        userNameTV.setText(user.getName());
+        emailTV.setText(user.getEmail());
+        phoneNumberTV.setText(user.getPhoneNumber());
 
         // adding edit button functionality
         Button edit = (Button) findViewById(R.id.editProfile);
@@ -35,8 +48,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
     private void launchProfileEditor() {
         Intent intent = new Intent(this, EditProfileActivity.class);
-        // TODO user info must be put into the intent so that editprofile knows whats being edited
-        //intent.putExtra("user", user);
         setResult(Activity.RESULT_OK, intent);
         startActivity(intent);
     }
