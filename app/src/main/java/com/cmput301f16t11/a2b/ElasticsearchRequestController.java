@@ -177,7 +177,7 @@ public class ElasticsearchRequestController {
             Index requestIndex = new Index.Builder(requests[0]).index(index).type(closedRequest).id(requests[0].getId()).build();
 
             try {
-                DocumentResult result = client.execute(requestIndex)
+                DocumentResult result = client.execute(requestIndex);
                 if (result.isSucceeded()) {
                     //requests[0].setId(result.getId());
                 } else {
