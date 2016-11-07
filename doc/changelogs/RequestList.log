@@ -1,0 +1,11 @@
+joey
+Added RequestListActivity
+Created clickable list
+added tmeporary pseudo list of curr requests to RequestController
+created request toString
+TODO:
+Added RequestView
+	- ability to delete (if created by you) 
+	- ability to accept (if you're a driver) 
+	- ability to confirm (if you're a rider and a driver has accepted)
+	- display correct requests on spinner choice

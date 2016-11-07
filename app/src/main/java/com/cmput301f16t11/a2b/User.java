@@ -50,6 +50,7 @@ public class User {
         phoneNumber = phone;
     }
 
+
    //Getters
     public String getName(){
         return userName;
@@ -67,6 +68,9 @@ public class User {
     }
     public UserRequest getLatestActiveRequest(){return requests.get(requests.size() - 1);}
     public String getId() {return id;}
+    public String toString() {
+        return this.userName;
+    }
 
     //Setters
     public void setAcceptedRequestList(ArrayList<UserRequest> requestList) { acceptedRequests = requestList;}
