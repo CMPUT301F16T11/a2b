@@ -42,17 +42,17 @@
 
     <!--Code for google maps api -->
      <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-        AIzaSyCcJvOdnYtQ9ES2-SQRYlHoHgGnc46Pfco
     </string>
 
     <!--Main map activtiy-->
-    <string name = "set_start">Set Start Location</string>
-    <string name = "set_end">Set End Location</string>
-    <string name = "confirm_trip">Request Ride</string>
-    <string name = "edit_profile">Edit Profile</string>
-    <string name = "cancel_trip">Cancel Trip</string>
-    <string name = "warning_message">Please place a marker before trying to set start/end trip location.</string>
-    <string name = "start_location">Start Location</string>
-    <string name = "end_location">End Location</string>
+    <string name="set_start">Set Start Location</string>
+    <string name="set_end">Set End Location</string>
+    <string name="confirm_trip">Request Ride</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="cancel_trip">Cancel Trip</string>
+    <string name="warning_message">Please place a marker before trying to set start/end trip location.</string>
+    <string name="start_location">Start Location</string>
+    <string name="end_location">End Location</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
 
 </resources>
