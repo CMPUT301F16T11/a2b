@@ -17,6 +17,7 @@ import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 /**
  * Created by Wilky on 11/6/2016.
@@ -88,6 +89,45 @@ public class ElasticsearchRequestController {
             }
 
             return requestList;
+        }
+    }
+
+    /**
+     * Add a driver acceptance to a request
+     * info[0] is the request ID
+     * info[1] is the driver ID
+     */
+
+    public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+
+
+            // update an existing request
+            //TO DO: check it the request exists first
+
+            // update script
+
+            String script = "{\n" +
+                    "    \"script\" : \"ctx._source.acceptedDrivers += newDriver\",\n" +
+                    "    \"params\" : {\n" +
+                    "        \"newDriver\" : \"" +info[1] +"\"\n" +
+                    "    }\n" +
+                    "}";
+
+
+            try {
+                client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+
+                return false;
+            }
+
+            return true;
         }
     }
 
