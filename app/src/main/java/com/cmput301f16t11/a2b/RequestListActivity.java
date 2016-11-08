@@ -21,8 +21,8 @@ public class RequestListActivity extends AppCompatActivity {
      * (Available here:
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
-    private ArrayList<Request> requests;
-    private ArrayAdapter<Request> adapter;
+    private ArrayList<UserRequest> requests;
+    private ArrayAdapter<UserRequest> adapter;
     private ListView listView;
     private Spinner spinner;
     private ArrayAdapter<String> spinnerChoices;
@@ -113,7 +113,7 @@ public class RequestListActivity extends AppCompatActivity {
                 // perhaps a dialog?
             }
         });
-        adapter = new ArrayAdapter<Request>(this, android.R.layout.simple_list_item_1,
+        adapter = new ArrayAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                     android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
 

@@ -12,6 +12,7 @@ import io.searchbox.annotations.JestId;
  * Models requests
  */
 
+@Deprecated
 public class Request {
     @JestId
     private String id;

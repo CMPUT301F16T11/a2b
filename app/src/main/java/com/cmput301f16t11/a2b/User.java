@@ -89,7 +89,7 @@ public class User {
 
     // Request transactions
     public void createRequest(LatLng start, LatLng end, Number fare){
-        requests.add(new UserRequest(start,end,fare));
+        requests.add(new UserRequest(start,end,fare, this.userName));
     }
     public void addRequest(UserRequest request){
 
