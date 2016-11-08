@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import static com.cmput301f16t11.a2b.Mode.DRIVER;
 import static com.cmput301f16t11.a2b.R.id.user;
 import static com.cmput301f16t11.a2b.UserController.saveInFile;
 
@@ -40,7 +41,8 @@ public class RequestController {
             UserController.setClosedRequestsAsRider(riderTask.get());
             UserController.setClosedRequestsAsDriver(driverTask.get());
             UserController.setActiveRequestsAsRider(currRiderTask.get());
-            UserController.setActiveRequestsAsDriver(currRiderTask.get());
+            //TODO something wrong here
+           // UserController.setActiveRequestsAsDriver(currRiderTask.get());
 
         } catch (Exception e) {
             Log.i("Error", "AsyncTask failed to execute");
@@ -72,8 +74,8 @@ public class RequestController {
          */
         ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
         ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
-        return RequestController.tempFakeRequestList(); // for testing
-        // return nearBy;
+        //return RequestController.tempFakeRequestList(); // for testing
+        return nearBy;
     }
 
     public static ArrayList<UserRequest> getOwnActiveRequests(User user) {
@@ -81,21 +83,33 @@ public class RequestController {
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        ElasticsearchRequestController.GetActiveUserRequests searchController = new ElasticsearchRequestController.GetActiveUserRequests();
-        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
-        //return userRequests;
+        ArrayList<UserRequest> userRequests;
 
-        // (gets requests created by this user)
-        // for testing
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        temp.add(RequestController.tempFakeRequestList().get(1));
-        return temp;
+        if (UserController.checkMode() == DRIVER) {
+            ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
+            userRequests = searchController.doInBackground(user.getName());
+            return userRequests;
+        }
+        else {
+            ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
+            userRequests = searchController.doInBackground(user.getName());
+            return userRequests;
+        }
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
-        ElasticsearchRequestController.GetPas searchController = new ElasticsearchRequestController.GetUnactiveRequests();
-        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
-        return userRequests;
+        ArrayList<UserRequest> userRequests;
+
+        if(UserController.checkMode() == DRIVER) {
+            ElasticsearchRequestController.GetPastDriverRequests searchController = new ElasticsearchRequestController.GetPastDriverRequests();
+            userRequests = searchController.doInBackground(user.getName());
+            return userRequests;
+        }
+        else {
+            ElasticsearchRequestController.GetPastRiderRequests searchController = new ElasticsearchRequestController.GetPastRiderRequests();
+            userRequests = searchController.doInBackground(user.getName());
+            return userRequests;
+        }
     }
 
     public static ArrayList<UserRequest> getAcceptedByDrivers(User user) {
