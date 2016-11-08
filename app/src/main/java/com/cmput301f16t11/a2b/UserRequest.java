@@ -16,7 +16,6 @@ import java.util.Date;
  */
 public class UserRequest implements Parcelable {
     private ArrayList<String> acceptedDrivers;
-    private String confirmedDriver;
     private String rider;
     private String driver;
     private LatLng startLocation;
@@ -53,8 +52,8 @@ public class UserRequest implements Parcelable {
     }
 
     // Getters
-    public String getConfirmedDriver() {
-        return this.confirmedDriver;
+    public String getDriver() {
+        return this.rider;
     }
 
     public ArrayList<String> getAcceptedDrivers() {
@@ -94,8 +93,8 @@ public class UserRequest implements Parcelable {
     }
 
     // setters
-    public void setConfirmedDriver(String d) {
-        this.confirmedDriver = d;
+    public void setDriver(String d) {
+        this.driver = d;
     }
 
     public void setStartLocation(LatLng startLocation) {
@@ -133,7 +132,7 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(confirmedDriver);
+        out.writeString(driver);
         out.writeString(rider);
         out.writeParcelable(startLocation, flags);
         out.writeParcelable(endLocation, flags);
@@ -151,7 +150,7 @@ public class UserRequest implements Parcelable {
      * @param in : Parcel
      */
     public UserRequest(Parcel in) {
-        confirmedDriver = in.readString();
+        driver = in.readString();
         rider = in.readString();
         startLocation = in.readParcelable(LatLng.class.getClassLoader());
         endLocation = in.readParcelable(LatLng.class.getClassLoader());
@@ -190,8 +189,8 @@ public class UserRequest implements Parcelable {
 
     public String toString() {
         String temp = "Rider: " + this.getRider() + "\n";
-        if (this.getConfirmedDriver() != null) {
-            temp = temp + "Confirmed Driver: " + this.getConfirmedDriver() + "\n";
+        if (this.getDriver() != null) {
+            temp = temp + "Confirmed Driver: " + this.getDriver() + "\n";
         }
         if (this.getDistance() != null) {
             temp = temp + "Distance: " + this.getDistance().toString() + "\n";
