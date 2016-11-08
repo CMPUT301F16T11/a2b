@@ -95,7 +95,7 @@ public class ElasticsearchRequestController {
     /**
      * Add a driver acceptance to a request
      * info[0] is the request ID
-     * info[1] is the driver ID
+     * info[1] is the driver userName
      */
 
     public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
@@ -192,6 +192,36 @@ public class ElasticsearchRequestController {
     }
 
 
+    public static class GetInPrgressRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(inProgress)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
+    
 
 //    public static class AddOpenRequestTask extends AsyncTask<User, Void, Boolean> {
 //        @Override
