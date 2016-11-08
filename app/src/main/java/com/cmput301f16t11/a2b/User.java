@@ -2,16 +2,23 @@ package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Model for User class
  */
 public class User {
-    private String id;
+    @JestId
+    private transient String id;
+
     private transient ArrayList<UserRequest> requestsAsRider;
     private transient ArrayList<UserRequest> requestsAsDriver;
     private transient ArrayList<UserRequest> activeRequestsAsRider;
     private transient ArrayList<UserRequest> activeRequestsAsDriver;
+
     private String userName;
     private String passWord;
     private String email;
@@ -58,6 +65,7 @@ public class User {
         passWord = pass;
         this.email = email;
         phoneNumber = phone;
+        this.id = null;
     }
 
 
@@ -215,6 +223,5 @@ public class User {
     public boolean hasAcceptedRequests(UserRequest request) {
         return true;
     }
-
 
 }

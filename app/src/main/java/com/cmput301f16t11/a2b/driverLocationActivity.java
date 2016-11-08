@@ -80,6 +80,8 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             // Load requests within a 9 square km area
+            // 110.574 = km per latitude degree
+            // 111.320cos(longitude degrees) = km per longitude degree
             double lowerLat = mLastLocation.getLatitude() - (3/110.574);
             double higherLat = mLastLocation.getLatitude() + (3/110.574);
             double lowerLon = mLastLocation.getLongitude() - (3/111.320*Math.cos(mLastLocation.getLongitude()));
@@ -114,11 +116,12 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
             .position(req.getStartLocation())
             .title(req.getFare().toString()));
 
-            // Display request info screen onClick
+            // Display marker info dialog onClick
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-
+                    MarkerInfoDialog dialog = MarkerInfoDialog.newInstance(requestMap.get(marker));
+                    dialog.show(getFragmentManager().beginTransaction(), "dialog");
                     return true;
                 }
             });
