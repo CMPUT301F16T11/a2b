@@ -32,13 +32,26 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
+        this.requests = RequestController.tempFakeRequestList();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        listView = (ListView) findViewById(R.id.requestList);
+        // make it click!
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+                //TODO: some code here that responds to clicking on request
+                // perhaps a dialog?
+            }
+        });
+        adapter = new ArrayAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
+                android.R.id.text1, this.requests);
+        listView.setAdapter(adapter);
         spinner = (Spinner) findViewById(R.id.requestSpinner);
-        this.requests = RequestController.tempFakeRequestList();
+        this.populateRequestList();
         if (UserController.checkMode().equals(Mode.DRIVER)) {
             String [] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
@@ -51,6 +64,7 @@ public class RequestListActivity extends AppCompatActivity {
                                 android.R.layout.simple_spinner_dropdown_item, choices);
         }
         spinner.setAdapter(spinnerChoices);
+        requests = this.requests;
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -58,18 +72,22 @@ public class RequestListActivity extends AppCompatActivity {
                     // nearby requests
                     // same for riders & drivers
                     // TODO: feed in actual curr location
-                    requests = RequestController.getNearbyRequests(new LatLng(53.5, -113.50));
+                    requests.clear();
+                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50)));
                     adapter.notifyDataSetChanged();
                 }
                 else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
                     if (UserController.checkMode().equals(Mode.DRIVER)) {
-                        requests = RequestController.getAcceptedByUser(UserController.getUser());
+                        requests.clear();
+                        requests.addAll(RequestController.getAcceptedByUser(UserController.getUser()));
                     }
                     else {
-                        requests = RequestController.getAcceptedByDrivers(UserController.getUser());
+                        requests.clear();
+                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
                     }
                     adapter.notifyDataSetChanged();
+//                    populateRequestList();
                 }
                 else if (position == 2) {
                     // confirmed requests
@@ -77,21 +95,27 @@ public class RequestListActivity extends AppCompatActivity {
                     // accepted them
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
-                    requests = RequestController.getConfirmedByRiders(UserController.getUser(),
-                                UserController.checkMode());
+                    requests.clear();
+                    requests.addAll(RequestController.getConfirmedByRiders(UserController.getUser(),
+                                UserController.checkMode()));
                     adapter.notifyDataSetChanged();
+//                    populateRequestList();
                 }
                 else if (position == 3) {
                     // completed requests
                     // if driver, display completed as driver
                     // if rider, display completed as rider
-                    requests = RequestController.getCompletedRequests(UserController.getUser(),
-                                UserController.checkMode());
+                    requests.clear();
+                    requests.addAll(RequestController.getCompletedRequests(UserController.getUser(),
+                                UserController.checkMode()));
                     adapter.notifyDataSetChanged();
+//                    populateRequestList();
                 }
                 else if (position == 4) {
                     // only rider mode can get to this point.
-                    requests = RequestController.getOwnRequests(UserController.getUser());
+                    requests.clear();
+                    requests.addAll(RequestController.getOwnRequests(UserController.getUser()));
+//                    populateRequestList();
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -100,22 +124,9 @@ public class RequestListActivity extends AppCompatActivity {
                 // do nothing
             }
         });
-        this.populateRequestList();
     }
 
     private void populateRequestList() {
-        listView = (ListView) findViewById(R.id.requestList);
-        // make it click!
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-                //TODO: some code here that responds to clicking on request
-                // perhaps a dialog?
-            }
-        });
-        adapter = new ArrayAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
-                    android.R.id.text1, this.requests);
-        listView.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
     }
 }

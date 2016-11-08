@@ -13,8 +13,12 @@ public class MainActivity extends AppCompatActivity {
 
         // TEMPORARY CODE - LAUNCHES the location activity for testing
         //Intent intent = new Intent(this, RiderLocationActivity.class);
-       // startActivity(intent);
+       // startActivity(intent)
+
+        // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
+
+        //Intent intent = new Intent(this, RequestListActivity.class);
         startActivity(intent);
     }
 }
