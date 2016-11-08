@@ -1,8 +1,14 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+
+import static com.cmput301f16t11.a2b.R.id.user;
+import static com.cmput301f16t11.a2b.UserController.saveInFile;
 
 /**
  * Created by brianofrim on 2016-10-13.
@@ -16,6 +22,35 @@ public class RequestController {
 
     public static ArrayList<UserRequest> getRequestNear(LatLng location, Number radius) {
         return new ArrayList<UserRequest>();
+    }
+
+    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
+
+        ElasticsearchRequestController.GetPastRiderRequests riderTask =
+                new ElasticsearchRequestController.GetPastRiderRequests();
+        ElasticsearchRequestController.GetPastDriverRequests driverTask =
+                new ElasticsearchRequestController.GetPastDriverRequests();
+        ElasticsearchRequestController.GetActiveRiderRequests currRiderTask =
+                new ElasticsearchRequestController.GetActiveRiderRequests();
+        ElasticsearchRequestController.GetActiveDriverRequests currDriverTask =
+                new ElasticsearchRequestController.GetActiveDriverRequests();
+        riderTask.execute(usr);
+        driverTask.execute(usr);
+        try {
+            UserController.setClosedRequestsAsRider(riderTask.get());
+            UserController.setClosedRequestsAsDriver(driverTask.get());
+            UserController.setActiveRequestsAsRider(currRiderTask.get());
+            UserController.setActiveRequestsAsDriver(currRiderTask.get());
+
+        } catch (Exception e) {
+            Log.i("Error", "AsyncTask failed to execute");
+            e.printStackTrace();
+        }
+
+        // Saves user file after completion of asyncTasks if necessary
+        if (saveAfter) {
+            saveInFile(activity);
+        }
     }
 
     // TEMPORARY POPULATION OF RANDOM REQUESTS!!!

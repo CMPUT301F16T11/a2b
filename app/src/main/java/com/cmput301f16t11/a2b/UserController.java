@@ -29,34 +29,6 @@ public class UserController {
     }
 
 
-    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
-        ElasticsearchRequestController.GetPastRiderRequests riderTask =
-                new ElasticsearchRequestController.GetPastRiderRequests();
-        ElasticsearchRequestController.GetPastDriverRequests driverTask =
-                new ElasticsearchRequestController.GetPastDriverRequests();
-        ElasticsearchRequestController.GetActiveRiderRequests currRiderTask =
-                new ElasticsearchRequestController.GetActiveRiderRequests();
-        ElasticsearchRequestController.GetActiveDriverRequests currDriverTask =
-                new ElasticsearchRequestController.GetActiveDriverRequests();
-        riderTask.execute(usr);
-        driverTask.execute(usr);
-        try {
-            user.setClosedRequestsAsRider(riderTask.get());
-            user.setClosedRequestsAsDriver(driverTask.get());
-            user.setActiveRequestsAsRider(currRiderTask.get());
-            user.setActiveRequestsAsDriver(currRiderTask.get());
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
-            e.printStackTrace();
-        }
-
-        // Saves user file after completion of asyncTasks if necessary
-        if (saveAfter) {
-            saveInFile(activity);
-        }
-    }
-
-
 //    static public boolean auth(String username){
 //        // no idea what this is... - joey
 //        // is this to statically check auth?
