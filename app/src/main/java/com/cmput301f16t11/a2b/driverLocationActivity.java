@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,7 +21,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class driverLocationActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -29,6 +34,8 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+
+    private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
 
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -58,20 +65,51 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
 
     @Override
     public void onConnected(Bundle connectionHint) {
-//        try{
-//            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//        }catch(SecurityException e){
-//            e.printStackTrace();
-//        }
-//        if (mLastLocation != null) {
-//            CameraPosition cameraPosition = new CameraPosition.Builder()
-//                    .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))      // Sets the center of the map to location user
-//                    .zoom(11)                   // Sets the zoom
-//                    .bearing(90)                // Sets the orientation of the camera to east
-//                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-//                    .build();                   // Creates a CameraPosition from the builder
-//            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//        }
+        try{
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }catch(SecurityException e){
+            e.printStackTrace();
+        }
+        if (mLastLocation != null) {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))      // Sets the center of the map to location user
+                    .zoom(11)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
+                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            // Load requests within a 9 square km area
+            double lowerLat = mLastLocation.getLatitude() - (3/110.574);
+            double higherLat = mLastLocation.getLatitude() + (3/110.574);
+            double lowerLon = mLastLocation.getLongitude() - (3/111.320*Math.cos(mLastLocation.getLongitude()));
+            double higherLon = mLastLocation.getLongitude() + (3/111.320*Math.cos(mLastLocation.getLongitude()));
+
+            ArrayList<UserRequest> nearbyRequests = new ArrayList<UserRequest>();
+            ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
+            getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
+            try {
+                nearbyRequests = getNearbyRequests.get();
+
+            } catch (Exception e) {
+                Log.i("Error", "AsyncTask failed to execute");
+            }
+        }
+    }
+
+    public void handleRequests(ArrayList<UserRequest> list) {
+        // Clear mapping of old requests
+        requestMap.clear();
+        mMap.clear();
+
+        // Add new requests to map
+        for (UserRequest req : list) {
+            Marker tmp = mMap.addMarker(new MarkerOptions()
+            .position(req.getStartLocation())
+            .title(req.getFare().toString()));
+
+            requestMap.put(tmp, req);
+        }
     }
 
     @Override
@@ -88,8 +126,7 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.

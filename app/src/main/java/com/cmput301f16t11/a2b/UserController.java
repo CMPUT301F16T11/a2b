@@ -3,6 +3,7 @@ package com.cmput301f16t11.a2b;
 import android.app.Activity;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -110,7 +111,7 @@ public class UserController {
     public static ArrayList<UserRequest> getRequestList() {
 
         ArrayList<UserRequest> fakeList = new ArrayList<>();
-        fakeList.add(new UserRequest("start", "end", 0));
+        fakeList.add(new UserRequest(new LatLng(50, 50), new LatLng(50, 50), 0));
         return fakeList;
     }
 

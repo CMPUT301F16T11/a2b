@@ -105,8 +105,8 @@ public class RideCompleteDialog extends DialogFragment {
     public void setViews() {
         driver.setText(req.getDriver());
         rider.setText(req.getRider());
-        pickup.setText(req.getStartLocation());
-        dropoff.setText(req.getEndLocation());
+        pickup.setText(req.getStartLocation().toString());
+        dropoff.setText(req.getEndLocation().toString());
         fare.setText(req.getFare().toString());
 
         okButton.setOnClickListener(new View.OnClickListener() {

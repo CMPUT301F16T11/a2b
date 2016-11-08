@@ -25,8 +25,10 @@ import io.searchbox.core.SearchResult;
 public class ElasticsearchRequestController {
     private static JestDroidClient client;
     private static String index = "f16t11";
+
     private static String openRequest = "openRequest";
     private static String closedRequest = "closedRequest";
+
 
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -87,6 +89,7 @@ public class ElasticsearchRequestController {
             return driverList;
         }
     }
+
 
 //    public static class GetActiveRequestsInRange extends AsyncTask<String, Void, ArrayList<UserRequest>> {
 //        @Override
@@ -208,6 +211,38 @@ public class ElasticsearchRequestController {
         return id;
     }
 
+
+    public static class GetNearbyRequests extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
+        public ArrayList<UserRequest> doInBackground(Double... params) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+
+            String search_string = "{\"query\": { \"range\" : { \"startLocation\" { \"latitude\" : { \"gte\" : \""
+                    + params[0] + "\". \"lte\" : \"" + params[1] + "\"}. \"longitude\": { \"gte\" : \""
+                    + params[2] + "\". \"lte\" : \"" + params[3] + "\"}}}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> tmp = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(tmp);
+                } else {
+                    // No requests found in area
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
 
     private static void verifySettings() {
         // Initialize client if necessary

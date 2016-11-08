@@ -3,6 +3,8 @@ package com.cmput301f16t11.a2b;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Calendar;
 
 /**
@@ -13,8 +15,8 @@ import java.util.Calendar;
 public class UserRequest implements Parcelable {
     private String driver;
     private String rider;
-    String startLocation;
-    String endLocation;
+    LatLng startLocation;
+    LatLng endLocation;
     Number fare;
     long timeCreatedInMillis;
     Number requestId;
@@ -22,7 +24,7 @@ public class UserRequest implements Parcelable {
     boolean completed;
     boolean paymentReceived;
 
-    UserRequest(String start, String end, Number intitialFare){
+    UserRequest(LatLng start, LatLng end, Number intitialFare){
         startLocation = start;
         endLocation = end;
         fare = intitialFare;
@@ -34,13 +36,13 @@ public class UserRequest implements Parcelable {
 
     public String getDriver() {return driver;}
     public String getRider() {return rider;}
-    public String getEndLocation() {
+    public LatLng getEndLocation() {
         return endLocation;
     }
     public Number getFare() {
         return fare;
     }
-    public String getStartLocation() {
+    public LatLng getStartLocation() {
         return startLocation;
     }
     public Number getFareEstimation(String startLocation, String endLocation) {
@@ -52,10 +54,10 @@ public class UserRequest implements Parcelable {
 
     public void setDriver(String d) {driver = d;}
     public void setRider(String r) {rider = r;}
-    public void setStartLocation(String startLocation) {
+    public void setStartLocation(LatLng startLocation) {
         this.startLocation = startLocation;
     }
-    public void setEndLocation(String endLocation) {
+    public void setEndLocation(LatLng endLocation) {
         this.endLocation = endLocation;
     }
     public void setPaymentReceived(boolean paymentRecived) {
@@ -97,8 +99,8 @@ public class UserRequest implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(driver);
         out.writeString(rider);
-        out.writeString(startLocation);
-        out.writeString(endLocation);
+        out.writeParcelable(startLocation, flags);
+        out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
         out.writeLong(timeCreatedInMillis);
         out.writeInt((int)requestId);
@@ -115,8 +117,8 @@ public class UserRequest implements Parcelable {
     public UserRequest(Parcel in) {
         driver = in.readString();
         rider = in.readString();
-        startLocation = in.readString();
-        endLocation = in.readString();
+        startLocation = in.readParcelable(LatLng.class.getClassLoader());
+        endLocation = in.readParcelable(LatLng.class.getClassLoader());
         fare = in.readInt();
         timeCreatedInMillis = in.readLong();
         requestId = in.readInt();

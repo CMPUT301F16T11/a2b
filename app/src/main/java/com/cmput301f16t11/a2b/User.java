@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import io.searchbox.annotations.JestId;
@@ -86,7 +88,7 @@ public class User {
     public void setId(String id) {this.id = id;}
 
     // Request transactions
-    public void createRequest(String start, String end, Number fare){
+    public void createRequest(LatLng start, LatLng end, Number fare){
         requests.add(new UserRequest(start,end,fare));
     }
     public void addRequest(UserRequest request){
