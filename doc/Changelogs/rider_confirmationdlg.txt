@@ -1,0 +1,25 @@
+                                                                       ,---,          ,----,      ,---,.         
+                                                                      '  .' \       .'   .' \   ,'  .'  \        
+                                                                     /  ;    '.   ,----,'    |,---.' .' |        
+                                                                    :  :       \  |    :  .  ;|   |  |: |        
+                                                                    :  |   /\   \ ;    |.'  / :   :  :  /        
+                                                                    |  :  ' ;.   :`----'/  ;  :   |    ;         
+                                                                    |  |  ;/  \   \ /  ;  /   |   :     \        
+                                                                    '  :  | \  \ ,';  /  /-,  |   |   . |        
+                                                                    |  |  '  '--' /  /  /.`|  '   :  '; |        
+                                                                    |  :  :     ./__;      :  |   |  | ;         
+                                                                    |  | ,'     |   :    .'   |   :   /          
+                                                                    `--''       ;   | .'      |   | ,'           
+                                                                                `---'         `----'        
+                                                                            CHANGELOG FOR TASK:  Confirm Request Dialog - Rider
+List of links used:
+
+                                                                            
+
+  Classes Changed (List them)  |                            Description of changed                      |   Commit ID  |    Person who changed it  |
+                               |                                                                        |              |                           |
+  -----------------------------|------------------------------------------------------------------------|--------------|---------------------------|
+  rider_confirmation.xml; rider  Created a nice dialog for the rider to use to input the fair amount.
+  LocationActivitiy              may have to move to different class later when we create the request
+                                 from the actual view activity.                                                                 John
+  --------------------------------------------------------------------------------------------------------------------------------------------------

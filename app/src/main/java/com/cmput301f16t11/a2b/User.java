@@ -22,9 +22,6 @@ public class User {
     User(){
         requests = new ArrayList<UserRequest>();
         acceptedRequests = new ArrayList<UserRequest>();
-        userName = "n/a";
-        passWord = "n/a";
-        email = "n/a";
     }
 
     User(String name, String email) {

@@ -90,23 +90,38 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
             getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
             try {
                 nearbyRequests = getNearbyRequests.get();
-
+                handleRequests(nearbyRequests);
             } catch (Exception e) {
                 Log.i("Error", "AsyncTask failed to execute");
             }
         }
     }
 
+    /**
+     * Adds a marker for every request on the list
+     * Adds an entry to the hashmap for every (marker, request) pair
+     *
+     * @param list : ArrayList<UserRequest>
+     */
     public void handleRequests(ArrayList<UserRequest> list) {
         // Clear mapping of old requests
         requestMap.clear();
         mMap.clear();
 
-        // Add new requests to map
+        // Add marker, clickListener, and hashmap entry for each request
         for (UserRequest req : list) {
             Marker tmp = mMap.addMarker(new MarkerOptions()
             .position(req.getStartLocation())
             .title(req.getFare().toString()));
+
+            // Display request info screen onClick
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+
+                    return true;
+                }
+            });
 
             requestMap.put(tmp, req);
         }

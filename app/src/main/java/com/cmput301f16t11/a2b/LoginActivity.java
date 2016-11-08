@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -122,17 +123,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             UserController.runBackgroundTasks(user.getName(), this, true);
 
             // TODO: Launch next activity (MainActivity?)
+            Intent intent = new Intent(this, RiderLocationActivity.class);
+            startActivity(intent);
 
         }
     }
 
     private boolean isUserValid(String usr) {
         ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
-        checkUserTask.execute(usr);
+
         try {
-            user = checkUserTask.get();
+            user =  checkUserTask.execute(usr).get();
             // If we didn't find a user it's invalid
-            if (user==null|user.equals(new User())) {
+            if (user==null|user.equals(new User())|user.getName() == null) {
                 return false;
             }
             // Found valid user
@@ -291,5 +294,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showProgress(false);
+    }
+
 }
 

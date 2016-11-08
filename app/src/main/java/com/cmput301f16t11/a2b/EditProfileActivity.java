@@ -10,7 +10,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     User user;
-    //TODO : WE can consider habing profile picture implementation later for part 5
+    //TODO : WE can consider having profile picture implementation later for part 5
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
         EditText userEmailText = (EditText) findViewById(R.id.email);
 
         //check if any updates have actually been made
-        if(userPhoneNumText.getText().toString() != user.getName() || userEmailText.getText().toString() != user.getPhoneNumber()){
+        if(userPhoneNumText.getText().toString().equals(user.getName()) == false  || userEmailText.getText().toString() != user.getPhoneNumber()){
             user.setPhoneNumber(userPhoneNumText.getText().toString());
             user.setEmail(userEmailText.getText().toString());
             UserController.updateUserInDb();

@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,17 +15,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ToggleButton;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -52,8 +51,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Main activity for riders to select their pickup and drop off locations
@@ -89,6 +90,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             case R.id.signOut:
                 ///TODO: logout
+                finish();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -300,26 +302,103 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     }
     public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
-        AlertDialog dlg = new AlertDialog.Builder(context).create();
-        dlg.setMessage(tripStartMarker.getTitle() +"\n" + tripEndMarker.getTitle()+ "\n"+
-        "Trip Distance: "+ distance);
-        dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.rider_confirmation_dialog);
 
-        dlg.show();
-        //TODO: make an actual nice dialog to display ride confirmation and allow user to type their cost
-        //TODO: trip estimation based on the distance
+        final TextView from = (TextView)dialog.findViewById(R.id.fromText);
+        final TextView to = (TextView)dialog.findViewById(R.id.toText);
+        final TextView distanceDlg = (TextView)dialog.findViewById(R.id.distance);
+        final TextView fairEstimate = (TextView)dialog.findViewById(R.id.fairEstimate);
 
+        final Button cancel = (Button)dialog.findViewById(R.id.cancelRequest);
+        final Button confirm = (Button)dialog.findViewById(R.id.confirmRequest);
+        final EditText amount= (EditText)dialog.findViewById(R.id.Fare);
+
+        //Set all the right values in the dialog
+        final double fairAmount = FairEstimation.estimateFair(distance);
+        from.setText(tripStartMarker.getTitle());
+        to.setText(tripEndMarker.getTitle());
+        distanceDlg.setText("Distance: "+ distance);
+        fairEstimate.setText("Fair Estimate: $"+ Double.toString(fairAmount));
+
+        //set up the on click listeners for dialog
+
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+
+        amount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                amount.setText("");
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double userFare = 0.00;
+                try {
+                    userFare = Double.parseDouble(amount.getText().toString());
+
+                } catch (NumberFormatException e) {
+                    //Tell them they have not entered a double
+                    e.printStackTrace();
+                }
+                if (userFare == 0.00) {
+                    AlertDialog doubleWarning = new AlertDialog.Builder(context).create();
+                    doubleWarning.setMessage(getString(R.string.double_warning_message));
+                    doubleWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    doubleWarning.show();
+                    return;
+                }
+
+                //TODO: make a new request and send it somehow controller somehow
+                dialog.dismiss();
+            }
+        });
+
+
+        //Draw the lines on the map
         mMap.addPolyline( new PolylineOptions()
                 .addAll(drawPoints)
                 .width(12)
                 .color(Color.parseColor("#05b1fb"))//Google maps blue color
                 .geodesic(true)
         );
+
+        //Show the dialog
+        dialog.show();
+    }
+
+    static class FairEstimation{
+
+        static public double estimateFair(String strDistance){
+            Scanner sc = new Scanner(strDistance);
+            double distanceKm = sc.nextDouble();
+
+            //Rate starts at 2.50
+            double rate = 2.50;
+
+            //add 1.25 for each km
+            rate += distanceKm * 1.25;
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            String dx=df.format(rate);
+            rate=Double.valueOf(dx);
+
+            return rate;
+        }
     }
 }
 
@@ -548,3 +627,4 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     }
 }
+
