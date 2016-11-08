@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class RequestController {
 
+
     public static ArrayList<UserRequest> getRequestNear(String address, Number radius){
         return new ArrayList<UserRequest>();
     }
@@ -29,22 +30,30 @@ public class RequestController {
         return returnValue;
     }
 
-    public static ArrayList<UserRequest> getNearbyRequests(LatLng location) {
+    public static ArrayList<UserRequest> getNearbyRequests(LatLng location, int radius) {
         /**
          * For use in ride or drive mode
          * Gets all requests nearby to current location
          */
-        //TODO: actual logic
-        return RequestController.tempFakeRequestList();
+        User user = UserController.getUser();
+        ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
+        ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
+        return RequestController.tempFakeRequestList(); // for testing
+        // return nearBy;
     }
 
-    public static ArrayList<UserRequest> getOwnRequests(User user) {
+    public static ArrayList<UserRequest> getOwnActiveRequests(User user) {
         /**
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        // TODO: actual logic
+        User user = UserController.getUser();
+        ElasticsearchRequestController.GetActiveUserRequests searchController = new ElasticsearchRequestController.GetActiveUserRequests();
+        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        //return userRequests;
+
         // (gets requests created by this user)
+        // for testing
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
         temp.add(RequestController.tempFakeRequestList().get(1));
         return temp;
