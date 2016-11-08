@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by brianofrim on 2016-10-10.
@@ -68,6 +69,18 @@ public class UserRequest implements Parcelable {
     }
     public boolean sentNotification() {
         return true;
+    }
+    public Calendar getDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(this.timeCreatedInMillis);
+        return cal;
+    }
+    public long getTimeCreatedInMillis() {
+        return this.timeCreatedInMillis;
+    }
+
+    public String getDateString() {
+        return new Date(this.timeCreatedInMillis).toString();
     }
 
     // setters
@@ -158,5 +171,15 @@ public class UserRequest implements Parcelable {
     public int describeContents() {
         // Not sure what goes here
         return 0;
+    }
+
+    public String toString() {
+        String temp = "Rider: " + this.getRider() + "\n";
+        if (this.getConfirmedDriver() != null) {
+            temp = temp + "Confirmed Driver: " + this.getConfirmedDriver() + "\n";
+        }
+        temp = temp + "Fare: " + this.getFare() + "\n" + "Created on: " +
+                this.getDateString() + "\n";
+        return temp;
     }
 }
