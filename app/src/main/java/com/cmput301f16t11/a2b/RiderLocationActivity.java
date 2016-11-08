@@ -1,13 +1,17 @@
 package com.cmput301f16t11.a2b;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,7 +67,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Context context;
     //private UserController userController;
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -89,7 +92,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
@@ -271,14 +273,32 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         LatLng edmonton = new LatLng(53.5444, -113.4909);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(edmonton)      // Sets the center of the map to location user
-                .zoom(11)                   
+                .zoom(11)
                 .bearing(0)
                 .tilt(0)
                 .build();
+
+        ensureLocationPermissions();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         setButtonListeners();
-    }
 
+
+    }
+    private void ensureLocationPermissions(){
+        //Check if we have the right permissions to use location
+        Boolean i = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (i) {
+            mMap.setMyLocationEnabled(true);
+        }
+
+        else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+            mMap.setMyLocationEnabled(true);
+        }
+
+    }
     public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
         AlertDialog dlg = new AlertDialog.Builder(context).create();
         dlg.setMessage(tripStartMarker.getTitle() +"\n" + tripEndMarker.getTitle()+ "\n"+
