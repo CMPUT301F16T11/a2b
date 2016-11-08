@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,22 +16,24 @@ import static org.junit.Assert.assertTrue;
 
 public class AcceptingUnitTest {
 
-    User driver =  UserController.loadUser("somedriver"); // rider
-    String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
-    String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    Number fare = 10.00;
+    private User driver =  UserController.loadUser("somedriver"); // rider
+    private LatLng startLocation = new LatLng(50,50);
+    private LatLng endLocation = new LatLng(50,50);
+    private String rider = "Rider";
+    private Number fare = 10.00;
 
 
     /**
      * US 05.02.01
-     As a driver, I want to view a list of things I have accepted that are pending, each request with its description, and locations.
+     As a driver, I want to view a list of things I have accepted that are pending,
+     each request with its description, and locations.
      */
     @Test
     public void testDriverAcceptingRequest() {
 
         // random request that Billy wants to accept
         User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, rider);
         user.addRequest(billyRequest);
         assertTrue(user.getRequests().size() > 0);
         user.addAcceptedRequest(billyRequest);
@@ -41,7 +45,7 @@ public class AcceptingUnitTest {
 
         // random request that Billy wants to accept
         User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, rider);
         user.addRequest(billyRequest);
         assertTrue(user.getRequests().size() > 0);
         assertFalse(user.hasAcceptedRequests(billyRequest));
@@ -56,7 +60,7 @@ public class AcceptingUnitTest {
 
     @Test
     public void testNotificationOfferAccepted(){
-        UserRequest request = new UserRequest(startLocation,endLocation,fare);
+        UserRequest request = new UserRequest(startLocation,endLocation,fare,rider);
         //get the list of requests
         ArrayList<UserRequest> requestList = driver.getRequests();
         //check if any are accepted

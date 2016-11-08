@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Test;
 
 import static junit.framework.Assert.assertTrue;
@@ -11,6 +13,11 @@ import static junit.framework.Assert.assertTrue;
 public class LocationUnitTest {
 
     private Number fare = 10;
+    //specify a start point
+    private LatLng start = new LatLng(50,50);
+    //specify an end point
+    private LatLng end = new LatLng(50,50);
+    private String rider = "Rider";
     /**
      * Location
      US 10.01.01
@@ -18,23 +25,20 @@ public class LocationUnitTest {
      */
     @Test
     public void testSetStartEndLocations(){
-        //specify a start point
-        String start = "starting location";
-        //specify an end point
-        String end = "ending location";
+
         //create a new request
-        UserRequest request = new UserRequest(start,end,fare);
+        UserRequest request = new UserRequest(start,end,fare,rider);
         User rider = new User();
 
         //enter in the start and end points chosen
-        request.setStartLocation("new location");
-        request.setEndLocation("home");
+        request.setStartLocation(start);
+        request.setEndLocation(end);
 
         //add it to rider's list
         rider.addRequest(request);
 
-        assertTrue(request.getStartLocation().equals("new location"));
-        assertTrue(request.getEndLocation().equals("home"));
+        assertTrue(request.getStartLocation().equals(new LatLng(50,50)));
+        assertTrue(request.getEndLocation().equals(new LatLng(50,50)));
     }
 
     /**
@@ -44,14 +48,13 @@ public class LocationUnitTest {
      */
     @Test
     public void testEndStartEndLocations(){
-        String start = "next door";
-        String end = "west end";
-        UserRequest request = new UserRequest(start,end,fare);
+
+        UserRequest request = new UserRequest(start,end,fare,rider);
 
         User driver = new User();
         driver.addRequest(request);
-        String testStart = driver.getRequests().get(0).getStartLocation();
-        String testEnd = driver.getRequests().get(0).getEndLocation();
+        LatLng testStart = driver.getRequests().get(0).getStartLocation();
+        LatLng testEnd = driver.getRequests().get(0).getEndLocation();
 
 
 
