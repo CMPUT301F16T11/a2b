@@ -70,7 +70,9 @@ public class RequestController {
         // drivers only
         // TODO: actual logic
         // (get requests accepted by the curr user)
-        return new ArrayList<UserRequest>();
+        ArrayList<UserRequest> tmp = RequestController.tempFakeRequestList();
+        tmp.remove(2);
+        return tmp;
     }
 
     public static ArrayList<UserRequest> getCompletedRequests(User user, Mode mode) {

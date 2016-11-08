@@ -84,7 +84,7 @@ public class RequestListActivity extends AppCompatActivity {
                     }
                     else {
                         requests.clear();
-                        requests = RequestController.getAcceptedByDrivers(UserController.getUser());
+                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
@@ -95,8 +95,9 @@ public class RequestListActivity extends AppCompatActivity {
                     // accepted them
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
-                    requests = RequestController.getConfirmedByRiders(UserController.getUser(),
-                                UserController.checkMode());
+                    requests.clear();
+                    requests.addAll(RequestController.getConfirmedByRiders(UserController.getUser(),
+                                UserController.checkMode()));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 }
@@ -104,14 +105,16 @@ public class RequestListActivity extends AppCompatActivity {
                     // completed requests
                     // if driver, display completed as driver
                     // if rider, display completed as rider
-                    requests = RequestController.getCompletedRequests(UserController.getUser(),
-                                UserController.checkMode());
+                    requests.clear();
+                    requests.addAll(RequestController.getCompletedRequests(UserController.getUser(),
+                                UserController.checkMode()));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 }
                 else if (position == 4) {
                     // only rider mode can get to this point.
-                    requests = RequestController.getOwnRequests(UserController.getUser());
+                    requests.clear();
+                    requests.addAll(RequestController.getOwnRequests(UserController.getUser()));
 //                    populateRequestList();
                     adapter.notifyDataSetChanged();
                 }
