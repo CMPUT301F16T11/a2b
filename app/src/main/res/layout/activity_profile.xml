@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/passengerRating"
-        android:layout_below="@+id/button"
+        android:layout_below="@+id/editProfile"
         android:layout_centerHorizontal="true"
         android:paddingTop="30px"
         android:paddingBottom="3px" />
@@ -60,15 +60,6 @@
         android:layout_below="@+id/passengerRating"
         android:layout_centerHorizontal="true" />
 
-
-
-    <!--<Button-->
-        <!--android:text="Edit"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/editProfile"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_toStartOf="@+id/userName" />-->
 
     <ImageView
         android:layout_width="wrap_content"

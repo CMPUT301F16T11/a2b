@@ -295,5 +295,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showProgress(false);
+    }
+
 }
 
