@@ -25,6 +25,7 @@ public class RequestController {
         return new ArrayList<UserRequest>();
     }
 
+
     static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
 
         ElasticsearchRequestController.GetPastRiderRequests riderTask =
