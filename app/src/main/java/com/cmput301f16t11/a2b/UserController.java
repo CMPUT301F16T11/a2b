@@ -66,6 +66,10 @@ public class UserController {
         }
     }
 
+    static public void updateUserInDb(){
+        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
+        updateUserInfoTask.execute(UserController.getUser());
+    }
 
 
     // time to depreciate this???
@@ -91,6 +95,8 @@ public class UserController {
     }
 
     public static void setOffline() {
+    }
+
 
     /**
      * Method to save the static user variable
