@@ -93,6 +93,7 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
+
         ElasticsearchRequestController.GetPas searchController = new ElasticsearchRequestController.GetUnactiveRequests();
         ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
         return userRequests;
