@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Controllers user and user functions
@@ -72,6 +73,19 @@ public class UserController {
         updateUserInfoTask.execute(user);
     }
 
+    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsRider(requests);
+    }
+    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsDriver(requests);
+    }
+    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsRider(requests);
+
+    }
+    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsDriver(requests);
+    }
 
     // time to depreciate this???
     static public User loadUser(String username){
