@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,15 +27,11 @@ import static junit.framework.Assert.assertTrue;
  */
 
 public class OfflineBehaviorUnitTest {
+    private LatLng start = new LatLng(50,50);
+    private LatLng end = new LatLng(50,50);
+    private int fare = 10;
+    private String rider = "Rider";
 
-    String username = "username";
-
-    User driver = UserController.loadUser(username);
-    String start = "here";
-    String end = "there";
-    int fare = 10;
-
-    UserRequest request = new UserRequest(start,end,fare);
     /**
     US 08.01.01
     As an driver, I want to see requests that I already accepted while offline.
@@ -41,9 +39,9 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineAcceptedRequest(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare);
-        UserRequest request1 = new UserRequest(start,end,fare);
-        UserRequest request2 = new UserRequest(start,end,fare);
+        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request1 = new UserRequest(start,end,fare,rider);
+        UserRequest request2 = new UserRequest(start,end,fare,rider);
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
@@ -53,12 +51,12 @@ public class OfflineBehaviorUnitTest {
         request1.setAcceptedStatus(true);
         request2.setAcceptedStatus(true);
         //save them to a file
-        UserController.saveInFile(requestList);
+        // TODO: fix this line: UserController.saveInFile(requestList);
         //set connection to offline
         UserController.setOffline();
 
         //grab saved list of requests from some file???
-
+        //TODO: get the current user's list that was just created while offline
         //check and see if this list same as given one using test case
         assertTrue(requestList.equals(UserController.getRequestList()));
     }
@@ -70,18 +68,19 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineMadeRequests(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare);
-        UserRequest request1 = new UserRequest(start,end,fare);
-        UserRequest request2 = new UserRequest(start,end,fare);
+        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request1 = new UserRequest(start,end,fare,rider);
+        UserRequest request2 = new UserRequest(start,end,fare,rider);
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
         requestList.add(request2);
         //save them to a file
-        UserController.saveInFile(requestList);
+        // TODO: fix this line: UserController.saveInFile(requestList);
         //go offline
         UserController.setOffline();
         //grab saved list of requests
+        // TODO: same as above, get the current user's list of requests while offline
         //check that saved list is the same list before going offline
         assertEquals(requestList,UserController.getRequestList());
     }
@@ -95,7 +94,7 @@ public class OfflineBehaviorUnitTest {
         //go offline
         UserController.setOffline();
         //create a request
-        UserRequest request = new UserRequest(start,end,fare);
+        UserRequest request = new UserRequest(start,end,fare,rider);
         //go online
         UserController.goOnline();
         UserController.updateRequestList();
@@ -114,7 +113,7 @@ public class OfflineBehaviorUnitTest {
         UserController.setOffline();
         //grab list of requests
         ArrayList<UserRequest> requestList = UserController.getRequestList();
-        UserRequest request = new UserRequest(start,end,fare);
+        UserRequest request = new UserRequest(start,end,fare,rider);
         requestList.add(request);
         //accept one of them
         requestList.get(0).setAcceptedStatus(true);

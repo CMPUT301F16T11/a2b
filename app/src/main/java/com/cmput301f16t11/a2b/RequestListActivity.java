@@ -85,7 +85,8 @@ public class RequestListActivity extends AppCompatActivity {
                     // same for riders & drivers
                     // TODO: feed in actual curr location
                     requests.clear();
-                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50)));
+                    //TODO: feed in chosen radius
+                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15);
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
@@ -121,7 +122,7 @@ public class RequestListActivity extends AppCompatActivity {
                 } else if (position == 4) {
                     // only rider mode can get to this point.
                     requests.clear();
-                    requests.addAll(RequestController.getOwnRequests(UserController.getUser()));
+                    requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser()));
 //                    populateRequestList();
                     adapter.notifyDataSetChanged();
                 }

@@ -25,6 +25,7 @@ public class RequestController {
         return new ArrayList<UserRequest>();
     }
 
+
     static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
 
         ElasticsearchRequestController.GetPastRiderRequests riderTask =
@@ -159,24 +160,19 @@ public class RequestController {
         return temp;
     }
 
-    // push user changes to the data base
-    static public void updateUserInDb(){
-        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
-        updateUserInfoTask.execute(user);
+
+//    static public void updateUserInDb(){
+//        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
+//        updateUserInfoTask.execute(UserController.getUser());
+//    }
+
+
+
+    public static Collection<? extends UserRequest> getNearbyRequests(LatLng latLng) {
+        return null; //TODO: implement this function
     }
 
-    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsRider(requests);
+    public static Collection<? extends UserRequest> getOwnRequests(User user) {
+        return null; //TODO: implement this function
     }
-    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsDriver(requests);
-    }
-    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsRider(requests);
-
-    }
-    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsDriver(requests);
-    }
-
 }
