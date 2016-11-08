@@ -1,0 +1,8 @@
+ChangeLog for EditProfile Task
+
+- implemented activity and views for editprofile functionality
+- EditProfile gets called from Profile Activity
+- view contains edittexts that are filled with current info of user
+- once changes are made and user clicks save, changes are sent to elastic server
+
+- Done by Kelvin and Brian

@@ -16,11 +16,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -70,21 +75,19 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.viewProfile:
-                //TODO: viewProfile
-                Intent intent = new Intent(RiderLocationActivity.this, ProfileActivity.class);
-                startActivity(intent);
+                Intent profileIntent = new Intent(RiderLocationActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
                 return true;
 
             case R.id.changeRole:
-                //TODO: change role
+                Intent driverIntent = new Intent(RiderLocationActivity.this, driverLocationActivity.class);
+                startActivity(driverIntent);
                 return true;
 
             case R.id.signOut:
                 ///TODO: logout
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
         }
@@ -101,7 +104,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         context = this;
-
         //userController = new UserController(null); // TODO: actual login work
     }
 
@@ -111,7 +113,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private void setButtonListeners(){
         final Button setLocation = (Button)findViewById(R.id.setLocationButton);
         final Button cancelTrip = (Button)findViewById(R.id.cancelTrip);
-        final EditText searchBar = (EditText)findViewById(R.id.searchAddress) ;
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         cancelTrip.setEnabled(false);
 
         cancelTrip.setOnClickListener(new View.OnClickListener() {
@@ -140,16 +143,35 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             }
         });
 
-        searchBar.setOnKeyListener(new View.OnKeyListener() {
-               @Override
-               public boolean onKey(View v, int keyCode, KeyEvent event) {
-                   if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                       //search google for that event
-                       //TODO: Search address for location
-                   }
-                   return true;
-               }
-           });
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                LatLng location = place.getLatLng();
+                if(currentMarker != null){
+                    currentMarker.remove();
+                }
+
+                currentMarker = mMap.addMarker(new MarkerOptions()
+                        .position(location)
+                        .title(place.getAddress().toString())
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                currentMarker.showInfoWindow();
+            }
+
+            @Override
+            public void onError(Status status) {
+                AlertDialog markerWarning = new AlertDialog.Builder(context).create();
+                markerWarning.setMessage("Something went wrong in trying to search address.");
+                markerWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                markerWarning.show();
+            }
+        });
 
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,10 +271,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         LatLng edmonton = new LatLng(53.5444, -113.4909);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(edmonton)      // Sets the center of the map to location user
-                .zoom(11)                   // Sets the zoom
-                .bearing(90)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
+                .zoom(11)                   
+                .bearing(0)
+                .tilt(0)
+                .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         setButtonListeners();
     }
@@ -279,7 +301,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .geodesic(true)
         );
     }
-
 }
 
 /**
