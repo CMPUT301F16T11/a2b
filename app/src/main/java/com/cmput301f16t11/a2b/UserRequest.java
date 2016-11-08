@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -13,29 +14,40 @@ import java.util.Calendar;
  * Edited to implement parcelable to allow userrequests to be passed to dialogs
  */
 public class UserRequest implements Parcelable {
-    private String driver;
+    private ArrayList<String> acceptedDrivers;
+    private String confirmedDriver;
     private String rider;
-    LatLng startLocation;
-    LatLng endLocation;
-    Number fare;
-    long timeCreatedInMillis;
-    Number requestId;
-    boolean accepted;
-    boolean completed;
-    boolean paymentReceived;
+    private LatLng startLocation;
+    private LatLng endLocation;
+    private Number fare;
+    private long timeCreatedInMillis;
+    private Number requestId;
+    private boolean accepted;
+    private boolean completed;
+    private boolean paymentReceived;
 
-    UserRequest(LatLng start, LatLng end, Number intitialFare){
+    UserRequest(LatLng start, LatLng end, Number intitialFare, String rider){
         startLocation = start;
         endLocation = end;
         fare = intitialFare;
+        this.rider = rider;
         timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         accepted = false;
         completed = false;
         paymentReceived = false;
     }
 
-    public String getDriver() {return driver;}
-    public String getRider() {return rider;}
+    // Getters
+    public String getConfirmedDriver() {
+        return this.confirmedDriver;
+    }
+
+    public ArrayList<String> getAcceptedDrivers() {
+        return this.acceptedDrivers;
+    }
+    public String getRider() {
+        return rider;
+    }
     public LatLng getEndLocation() {
         return endLocation;
     }
@@ -51,9 +63,18 @@ public class UserRequest implements Parcelable {
     public boolean getAcceptedStatus(){
         return accepted;
     }
+    public boolean isCompleted() {
+        return completed;
+    }
+    public boolean sentNotification() {
+        return true;
+    }
 
-    public void setDriver(String d) {driver = d;}
-    public void setRider(String r) {rider = r;}
+    // setters
+    public void setConfirmedDriver(String d) {
+        this.confirmedDriver = d;
+    }
+
     public void setStartLocation(LatLng startLocation) {
         this.startLocation = startLocation;
     }
@@ -72,16 +93,8 @@ public class UserRequest implements Parcelable {
     public void setCompletedStatus(boolean completed) {
         this.completed = completed;
     }
-
-    public boolean isCompleted() {
-        return completed;
-    }
     public boolean isPaymentRecived() {
         return paymentReceived;
-    }
-
-    public boolean sentNotification() {
-        return true;
     }
 
 
@@ -97,7 +110,7 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(driver);
+        out.writeString(confirmedDriver);
         out.writeString(rider);
         out.writeParcelable(startLocation, flags);
         out.writeParcelable(endLocation, flags);
@@ -115,7 +128,7 @@ public class UserRequest implements Parcelable {
      * @param in : Parcel
      */
     public UserRequest(Parcel in) {
-        driver = in.readString();
+        confirmedDriver = in.readString();
         rider = in.readString();
         startLocation = in.readParcelable(LatLng.class.getClassLoader());
         endLocation = in.readParcelable(LatLng.class.getClassLoader());
