@@ -70,7 +70,6 @@ public class RequestController {
          * For use in ride or drive mode
          * Gets all requests nearby to current location
          */
-        User user = UserController.getUser();
         ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
         ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
         return RequestController.tempFakeRequestList(); // for testing
@@ -82,7 +81,6 @@ public class RequestController {
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        User user = UserController.getUser();
         ElasticsearchRequestController.GetActiveUserRequests searchController = new ElasticsearchRequestController.GetActiveUserRequests();
         ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
         //return userRequests;
@@ -92,6 +90,12 @@ public class RequestController {
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
         temp.add(RequestController.tempFakeRequestList().get(1));
         return temp;
+    }
+
+    public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
+        ElasticsearchRequestController.GetPas searchController = new ElasticsearchRequestController.GetUnactiveRequests();
+        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getAcceptedByDrivers(User user) {
