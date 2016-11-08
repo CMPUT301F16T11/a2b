@@ -93,6 +93,50 @@ public class ElasticsearchUserController {
         }
     }
 
+
+    /**
+     * Given a User object with only an id get the rest of the user
+     * If the user does not exit the return a new user
+     * Meant to be called after a request onject has been returned by elastic search
+     */
+
+    public static class RetriveUserInfo extends AsyncTask<User, Void, User> {
+        @Override
+        protected User doInBackground(User... users) {
+
+            verifySettings();
+
+            String search_string = "{\"query\": {\"match\": {\"id\": \"" + users[0].getId() + "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(userType)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+
+
+                    User user = result.getSourceAsObject(User.class);
+
+                    if (user.getId().equals(users[0].getId())) {
+                        return user;
+                    }
+                    else {
+                        return new User();
+                    }
+                } else {
+                    return new User();
+                }
+            } catch (IOException e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return new User();
+            }
+        }
+    }
+
     /**
      * AsyncTask used to add the user to the elasticsearch server
      *
@@ -159,6 +203,8 @@ public class ElasticsearchUserController {
 
 
     }
+
+
 
 
     private static void verifySettings() {

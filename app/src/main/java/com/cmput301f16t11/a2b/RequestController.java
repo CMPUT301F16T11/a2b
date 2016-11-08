@@ -47,6 +47,7 @@ public class RequestController {
 
         // Saves user file after completion of asyncTasks if necessary
         if (saveAfter) {
+
             UserController.saveInFile(activity);
         }
     }
