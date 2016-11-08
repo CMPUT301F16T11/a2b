@@ -80,11 +80,6 @@ public class UserRequest implements Parcelable {
     public boolean sentNotification() {
         return true;
     }
-    public Calendar getDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(this.timeCreatedInMillis);
-        return cal;
-    }
     public long getTimeCreatedInMillis() {
         return this.timeCreatedInMillis;
     }

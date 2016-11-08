@@ -35,8 +35,8 @@ public class UserController {
         riderTask.execute(usr);
         driverTask.execute(usr);
         try {
-            user.setRequestList(riderTask.get());
-            user.setAcceptedRequestList(riderTask.get());
+            user.setClosedRequestsAsRider(riderTask.get());
+            user.setClosedRequestsAsDriver(driverTask.get());
         } catch (Exception e) {
             Log.i("Error", "AsyncTask failed to execute");
             e.printStackTrace();
