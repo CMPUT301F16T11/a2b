@@ -48,6 +48,8 @@ public class RideCompleteDialog extends DialogFragment {
         RideCompleteDialog dialog = new RideCompleteDialog();
 
         Bundle args = new Bundle();
+        args.putString("rider", req.getConfirmedDriver().getName().toString());
+        args.putString("driver", req.getRider().getName().toString());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -80,6 +82,8 @@ public class RideCompleteDialog extends DialogFragment {
         // Assign views, get request and set views
         assignViews();
         req = getArguments().getParcelable("req");
+        req.getConfirmedDriver().setName(getArguments().getString("driver"));
+        req.getRider().setName(getArguments().getString("rider"));
         setViews();
 
         return layout;
@@ -104,8 +108,8 @@ public class RideCompleteDialog extends DialogFragment {
      *  Sets okButton click listener
      */
     public void setViews() {
-        driver.setText(req.getConfirmedDriver());
-        rider.setText(req.getRider());
+        driver.setText(req.getConfirmedDriver().getName());
+        rider.setText(req.getRider().getName());
         pickup.setText(req.getStartLocation().toString());
         dropoff.setText(req.getEndLocation().toString());
         fare.setText(req.getFare().toString());
