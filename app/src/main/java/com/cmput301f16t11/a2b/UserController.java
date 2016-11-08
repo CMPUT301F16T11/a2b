@@ -103,19 +103,19 @@ public class UserController {
      *
      * Stores it in internal storage as JSON in user.sav file\
      */
-//    public static void saveInFile(Activity activity) {
-//         try {
-//             // Try to convert user to JSON and save it
-//             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
-//             OutputStreamWriter writer = new OutputStreamWriter(fos);
-//             Gson gson = new Gson();
-//             gson.toJson(user, writer);
-//             writer.flush();
-//         } catch (Exception e) {
-//             Log.i("Error", "Couldn't save file");
-//             throw new RuntimeException();
-//         }
-//    }
+    public static void saveInFile(Activity activity) {
+         try {
+             // Try to convert user to JSON and save it
+             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
+             OutputStreamWriter writer = new OutputStreamWriter(fos);
+             Gson gson = new Gson();
+             gson.toJson(user, writer);
+             writer.flush();
+         } catch (Exception e) {
+             Log.i("Error", "Couldn't save file");
+             throw new RuntimeException();
+         }
+    }
 
     public static void goOnline() {
     }

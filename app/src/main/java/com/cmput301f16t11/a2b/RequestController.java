@@ -18,7 +18,6 @@ import static com.cmput301f16t11.a2b.R.id.user;
  * Created by brianofrim on 2016-10-13.
  */
 public class RequestController {
-    private static String USRFILE = "user.sav";
 
 
     public static ArrayList<UserRequest> getRequestNear(String address, Number radius){
@@ -56,7 +55,7 @@ public class RequestController {
 
         // Saves user file after completion of asyncTasks if necessary
         if (saveAfter) {
-            saveInFile(activity);
+            UserController.saveInFile(activity);
         }
     }
 
@@ -177,22 +176,4 @@ public class RequestController {
         return null; //TODO: implement this function
     }
 
-    /**
-     * Method to save the static user variable
-     *
-     * Stores it in internal storage as JSON in user.sav file\
-     */
-    public static void saveInFile(Activity activity) {
-         try {
-             // Try to convert user to JSON and save it
-             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
-             OutputStreamWriter writer = new OutputStreamWriter(fos);
-             Gson gson = new Gson();
-             gson.toJson(user, writer);
-             writer.flush();
-         } catch (Exception e) {
-             Log.i("Error", "Couldn't save file");
-             throw new RuntimeException();
-         }
-    }
 }
