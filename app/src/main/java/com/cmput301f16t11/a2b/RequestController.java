@@ -2,14 +2,9 @@ package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
 import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.Collection;
-
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
-import static com.cmput301f16t11.a2b.R.id.user;
 
 /**
  * Created by brianofrim on 2016-10-13.
@@ -42,8 +37,8 @@ public class RequestController {
             UserController.setClosedRequestsAsRider(riderTask.get());
             UserController.setClosedRequestsAsDriver(driverTask.get());
             UserController.setActiveRequestsAsRider(currRiderTask.get());
-            //TODO something wrong here
-           // UserController.setActiveRequestsAsDriver(currRiderTask.get());
+            //TODO something wrong with this line
+            //UserController.setActiveRequestsAsDriver(currRiderTask.get());
 
         } catch (Exception e) {
             Log.i("Error", "AsyncTask failed to execute");
@@ -52,7 +47,8 @@ public class RequestController {
 
         // Saves user file after completion of asyncTasks if necessary
         if (saveAfter) {
-            //saveInFile(activity);
+
+            UserController.saveInFile(activity);
         }
     }
 
@@ -120,9 +116,9 @@ public class RequestController {
          * Excludes completed requests.
          */
         // riders only
-        //TODO: actual logic
-        // (get requests accepted by a driver created by this user
-        return new ArrayList<UserRequest>();
+        ElasticsearchRequestController.GetAcceptedRequests searchController = new ElasticsearchRequestController.GetAcceptedRequests();
+        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getAcceptedByUser(User user) {
@@ -131,15 +127,13 @@ public class RequestController {
          * accepted, excluding completed requests.
          */
         // drivers only
-        // TODO: actual logic
         // (get requests accepted by the curr user)
-        ArrayList<UserRequest> tmp = RequestController.tempFakeRequestList();
-        tmp.remove(2);
-        return tmp;
+        ElasticsearchRequestController.GetAcceptedDriverRequests searchController = new ElasticsearchRequestController.GetAcceptedDriverRequests();
+        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getCompletedRequests(User user, Mode mode) {
-        // TODO: actual logic
         /**
          * Gets the completed requests BY a driver if mode == Mode.DRIVER
          * Gets the completed requests a rider received if mode == Mode.RIDER
@@ -158,21 +152,5 @@ public class RequestController {
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
         temp.add(RequestController.tempFakeRequestList().get(2));
         return temp;
-    }
-
-
-//    static public void updateUserInDb(){
-//        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
-//        updateUserInfoTask.execute(UserController.getUser());
-//    }
-
-
-
-    public static Collection<? extends UserRequest> getNearbyRequests(LatLng latLng) {
-        return null; //TODO: implement this function
-    }
-
-    public static Collection<? extends UserRequest> getOwnRequests(User user) {
-        return null; //TODO: implement this function
     }
 }

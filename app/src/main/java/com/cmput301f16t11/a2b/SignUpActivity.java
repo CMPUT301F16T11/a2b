@@ -330,23 +330,26 @@ public class SignUpActivity extends AppCompatActivity {
                     // Something Entered
                     else {
                         User result = new User();
+                        User nullUser = new User();
                         ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
                         checkUserTask.execute(username);
                         try {
                             result = checkUserTask.get();
+                            errorMsg.setText(result.getId());
+                            errorMsg.setVisibility(View.VISIBLE);
                         } catch (Exception e) {
                             Log.i("Error", "Failed to get result from asynctask");
                         }
 
                         // Username has become unique
-                        if (result==null & last_state!=1) {
+                        if (result.getName()==null & last_state!=1) {
                             uniqueUsr = true;
                             usrIcon.setImageResource(R.drawable.circle_check);
                             usrMsg.setText(R.string.signup_usr_open);
                             last_state = 1;
                         }
                         // Username is still unique
-                        else if (result==null & last_state==1) {
+                        else if (result.getName()==null & last_state==1) {
                             // Do nothing
                         }
                         // Username is not unique

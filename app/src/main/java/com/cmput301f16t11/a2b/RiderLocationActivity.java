@@ -254,7 +254,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                         String address = "";
                         if(!matches.isEmpty()){
-                            address = matches.get(0).getAddressLine(0)+ matches.get(0).getLocality();
+                            address = matches.get(0).getAddressLine(0) + ' ' +  matches.get(0).getLocality();
                         }
 
                         currentMarker.setTitle(address);
