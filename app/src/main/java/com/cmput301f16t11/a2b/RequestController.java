@@ -6,10 +6,10 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 import static com.cmput301f16t11.a2b.R.id.user;
-import static com.cmput301f16t11.a2b.UserController.saveInFile;
 
 /**
  * Created by brianofrim on 2016-10-13.
@@ -157,6 +157,26 @@ public class RequestController {
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
         temp.add(RequestController.tempFakeRequestList().get(2));
         return temp;
+    }
+
+    // push user changes to the data base
+    static public void updateUserInDb(){
+        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
+        updateUserInfoTask.execute(user);
+    }
+
+    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsRider(requests);
+    }
+    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsDriver(requests);
+    }
+    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsRider(requests);
+
+    }
+    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsDriver(requests);
     }
 
 }

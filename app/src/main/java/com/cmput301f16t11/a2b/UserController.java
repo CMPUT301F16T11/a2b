@@ -67,25 +67,7 @@ public class UserController {
         }
     }
 
-    // push user changes to the data base
-    static public void updateUserInDb(){
-        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
-        updateUserInfoTask.execute(user);
-    }
 
-    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsRider(requests);
-    }
-    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsDriver(requests);
-    }
-    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsRider(requests);
-
-    }
-    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsDriver(requests);
-    }
 
     // time to depreciate this???
     static public User loadUser(String username){
@@ -110,7 +92,6 @@ public class UserController {
     }
 
     public static void setOffline() {
-    }
 
     /**
      * Method to save the static user variable
