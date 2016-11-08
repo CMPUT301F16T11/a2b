@@ -10,9 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by brianofrim on 2016-10-10.
- *
- * Edited to implement parcelable to allow userrequests to be passed to dialogs
+ * Model representing UserRequests.
+ * Contains distance, start, end locations, rider (who created the request), confirmed driver
+ * (if any), fare and other details.
  */
 public class UserRequest implements Parcelable {
     private ArrayList<String> acceptedDrivers;
@@ -21,21 +21,34 @@ public class UserRequest implements Parcelable {
     private LatLng startLocation;
     private LatLng endLocation;
     private Number fare;
+    private Double distance;
     private long timeCreatedInMillis;
     private Number requestId;
     private boolean accepted;
     private boolean completed;
     private boolean paymentReceived;
 
-    UserRequest(LatLng start, LatLng end, Number intitialFare, String rider){
-        startLocation = start;
-        endLocation = end;
-        fare = intitialFare;
+    public UserRequest(LatLng start, LatLng end, Number fare, String rider){
+        this.startLocation = start;
+        this.endLocation = end;
+        this.fare = fare;
         this.rider = rider;
-        timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
-        accepted = false;
-        completed = false;
-        paymentReceived = false;
+        this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
+        this.accepted = false;
+        this.completed = false;
+        this.paymentReceived = false;
+    }
+
+    public UserRequest(LatLng start, LatLng end, Number fare, String rider, Double distance) {
+        this.startLocation = start;
+        this.endLocation = end;
+        this.fare = fare;
+        this.rider = rider;
+        this.distance = distance;
+        this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
+        this.accepted = false;
+        this.completed = false;
+        this.paymentReceived = false;
     }
 
     // Getters
@@ -58,9 +71,6 @@ public class UserRequest implements Parcelable {
     public LatLng getStartLocation() {
         return startLocation;
     }
-    public Number getFareEstimation(String startLocation, String endLocation) {
-        return fare;
-    }
     public boolean getAcceptedStatus(){
         return accepted;
     }
@@ -81,6 +91,10 @@ public class UserRequest implements Parcelable {
 
     public String getDateString() {
         return new Date(this.timeCreatedInMillis).toString();
+    }
+
+    public Double getDistance() {
+        return this.distance;
     }
 
     // setters
@@ -177,6 +191,9 @@ public class UserRequest implements Parcelable {
         String temp = "Rider: " + this.getRider() + "\n";
         if (this.getConfirmedDriver() != null) {
             temp = temp + "Confirmed Driver: " + this.getConfirmedDriver() + "\n";
+        }
+        if (this.getDistance() != null) {
+            temp = temp + "Distance: " + this.getDistance().toString() + "\n";
         }
         temp = temp + "Fare: " + this.getFare() + "\n" + "Created on: " +
                 this.getDateString() + "\n";
