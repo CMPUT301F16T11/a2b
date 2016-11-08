@@ -76,7 +76,7 @@ public class ElasticsearchUserController {
                         user.setId(id);
                     }
 
-                    if (user.getName().equals(params[0])) {
+                    if (user!=null && user.getName().equals(params[0])) {
                         return user;
                     }
                     else {
@@ -165,6 +165,7 @@ public class ElasticsearchUserController {
         // Initialize client if necessary
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
+            //DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();

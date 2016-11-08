@@ -28,6 +28,7 @@ public class ElasticsearchRequestController {
 
     private static String openRequest = "openRequest";
     private static String closedRequest = "closedRequest";
+    private static String inProgress = "inProgress";
 
 
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
@@ -49,7 +50,7 @@ public class ElasticsearchRequestController {
                     List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
                     riderList.addAll(foundRequests);
                 } else {
-                    Log.i("Error", "Failed to find requests for this rideR");
+                    Log.i("Error", "Failed to find requests for this rider");
                 }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -79,7 +80,7 @@ public class ElasticsearchRequestController {
                     List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
                     requestList.addAll(foundRequests);
                 } else {
-                    Log.i("Error", "Failed to find user requests for user");
+                    Log.i("Error", "Failed to find user requests for driver");
                 }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -109,7 +110,7 @@ public class ElasticsearchRequestController {
                     List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
                     requestList.addAll(foundRequests);
                 } else {
-                    Log.i("Error", "Failed to find user requests for user");
+                    Log.i("Error", "Failed to find user requests for rider");
                 }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -139,7 +140,7 @@ public class ElasticsearchRequestController {
                     List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
                     driverList.addAll(foundRequests);
                 } else {
-                    Log.i("Error", "Failed to find driver requests for user");
+                    Log.i("Error", "Failed to find driver requests for driver");
                 }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -293,6 +294,7 @@ public class ElasticsearchRequestController {
                     requestList.addAll(tmp);
                 } else {
                     // No requests found in area
+                    Log.i("Error", "Failed to find any requests within in the area");
                 }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -300,6 +302,66 @@ public class ElasticsearchRequestController {
             }
 
             return requestList;
+        }
+    }
+
+    public static class GetAcceptedRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+    public static class GetAcceptedDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(inProgress)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests for driver");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
         }
     }
 
