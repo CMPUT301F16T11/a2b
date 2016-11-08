@@ -1,0 +1,13 @@
+# Ignore gradle files
+.gradle/
+build/
+
+# generated files
+bin/
+gen/
+
+# built application files
+*.apk
+*.ap_
+
+.idea/
