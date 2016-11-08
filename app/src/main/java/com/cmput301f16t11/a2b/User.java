@@ -148,6 +148,22 @@ public class User {
     public void setClosedRequestsAsRider(Collection<UserRequest> requests) {
         this.requestsAsRider.addAll(requests);
     }
+    public void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        /**
+         * add entire collection of active requests to rider list
+         * also automatically adds to overall list of requests
+         */
+        this.activeRequestsAsRider.addAll(requests);
+        setClosedRequestsAsRider(this.activeRequestsAsRider);
+    }
+    public void setActiveRequestsAsDriver(Collection<UserRequest> requests) {
+        /**
+         * add entire collection of active requests to driver list
+         * also automatically adds to overall list of requests
+         */
+        this.activeRequestsAsDriver.addAll(requests);
+        setClosedRequestsAsDriver(this.activeRequestsAsDriver);
+    }
 
     // Request transactions
     public void addActiveRiderRequest(UserRequest request) {
