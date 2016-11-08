@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +17,10 @@ public class StatusUnitTest {
     may make more sense to test if the list is displaying the correct data
      */
 
-    private String startLocation = "8210 108 St NW Edmonton, AB T6E 5T2";
-    private String endLocation = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+    private LatLng startLocation = new LatLng(50,50);
+    private LatLng endLocation = new LatLng(50,50);
+    private int fare = 10;
+    private String rider = "Rider";
     private UserRequest req;
     /**
      *US 02.01.01
@@ -24,7 +28,7 @@ public class StatusUnitTest {
      */
     @Before
     public void setUp(){
-        req = new UserRequest(startLocation, endLocation, 10);
+        req = new UserRequest(startLocation, endLocation,fare,rider);
     }
 
     @Test

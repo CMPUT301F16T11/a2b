@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,14 +22,22 @@ public class SearchingUnitTest {
     private User user = UserController.loadUser("billy"); // driver
 
     private String userName = "user";
-    private String startLocation1 = "8210 108 St NW Edmonton, AB T6E 5T2";
-    private String endLocation1 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    private String startLocation2 = "8210 106 St NW Edmonton, AB T6E 5T2";
-    private String endLocation2 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    private String startLocation3 = "8210 109 St NW Edmonton, AB T6E 5T2";
-    private String endLocation3 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-    private String startLocation4 = "8210 110 St NW Edmonton, AB T6E 5T2";
-    private String endLocation4 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+//    private String startLocation1 = "8210 108 St NW Edmonton, AB T6E 5T2";
+//    private String endLocation1 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+//    private String startLocation2 = "8210 106 St NW Edmonton, AB T6E 5T2";
+//    private String endLocation2 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+//    private String startLocation3 = "8210 109 St NW Edmonton, AB T6E 5T2";
+//    private String endLocation3 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+//    private String startLocation4 = "8210 110 St NW Edmonton, AB T6E 5T2";
+//    private String endLocation4 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
+    private LatLng startLocation1 = new LatLng(50,50);
+    private LatLng endLocation1 = new LatLng(50,50);
+    private LatLng startLocation2 = new LatLng(50,50);
+    private LatLng endLocation2 = new LatLng(50,50);
+    private LatLng startLocation3 = new LatLng(50,50);
+    private LatLng endLocation3 = new LatLng(50,50);
+    private LatLng startLocation4 = new LatLng(50,50);
+    private LatLng endLocation4 = new LatLng(50,50);
 
     private UserRequest req1;
     private UserRequest req2;
@@ -64,8 +74,10 @@ public class SearchingUnitTest {
     @Test
     public void testGetRequests() {
         user = UserController.loadUser(userName);
-        UserRequest request = new UserRequest("10025 125 st", "12586 58 ave", 123);
-        UserRequest request2 = new UserRequest("1212 32 st", "12322 43 ave", 23);
+        String passenger = "Passenger";
+        String passenger2 = "Passenger2";
+        UserRequest request = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, passenger);
+        UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, passenger2);
         user.addRequest(request);
         user.addRequest(request2);
 

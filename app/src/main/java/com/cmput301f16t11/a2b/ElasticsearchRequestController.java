@@ -60,7 +60,37 @@ public class ElasticsearchRequestController {
         }
     }
 
-    public static class GetActiveUserRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+    public static class GetActiveDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find user requests for user");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
+
+    public static class GetActiveRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -119,67 +149,6 @@ public class ElasticsearchRequestController {
             return driverList;
         }
     }
-
-    public static class GetActiveRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
-        @Override
-        protected ArrayList<UserRequest> doInBackground(String... user) {
-            verifySettings();
-
-            ArrayList<UserRequest> riderList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider\": \"" + user[0] + "\"}}}";
-
-            Search search = new Search.Builder(search_string)
-                    .addIndex(index)
-                    .addType(openRequest)
-                    .build();
-
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
-                    riderList.addAll(foundRequests);
-                } else {
-                    Log.i("Error", "Failed to find requests for this rideR");
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-            }
-
-            return riderList;
-        }
-    }
-
-    public static class GetActiveDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
-        @Override
-        protected ArrayList<UserRequest> doInBackground(String... user) {
-            verifySettings();
-
-            ArrayList<UserRequest> driverList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
-
-            Search search = new Search.Builder(search_string)
-                    .addIndex(index)
-                    .addType(openRequest)
-                    .build();
-
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
-                    driverList.addAll(foundRequests);
-                } else {
-                    Log.i("Error", "Failed to find driver requests for user");
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-            }
-
-            return driverList;
-        }
-    }
-
 
 //    public static class GetActiveRequestsInRange extends AsyncTask<String, Void, ArrayList<UserRequest>> {
 //        @Override

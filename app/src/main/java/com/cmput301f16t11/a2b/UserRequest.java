@@ -18,6 +18,7 @@ public class UserRequest implements Parcelable {
     private ArrayList<String> acceptedDrivers;
     private String confirmedDriver;
     private String rider;
+    private String driver;
     private LatLng startLocation;
     private LatLng endLocation;
     private Number fare;

@@ -1,11 +1,7 @@
 package com.cmput301f16t11.a2b;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
-import io.searchbox.annotations.JestId;
 
 /**
  * Model for User class

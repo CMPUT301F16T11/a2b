@@ -6,13 +6,12 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
-import org.apache.commons.lang3.ObjectUtils;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static com.cmput301f16t11.a2b.R.id.user;
 
 /**
  * Controllers user and user functions
@@ -67,25 +66,7 @@ public class UserController {
         }
     }
 
-    // push user changes to the data base
-    static public void updateUserInDb(){
-        ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
-        updateUserInfoTask.execute(user);
-    }
 
-    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsRider(requests);
-    }
-    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsDriver(requests);
-    }
-    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsRider(requests);
-
-    }
-    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsDriver(requests);
-    }
 
     // time to depreciate this???
     static public User loadUser(String username){
@@ -110,30 +91,46 @@ public class UserController {
     }
 
     public static void setOffline() {
-    }
 
     /**
      * Method to save the static user variable
      *
-     * Stores it in internal storage as JSON in user.sav file
+     * Stores it in internal storage as JSON in user.sav file\
      */
-    public static void saveInFile(Activity activity) {
-         try {
-             // Try to convert user to JSON and save it
-             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
-             OutputStreamWriter writer = new OutputStreamWriter(fos);
-             Gson gson = new Gson();
-             gson.toJson(user, writer);
-             writer.flush();
-         } catch (Exception e) {
-             Log.i("Error", "Couldn't save file");
-             throw new RuntimeException();
-         }
-    }
+//    public static void saveInFile(Activity activity) {
+//         try {
+//             // Try to convert user to JSON and save it
+//             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
+//             OutputStreamWriter writer = new OutputStreamWriter(fos);
+//             Gson gson = new Gson();
+//             gson.toJson(user, writer);
+//             writer.flush();
+//         } catch (Exception e) {
+//             Log.i("Error", "Couldn't save file");
+//             throw new RuntimeException();
+//         }
+//    }
 
     public static void goOnline() {
     }
 
     public static void updateRequestList() {
+    }
+
+    public static void runBackgroundTasks(String name, LoginActivity loginActivity, boolean b) {
+    }
+
+    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsRider(requests);
+    }
+    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsDriver(requests);
+    }
+    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsRider(requests);
+
+    }
+    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsDriver(requests);
     }
 }
