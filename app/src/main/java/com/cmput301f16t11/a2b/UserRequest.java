@@ -18,6 +18,7 @@ public class UserRequest implements Parcelable {
     private ArrayList<String> acceptedDrivers;
     private String confirmedDriver;
     private String rider;
+    private String driver;
     private LatLng startLocation;
     private LatLng endLocation;
     private Number fare;
@@ -79,11 +80,6 @@ public class UserRequest implements Parcelable {
     }
     public boolean sentNotification() {
         return true;
-    }
-    public Calendar getDate() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(this.timeCreatedInMillis);
-        return cal;
     }
     public long getTimeCreatedInMillis() {
         return this.timeCreatedInMillis;

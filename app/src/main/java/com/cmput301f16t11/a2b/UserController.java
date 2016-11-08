@@ -6,12 +6,10 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
-import org.apache.commons.lang3.ObjectUtils;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Controllers user and user functions
@@ -26,26 +24,6 @@ public class UserController {
 
     public UserController(User u) {
         user = u;
-    }
-
-
-    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
-        ElasticsearchRequestController.GetPastRiderRequests riderTask = new ElasticsearchRequestController.GetPastRiderRequests();
-        ElasticsearchRequestController.GetPastDriverRequests driverTask = new ElasticsearchRequestController.GetPastDriverRequests();
-        riderTask.execute(usr);
-        driverTask.execute(usr);
-        try {
-            user.setRequestList(riderTask.get());
-            user.setAcceptedRequestList(riderTask.get());
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
-            e.printStackTrace();
-        }
-
-        // Saves user file after completion of asyncTasks if necessary
-        if (saveAfter) {
-            saveInFile(activity);
-        }
     }
 
 
@@ -92,6 +70,19 @@ public class UserController {
         updateUserInfoTask.execute(user);
     }
 
+    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsRider(requests);
+    }
+    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsDriver(requests);
+    }
+    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsRider(requests);
+
+    }
+    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsDriver(requests);
+    }
 
     // time to depreciate this???
     static public User loadUser(String username){
@@ -141,5 +132,8 @@ public class UserController {
     }
 
     public static void updateRequestList() {
+    }
+
+    public static void runBackgroundTasks(String name, LoginActivity loginActivity, boolean b) {
     }
 }

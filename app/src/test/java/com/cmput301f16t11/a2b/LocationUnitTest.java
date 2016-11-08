@@ -35,7 +35,7 @@ public class LocationUnitTest {
         request.setEndLocation(end);
 
         //add it to rider's list
-        rider.addRequest(request);
+        rider.addActiveRiderRequest(request);
 
         assertTrue(request.getStartLocation().equals(new LatLng(50,50)));
         assertTrue(request.getEndLocation().equals(new LatLng(50,50)));
