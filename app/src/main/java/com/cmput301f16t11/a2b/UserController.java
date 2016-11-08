@@ -66,7 +66,7 @@ public class UserController {
     }
 
     static public Mode checkMode() {
-        mode = Mode.DRIVER;
+        mode = Mode.RIDER;
         return mode;
     }
 

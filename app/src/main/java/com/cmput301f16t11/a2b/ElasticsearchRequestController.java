@@ -153,9 +153,9 @@ public class ElasticsearchRequestController {
      *
      */
 
-    public static class CloseRequest extends AsyncTask<Request, Void, Boolean> {
+    public static class CloseRequest extends AsyncTask<UserRequest, Void, Boolean> {
         @Override
-        protected Boolean doInBackground(Request... requests) {
+        protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
 
             // Delete the request from the list of open requests

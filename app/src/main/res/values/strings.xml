@@ -82,11 +82,13 @@
     <!-- Location Menu String-->
     <string name="view_profile">View Profile</string>
     <string name="change_role">Change Role</string>
+    <string name="request_list">View Requests</string>
     <string name="sign_out">Sign Out</string>
 
     <!-- Multi Purpose Strings -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
+    <string name="title_activity_request_detail">RequestDetailActivity</string>
 
 </resources>
