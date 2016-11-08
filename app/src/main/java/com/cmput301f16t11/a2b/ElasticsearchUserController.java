@@ -66,7 +66,7 @@ public class ElasticsearchUserController {
 
                     // ensure that the users id is set.
                     // this is for debugging purposes and can be removed in production
-                    if(user.getId() == null){
+                    if (user.getId() == null) {
                         // parse the response for the id
                         JsonObject jsonResponse = result.getJsonObject();
                         JsonObject hits = jsonResponse.getAsJsonObject("hits");
@@ -76,7 +76,12 @@ public class ElasticsearchUserController {
                         user.setId(id);
                     }
 
-                    return user;
+                    if (user.getName().equals(params[0])) {
+                        return user;
+                    }
+                    else {
+                        return new User();
+                    }
                 } else {
                     return new User();
                 }
@@ -166,5 +171,23 @@ public class ElasticsearchUserController {
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
         }
+    }
+
+    private static String  getIdFromResult(JsonObject jsonResponse){
+        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+        JsonArray actualHits = hits.getAsJsonArray("hits");
+        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+        String id = firstHit.get("_id").toString();
+        return id;
+    }
+
+    private static String getUserFromResult(JsonObject jsonResponse) {
+        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+        JsonArray actualHits = hits.getAsJsonArray("hits");
+        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+        JsonObject source = firstHit.getAsJsonObject("_source");
+        String name = source.get("userName").toString();
+        name = name.substring(1, name.length()-1);
+        return name;
     }
 }

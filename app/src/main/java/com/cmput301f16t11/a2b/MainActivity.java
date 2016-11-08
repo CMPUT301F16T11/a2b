@@ -12,7 +12,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // TEMPORARY CODE - LAUNCHES the location activity for testing
-        Intent intent = new Intent(this, RiderLocationActivity.class);
+        //Intent intent = new Intent(this, RiderLocationActivity.class);
+       // startActivity(intent);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 }
