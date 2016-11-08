@@ -85,6 +85,7 @@ public class RideCompleteDialog extends DialogFragment {
         return layout;
     }
 
+
     /**
      * Finds all views from the dialog
      */

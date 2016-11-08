@@ -68,6 +68,17 @@
     <string name="rideComplete_endTitle">Destination:</string>
     <string name="rideComplete_fareTitle">Fare:</string>
 
+    <!-- request_info_dialog Strings -->
+    <string name="requestInfo_title">Ride Details</string>
+    <string name="requestInfo_riderTitle">Rider:</string>
+    <string name="requestInfo_startTitle">Pickup:</string>
+    <string name="requestInfo_endTitle">Destination:</string>
+    <string name="requestInfo_fareTitle">Fare:</string>
+
+    <!-- MarkerInfoDialog Strings -->
+    <string name="markerInfo_accept">Accept</string>
+    <string name="markerInfo_cancel">Cancel</string>
+
     <!-- Location Menu String-->
     <string name="view_profile">View Profile</string>
     <string name="change_role">Change Role</string>
