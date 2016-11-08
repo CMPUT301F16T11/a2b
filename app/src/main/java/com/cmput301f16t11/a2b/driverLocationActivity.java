@@ -2,39 +2,60 @@ package com.cmput301f16t11.a2b;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class driverLocationActivity extends FragmentActivity implements OnMapReadyCallback,
+public class driverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-
+    private Marker currentMarker;
+    private Circle currentCircle;
+    private int currentSearchRadius = 3000; // defaults to 3000m
+    private Context context;
+    private LatLng startLatLng;
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
 
     protected void onStart() {
@@ -48,6 +69,40 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.location_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.viewProfile:
+                Intent profileIntent = new Intent(driverLocationActivity.this, ProfileActivity.class);
+                startActivity(profileIntent);
+                return true;
+
+            case R.id.changeRole:
+                Intent driverIntent = new Intent(driverLocationActivity.this, RiderLocationActivity.class);
+                startActivity(driverIntent);
+                finish();
+                return true;
+
+            case R.id.viewRequests:
+                Intent requestIntent = new Intent(driverLocationActivity.this, RequestListActivity.class);
+                startActivity(requestIntent);
+                return true;
+
+            case R.id.signOut:
+                finish();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_location);
@@ -55,12 +110,63 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        context = this;
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+    }
 
+    private void setUpAutoCompleteBar(){
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+
+                PlaceMarker(place.getLatLng());
+            }
+
+            @Override
+            public void onError(Status status) {
+                AlertDialog markerWarning = new AlertDialog.Builder(context).create();
+                markerWarning.setMessage("Something went wrong in trying to search address.");
+                markerWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                markerWarning.show();
+            }
+        });
+    }
+
+    public void setUpMapClicking(){
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+               PlaceMarker(latLng);
+            }
+        });
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                try{
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    PlaceMarker(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                }catch(SecurityException e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -86,6 +192,8 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
             double higherLat = mLastLocation.getLatitude() + (3/110.574);
             double lowerLon = mLastLocation.getLongitude() - (3/111.320*Math.cos(mLastLocation.getLongitude()));
             double higherLon = mLastLocation.getLongitude() + (3/111.320*Math.cos(mLastLocation.getLongitude()));
+            startLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
 
             ArrayList<UserRequest> nearbyRequests = new ArrayList<UserRequest>();
             ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
@@ -96,6 +204,8 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
             } catch (Exception e) {
                 Log.i("Error", "AsyncTask failed to execute");
             }
+
+            PlaceMarker(startLatLng);
         }
     }
 
@@ -140,15 +250,6 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
 
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -165,7 +266,84 @@ public class driverLocationActivity extends FragmentActivity implements OnMapRea
                     0);
             mMap.setMyLocationEnabled(true);
         }
+        setUpAutoCompleteBar();
+        setUpMapClicking();
+        setListeners();
 
-        }
     }
+
+    private void setListeners(){
+        final SeekBar radius = (SeekBar) findViewById(R.id.radiusSeekBar);
+        final TextView radiusSet = (TextView) findViewById(R.id.radiusText);
+
+        radius.setMax(10000);
+        radius.setProgress(3000);
+        radiusSet.setText("3000" + "meters");
+
+        radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    seekBar.setProgress(progress);
+                    currentSearchRadius = progress;
+                    radiusSet.setText(String.valueOf(progress) + "meters");
+                }
+
+                if(currentCircle != null){
+                    currentCircle.setRadius(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+    }
+
+    public void PlaceMarker(LatLng latlng){
+        if(currentMarker != null){
+            currentMarker.remove();
+        }
+
+        currentMarker = mMap.addMarker(new MarkerOptions()
+                .position(latlng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+        //adjust the circle or set it
+        if(currentCircle == null){
+            CircleOptions circleOptions = new CircleOptions()
+                    .center(currentMarker.getPosition())
+                    .radius(currentSearchRadius);
+
+            currentCircle = mMap.addCircle(circleOptions);
+        }
+        else
+        {
+            currentCircle.setCenter(currentMarker.getPosition());
+            currentCircle.setRadius(currentSearchRadius);
+        }
+
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> matches = geoCoder.getFromLocation(latlng.latitude, latlng.longitude, 1);
+            String address = "";
+            if (!matches.isEmpty()) {
+                address = matches.get(0).getAddressLine(0) + matches.get(0).getLocality();
+            }
+
+            currentMarker.setTitle(address);
+            currentMarker.showInfoWindow();
+        }
+            catch(IOException e){
+                e.printStackTrace();
+            }
+    }
+}
 
