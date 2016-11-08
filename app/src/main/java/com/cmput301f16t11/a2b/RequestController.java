@@ -35,9 +35,7 @@ public class RequestController {
          * Gets all requests nearby to current location
          */
         //TODO: actual logic
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        temp.add(RequestController.tempFakeRequestList().get(0));
-        return temp;
+        return RequestController.tempFakeRequestList();
     }
 
     public static ArrayList<UserRequest> getOwnRequests(User user) {
