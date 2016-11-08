@@ -52,17 +52,6 @@ public class RequestController {
         }
     }
 
-    // TEMPORARY POPULATION OF RANDOM REQUESTS!!!
-    public static ArrayList<UserRequest> tempFakeRequestList() {
-        ArrayList<UserRequest> returnValue = new ArrayList<UserRequest>();
-        returnValue.add(new UserRequest(new LatLng(53.5443890, -113.4909270),
-                new LatLng(54.07777, -113.50192), 10.01, "test"));
-        returnValue.add(new UserRequest(new LatLng(54.07777, -113.50192),
-                new LatLng(53.5443890, -113.4909270), 13.31, "test1"));
-        returnValue.add(new UserRequest(new LatLng(54.07777, -113.50192),
-                new LatLng(53.5443890, -113.4909270), 18.31, "test2"));
-        return returnValue;
-    }
 
     public static ArrayList<UserRequest> getNearbyRequests(LatLng location, int radius) {
         /**
@@ -150,7 +139,6 @@ public class RequestController {
          * Excludes completed requests
         */
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        temp.add(RequestController.tempFakeRequestList().get(2));
         return temp;
     }
 }

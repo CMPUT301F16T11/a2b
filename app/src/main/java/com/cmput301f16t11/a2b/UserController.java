@@ -90,7 +90,6 @@ public class UserController {
     public static ArrayList<UserRequest> getRequestList() {
 
         ArrayList<UserRequest> fakeList = new ArrayList<>();
-        fakeList.add(new UserRequest(new LatLng(50, 50), new LatLng(50, 50), 0, "test"));
         return fakeList;
     }
 

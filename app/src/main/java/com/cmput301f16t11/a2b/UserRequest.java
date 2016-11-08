@@ -15,10 +15,9 @@ import java.util.Date;
  * (if any), fare and other details.
  */
 public class UserRequest implements Parcelable {
-    private ArrayList<String> acceptedDrivers;
-    private String confirmedDriver;
-    private String rider;
-    private String driver;
+    private ArrayList<User> acceptedDrivers;
+    private User confirmedDriver;
+    private User rider;
     private LatLng startLocation;
     private LatLng endLocation;
     private Number fare;
@@ -29,7 +28,7 @@ public class UserRequest implements Parcelable {
     private boolean completed;
     private boolean paymentReceived;
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider){
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider){
         this.startLocation = start;
         this.endLocation = end;
         this.fare = fare;
@@ -40,7 +39,7 @@ public class UserRequest implements Parcelable {
         this.paymentReceived = false;
     }
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider, Double distance) {
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
         this.startLocation = start;
         this.endLocation = end;
         this.fare = fare;
@@ -53,14 +52,14 @@ public class UserRequest implements Parcelable {
     }
 
     // Getters
-    public String getConfirmedDriver() {
+    public User getConfirmedDriver() {
         return this.confirmedDriver;
     }
 
-    public ArrayList<String> getAcceptedDrivers() {
+    public ArrayList<User> getAcceptedDrivers() {
         return this.acceptedDrivers;
     }
-    public String getRider() {
+    public User getRider() {
         return rider;
     }
     public LatLng getEndLocation() {
@@ -94,7 +93,7 @@ public class UserRequest implements Parcelable {
     }
 
     // setters
-    public void setConfirmedDriver(String d) {
+    public void setConfirmedDriver(User d) {
         this.confirmedDriver = d;
     }
 
@@ -133,8 +132,6 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(confirmedDriver);
-        out.writeString(rider);
         out.writeParcelable(startLocation, flags);
         out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
@@ -151,8 +148,6 @@ public class UserRequest implements Parcelable {
      * @param in : Parcel
      */
     public UserRequest(Parcel in) {
-        confirmedDriver = in.readString();
-        rider = in.readString();
         startLocation = in.readParcelable(LatLng.class.getClassLoader());
         endLocation = in.readParcelable(LatLng.class.getClassLoader());
         fare = in.readInt();
