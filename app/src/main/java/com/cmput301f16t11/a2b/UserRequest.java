@@ -187,6 +187,11 @@ public class UserRequest implements Parcelable {
         return 0;
     }
 
+    public String getId() {
+        //TODO: ALL ID WORK
+        return "NEEDS TO BE IMPLEMENTED";
+    }
+
     public String toString() {
         String temp = "Rider: " + this.getRider() + "\n";
         if (this.getConfirmedDriver() != null) {

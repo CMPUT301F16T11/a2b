@@ -88,6 +88,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 startActivity(driverIntent);
                 return true;
 
+            case R.id.viewRequests:
+                Intent requestIntent = new Intent(RiderLocationActivity.this,
+                                            RequestListActivity.class);
+                startActivity(requestIntent);
+                return true;
+
             case R.id.signOut:
                 ///TODO: logout
                 finish();

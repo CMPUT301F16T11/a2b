@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,11 +35,13 @@ public class ShadedListAdapter<A> extends ArrayAdapter<A> {
     @Override
     public View getView(int pos, View v, ViewGroup vGroup) {
         View view = super.getView(pos, v, vGroup);
+//        Log.w("original is clickable", Boolean.toString(view.isClickable()));
         if (pos % 2 == 0) {
             // if even, shade the background
             view.setBackgroundColor(Color.rgb(224, 224, 224));
 
         }
+//        Log.w("view is clickable", Boolean.toString(view.isClickable()));
         return view;
     }
 }

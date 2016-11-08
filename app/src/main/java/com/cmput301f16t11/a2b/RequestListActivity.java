@@ -1,5 +1,8 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -38,33 +42,41 @@ public class RequestListActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        // listView Stuff
         listView = (ListView) findViewById(R.id.requestList);
-        // make it click!
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
                 //TODO: some code here that responds to clicking on request
                 // perhaps a dialog?
+                // set view colour
+                v.setBackgroundColor(Color.rgb(127, 215, 245));
+                Intent intent = new Intent(v.getContext(), RequestDetailActivity.class);
+                Gson gson = new Gson();
+                String request = gson.toJson(requests.get(position));
+                intent.putExtra("request", request);
+                startActivity(intent);
             }
         });
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
         spinner = (Spinner) findViewById(R.id.requestSpinner);
-        this.populateRequestList();
+        adapter.notifyDataSetChanged();
+
+        // spinner stuff
         if (UserController.checkMode().equals(Mode.DRIVER)) {
-            String [] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
+            String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_dropdown_item, choices);
-        }
-        else {
+                    android.R.layout.simple_spinner_dropdown_item, choices);
+        } else {
             // rider
-            String [] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
+            String[] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
             spinnerChoices = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_dropdown_item, choices);
+                    android.R.layout.simple_spinner_dropdown_item, choices);
         }
+
         spinner.setAdapter(spinnerChoices);
-        requests = this.requests;
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -75,21 +87,18 @@ public class RequestListActivity extends AppCompatActivity {
                     requests.clear();
                     requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50)));
                     adapter.notifyDataSetChanged();
-                }
-                else if (position == 1) {
+                } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
                     if (UserController.checkMode().equals(Mode.DRIVER)) {
                         requests.clear();
                         requests.addAll(RequestController.getAcceptedByUser(UserController.getUser()));
-                    }
-                    else {
+                    } else {
                         requests.clear();
                         requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
-                }
-                else if (position == 2) {
+                } else if (position == 2) {
                     // confirmed requests
                     // if rider this will be requests the USER has confirmed after a driver has
                     // accepted them
@@ -97,21 +106,19 @@ public class RequestListActivity extends AppCompatActivity {
                     // after accepted by the curr user
                     requests.clear();
                     requests.addAll(RequestController.getConfirmedByRiders(UserController.getUser(),
-                                UserController.checkMode()));
+                            UserController.checkMode()));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
-                }
-                else if (position == 3) {
+                } else if (position == 3) {
                     // completed requests
                     // if driver, display completed as driver
                     // if rider, display completed as rider
                     requests.clear();
                     requests.addAll(RequestController.getCompletedRequests(UserController.getUser(),
-                                UserController.checkMode()));
+                            UserController.checkMode()));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
-                }
-                else if (position == 4) {
+                } else if (position == 4) {
                     // only rider mode can get to this point.
                     requests.clear();
                     requests.addAll(RequestController.getOwnRequests(UserController.getUser()));
@@ -119,14 +126,11 @@ public class RequestListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg) {
                 // do nothing
             }
         });
-    }
-
-    private void populateRequestList() {
-        adapter.notifyDataSetChanged();
     }
 }

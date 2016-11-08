@@ -14,8 +14,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +25,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,23 +35,21 @@
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/signup_label"/>
+            android:label="@string/signup_label" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity
 
+        <activity
             android:name=".RiderLocationActivity"
             android:label="@string/title_activity_location" />
-
         <activity android:name=".EditProfileActivity" />
         <activity
             android:name=".driverLocationActivity"
-            android:label="@string/title_activity_driver_location" >
-
-        </activity>
-        <activity android:name=".RequestListActivity"></activity>
+            android:label="@string/title_activity_driver_location" />
+        <activity android:name=".RequestListActivity" />
+        <activity android:name=".RequestDetailActivity"></activity>
     </application>
 
 </manifest>
