@@ -61,9 +61,10 @@
         android:layout_marginTop ="310dp" />
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_width="175dp"
+        android:layout_height="125dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/ic_a2b_icon"/>
+        android:background="@mipmap/ic_a2b_icon"/>
+
 </RelativeLayout>
