@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -326,6 +327,25 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
                 else{
                         generateRequests(currentSearchRadius, currentMarker.getPosition());
                 }
+            }
+        });
+        
+        searchByKeyword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.search_by_keyword);
+                final Button cancelButton = (Button) dialog.findViewById(R.id.cancelKeyword);
+                final Button confirm = (Button) dialog.findViewById(R.id.okKeyword);
+
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
             }
         });
     }
