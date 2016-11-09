@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -55,7 +57,6 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
     private Circle currentCircle;
     private int currentSearchRadius = 3000; // defaults to 3000m
     private Context context;
-    private LatLng startLatLng;
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
 
     protected void onStart() {
@@ -187,28 +188,35 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 
             // Load requests within a 9 square km area
             // 110.574 = km per latitude degree
-            // 111.320cos(longitude degrees) = km per longitude degree
-            double lowerLat = mLastLocation.getLatitude() - (3/110.574);
-            double higherLat = mLastLocation.getLatitude() + (3/110.574);
-            double lowerLon = mLastLocation.getLongitude() - (3/111.320*Math.cos(mLastLocation.getLongitude()));
-            double higherLon = mLastLocation.getLongitude() + (3/111.320*Math.cos(mLastLocation.getLongitude()));
-            startLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            LatLng currentLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            ArrayList<UserRequest> requests = generateRequests(3000, currentLatLng);
+            handleRequests(requests);
 
+            //Place a marker at the start at it last known location
 
-            ArrayList<UserRequest> nearbyRequests = new ArrayList<UserRequest>();
-            ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
-            getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
-            try {
-                nearbyRequests = getNearbyRequests.get();
-                handleRequests(nearbyRequests);
-            } catch (Exception e) {
-                Log.i("Error", "AsyncTask failed to execute");
-            }
-
-            PlaceMarker(startLatLng);
+            PlaceMarker(currentLatLng);
         }
     }
+    public ArrayList<UserRequest> generateRequests(int radiusMeters, LatLng center){
+        double distanceKm = radiusMeters/1000;
 
+        double lowerLat = center.latitude - (distanceKm/110.574);
+        double higherLat = center.latitude + (distanceKm/110.574);
+        double lowerLon = center.longitude - (distanceKm/111.320*Math.cos(center.longitude));
+        double higherLon = center.longitude + (distanceKm/111.320*Math.cos(center.longitude));
+
+        ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
+        ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
+        getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
+        try {
+            nearbyRequests = getNearbyRequests.get();
+            handleRequests(nearbyRequests);
+        } catch (Exception e) {
+            Log.i("Error", "AsyncTask failed to execute");
+        }
+
+        return nearbyRequests;
+    }
     /**
      * Adds a marker for every request on the list
      * Adds an entry to the hashmap for every (marker, request) pair
@@ -217,8 +225,10 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
      */
     public void handleRequests(ArrayList<UserRequest> list) {
         // Clear mapping of old requests
+        for(Marker m: requestMap.keySet()){
+            m.remove();
+        }
         requestMap.clear();
-        mMap.clear();
 
         // Add marker, clickListener, and hashmap entry for each request
         for (UserRequest req : list) {
@@ -275,6 +285,8 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
     private void setListeners(){
         final SeekBar radius = (SeekBar) findViewById(R.id.radiusSeekBar);
         final TextView radiusSet = (TextView) findViewById(R.id.radiusText);
+        final Button  searchNearPin = (Button) findViewById(R.id.searchNearPin);
+        final Button  searchByKeyword = (Button) findViewById(R.id.searchByKeyword);
 
         radius.setMax(10000);
         radius.setProgress(3000);
@@ -305,6 +317,17 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
             }
         });
 
+        searchNearPin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( currentMarker == null){
+
+                }
+                else{
+                        generateRequests(currentSearchRadius, currentMarker.getPosition());
+                }
+            }
+        });
     }
 
     public void PlaceMarker(LatLng latlng){
