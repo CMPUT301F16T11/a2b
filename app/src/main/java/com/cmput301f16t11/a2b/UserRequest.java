@@ -53,7 +53,13 @@ public class UserRequest implements Parcelable {
 
     // Getters
     public String getDriver() {
-        return this.rider;
+        if(this.driver == null) {
+            return "No confirmed driver :'(";
+        }
+        else if(this.driver.length() < 1) {
+            return "No confirmed driver :'(";
+        }
+        return this.driver;
     }
 
     public ArrayList<String> getAcceptedDrivers() {

@@ -44,9 +44,19 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setTextViews() {
-        // Get the user info from User controller
-        user = UserController.getUser();
 
+        try {
+            Intent intent = getIntent();
+            String username = intent.getStringExtra("username");
+            ElasticsearchUserController.CheckUserTask checkUser = new ElasticsearchUserController.CheckUserTask();
+            checkUser.execute(username);
+            user = checkUser.get();
+
+        } catch (Exception e) {
+            // Get the user info from User controller
+            user = UserController.getUser();
+
+        }
         //Populating text attrubutes
         TextView userNameTV = (TextView) findViewById(R.id.userName);
         TextView emailTV = (TextView) findViewById(R.id.emailText);
