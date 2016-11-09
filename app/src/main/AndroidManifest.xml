@@ -50,6 +50,9 @@
             android:label="@string/title_activity_driver_location" />
         <activity android:name=".RequestListActivity" />
         <activity android:name=".RequestDetailActivity"></activity>
+        <service
+            android:name=".RiderNotificationService"
+            android:exported="false"/>
     </application>
 
 </manifest>
