@@ -17,49 +17,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="207dp"
+        android:layout_marginTop="210dp"
         android:id="@+id/userName"
-        android:paddingTop="3px"
-        android:paddingBottom="3px" />
+        android:textSize="20dp"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:text="888-888-8888"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/phoneNumberTextView"
-        android:layout_below="@+id/userName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop ="280dp"
+        android:textSize="15dp" />
 
     <TextView
         android:text="myemail@gmail.com"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/emailText"
-        android:layout_below="@+id/phoneNumberTextView"
         android:layout_centerHorizontal="true"
-        android:paddingTop="3px"
-        android:paddingBottom="3px" />
-
-
-    <TextView
-        android:text="Passenger rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/passengerRating"
-        android:layout_below="@+id/editProfile"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="30px"
-        android:paddingBottom="3px" />
-
-    <TextView
-        android:text="Driver rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/driverRating"
-        android:layout_below="@+id/passengerRating"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_marginTop ="250dp"
+        android:textSize="15dp"
+         />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -72,11 +53,17 @@
         android:layout_alignBottom="@+id/userName" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Edit"
+        android:layout_centerHorizontal="true"
         android:id="@+id/editProfile"
-        android:layout_below="@+id/emailText"
-        android:layout_alignStart="@+id/phoneNumberTextView" />
+        android:layout_marginTop ="310dp" />
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_a2b_icon"/>
 </RelativeLayout>
