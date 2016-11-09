@@ -94,6 +94,7 @@ public class ElasticsearchUserController {
     }
 
 
+
     /**
      * Given a User object with only an id get the rest of the user
      * If the user does not exit the return a new user

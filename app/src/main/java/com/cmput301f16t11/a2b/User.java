@@ -12,7 +12,7 @@ import io.searchbox.annotations.JestId;
  */
 public class User {
     @JestId
-    private transient String id;
+    private  String id;
 
     private transient ArrayList<UserRequest> requestsAsRider;
     private transient ArrayList<UserRequest> requestsAsDriver;

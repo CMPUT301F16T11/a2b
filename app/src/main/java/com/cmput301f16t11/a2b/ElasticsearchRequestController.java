@@ -32,6 +32,36 @@ public class ElasticsearchRequestController {
     private static String inProgress = "inProgress";
 
 
+    /**
+     * Add an open request to elastic search server
+     *
+     */
+
+    public static class AddOpenRequestTask extends AsyncTask<UserRequest, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(UserRequest... requests) {
+            verifySettings();
+
+            Index userIndex = new Index.Builder(requests[0]).index(index).type(openRequest).build();
+
+            try {
+                DocumentResult result = client.execute(userIndex);
+                if (result.isSucceeded()) {
+                    //requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to add user");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to add user to elasticsearch");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
@@ -91,6 +121,9 @@ public class ElasticsearchRequestController {
             return requestList;
         }
     }
+
+
+
 
     /**
      * Add a driver acceptance to a request
@@ -221,30 +254,7 @@ public class ElasticsearchRequestController {
     }
 
 
-//    public static class AddOpenRequestTask extends AsyncTask<User, Void, Boolean> {
-//        @Override
-//        protected Boolean doInBackground(Request... requests) {
-//            verifySettings();
-//
-//            Index userIndex = new Index.Builder(requests[0]).index(index).type(openRequest).build();
-//
-//            try {
-//                DocumentResult result = client.execute(userIndex);
-//                if (result.isSucceeded()) {
-//                    requests[0].setId(result.getId());
-//                } else {
-//                    Log.i("Error", "Elasticsearch failed to add user");
-//                    return false;
-//                }
-//            } catch (Exception e) {
-//                Log.i("Error", "Failed to add user to elasticsearch");
-//                e.printStackTrace();
-//                return false;
-//            }
-//
-//            return true;
-//        }
-//    }
+
 
     /**
      * Move a request from open to inprogress

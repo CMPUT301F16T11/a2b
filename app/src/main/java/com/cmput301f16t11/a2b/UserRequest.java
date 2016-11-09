@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Model representing UserRequests.
  * Contains distance, start, end locations, rider (who created the request), confirmed driver
@@ -27,6 +29,8 @@ public class UserRequest implements Parcelable {
     private boolean accepted;
     private boolean completed;
     private boolean paymentReceived;
+    @JestId
+    private String id;
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider){
         this.startLocation = start;
