@@ -407,6 +407,62 @@ public class ElasticsearchRequestController {
     }
 
     /**
+     * Same as above but uses geo distance filter
+     * param[0] - distance
+     * param[1] - lat
+     * param[2] -lon
+     */
+
+    public static class GetNearbyRequestsGeoFilter extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
+        public ArrayList<UserRequest> doInBackground(Double... params) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+
+            String search_string = "{ \"query\":{\n" +
+                    "    \"filtered\" : {\n" +
+                    "        \"query\" : {\n" +
+                    "            \"match_all\" : {}\n" +
+                    "        },\n" +
+                    "        \"filter\" : {\n" +
+                    "            \"geo_distance\" : {\n" +
+                    "                \"distance\" : \""+params[0]+"km\",\n" +
+                    "                \"startLocation.location\" : {\n" +
+                    "                    \"lat\" : "+ params[1] +",\n" +
+                    "                    \"lon\" : "+ params[2] +"}\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+
+
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> tmp = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(tmp);
+                } else {
+                    // No requests found in area
+                    Log.i("Error", "Failed to find any requests within in the area");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
+
+
+    /**
      * GetRequest fetches the request with the given Id from the server
      *
      * takes in a request id
