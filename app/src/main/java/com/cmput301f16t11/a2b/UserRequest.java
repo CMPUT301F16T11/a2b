@@ -20,8 +20,8 @@ public class UserRequest implements Parcelable {
     private ArrayList<User> acceptedDrivers;
     private User confirmedDriver;
     private User rider;
-    private LatLng startLocation;
-    private LatLng endLocation;
+    private Point startLocation;
+    private Point endLocation;
 
     private Number fare;
     private Double distance;
@@ -34,8 +34,8 @@ public class UserRequest implements Parcelable {
     private String id;
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider){
-        this.startLocation = start;
-        this.endLocation = end;
+        this.startLocation = new Point(start.latitude,start.longitude);
+        this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
         this.rider = rider;
         this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
@@ -46,8 +46,8 @@ public class UserRequest implements Parcelable {
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
-        this.startLocation = start;
-        this.endLocation = end;
+        this.startLocation = new Point(start.latitude,start.longitude);
+        this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
         this.rider = rider;
         this.distance = distance;
@@ -71,13 +71,13 @@ public class UserRequest implements Parcelable {
         return rider;
     }
     public LatLng getEndLocation() {
-        return endLocation;
+        return new LatLng(this.endLocation.getLat(),this.endLocation.getLon());
     }
     public Number getFare() {
         return fare;
     }
     public LatLng getStartLocation() {
-        return startLocation;
+        return new LatLng(this.startLocation.getLat(),this.startLocation.getLon());
     }
     public boolean getAcceptedStatus(){
         return accepted;
@@ -107,10 +107,13 @@ public class UserRequest implements Parcelable {
     }
 
     public void setStartLocation(LatLng startLocation) {
-        this.startLocation = startLocation;
+        this.startLocation.setLat(startLocation.latitude);
+        this.startLocation.setLon(startLocation.longitude);
+
     }
     public void setEndLocation(LatLng endLocation) {
-        this.endLocation = endLocation;
+        this.endLocation.setLat(endLocation.latitude);
+        this.endLocation.setLon(endLocation.longitude);
     }
     public void setPaymentReceived(boolean paymentRecived) {
         this.paymentReceived = paymentRecived;
@@ -144,8 +147,8 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeParcelable(startLocation, flags);
-        out.writeParcelable(endLocation, flags);
+        //out.writeParcelable(startLocation, flags);
+        //out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
         out.writeLong(timeCreatedInMillis);
         out.writeInt((int)requestId);
