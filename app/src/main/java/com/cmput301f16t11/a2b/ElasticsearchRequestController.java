@@ -125,8 +125,6 @@ public class ElasticsearchRequestController {
     }
 
 
-
-
     /**
      * Add a driver acceptance to a request
      * info[0] is the request ID
@@ -266,7 +264,7 @@ public class ElasticsearchRequestController {
      */
 
 
-    public static class MoveToInprogresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
+    public static class MoveToInProgresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();

@@ -22,6 +22,7 @@ public class UserRequest implements Parcelable {
     private User rider;
     private LatLng startLocation;
     private LatLng endLocation;
+
     private Number fare;
     private Double distance;
     private long timeCreatedInMillis;

@@ -165,4 +165,24 @@ public class RequestController {
         return temp;
     }
 
+    /**
+     * Move a request from open to inProgress
+     */
+    public static void moveToInProgress(UserRequest ur){
+        ElasticsearchRequestController.MoveToInProgresseRequest moveToInProgresseRequest = new ElasticsearchRequestController.MoveToInProgresseRequest();
+        moveToInProgresseRequest.execute(ur);
+
+    }
+
+    /**
+     * Move a request from inProgress to closed
+     */
+
+    public static void moveToClosed(UserRequest ur){
+        ElasticsearchRequestController.MoveToClosedRequest moveToClosedRequest = new ElasticsearchRequestController.MoveToClosedRequest();
+        moveToClosedRequest.execute(ur);
+
+    }
+
+
 }
