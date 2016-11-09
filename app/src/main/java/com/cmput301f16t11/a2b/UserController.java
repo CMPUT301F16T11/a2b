@@ -52,19 +52,7 @@ public class UserController {
     }
 
     static public User getUser() {
-        if(user != null){
             return user;
-        }else{ // should always be set but for dev purposes return an existing object
-            // TO DO: depricate this before production
-            ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
-            try{
-                user = checkUserTask.execute("Jane Doe").get();// force syncronous
-            }catch (Exception e){
-                user = new User();
-            }
-
-            return user;
-        }
     }
 
     static public void updateUserInDb(){
@@ -80,21 +68,36 @@ public class UserController {
     }
 
 
-    // time to depreciate this???
-    static public User loadUser(String username){
-        return new User();
+
+    // getters
+   static public String getName() {
+        return user.getName();
     }
 
-   static public String getNewUserName() {
-        return "Daniel";
-    }
-   static public String getNewPass() {
-        return "test";
-    }
    static public String getEmail() {
-        return "test@ualberta.ca";
+        return user.getEmail();
     }
 
+    static public String getPhoneNumber() {
+        return user.getPhoneNumber();
+    }
+
+    //setters
+
+    static public void setName(String name) {
+        user.setName(name);
+    }
+
+    static public void setEmail(String email) {
+        user.setEmail(email);
+    }
+
+    static public void setPhoneNumber(String phoneNumber) {
+         user.setPhoneNumber(phoneNumber);
+    }
+
+
+    // access elastic
     public static ArrayList<UserRequest> getRequestList() {
 
         ArrayList<UserRequest> fakeList = new ArrayList<>();
