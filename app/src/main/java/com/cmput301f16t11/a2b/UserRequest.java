@@ -41,6 +41,7 @@ public class UserRequest implements Parcelable {
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
+        RequestController.addOpenRequest(this);
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
@@ -53,6 +54,8 @@ public class UserRequest implements Parcelable {
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
+        RequestController.addOpenRequest(this);
+
     }
 
     // Getters
