@@ -95,7 +95,7 @@ public class ElasticsearchRequestController {
     /**
      * Add a driver acceptance to a request
      * info[0] is the request ID
-     * info[1] is the driver userName
+     * info[1] is the driver ID
      */
 
     public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
@@ -109,17 +109,15 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{\n" +
-                    "    \"script\" : \"ctx._source.acceptedDrivers += newDriver\",\n" +
-                    "    \"params\" : {\n" +
-                    "        \"newDriver\" : \"" + info[1] +"\"\n" +
-                    "    }\n" +
-                    "}";
+            String script = "{ \"script\" : \"ctx._source.acceptedDrivers += newDriver \", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
 
 
             try {
-                client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
 
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
             } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
                 e.printStackTrace();
@@ -221,7 +219,7 @@ public class ElasticsearchRequestController {
             return requestList;
         }
     }
-    
+
 
 //    public static class AddOpenRequestTask extends AsyncTask<User, Void, Boolean> {
 //        @Override
