@@ -17,14 +17,23 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent = new Intent(this, RiderLocationActivity.class);
         // startActivity(intent)
 
-        User user = new User("someone","asgasd@asgs.ca","999");
-        user.setId("asvearve435");
-
-        UserRequest mockReq = new UserRequest(new LatLng(53.5232,113.5263),new LatLng(53.525,113.521),10,user);
-
-        ElasticsearchRequestController.AddOpenRequestTask addOpenRequestTask = new ElasticsearchRequestController.AddOpenRequestTask();
-        addOpenRequestTask.execute(mockReq);
-
+//        User user = new User("someone2","asgasd@asgs.ca","666");
+//        user.setId("asvearve435");
+//
+//        UserRequest mockReq = new UserRequest(new LatLng(53.5232,113.5263),new LatLng(53.525,113.521),10,user);
+//
+//        ElasticsearchRequestController.AddOpenRequestTask addOpenRequestTask = new ElasticsearchRequestController.AddOpenRequestTask();
+//        ElasticsearchRequestController.MoveToInprogresseRequest moveToInprogresseRequest = new ElasticsearchRequestController.MoveToInprogresseRequest();
+//        ElasticsearchRequestController.MoveToClosedRequest moveToClosedRequest = new ElasticsearchRequestController.MoveToClosedRequest();
+//
+//        try {
+//            addOpenRequestTask.execute(mockReq).get();
+//            moveToInprogresseRequest.execute(mockReq).get();
+//            moveToClosedRequest.execute(mockReq).get();
+//
+//        }catch(Exception e){
+//
+//        }
 
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);

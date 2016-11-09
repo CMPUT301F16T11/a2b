@@ -188,7 +188,7 @@ public class UserRequest implements Parcelable {
 
     public String getId() {
         //TODO: ALL ID WORK
-        return "NEEDS TO BE IMPLEMENTED";
+        return id;
     }
 
     public String toString() {

@@ -12,8 +12,10 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -264,7 +266,7 @@ public class ElasticsearchRequestController {
      */
 
 
-    public static class moveToInprogresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
+    public static class MoveToInprogresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
@@ -314,7 +316,7 @@ public class ElasticsearchRequestController {
      *(Untested)
      */
 
-    public static class moveToClosedRequest extends AsyncTask<UserRequest, Void, Boolean> {
+    public static class MoveToClosedRequest extends AsyncTask<UserRequest, Void, Boolean> {
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
@@ -406,6 +408,42 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * GetRequest fetches the request with the given Id from the server
+     *
+     * takes in a request id
+     * returns the request with that ID, null if the request does not exist
+     */
+
+    public static class GetRequest extends AsyncTask<String, Void, UserRequest> {
+        @Override
+        protected UserRequest doInBackground(String... requestID) {
+            verifySettings();
+
+            Get get = new Get.Builder(index,requestID[0]).type(openRequest).build();
+
+            UserRequest userRequest;
+
+            try {
+                JestResult result = client.execute(get);
+                if (result.isSucceeded()) {
+                    userRequest = result.getSourceAsObject(UserRequest.class);
+                }else{
+                    Log.i("Error", "Failed to find any accepted requests");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return null;
+            }
+
+            return userRequest;
+        }
+    }
+
+
+
     public static class GetAcceptedRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
@@ -435,6 +473,7 @@ public class ElasticsearchRequestController {
             return accepted;
         }
     }
+
 
     public static class GetAcceptedDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
