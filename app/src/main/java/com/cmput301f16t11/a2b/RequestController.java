@@ -69,6 +69,11 @@ public class RequestController {
             UserController.saveInFile(activity);
         }
     }
+    public static void addOpenRequest(UserRequest request) {
+        ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
+                new ElasticsearchRequestController.AddOpenRequestTask();
+        addOpenRequest.execute(request);
+    }
 
 
     public static ArrayList<UserRequest> getNearbyRequests(LatLng location, int radius) {
