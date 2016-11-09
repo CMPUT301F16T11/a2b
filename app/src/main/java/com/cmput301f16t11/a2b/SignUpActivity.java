@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,7 +90,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                             if (result) {
                                 //TODO: Launch next activity after user creation (MainActivity?)
-
+                                Intent intent =
+                                        new Intent(SignUpActivity.this, RiderLocationActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 // Failed to add new user
                                 error = true;
