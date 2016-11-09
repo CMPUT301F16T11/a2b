@@ -27,13 +27,12 @@ public class RequestDetailActivity extends AppCompatActivity {
      * (Available here:
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
-    // TODO: Remove confirm button
     // TODO: Allow option to confirm on accepted Driver click if appliactable
             // potentially a dialog with a complete button is applicable
             // if not a view user button
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
-    ArrayList<User> acceptgitedDrivers;
+    ArrayList<User> acceptedDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
