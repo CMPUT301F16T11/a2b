@@ -76,7 +76,7 @@ public class UserController {
         lastLocation = location;
     }
     static public LatLng getLastLocation() {
-        return location;
+        return lastLocation;
     }
 
 

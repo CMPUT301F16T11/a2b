@@ -211,6 +211,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
         getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
         try {
             nearbyRequests = getNearbyRequests.get();
+            RequestController.setNearbyRequests(nearbyRequests);
             handleRequests(nearbyRequests);
         } catch (Exception e) {
             Log.i("Error", "AsyncTask failed to execute");
