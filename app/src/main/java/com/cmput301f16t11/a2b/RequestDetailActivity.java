@@ -28,7 +28,7 @@ public class RequestDetailActivity extends AppCompatActivity {
      */
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
-    ArrayList<String> acceptedDrivers;
+    ArrayList<User> acceptedDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,34 +54,34 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", acceptedDrivers.get(position));
+                intent.putExtra("username", acceptedDrivers.get(position).toString());
                 startActivity(intent);
             }
         });
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, acceptedDrivers);
 
     }
 
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
-        driverName.setText(request.getDriver());
+        driverName.setText(request.getConfirmedDriver().toString());
         driverName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", request.getDriver());
+                intent.putExtra("username", request.getConfirmedDriver().toString());
                 startActivity(intent);
             }
         });
 
         TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
-        riderName.setText(request.getRider());
+        riderName.setText(request.getRider().toString());
         riderName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", request.getRider());
+                intent.putExtra("username", request.getRider().toString());
                 startActivity(intent);
             }
         });

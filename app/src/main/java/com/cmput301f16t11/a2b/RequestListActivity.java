@@ -37,6 +37,7 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         this.requests = RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15);
+
     }
 
     @Override

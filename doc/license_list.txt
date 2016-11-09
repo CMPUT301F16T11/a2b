@@ -19,3 +19,11 @@ RequestListActivity:
  * It is available here:
  * http://stackoverflow.com/questions/13109840/android-alternate-row-colors-in-listview
  */
+
+     /**
+     * This work, "MainHabitActivity," contains a derivative
+     * "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
+     * used under CC-BY-SA by CMPUT301F16T11.
+     * (Available here:
+     * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
+     */

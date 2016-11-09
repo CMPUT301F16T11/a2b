@@ -42,6 +42,7 @@ public class MarkerInfoDialog extends DialogFragment {
         MarkerInfoDialog dialog = new MarkerInfoDialog();
 
         Bundle args = new Bundle();
+        args.putString("rider", req.getRider().getName().toString());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -69,6 +70,7 @@ public class MarkerInfoDialog extends DialogFragment {
         // Assign views, get request and set views
         assignViews();
         req = getArguments().getParcelable("req");
+        req.getRider().setName(getArguments().getString("rider"));
         setViews();
 
         return layout;
@@ -112,7 +114,7 @@ public class MarkerInfoDialog extends DialogFragment {
         }
 
         // Set the textViews
-        riderText.setText(req.getRider());
+        riderText.setText(req.getRider().getName());
         startText.setText(startAddress);
         endText.setText(endAddress);
         fareText.setText(req.getFare().toString());

@@ -15,9 +15,9 @@ import java.util.Date;
  * (if any), fare and other details.
  */
 public class UserRequest implements Parcelable {
-    private ArrayList<String> acceptedDrivers;
-    private String rider;
-    private String driver;
+    private ArrayList<User> acceptedDrivers;
+    private User confirmedDriver;
+    private User rider;
     private LatLng startLocation;
     private LatLng endLocation;
     private Number fare;
@@ -28,7 +28,7 @@ public class UserRequest implements Parcelable {
     private boolean completed;
     private boolean paymentReceived;
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider){
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider){
         this.startLocation = start;
         this.endLocation = end;
         this.fare = fare;
@@ -39,7 +39,7 @@ public class UserRequest implements Parcelable {
         this.paymentReceived = false;
     }
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider, Double distance) {
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
         this.startLocation = start;
         this.endLocation = end;
         this.fare = fare;
@@ -52,20 +52,14 @@ public class UserRequest implements Parcelable {
     }
 
     // Getters
-    public String getDriver() {
-        if(this.driver == null) {
-            return "No confirmed driver :'(";
-        }
-        else if(this.driver.length() < 1) {
-            return "No confirmed driver :'(";
-        }
-        return this.driver;
+    public User getConfirmedDriver() {
+        return this.confirmedDriver;
     }
 
-    public ArrayList<String> getAcceptedDrivers() {
+    public ArrayList<User> getAcceptedDrivers() {
         return this.acceptedDrivers;
     }
-    public String getRider() {
+    public User getRider() {
         return rider;
     }
     public LatLng getEndLocation() {
@@ -99,8 +93,9 @@ public class UserRequest implements Parcelable {
     }
 
     // setters
-    public void setDriver(String d) {
-        this.driver = d;
+
+    public void setConfirmedDriver(User d) {
+        this.confirmedDriver = d;
     }
 
     public void setStartLocation(LatLng startLocation) {
@@ -138,8 +133,6 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(driver);
-        out.writeString(rider);
         out.writeParcelable(startLocation, flags);
         out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
@@ -156,8 +149,6 @@ public class UserRequest implements Parcelable {
      * @param in : Parcel
      */
     public UserRequest(Parcel in) {
-        driver = in.readString();
-        rider = in.readString();
         startLocation = in.readParcelable(LatLng.class.getClassLoader());
         endLocation = in.readParcelable(LatLng.class.getClassLoader());
         fare = in.readInt();
@@ -195,8 +186,8 @@ public class UserRequest implements Parcelable {
 
     public String toString() {
         String temp = "Rider: " + this.getRider() + "\n";
-        if (this.getDriver() != null) {
-            temp = temp + "Confirmed Driver: " + this.getDriver() + "\n";
+        if (this.getConfirmedDriver() != null) {
+            temp = temp + "Confirmed Driver: " + this.getConfirmedDriver() + "\n";
         }
         if (this.getDistance() != null) {
             temp = temp + "Distance: " + this.getDistance().toString() + "\n";
