@@ -30,6 +30,13 @@ public class RequestController {
         return nearbyRequests;
     }
 
+    public static void addAcceptance(UserRequest request) {
+        ElasticsearchRequestController.AddDriverAcceptanceToRequest addAcceptance =
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequest();
+        // request id driver id
+        addAcceptance.execute(request.getId(), UserController.getUser().getId());
+    }
+
 
 
     static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {

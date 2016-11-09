@@ -157,6 +157,14 @@ public class RequestDetailActivity extends AppCompatActivity {
             acceptButton.setEnabled(false);
         }
 
+        // onClick Listeners
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestController.addAcceptance(request);
+            }
+        });
+
 
     }
 
