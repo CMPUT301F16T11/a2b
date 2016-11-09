@@ -11,6 +11,8 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
  */
 public class RequestController {
 
+    public static ArrayList<UserRequest> nearbyRequests;
+
 
     public static ArrayList<UserRequest> getRequestNear(String address, Number radius){
         return new ArrayList<UserRequest>();
@@ -19,6 +21,15 @@ public class RequestController {
     public static ArrayList<UserRequest> getRequestNear(LatLng location, Number radius) {
         return new ArrayList<UserRequest>();
     }
+
+    public static void setNearbyRequests(ArrayList<UserRequest> requests) {
+        nearbyRequests = requests;
+    }
+
+    public static ArrayList<UserRequest> getNearbyRequests() {
+        return nearbyRequests;
+    }
+
 
 
     static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
