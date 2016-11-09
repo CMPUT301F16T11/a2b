@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
@@ -69,18 +70,25 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
-        driverName.setText(request.getConfirmedDriver().toString());
-        driverName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", request.getConfirmedDriver().toString());
-                startActivity(intent);
-            }
-        });
+        if (request.getConfirmedDriver() != null) {
+            driverName.setText(request.getConfirmedDriver().toString());
+            driverName.setTextColor(Color.rgb(6, 69, 173));
+            driverName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
+                    intent.putExtra("username", request.getConfirmedDriver().toString());
+                    startActivity(intent);
+                }
+            });
+        }
+        else {
+            driverName.setText("No confirmed driver :(");
+        }
 
         TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
         riderName.setText(request.getRider().toString());
+        riderName.setTextColor(Color.rgb(6, 69, 173));
         riderName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +101,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         TextView startLocation = (TextView) findViewById(R.id.request_detail_pickup);
         String location_string = getLocationString(request.getStartLocation());
         startLocation.setText(location_string);
+        startLocation.setTextColor(Color.rgb(6, 69, 173));
         startLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +112,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         TextView endLocation = (TextView) findViewById(R.id.request_detail_dropoff);
         location_string = getLocationString(request.getEndLocation());
         endLocation.setText(location_string);
+        endLocation.setTextColor(Color.rgb(6, 69, 173));
         endLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,6 +166,14 @@ public class RequestDetailActivity extends AppCompatActivity {
         else {
             acceptButton.setEnabled(false);
         }
+
+        // onClick Listeners
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestController.addAcceptance(request);
+            }
+        });
 
 
     }
