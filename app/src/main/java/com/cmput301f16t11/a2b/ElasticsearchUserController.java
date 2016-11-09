@@ -64,17 +64,17 @@ public class ElasticsearchUserController {
 
                     User user = result.getSourceAsObject(User.class);
 
-                    // ensure that the users id is set.
-                    // this is for debugging purposes and can be removed in production
-                    if (user.getId() == null) {
-                        // parse the response for the id
-                        JsonObject jsonResponse = result.getJsonObject();
-                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-                        JsonArray actualHits = hits.getAsJsonArray("hits");
-                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-                        String id = firstHit.get("_id").toString();
-                        user.setId(id);
-                    }
+//                    // ensure that the users id is set.
+//                    // this is for debugging purposes and can be removed in production
+//                    if (user == null) {
+//                        // parse the response for the id
+//                        JsonObject jsonResponse = result.getJsonObject();
+//                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+//                        JsonArray actualHits = hits.getAsJsonArray("hits");
+//                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+//                        String id = firstHit.get("_id").toString();
+//                        user.setId(id);
+//                    }
 
                     if (user!=null && user.getName().equals(params[0])) {
                         return user;

@@ -93,6 +93,7 @@ public class UserRequest implements Parcelable {
     }
 
     // setters
+
     public void setConfirmedDriver(User d) {
         this.confirmedDriver = d;
     }
@@ -117,6 +118,9 @@ public class UserRequest implements Parcelable {
     }
     public boolean isPaymentRecived() {
         return paymentReceived;
+    }
+    public boolean hasConfirmedRider() {
+        return this.confirmedDriver != null;
     }
 
 

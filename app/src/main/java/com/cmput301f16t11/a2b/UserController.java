@@ -20,6 +20,7 @@ import static com.cmput301f16t11.a2b.R.id.user;
 public class UserController {
     private static User user = null;
     private static Mode mode;
+    private static LatLng lastLocation;
 
 
     private static String USRFILE = "user.sav";
@@ -69,6 +70,13 @@ public class UserController {
     static public void updateUserInDb(){
         ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
         updateUserInfoTask.execute(UserController.getUser());
+    }
+
+    static public void updateLocation(LatLng location) {
+        lastLocation = location;
+    }
+    static public LatLng getLastLocation() {
+        return location;
     }
 
 
