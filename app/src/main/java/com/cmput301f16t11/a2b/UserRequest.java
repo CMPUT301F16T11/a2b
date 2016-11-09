@@ -119,6 +119,9 @@ public class UserRequest implements Parcelable {
     public boolean isPaymentRecived() {
         return paymentReceived;
     }
+    public boolean hasConfirmedRider() {
+        return this.confirmedDriver != null;
+    }
 
 
     /* Parcelable Stuff */

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,9 +27,13 @@ public class RequestDetailActivity extends AppCompatActivity {
      * (Available here:
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
+    // TODO: Remove confirm button
+    // TODO: Allow option to confirm on accepted Driver click if appliactable
+            // potentially a dialog with a complete button is applicable
+            // if not a view user button
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
-    ArrayList<User> acceptedDrivers;
+    ArrayList<User> acceptgitedDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         request = gson.fromJson(intent.getStringExtra("request"), UserRequest.class);
         populateAcceptedDriversList();
         populateFields();
-
+        setButtons();
     }
 
     public void populateAcceptedDriversList() {
@@ -124,6 +129,37 @@ public class RequestDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return location.toString();
+    }
+
+    public void setButtons() {
+        Button deleteButton = (Button) findViewById(R.id.request_detail_delete);
+        Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
+        Button confirmButton = (Button) findViewById(R.id.request_confirm);
+        Button completeButton = (Button) findViewById(R.id.request_complete);
+        // confirm and delete
+        if (UserController.checkMode() ==
+                Mode.RIDER && UserController.getUser().equals(request.getRider())) {
+            deleteButton.setEnabled(true);
+            if (request.hasConfirmedRider()) {
+                confirmButton.setEnabled(true);
+            }
+            else {
+                confirmButton.setEnabled(false);
+            }
+        }
+        else {
+            deleteButton.setEnabled(false);
+        }
+        // accept
+        if (UserController.checkMode() == Mode.DRIVER &&
+                !request.getAcceptedDrivers().contains(UserController.getUser())) {
+                acceptButton.setEnabled(true);
+        }
+        else {
+            acceptButton.setEnabled(false);
+        }
+
+
     }
 
 }
