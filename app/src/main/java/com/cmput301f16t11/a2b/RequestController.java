@@ -226,7 +226,9 @@ public class RequestController {
                     new ElasticsearchRequestController.GetInPrgressRequests();
             try {
                 temp = searchController.execute(user.getName()).get();
-                for (UserRequest request: temp) {
+                ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
+                temp_copy.addAll(temp);
+                for (UserRequest request: temp_copy) {
                     if (!request.getAcceptedDrivers().contains(user)) {
                         temp.remove(request);
                     }
