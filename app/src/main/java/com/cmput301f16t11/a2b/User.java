@@ -68,6 +68,22 @@ public class User {
         this.id = null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        try {
+            User usr1 = (User) obj;
+            if (usr1.getName().equals(this.getName())) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
    //Getters
     public String getName(){

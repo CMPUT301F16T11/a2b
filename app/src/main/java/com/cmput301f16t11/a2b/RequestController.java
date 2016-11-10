@@ -195,7 +195,6 @@ public class RequestController {
             else if (mode == Mode.RIDER) {
                 if (!request.getRider().equals(user)) {
                     userRequests.remove(request);
-                    Log.i("search controller", "removed request");
                 }
             }
         }
