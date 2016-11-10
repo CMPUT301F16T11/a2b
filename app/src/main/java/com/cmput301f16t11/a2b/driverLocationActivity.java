@@ -227,16 +227,19 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
         double lowerLon = center.longitude - (distanceKm/111.320*Math.cos(center.longitude));
         double higherLon = center.longitude + (distanceKm/111.320*Math.cos(center.longitude));
 
-        ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
-        ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
-        getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
-        try {
-            nearbyRequests = getNearbyRequests.get();
-            RequestController.setNearbyRequests(nearbyRequests);
-            handleRequests(nearbyRequests);
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
-        }
+       ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
+//        ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
+//        getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
+//
+//        try {
+//            nearbyRequests = getNearbyRequests.get();
+//            RequestController.setNearbyRequests(nearbyRequests);
+//            handleRequests(nearbyRequests);
+//        } catch (Exception e) {
+//            Log.i("Error", "AsyncTask failed to execute");
+//        }
+
+        nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
 
         return nearbyRequests;
     }

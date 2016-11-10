@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        User user = new User("someone2","asgasd@asgs.ca","666");
 //        user.setId("asvearve435");
-//        UserRequest mockReq1 = new UserRequest(new LatLng(53.523201,113.526230),new LatLng(99.999999,88.888888),10,user);
+//        UserRequest mockReq1 = new UserRequest(new LatLng(37.4219983,-122.084),new LatLng(99.999999,88.888888),10,user);
 //        ElasticsearchRequestController.AddOpenRequestTask addOpenRequestTask = new ElasticsearchRequestController.AddOpenRequestTask();
 //
 //        try {
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 //
-//        ArrayList<UserRequest> ar =  RequestController.getNearbyRequestsGeoFilter(10.0, 53.523201, 113.526230);
+//        ArrayList<UserRequest> ar =  RequestController.getNearbyRequestsGeoFilter(10.0, 37.4219983, -122.084);
 
 
 

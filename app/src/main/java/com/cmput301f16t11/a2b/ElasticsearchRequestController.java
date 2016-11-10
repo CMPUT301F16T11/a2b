@@ -408,6 +408,7 @@ public class ElasticsearchRequestController {
 
     /**
      * Same as above but uses geo distance filter
+     * Get all active requests that are within distance of lat,lon
      * param[0] - distance
      * param[1] - lat
      * param[2] -lon

@@ -76,6 +76,22 @@ public class RequestController {
     }
 
 
+    /**
+     * Get all open requests within distatnce of lat, lon
+     */
+    public static ArrayList<UserRequest> getNearbyRequestsGeoFilter(Double distance, Double lat, Double lon){
+        ElasticsearchRequestController.GetNearbyRequestsGeoFilter getNearbyRequestsGeoFilter = new ElasticsearchRequestController.GetNearbyRequestsGeoFilter();
+        ArrayList<UserRequest> nearbyRequests = null;
+        try{
+            nearbyRequests = getNearbyRequestsGeoFilter.execute(distance,lat,lon).get();
+        }catch(Exception e){
+            Log.i("Error", "Failiure");
+            e.printStackTrace();
+        }
+
+        return  nearbyRequests;
+    }
+
     public static ArrayList<UserRequest> getNearbyRequests(LatLng location, int radius) {
         /**
          * For use in ride or drive mode
@@ -184,21 +200,7 @@ public class RequestController {
 
     }
 
-    /**
-     *
-     */
-    public static ArrayList<UserRequest> getNearbyRequestsGeoFilter(Double distance, Double lat, Double lon){
-        ElasticsearchRequestController.GetNearbyRequestsGeoFilter getNearbyRequestsGeoFilter = new ElasticsearchRequestController.GetNearbyRequestsGeoFilter();
-        ArrayList<UserRequest> nearbyRequests = null;
-            try{
-                nearbyRequests = getNearbyRequestsGeoFilter.execute(distance,lat,lon).get();
-            }catch(Exception e){
-                Log.i("Error", "Failiure");
-                e.printStackTrace();
-            }
 
-        return  nearbyRequests;
-    }
 
 
 }
