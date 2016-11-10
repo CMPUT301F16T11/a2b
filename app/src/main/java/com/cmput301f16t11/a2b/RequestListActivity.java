@@ -56,14 +56,12 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        this.requests.clear();
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
         spinner = (Spinner) findViewById(R.id.requestSpinner);
         adapter.notifyDataSetChanged();
 
-        Mode mode = UserController.checkMode();
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);

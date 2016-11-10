@@ -69,10 +69,17 @@ public class RequestController {
          * For use in ride or drive mode
          * Gets all requests nearby to current location
          */
-        ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
-        ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
+        ElasticsearchRequestController.GetNearbyRequests searchController =
+                new ElasticsearchRequestController.GetNearbyRequests();
+        ArrayList<UserRequest> nearBy = new ArrayList<UserRequest>();
+        try {
+            nearBy = searchController.execute(
+                    location.latitude - radius, location.longitude - radius,
+                    location.latitude + radius, location.longitude + radius).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         nearbyRequests = nearBy;
-        //return RequestController.tempFakeRequestList(); // for testing
         return nearBy;
     }
 
@@ -86,10 +93,10 @@ public class RequestController {
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
 
-            try{
+            try {
                 userRequests = searchController.execute(user.getName()).get();
-            }catch(Exception e){
-
+            } catch(Exception e){
+                e.printStackTrace();
             }
         }
         else {
@@ -105,16 +112,26 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
-        ArrayList<UserRequest> userRequests;
-
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
         if(UserController.checkMode() == DRIVER) {
-            ElasticsearchRequestController.GetPastDriverRequests searchController = new ElasticsearchRequestController.GetPastDriverRequests();
-            userRequests = searchController.doInBackground(user.getName());
+            ElasticsearchRequestController.GetPastDriverRequests searchController =
+                    new ElasticsearchRequestController.GetPastDriverRequests();
+            userRequests = new ArrayList<UserRequest>();
+            try {
+                userRequests = searchController.execute(user.getName()).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return userRequests;
         }
         else {
-            ElasticsearchRequestController.GetPastRiderRequests searchController = new ElasticsearchRequestController.GetPastRiderRequests();
-            userRequests = searchController.doInBackground(user.getName());
+            ElasticsearchRequestController.GetPastRiderRequests searchController =
+                    new ElasticsearchRequestController.GetPastRiderRequests();
+            try {
+                userRequests = searchController.execute(user.getName()).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return userRequests;
         }
     }
@@ -126,8 +143,14 @@ public class RequestController {
          * Excludes completed requests.
          */
         // riders only
-        ElasticsearchRequestController.GetAcceptedRequests searchController = new ElasticsearchRequestController.GetAcceptedRequests();
-        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+        ElasticsearchRequestController.GetAcceptedRequests searchController =
+                new ElasticsearchRequestController.GetAcceptedRequests();
+        try {
+            userRequests = searchController.execute(user.getName()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return userRequests;
     }
 
@@ -138,8 +161,14 @@ public class RequestController {
          */
         // drivers only
         // (get requests accepted by the curr user)
-        ElasticsearchRequestController.GetAcceptedDriverRequests searchController = new ElasticsearchRequestController.GetAcceptedDriverRequests();
-        ArrayList<UserRequest> userRequests = searchController.doInBackground(user.getName());
+        ElasticsearchRequestController.GetAcceptedDriverRequests searchController =
+                new ElasticsearchRequestController.GetAcceptedDriverRequests();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        try {
+            userRequests = searchController.execute(user.getName()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return userRequests;
     }
 
@@ -148,7 +177,31 @@ public class RequestController {
          * Gets the completed requests BY a driver if mode == Mode.DRIVER
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
-    return new ArrayList<UserRequest>();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
+        ElasticsearchRequestController.GetClosedRequests searchController =
+                new ElasticsearchRequestController.GetClosedRequests();
+
+        try {
+            userRequests = searchController.execute(user.getName()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        temp.addAll(userRequests);
+        for (UserRequest request: temp) {
+            if (mode == Mode.DRIVER) {
+                if (!request.getConfirmedDriver().equals(user)) {
+                    userRequests.remove(request);
+                }
+            }
+            else if (mode == Mode.RIDER) {
+                if (!request.getRider().equals(user)) {
+                    userRequests.remove(request);
+                    Log.i("search controller", "removed request");
+                }
+            }
+        }
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getConfirmedByRiders(User user, Mode mode) {
@@ -160,6 +213,33 @@ public class RequestController {
          * Excludes completed requests
         */
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
+        if (mode == Mode.RIDER) {
+            ElasticsearchRequestController.GetInPrgressRiderRequests searchController =
+                    new ElasticsearchRequestController.GetInPrgressRiderRequests();
+            try {
+                temp = searchController.execute(user.getName()).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            // driver mode
+            ElasticsearchRequestController.GetInPrgressRequests searchController =
+                    new ElasticsearchRequestController.GetInPrgressRequests();
+            try {
+                temp = searchController.execute(user.getName()).get();
+                ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
+                temp_copy.addAll(temp);
+                for (UserRequest request: temp_copy) {
+                    if (!request.getAcceptedDrivers().contains(user)) {
+                        temp.remove(request);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return temp;
     }
 
