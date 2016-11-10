@@ -58,6 +58,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+
+                // dialog
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
                 intent.putExtra("username", acceptedDrivers.get(position).toString());
                 startActivity(intent);
@@ -179,6 +181,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
             }
         });
+
 
     }
 
