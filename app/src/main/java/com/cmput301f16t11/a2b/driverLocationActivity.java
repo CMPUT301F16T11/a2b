@@ -240,7 +240,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 //        }
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
-
+        //handleRequests(nearbyRequests);
         return nearbyRequests;
     }
 
@@ -354,7 +354,9 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 
                 }
                 else{
-                        generateRequests(currentSearchRadius, currentMarker.getPosition());
+
+                    ArrayList<UserRequest> requests = generateRequests(currentSearchRadius, currentMarker.getPosition());
+                    handleRequests(requests);
                 }
             }
         });
