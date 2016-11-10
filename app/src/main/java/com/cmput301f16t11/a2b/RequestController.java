@@ -184,5 +184,21 @@ public class RequestController {
 
     }
 
+    /**
+     *
+     */
+    public static ArrayList<UserRequest> getNearbyRequestsGeoFilter(Double distance, Double lat, Double lon){
+        ElasticsearchRequestController.GetNearbyRequestsGeoFilter getNearbyRequestsGeoFilter = new ElasticsearchRequestController.GetNearbyRequestsGeoFilter();
+        ArrayList<UserRequest> nearbyRequests = null;
+            try{
+                nearbyRequests = getNearbyRequestsGeoFilter.execute(distance,lat,lon).get();
+            }catch(Exception e){
+                Log.i("Error", "Failiure");
+                e.printStackTrace();
+            }
+
+        return  nearbyRequests;
+    }
+
 
 }

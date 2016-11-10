@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
         // startActivity(intent)
 
 
-
-
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
 

@@ -482,9 +482,8 @@ public class ElasticsearchRequestController {
                 JestResult result = client.execute(get);
                 if (result.isSucceeded()) {
                     userRequest = result.getSourceAsObject(UserRequest.class);
-                    int i = 0;
                 }else{
-                    Log.i("Error", "Failed to find any accepted requests");
+                    Log.i("Error","Filed to find request");
                     return null;
                 }
             } catch (Exception e) {
