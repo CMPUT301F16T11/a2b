@@ -26,7 +26,7 @@ import static com.cmput301f16t11.a2b.R.id.user;
  */
 public class UserController {
     private static User user = null;
-    private static Mode mode;
+    private static Mode mode = Mode.RIDER;
     private static LatLng lastLocation;
 
 

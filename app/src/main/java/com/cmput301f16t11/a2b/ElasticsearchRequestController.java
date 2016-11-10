@@ -300,6 +300,36 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class GetInPrgressRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match_all\":{}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(inProgress)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = 
+                        result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find user requests for driver");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
 
 
 
@@ -405,6 +435,35 @@ public class ElasticsearchRequestController {
             }
 
             return true;
+        }
+    }
+
+    public static class GetClosedRequests extends
+                                    AsyncTask<String, Void, ArrayList<UserRequest>>  {
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match_all\":{}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(closedRequest)
+                    .build();
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> tmp = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(tmp);
+                } else {
+                    // No requests found in area
+                    Log.i("Error", "Failed to find any requests within in the area");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+            return requestList;
         }
     }
 

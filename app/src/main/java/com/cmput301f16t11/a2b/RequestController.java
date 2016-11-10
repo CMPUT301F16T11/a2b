@@ -175,7 +175,28 @@ public class RequestController {
          * Gets the completed requests BY a driver if mode == Mode.DRIVER
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
-    return new ArrayList<UserRequest>();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ElasticsearchRequestController.GetClosedRequests searchController =
+                new ElasticsearchRequestController.GetClosedRequests();
+
+        try {
+            userRequests = searchController.execute(user.getName()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (UserRequest request: userRequests) {
+            if (mode == Mode.DRIVER) {
+                if (!request.getConfirmedDriver().equals(user)) {
+                    userRequests.remove(request);
+                }
+            }
+            else if (mode == Mode.RIDER) {
+                if (!request.getRider().equals(user)) {
+                    userRequests.remove(request);
+                }
+            }
+        }
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getConfirmedByRiders(User user, Mode mode) {
@@ -187,6 +208,31 @@ public class RequestController {
          * Excludes completed requests
         */
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
+        if (mode == Mode.RIDER) {
+            ElasticsearchRequestController.GetInPrgressRiderRequests searchController =
+                    new ElasticsearchRequestController.GetInPrgressRiderRequests();
+            try {
+                temp = searchController.execute(user.getName()).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            // driver mode
+            ElasticsearchRequestController.GetInPrgressRequests searchController =
+                    new ElasticsearchRequestController.GetInPrgressRequests();
+            try {
+                temp = searchController.execute(user.getName()).get();
+                for (UserRequest request: temp) {
+                    if (!request.getAcceptedDrivers().contains(user)) {
+                        temp.remove(request);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return temp;
     }
 
