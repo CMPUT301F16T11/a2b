@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
@@ -30,45 +31,14 @@ public class RequestController {
         return nearbyRequests;
     }
 
-    public static void addAcceptance(UserRequest request) {
+    public static void addAcceptance(UserRequest request, Context context) {
         ElasticsearchRequestController.AddDriverAcceptanceToRequest addAcceptance =
-                new ElasticsearchRequestController.AddDriverAcceptanceToRequest();
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequest(context);
         // request id driver id
         addAcceptance.execute(request.getId(), UserController.getUser().getId());
     }
 
 
-
-    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
-
-        ElasticsearchRequestController.GetPastRiderRequests riderTask =
-                new ElasticsearchRequestController.GetPastRiderRequests();
-        ElasticsearchRequestController.GetPastDriverRequests driverTask =
-                new ElasticsearchRequestController.GetPastDriverRequests();
-        ElasticsearchRequestController.GetActiveRiderRequests currRiderTask =
-                new ElasticsearchRequestController.GetActiveRiderRequests();
-        ElasticsearchRequestController.GetActiveDriverRequests currDriverTask =
-                new ElasticsearchRequestController.GetActiveDriverRequests();
-        riderTask.execute(usr);
-        driverTask.execute(usr);
-        try {
-            UserController.setClosedRequestsAsRider(riderTask.get());
-            UserController.setClosedRequestsAsDriver(driverTask.get());
-            UserController.setActiveRequestsAsRider(currRiderTask.get());
-            //TODO something wrong with this line
-            //UserController.setActiveRequestsAsDriver(currRiderTask.get());
-
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
-            e.printStackTrace();
-        }
-
-        // Saves user file after completion of asyncTasks if necessary
-        if (saveAfter) {
-
-            UserController.saveInFile(activity);
-        }
-    }
     public static void addOpenRequest(UserRequest request) {
         ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
                 new ElasticsearchRequestController.AddOpenRequestTask();

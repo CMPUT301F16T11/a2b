@@ -78,6 +78,7 @@
     <!-- MarkerInfoDialog Strings -->
     <string name="markerInfo_accept">Accept</string>
     <string name="markerInfo_cancel">Cancel</string>
+    <string name="markerInfo_error">Unable to accept request\nPlease try again</string>
 
     <!-- Location Menu String-->
     <string name="view_profile">View Profile</string>

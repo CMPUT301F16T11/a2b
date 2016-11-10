@@ -171,7 +171,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestController.addAcceptance(request);
+                RequestController.addAcceptance(request, RequestDetailActivity.this);
             }
         });
 

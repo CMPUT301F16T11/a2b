@@ -1,7 +1,9 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -144,6 +146,12 @@ public class ElasticsearchRequestController {
      */
 
     public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
+        Context context;
+
+        public AddDriverAcceptanceToRequest(Context context) {
+            this.context = context;
+        }
+
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
@@ -154,7 +162,8 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{ \"script\" : \"ctx._source.acceptedDrivers += newDriver \", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+            String script = "{ \"script\" : \" if (ctx._source.acceptedDrivers == null) {ctx._source.acceptedDrivers = [newDriver] } " +
+                    "else {ctx._source.acceptedDrivers += newDriver }\", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
 
 
             try {
@@ -171,6 +180,14 @@ public class ElasticsearchRequestController {
             }
 
             return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            // Notify the user if we were unable to accept the request
+            if (!result) {
+                Toast.makeText(context, context.getString(R.string.markerInfo_error), Toast.LENGTH_LONG).show();
+            }
+            super.onPostExecute(result);
         }
     }
 
