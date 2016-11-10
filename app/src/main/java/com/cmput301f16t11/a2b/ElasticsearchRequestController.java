@@ -49,7 +49,7 @@ public class ElasticsearchRequestController {
             try {
                 DocumentResult result = client.execute(userIndex);
                 if (result.isSucceeded()) {
-                    //requests[0].setId(result.getId());
+                    requests[0].setId(result.getId());
                 } else {
                     Log.i("Error", "Elasticsearch failed to add user");
                     return false;
@@ -476,12 +476,13 @@ public class ElasticsearchRequestController {
 
             Get get = new Get.Builder(index,requestID[0]).type(openRequest).build();
 
-            UserRequest userRequest;
+            UserRequest userRequest = null;
 
             try {
                 JestResult result = client.execute(get);
                 if (result.isSucceeded()) {
                     userRequest = result.getSourceAsObject(UserRequest.class);
+                    int i = 0;
                 }else{
                     Log.i("Error", "Failed to find any accepted requests");
                     return null;

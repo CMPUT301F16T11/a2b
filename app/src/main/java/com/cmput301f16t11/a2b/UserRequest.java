@@ -30,6 +30,7 @@ public class UserRequest implements Parcelable {
     private boolean accepted;
     private boolean completed;
     private boolean paymentReceived;
+
     @JestId
     private String id;
 
@@ -43,6 +44,7 @@ public class UserRequest implements Parcelable {
         this.completed = false;
         this.paymentReceived = false;
         RequestController.addOpenRequest(this);
+        this.id = null;
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
@@ -56,6 +58,7 @@ public class UserRequest implements Parcelable {
         this.completed = false;
         this.paymentReceived = false;
         RequestController.addOpenRequest(this);
+        this.id = null;
 
     }
 
@@ -100,7 +103,15 @@ public class UserRequest implements Parcelable {
         return this.distance;
     }
 
+    public String getId() {
+        return id;
+    }
+
     // setters
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setConfirmedDriver(User d) {
         this.confirmedDriver = d;
@@ -193,10 +204,7 @@ public class UserRequest implements Parcelable {
         return 0;
     }
 
-    public String getId() {
-        //TODO: ALL ID WORK
-        return id;
-    }
+
 
     public String toString() {
         String temp = "Rider: " + this.getRider() + "\n";
