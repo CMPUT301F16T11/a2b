@@ -1,9 +1,12 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
 /**
@@ -30,45 +33,14 @@ public class RequestController {
         return nearbyRequests;
     }
 
-    public static void addAcceptance(UserRequest request) {
+    public static void addAcceptance(UserRequest request, Context context) {
         ElasticsearchRequestController.AddDriverAcceptanceToRequest addAcceptance =
-                new ElasticsearchRequestController.AddDriverAcceptanceToRequest();
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequest(context);
         // request id driver id
         addAcceptance.execute(request.getId(), UserController.getUser().getId());
     }
 
 
-
-    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
-
-        ElasticsearchRequestController.GetPastRiderRequests riderTask =
-                new ElasticsearchRequestController.GetPastRiderRequests();
-        ElasticsearchRequestController.GetPastDriverRequests driverTask =
-                new ElasticsearchRequestController.GetPastDriverRequests();
-        ElasticsearchRequestController.GetActiveRiderRequests currRiderTask =
-                new ElasticsearchRequestController.GetActiveRiderRequests();
-        ElasticsearchRequestController.GetActiveDriverRequests currDriverTask =
-                new ElasticsearchRequestController.GetActiveDriverRequests();
-        riderTask.execute(usr);
-        driverTask.execute(usr);
-        try {
-            UserController.setClosedRequestsAsRider(riderTask.get());
-            UserController.setClosedRequestsAsDriver(driverTask.get());
-            UserController.setActiveRequestsAsRider(currRiderTask.get());
-            //TODO something wrong with this line
-            //UserController.setActiveRequestsAsDriver(currRiderTask.get());
-
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
-            e.printStackTrace();
-        }
-
-        // Saves user file after completion of asyncTasks if necessary
-        if (saveAfter) {
-
-            UserController.saveInFile(activity);
-        }
-    }
     public static void addOpenRequest(UserRequest request) {
         ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
                 new ElasticsearchRequestController.AddOpenRequestTask();
@@ -99,6 +71,7 @@ public class RequestController {
          */
         ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
         ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
+        nearbyRequests = nearBy;
         //return RequestController.tempFakeRequestList(); // for testing
         return nearBy;
     }
@@ -108,18 +81,27 @@ public class RequestController {
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        ArrayList<UserRequest> userRequests;
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
         }
         else {
             ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
+
         }
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
@@ -199,6 +181,19 @@ public class RequestController {
         moveToClosedRequest.execute(ur);
 
     }
+
+    public static UserRequest getOpenRequestById(String id){
+        ElasticsearchRequestController.GetOpenRequestById getOpenRequestById = new ElasticsearchRequestController.GetOpenRequestById();
+        UserRequest ur = null;
+        try{
+            ur =getOpenRequestById.execute(id).get();
+        }catch(Exception e){
+
+        }
+        return ur;
+
+    }
+
 
 
 

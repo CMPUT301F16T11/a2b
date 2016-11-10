@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,7 +55,8 @@ import java.util.List;
  */
 public class DriverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        DrawingLocationActivity{
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -91,6 +94,8 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
 
             case R.id.changeRole:
                 Intent driverIntent = new Intent(DriverLocationActivity.this, RiderLocationActivity.class);
+                UserController.setMode(Mode.RIDER);
+
                 startActivity(driverIntent);
                 finish();
                 return true;
@@ -101,7 +106,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 return true;
 
             case R.id.signOut:
-                finish();
+                UserController.logOut(this);
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -409,6 +414,17 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             catch(IOException e){
                 e.printStackTrace();
             }
+    }
+
+    public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
+
+        //Draw the lines on the map
+        mMap.addPolyline( new PolylineOptions()
+                .addAll(drawPoints)
+                .width(12)
+                .color(Color.parseColor("#05b1fb"))//Google maps blue color
+                .geodesic(true)
+        );
     }
 }
 

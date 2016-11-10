@@ -1,7 +1,9 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -36,7 +38,8 @@ public class ElasticsearchRequestController {
 
     /**
      * Add an open request to elastic search server
-     *
+     * input - UserRequest
+     * output - Boolean of if it was added
      */
 
     public static class AddOpenRequestTask extends AsyncTask<UserRequest, Void, Boolean> {
@@ -64,13 +67,19 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get the 100 latest closed requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> riderList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -94,13 +103,18 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get open requests for a driver
+     * @depticated b/c if the driver has been set for a request then it should be inProgress or closed
+     */
+    @Deprecated
     public static class GetActiveDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -132,6 +146,12 @@ public class ElasticsearchRequestController {
      */
 
     public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
+        Context context;
+
+        public AddDriverAcceptanceToRequest(Context context) {
+            this.context = context;
+        }
+
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
@@ -142,7 +162,8 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{ \"script\" : \"ctx._source.acceptedDrivers += newDriver \", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+            String script = "{ \"script\" : \" if (ctx._source.acceptedDrivers == null) {ctx._source.acceptedDrivers = [newDriver] } " +
+                    "else {ctx._source.acceptedDrivers += newDriver }\", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
 
 
             try {
@@ -160,7 +181,21 @@ public class ElasticsearchRequestController {
 
             return true;
         }
+
+        protected void onPostExecute(Boolean result) {
+            // Notify the user if we were unable to accept the request
+            if (!result) {
+                Toast.makeText(context, context.getString(R.string.markerInfo_error), Toast.LENGTH_LONG).show();
+            }
+            super.onPostExecute(result);
+        }
     }
+
+    /**
+     * Get the currently open Requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
+     */
 
     public static class GetActiveRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -168,7 +203,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -192,13 +227,19 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get the closed requests for a driver
+     * input - userName of the driver
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetPastDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> driverList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -222,6 +263,12 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get the inProgress requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
+     */
+
 
     public static class GetInPrgressRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -229,7 +276,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -257,10 +304,9 @@ public class ElasticsearchRequestController {
 
 
     /**
-     * Move a request from open to inprogress
-     *(Untested)
-     *
-     *
+     * Move a request from open to inProgress
+     * input - requests[0]
+     * output - Boolean of if the move worked
      */
 
 
@@ -313,8 +359,9 @@ public class ElasticsearchRequestController {
 
 
     /**
-     * Move a request from inporgress to closed
-     *(Untested)
+     * Move a request from inProgress to closed
+     * input - requests[0]
+     * output - Boolean of if the move worked
      */
 
     public static class MoveToClosedRequest extends AsyncTask<UserRequest, Void, Boolean> {
@@ -413,9 +460,8 @@ public class ElasticsearchRequestController {
     /**
      * Same as above but uses geo distance filter
      * Get all active requests that are within distance of lat,lon
-     * param[0] - distance
-     * param[1] - lat
-     * param[2] -lon
+     * Input - param[0] - distance, param[1] - lat, param[2] - lon
+     * Output - ArrayList<UserRequest>
      */
 
     public static class GetNearbyRequestsGeoFilter extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
@@ -468,11 +514,11 @@ public class ElasticsearchRequestController {
     /**
      * GetRequest fetches the request with the given Id from the server
      *
-     * takes in a request id
-     * returns the request with that ID, null if the request does not exist
+     * input - String (request id)
+     * output - UserRequest
      */
 
-    public static class GetRequest extends AsyncTask<String, Void, UserRequest> {
+    public static class GetOpenRequestById extends AsyncTask<String, Void, UserRequest> {
         @Override
         protected UserRequest doInBackground(String... requestID) {
             verifySettings();
@@ -499,7 +545,11 @@ public class ElasticsearchRequestController {
         }
     }
 
-
+    /**
+     * Get a rider's requests that have been accepted by a driver
+     * input - String(Rider's userName)
+     * output - ArrayList<UserRequest>
+     */
 
     public static class GetAcceptedRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -507,11 +557,12 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] +
+                    "\", \"accepted\": true}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
-                    .addType(openRequest)
+                    .addType(inProgress)
                     .build();
 
             try {
@@ -531,6 +582,11 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get a driver's inPorgress Requests
+     * input - the driver's userName
+     * output - ArrayList<UserRequest>
+     */
 
     public static class GetAcceptedDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
@@ -538,7 +594,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+            String search_string = "{\"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)

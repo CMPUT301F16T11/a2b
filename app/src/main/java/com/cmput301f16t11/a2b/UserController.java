@@ -1,17 +1,21 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static com.cmput301f16t11.a2b.R.id.user;
 
 /**
  * Controllers user and user functions
@@ -29,15 +33,6 @@ public class UserController {
         user = u;
     }
 
-
-//    static public boolean auth(String username){
-//        // no idea what this is... - joey
-//        // is this to statically check auth?
-//        return true;
-//    }
-
-
-
     static public void setUser(User newUser) {
         user = newUser;
     }
@@ -47,7 +42,6 @@ public class UserController {
     }
 
     static public Mode checkMode() {
-        mode = Mode.RIDER;
         return mode;
     }
 
@@ -127,6 +121,27 @@ public class UserController {
          }
     }
 
+    public static Boolean loadFromFile(Activity activity) {
+        try {
+            FileInputStream fis = activity.openFileInput(USRFILE);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            user = new Gson().fromJson(in, User.class);
+        } catch (FileNotFoundException f) {
+            Log.i("File", "No saved user");
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void logOut(Context context) {
+        context.deleteFile(USRFILE);
+
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
+    }
+
     public static void goOnline() {
     }
 
@@ -134,6 +149,7 @@ public class UserController {
     }
 
     public static void runBackgroundTasks(String name, LoginActivity loginActivity, boolean b) {
+
     }
 
     public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {

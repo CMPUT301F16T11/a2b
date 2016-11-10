@@ -3,27 +3,18 @@ package com.cmput301f16t11.a2b;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
-import io.searchbox.client.JestResult;
-import io.searchbox.core.DeleteByQuery;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
-import io.searchbox.core.Update;
 
 /**
  * Created by Wilky on 11/5/2016.
@@ -221,6 +212,12 @@ public class ElasticsearchUserController {
         }
     }
 
+    /**
+     * Get the id for the first hit
+     * @param jsonResponse
+     * @return string ID
+     */
+
     private static String  getIdFromResult(JsonObject jsonResponse){
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");
@@ -229,6 +226,11 @@ public class ElasticsearchUserController {
         return id;
     }
 
+    /**
+     * Get the userName for the first hit
+     * @param jsonResponse
+     * @return
+     */
     private static String getUserFromResult(JsonObject jsonResponse) {
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");

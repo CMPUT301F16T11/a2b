@@ -57,19 +57,15 @@ public class RequestListActivity extends AppCompatActivity {
             }
         });
         this.requests.clear();
-        try {
-            this.requests.addAll(RequestController.getNearbyRequests());
-        } catch (Exception e) {
-            Log.e("line 62 crash", e.toString());
-        }
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
         spinner = (Spinner) findViewById(R.id.requestSpinner);
         adapter.notifyDataSetChanged();
 
+        Mode mode = UserController.checkMode();
         // spinner stuff
-        if (UserController.checkMode().equals(Mode.DRIVER)) {
+        if (UserController.checkMode() == Mode.DRIVER) {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
@@ -85,13 +81,19 @@ public class RequestListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
-                    // nearby requests
-                    // same for riders & drivers
-                    // TODO: feed in actual curr location
-                    requests.clear();
-                    //TODO: feed in chosen radius
 
-                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15));
+                    // Driver Mode
+                    if (UserController.checkMode() == Mode.DRIVER) {
+                        requests.addAll(RequestController.getNearbyRequests());
+                    }
+                    else {
+                        // rider mode!
+                        // my requests
+                        requests.clear();
+                        requests.addAll(
+                                RequestController.getOwnActiveRequests(UserController.getUser()));
+
+                    }
 
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
@@ -100,6 +102,7 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.clear();
                         requests.addAll(RequestController.getAcceptedByUser(UserController.getUser()));
                     } else {
+                        // users
                         requests.clear();
                         requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
                     }
@@ -125,12 +128,6 @@ public class RequestListActivity extends AppCompatActivity {
                             UserController.checkMode()));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
-                } else if (position == 4) {
-                    // only rider mode can get to this point.
-                    requests.clear();
-                    requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser()));
-//                    populateRequestList();
-                    adapter.notifyDataSetChanged();
                 }
             }
 
