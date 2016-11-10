@@ -240,6 +240,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 //        }
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
+        RequestController.setNearbyRequests(nearbyRequests);
         //handleRequests(nearbyRequests);
         return nearbyRequests;
     }
