@@ -25,9 +25,9 @@ import java.util.List;
  * http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
  */
 class JSONMapsHelper{
-    private  RiderLocationActivity act;
+    private  DrawingLocationActivity act;
 
-    public JSONMapsHelper(RiderLocationActivity act){
+    public JSONMapsHelper(DrawingLocationActivity act){
         this.act = act;
     }
 
@@ -237,7 +237,7 @@ class JSONMapsHelper{
 
             List<LatLng> paths = getDrawPath(Result);
             String distance = getDistance(Result);
-            act.confirmDriveRequest(paths, distance);
+            act.drawRouteOnMap(paths, distance);
         }
 
 
