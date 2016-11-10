@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Main activity for riders to select their pickup and drop off locations
+ * Main activity for riders to select their pickup and drop off locations.
  */
 public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -274,6 +274,9 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         setButtonListeners();
     }
 
+    /**
+     * A quick permission check to ensure that we location services enabled
+     */
     private void ensureLocationPermissions(){
         //Check if we have the right permissions to use location
         Boolean i = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
@@ -290,6 +293,13 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+    /**
+     * This method is called after the route has been retrieved from the google servers. It creates and shows
+     * the confirmation_trip dialog which prompts the user to enter a fare amount. It also draws polyline points
+     * on the map of the route they will be taking.
+     * @param drawPoints
+     * @param distance
+     */
     public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
