@@ -81,8 +81,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.signOut:
-                ///TODO: logout
-                finish();
+                UserController.logOut(this);
 
             default:
                 return super.onOptionsItemSelected(item);

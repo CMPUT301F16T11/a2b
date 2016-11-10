@@ -69,18 +69,6 @@ public class MarkerInfoDialog extends DialogFragment {
         return builder.create();
     }
 
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Assign views, get request and set views
-        assignViews();
-        req = getArguments().getParcelable("req");
-        req.getRider().setName(getArguments().getString("rider"));
-        setViews();
-
-        return getView();
-    }*/
-
     /**
      * Find all views from layout view
      */
@@ -128,7 +116,9 @@ public class MarkerInfoDialog extends DialogFragment {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Ride accepting stuff
+                ElasticsearchRequestController.AddDriverAcceptanceToRequest addDriverTask = new ElasticsearchRequestController.AddDriverAcceptanceToRequest(getActivity());
+                addDriverTask.execute(req.getId(), UserController.getUser().getId());
+                getDialog().dismiss();
             }
         });
 
