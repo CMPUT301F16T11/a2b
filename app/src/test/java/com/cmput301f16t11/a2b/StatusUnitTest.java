@@ -20,7 +20,7 @@ public class StatusUnitTest {
     private LatLng startLocation = new LatLng(50,50);
     private LatLng endLocation = new LatLng(50,50);
     private int fare = 10;
-    private String rider = "Rider";
+    private User user = UserController.getUser();
     private UserRequest req;
     /**
      *US 02.01.01
@@ -28,7 +28,7 @@ public class StatusUnitTest {
      */
     @Before
     public void setUp(){
-        req = new UserRequest(startLocation, endLocation,fare,rider);
+        req = new UserRequest(startLocation, endLocation,fare,user);
     }
 
     @Test
