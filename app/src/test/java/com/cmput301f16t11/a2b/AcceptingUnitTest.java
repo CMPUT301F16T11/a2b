@@ -44,8 +44,8 @@ public class AcceptingUnitTest {
     public void testDriverNotAcceptingRequest() {
 
         // random request that Billy wants to accept
-        MockUser user = new MockUser();
-        MockUserRequest billyRequest = new MockUserRequest(startLocation, endLocation, fare, driver);
+        User user = new User();
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         assertFalse(user.hasAcceptedRequests(billyRequest));
