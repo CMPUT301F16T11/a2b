@@ -269,6 +269,9 @@ public class ElasticsearchRequestController {
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
 
+            // clear the list of accepted drivers
+            requests[0].clearAcceptedDrivers();
+
             // Delete the request from the list of open requests
             try {
                 DocumentResult result = client.execute(new Delete.Builder(requests[0].getId())
@@ -379,9 +382,10 @@ public class ElasticsearchRequestController {
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
 
-            String search_string = "{\"query\": { \"range\" : { \"startLocation\" { \"latitude\" : { \"gte\" : \""
-                    + params[0] + "\". \"lte\" : \"" + params[1] + "\"}. \"longitude\": { \"gte\" : \""
-                    + params[2] + "\". \"lte\" : \"" + params[3] + "\"}}}}}";
+            String search_string = "{\"query\" : { \"match_all\" : {}}, " +
+                    "\"filter\" : { \"geo_distance\" : { \"distance\" : \"3km\", " +
+                    "\"startLocation\" : [" + params[0] + ", " + params[1] + "]}}}";
+
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -436,8 +440,6 @@ public class ElasticsearchRequestController {
                     "        }\n" +
                     "    }\n" +
                     "}";
-
-
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
