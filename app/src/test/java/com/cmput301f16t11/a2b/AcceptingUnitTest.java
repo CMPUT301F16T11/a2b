@@ -17,10 +17,9 @@ import static org.junit.Assert.assertTrue;
 public class AcceptingUnitTest {
 
 
-    private User driver =  UserController.loadUser("somedriver"); // rider
+    private User driver =  UserController.getUser();
     private LatLng startLocation = new LatLng(50,50);
     private LatLng endLocation = new LatLng(50,50);
-    private String rider = "Rider";
     private Number fare = 10.00;
 
 
@@ -35,7 +34,7 @@ public class AcceptingUnitTest {
 
         // random request that Billy wants to accept
         User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, rider);
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         user.addActiveDriverRequest(billyRequest);
@@ -47,7 +46,7 @@ public class AcceptingUnitTest {
 
         // random request that Billy wants to accept
         User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, rider);
+        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         assertFalse(user.hasAcceptedRequests(billyRequest));
@@ -62,7 +61,7 @@ public class AcceptingUnitTest {
 
     @Test
     public void testNotificationOfferAccepted(){
-        UserRequest request = new UserRequest(startLocation,endLocation,fare,rider);
+        UserRequest request = new UserRequest(startLocation,endLocation,fare,driver);
         //get the list of requests
         ArrayList<UserRequest> requestList = driver.getActiveRequestsAsDriver();
         //check if any are accepted
