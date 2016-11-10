@@ -72,6 +72,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         });
+        Button mSignUpButton = (Button) findViewById(R.id.sign_up_button);
+        mSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // switch to sign up activity
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -82,6 +91,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    private void attemptLogin() {
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        mUsernameView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String username = mUsernameView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+
+
+        // Check for a valid user address
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError(getString(R.string.field_required));
+            focusView = mUsernameView;
+            cancel = true;
+        } else if (!isUserValid(username)) {
+            mUsernameView.setError(getString(R.string.action_user_not_found));
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            showProgress(true);
+
+            // Set User Controller & Run Background tasks to get request info then save file
+            UserController.setUser(user);
+            UserController.runBackgroundTasks(user.getName(), this, true);
+
+            // TODO: Launch next activity (MainActivity?)
+            Intent intent = new Intent(this, RiderLocationActivity.class);
+            startActivity(intent);
+
+        }
+    }
 
 
     private boolean isUserValid(String usr) {

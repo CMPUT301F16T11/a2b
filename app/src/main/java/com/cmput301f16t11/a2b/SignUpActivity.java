@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -89,7 +90,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                             if (result) {
                                 //TODO: Launch next activity after user creation (MainActivity?)
-
+                                Intent intent =
+                                        new Intent(SignUpActivity.this, RiderLocationActivity.class);
+                                startActivity(intent);
+                                finish();
                             } else {
                                 // Failed to add new user
                                 error = true;
@@ -330,23 +334,26 @@ public class SignUpActivity extends AppCompatActivity {
                     // Something Entered
                     else {
                         User result = new User();
+                        User nullUser = new User();
                         ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
                         checkUserTask.execute(username);
                         try {
                             result = checkUserTask.get();
+                            errorMsg.setText(result.getId());
+                            errorMsg.setVisibility(View.VISIBLE);
                         } catch (Exception e) {
                             Log.i("Error", "Failed to get result from asynctask");
                         }
 
                         // Username has become unique
-                        if (result==null & last_state!=1) {
+                        if (result.getName()==null & last_state!=1) {
                             uniqueUsr = true;
                             usrIcon.setImageResource(R.drawable.circle_check);
                             usrMsg.setText(R.string.signup_usr_open);
                             last_state = 1;
                         }
                         // Username is still unique
-                        else if (result==null & last_state==1) {
+                        else if (result.getName()==null & last_state==1) {
                             // Do nothing
                         }
                         // Username is not unique

@@ -17,7 +17,7 @@ public class LocationUnitTest {
     private LatLng start = new LatLng(50,50);
     //specify an end point
     private LatLng end = new LatLng(50,50);
-    private String rider = "Rider";
+    private User user = UserController.getUser();
     /**
      * Location
      US 10.01.01
@@ -27,7 +27,7 @@ public class LocationUnitTest {
     public void testSetStartEndLocations(){
 
         //create a new request
-        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
         User rider = new User();
 
         //enter in the start and end points chosen
@@ -49,7 +49,7 @@ public class LocationUnitTest {
     @Test
     public void testEndStartEndLocations(){
 
-        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
 
         User driver = new User();
         driver.addActiveDriverRequest(request);

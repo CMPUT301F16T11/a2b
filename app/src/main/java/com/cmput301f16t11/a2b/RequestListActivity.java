@@ -4,16 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 public class RequestListActivity extends AppCompatActivity {
@@ -35,7 +34,7 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-        this.requests = RequestController.tempFakeRequestList();
+        this.requests = new ArrayList<UserRequest>();
     }
 
     @Override
@@ -57,6 +56,12 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        this.requests.clear();
+        try {
+            this.requests.addAll(RequestController.getNearbyRequests());
+        } catch (Exception e) {
+            Log.e("line 62 crash", e.toString());
+        }
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
@@ -85,7 +90,9 @@ public class RequestListActivity extends AppCompatActivity {
                     // TODO: feed in actual curr location
                     requests.clear();
                     //TODO: feed in chosen radius
-                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15));
+
+                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15))
+
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver

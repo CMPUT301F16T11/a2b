@@ -11,6 +11,8 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.cmput301f16t11.a2b.R.id.user;
+
 /**
  * Controllers user and user functions
  * static so it can be shared by all activities
@@ -18,6 +20,7 @@ import java.util.Collection;
 public class UserController {
     private static User user = null;
     private static Mode mode;
+    private static LatLng lastLocation;
 
 
     private static String USRFILE = "user.sav";
@@ -49,70 +52,66 @@ public class UserController {
     }
 
     static public User getUser() {
-        if(user != null){
             return user;
-        }else{ // should always be set but for dev purposes return an existing object
-            // TO DO: depricate this before production
-            ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
-            try{
-                user = checkUserTask.execute("Jane Doe").get();// force syncronous
-            }catch (Exception e){
-                user = new User();
-            }
-
-            return user;
-        }
     }
 
-    // push user changes to the data base
     static public void updateUserInDb(){
         ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
-        updateUserInfoTask.execute(user);
+        updateUserInfoTask.execute(UserController.getUser());
     }
 
-    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsRider(requests);
+    static public void updateLocation(LatLng location) {
+        lastLocation = location;
     }
-    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsDriver(requests);
-    }
-    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsRider(requests);
-
-    }
-    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsDriver(requests);
+    static public LatLng getLastLocation() {
+        return lastLocation;
     }
 
-    // time to depreciate this???
-    static public User loadUser(String username){
-        return new User();
+
+
+    // getters
+   static public String getName() {
+        return user.getName();
     }
 
-   static public String getNewUserName() {
-        return "Daniel";
-    }
-   static public String getNewPass() {
-        return "test";
-    }
    static public String getEmail() {
-        return "test@ualberta.ca";
+        return user.getEmail();
     }
 
+    static public String getPhoneNumber() {
+        return user.getPhoneNumber();
+    }
+
+    //setters
+
+    static public void setName(String name) {
+        user.setName(name);
+    }
+
+    static public void setEmail(String email) {
+        user.setEmail(email);
+    }
+
+    static public void setPhoneNumber(String phoneNumber) {
+         user.setPhoneNumber(phoneNumber);
+    }
+
+
+    // access elastic
     public static ArrayList<UserRequest> getRequestList() {
 
         ArrayList<UserRequest> fakeList = new ArrayList<>();
-        fakeList.add(new UserRequest(new LatLng(50, 50), new LatLng(50, 50), 0, "test"));
         return fakeList;
     }
 
     public static void setOffline() {
     }
 
+
     /**
      * Method to save the static user variable
      *
-     * Stores it in internal storage as JSON in user.sav file
+     * Stores it in internal storage as JSON in user.sav file\
      */
     public static void saveInFile(Activity activity) {
          try {
@@ -135,5 +134,19 @@ public class UserController {
     }
 
     public static void runBackgroundTasks(String name, LoginActivity loginActivity, boolean b) {
+    }
+
+    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsRider(requests);
+    }
+    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
+        user.setClosedRequestsAsDriver(requests);
+    }
+    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsRider(requests);
+
+    }
+    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
+        user.setActiveRequestsAsDriver(requests);
     }
 }

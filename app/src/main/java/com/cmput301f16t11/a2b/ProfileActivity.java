@@ -33,7 +33,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-
         setTextViews();
     }
 
@@ -44,13 +43,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setTextViews() {
-        // Get the user info from User controller
-        user = UserController.getUser();
+        User user = UserController.getUser();
 
         //Populating text attrubutes
         TextView userNameTV = (TextView) findViewById(R.id.userName);
         TextView emailTV = (TextView) findViewById(R.id.emailText);
         TextView phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTextView);
+
         userNameTV.setText(user.getName());
         emailTV.setText(user.getEmail());
         phoneNumberTV.setText(user.getPhoneNumber());

@@ -9,18 +9,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Model representing UserRequests.
  * Contains distance, start, end locations, rider (who created the request), confirmed driver
  * (if any), fare and other details.
  */
 public class UserRequest implements Parcelable {
-    private ArrayList<String> acceptedDrivers;
-    private String confirmedDriver;
-    private String rider;
-    private String driver;
-    private LatLng startLocation;
-    private LatLng endLocation;
+    private ArrayList<User> acceptedDrivers;
+    private User confirmedDriver;
+    private User rider;
+    private Point startLocation;
+    private Point endLocation;
+
     private Number fare;
     private Double distance;
     private long timeCreatedInMillis;
@@ -29,20 +31,27 @@ public class UserRequest implements Parcelable {
     private boolean completed;
     private boolean paymentReceived;
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider){
-        this.startLocation = start;
-        this.endLocation = end;
+    @JestId
+    private String id;
+
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider){
+        this.startLocation = new Point(start.latitude,start.longitude);
+        this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
         this.rider = rider;
         this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
+        RequestController.addOpenRequest(this);
+        this.id = null;
+        acceptedDrivers = new ArrayList<User>();
+
     }
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String rider, Double distance) {
-        this.startLocation = start;
-        this.endLocation = end;
+    public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
+        this.startLocation = new Point(start.latitude,start.longitude);
+        this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
         this.rider = rider;
         this.distance = distance;
@@ -50,27 +59,35 @@ public class UserRequest implements Parcelable {
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
+        RequestController.addOpenRequest(this);
+        this.id = null;
+        acceptedDrivers = new ArrayList<User>();
+
+    }
+
+    public void clearAcceptedDrivers(){
+        acceptedDrivers = new ArrayList<User>();
     }
 
     // Getters
-    public String getConfirmedDriver() {
+    public User getConfirmedDriver() {
         return this.confirmedDriver;
     }
 
-    public ArrayList<String> getAcceptedDrivers() {
+    public ArrayList<User> getAcceptedDrivers() {
         return this.acceptedDrivers;
     }
-    public String getRider() {
+    public User getRider() {
         return rider;
     }
     public LatLng getEndLocation() {
-        return endLocation;
+        return new LatLng(this.endLocation.getLat(),this.endLocation.getLon());
     }
     public Number getFare() {
         return fare;
     }
     public LatLng getStartLocation() {
-        return startLocation;
+        return new LatLng(this.startLocation.getLat(),this.startLocation.getLon());
     }
     public boolean getAcceptedStatus(){
         return accepted;
@@ -93,16 +110,28 @@ public class UserRequest implements Parcelable {
         return this.distance;
     }
 
+    public String getId() {
+        return id;
+    }
+
     // setters
-    public void setConfirmedDriver(String d) {
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setConfirmedDriver(User d) {
         this.confirmedDriver = d;
     }
 
     public void setStartLocation(LatLng startLocation) {
-        this.startLocation = startLocation;
+        this.startLocation.setLat(startLocation.latitude);
+        this.startLocation.setLon(startLocation.longitude);
+
     }
     public void setEndLocation(LatLng endLocation) {
-        this.endLocation = endLocation;
+        this.endLocation.setLat(endLocation.latitude);
+        this.endLocation.setLon(endLocation.longitude);
     }
     public void setPaymentReceived(boolean paymentRecived) {
         this.paymentReceived = paymentRecived;
@@ -119,6 +148,9 @@ public class UserRequest implements Parcelable {
     public boolean isPaymentRecived() {
         return paymentReceived;
     }
+    public boolean hasConfirmedRider() {
+        return this.confirmedDriver != null;
+    }
 
 
     /* Parcelable Stuff */
@@ -133,10 +165,8 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        out.writeString(confirmedDriver);
-        out.writeString(rider);
-        out.writeParcelable(startLocation, flags);
-        out.writeParcelable(endLocation, flags);
+        //out.writeParcelable(startLocation, flags);
+        //out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
         out.writeLong(timeCreatedInMillis);
         out.writeInt((int)requestId);
@@ -151,8 +181,6 @@ public class UserRequest implements Parcelable {
      * @param in : Parcel
      */
     public UserRequest(Parcel in) {
-        confirmedDriver = in.readString();
-        rider = in.readString();
         startLocation = in.readParcelable(LatLng.class.getClassLoader());
         endLocation = in.readParcelable(LatLng.class.getClassLoader());
         fare = in.readInt();
@@ -183,10 +211,7 @@ public class UserRequest implements Parcelable {
         return 0;
     }
 
-    public String getId() {
-        //TODO: ALL ID WORK
-        return "NEEDS TO BE IMPLEMENTED";
-    }
+
 
     public String toString() {
         String temp = "Rider: " + this.getRider() + "\n";
