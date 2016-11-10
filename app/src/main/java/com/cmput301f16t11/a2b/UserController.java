@@ -47,7 +47,6 @@ public class UserController {
     }
 
     static public Mode checkMode() {
-        mode = Mode.RIDER;
         return mode;
     }
 
