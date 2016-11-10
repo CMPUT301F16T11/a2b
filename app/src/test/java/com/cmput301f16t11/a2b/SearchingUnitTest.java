@@ -36,6 +36,8 @@ public class SearchingUnitTest {
 
     @Before
     public void setUp() {
+
+
         rider1.addActiveRiderRequest(new UserRequest(startLocation1,endLocation1,10.00,rider1));
         rider2.addActiveRiderRequest(new UserRequest(startLocation2,endLocation2,10.00,rider2));
         rider3.addActiveRiderRequest(new UserRequest(startLocation3,endLocation3,10.00,rider3));
@@ -44,6 +46,7 @@ public class SearchingUnitTest {
         req2 = rider2.getActiveRequestsAsRider().get(0);
         req3 = rider3.getActiveRequestsAsRider().get(0);
         req4 = rider4.getActiveRequestsAsRider().get(0);
+
     }
 
     /**
@@ -63,6 +66,7 @@ public class SearchingUnitTest {
 
     @Test
     public void testGetRequests() {
+
         //TODO: not searching by keyword, need to add this functionality
         User user1 = UserController.getUser();
         User user2 = new User();
@@ -76,5 +80,6 @@ public class SearchingUnitTest {
         ArrayList<UserRequest> retrieve2 = user2.getActiveRequestsAsDriver();
         assertEquals(retrieve1.get(0), request1);
         assertEquals(retrieve2.get(1), request2);
+
     }
 }
