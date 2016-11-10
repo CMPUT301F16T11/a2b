@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,7 +51,7 @@ import java.util.List;
  * those pins a specific radius to see any requests in that specified area. It also has a settings bar
  * that allows the user to view profile see open requests or log out.
  */
-public class driverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class DriverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
@@ -86,18 +85,18 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.viewProfile:
-                Intent profileIntent = new Intent(driverLocationActivity.this, ProfileActivity.class);
+                Intent profileIntent = new Intent(DriverLocationActivity.this, ProfileActivity.class);
                 startActivity(profileIntent);
                 return true;
 
             case R.id.changeRole:
-                Intent driverIntent = new Intent(driverLocationActivity.this, RiderLocationActivity.class);
+                Intent driverIntent = new Intent(DriverLocationActivity.this, RiderLocationActivity.class);
                 startActivity(driverIntent);
                 finish();
                 return true;
 
             case R.id.viewRequests:
-                Intent requestIntent = new Intent(driverLocationActivity.this, RequestListActivity.class);
+                Intent requestIntent = new Intent(DriverLocationActivity.this, RequestListActivity.class);
                 startActivity(requestIntent);
                 return true;
 

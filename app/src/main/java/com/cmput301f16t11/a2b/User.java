@@ -2,8 +2,6 @@ package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import io.searchbox.annotations.JestId;
 

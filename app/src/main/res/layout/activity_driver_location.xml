@@ -16,7 +16,7 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cmput301f16t11.a2b.driverLocationActivity"
+    tools:context="com.cmput301f16t11.a2b.DriverLocationActivity"
     tools:layout="@android:layout/list_content">
 
     <Button

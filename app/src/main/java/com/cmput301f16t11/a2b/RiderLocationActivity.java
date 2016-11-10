@@ -68,7 +68,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-                Intent driverIntent = new Intent(RiderLocationActivity.this, driverLocationActivity.class);
+                Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                 startActivity(driverIntent);
                 return true;
 

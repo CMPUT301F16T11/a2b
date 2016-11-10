@@ -46,7 +46,7 @@
             android:label="@string/title_activity_location" />
         <activity android:name=".EditProfileActivity" />
         <activity
-            android:name=".driverLocationActivity"
+            android:name=".DriverLocationActivity"
             android:label="@string/title_activity_driver_location" />
         <activity android:name=".RequestListActivity" />
         <activity android:name=".RequestDetailActivity"></activity>

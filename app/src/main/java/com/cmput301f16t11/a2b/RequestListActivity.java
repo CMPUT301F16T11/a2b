@@ -91,7 +91,7 @@ public class RequestListActivity extends AppCompatActivity {
                     requests.clear();
                     //TODO: feed in chosen radius
 
-                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15))
+                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15));
 
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
