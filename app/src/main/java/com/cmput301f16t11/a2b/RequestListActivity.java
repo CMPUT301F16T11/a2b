@@ -65,7 +65,6 @@ public class RequestListActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.requestSpinner);
         adapter.notifyDataSetChanged();
 
-        Mode mode = UserController.checkMode();
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
