@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
  */
 public class RequestController {
 
+    public static ArrayList<UserRequest> nearbyRequests;
+
 
     public static ArrayList<UserRequest> getRequestNear(String address, Number radius){
         return new ArrayList<UserRequest>();
@@ -20,47 +23,43 @@ public class RequestController {
         return new ArrayList<UserRequest>();
     }
 
+    public static void setNearbyRequests(ArrayList<UserRequest> requests) {
+        nearbyRequests = requests;
+    }
 
-    static public void runBackgroundTasks(String usr, Activity activity, Boolean saveAfter) {
+    public static ArrayList<UserRequest> getNearbyRequests() {
+        return nearbyRequests;
+    }
 
-        ElasticsearchRequestController.GetPastRiderRequests riderTask =
-                new ElasticsearchRequestController.GetPastRiderRequests();
-        ElasticsearchRequestController.GetPastDriverRequests driverTask =
-                new ElasticsearchRequestController.GetPastDriverRequests();
-        ElasticsearchRequestController.GetActiveRiderRequests currRiderTask =
-                new ElasticsearchRequestController.GetActiveRiderRequests();
-        ElasticsearchRequestController.GetActiveDriverRequests currDriverTask =
-                new ElasticsearchRequestController.GetActiveDriverRequests();
-        riderTask.execute(usr);
-        driverTask.execute(usr);
-        try {
-            UserController.setClosedRequestsAsRider(riderTask.get());
-            UserController.setClosedRequestsAsDriver(driverTask.get());
-            UserController.setActiveRequestsAsRider(currRiderTask.get());
-            //TODO something wrong with this line
-            //UserController.setActiveRequestsAsDriver(currRiderTask.get());
+    public static void addAcceptance(UserRequest request, Context context) {
+        ElasticsearchRequestController.AddDriverAcceptanceToRequest addAcceptance =
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequest(context);
+        // request id driver id
+        addAcceptance.execute(request.getId(), UserController.getUser().getId());
+    }
 
-        } catch (Exception e) {
-            Log.i("Error", "AsyncTask failed to execute");
+
+    public static void addOpenRequest(UserRequest request) {
+        ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
+                new ElasticsearchRequestController.AddOpenRequestTask();
+        addOpenRequest.execute(request);
+    }
+
+
+    /**
+     * Get all open requests within distatnce of lat, lon
+     */
+    public static ArrayList<UserRequest> getNearbyRequestsGeoFilter(Double distance, Double lat, Double lon){
+        ElasticsearchRequestController.GetNearbyRequestsGeoFilter getNearbyRequestsGeoFilter = new ElasticsearchRequestController.GetNearbyRequestsGeoFilter();
+        ArrayList<UserRequest> nearbyRequests = new ArrayList<UserRequest>();
+        try{
+            nearbyRequests = getNearbyRequestsGeoFilter.execute(distance,lat,lon).get();
+        }catch(Exception e){
+            Log.i("Error", "Failiure");
             e.printStackTrace();
         }
 
-        // Saves user file after completion of asyncTasks if necessary
-        if (saveAfter) {
-            UserController.saveInFile(activity);
-        }
-    }
-
-    // TEMPORARY POPULATION OF RANDOM REQUESTS!!!
-    public static ArrayList<UserRequest> tempFakeRequestList() {
-        ArrayList<UserRequest> returnValue = new ArrayList<UserRequest>();
-        returnValue.add(new UserRequest(new LatLng(53.5443890, -113.4909270),
-                new LatLng(54.07777, -113.50192), 10.01, "test"));
-        returnValue.add(new UserRequest(new LatLng(54.07777, -113.50192),
-                new LatLng(53.5443890, -113.4909270), 13.31, "test1"));
-        returnValue.add(new UserRequest(new LatLng(54.07777, -113.50192),
-                new LatLng(53.5443890, -113.4909270), 18.31, "test2"));
-        return returnValue;
+        return  nearbyRequests;
     }
 
     public static ArrayList<UserRequest> getNearbyRequests(LatLng location, int radius) {
@@ -70,6 +69,7 @@ public class RequestController {
          */
         ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
         ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
+        nearbyRequests = nearBy;
         //return RequestController.tempFakeRequestList(); // for testing
         return nearBy;
     }
@@ -79,18 +79,27 @@ public class RequestController {
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        ArrayList<UserRequest> userRequests;
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
         }
         else {
             ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
+
         }
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
@@ -149,7 +158,42 @@ public class RequestController {
          * Excludes completed requests
         */
         ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        temp.add(RequestController.tempFakeRequestList().get(2));
         return temp;
     }
+
+    /**
+     * Move a request from open to inProgress
+     */
+    public static void moveToInProgress(UserRequest ur){
+        ElasticsearchRequestController.MoveToInProgresseRequest moveToInProgresseRequest = new ElasticsearchRequestController.MoveToInProgresseRequest();
+        moveToInProgresseRequest.execute(ur);
+
+    }
+
+    /**
+     * Move a request from inProgress to closed
+     */
+
+    public static void moveToClosed(UserRequest ur){
+        ElasticsearchRequestController.MoveToClosedRequest moveToClosedRequest = new ElasticsearchRequestController.MoveToClosedRequest();
+        moveToClosedRequest.execute(ur);
+
+    }
+
+    public static UserRequest getOpenRequestById(String id){
+        ElasticsearchRequestController.GetOpenRequestById getOpenRequestById = new ElasticsearchRequestController.GetOpenRequestById();
+        UserRequest ur = null;
+        try{
+            ur =getOpenRequestById.execute(id).get();
+        }catch(Exception e){
+
+        }
+        return ur;
+
+    }
+
+
+
+
+
 }

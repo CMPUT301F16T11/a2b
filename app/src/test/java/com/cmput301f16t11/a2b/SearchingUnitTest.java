@@ -14,22 +14,12 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class SearchingUnitTest {
-    private User rider1 =  UserController.loadUser("rider1"); // rider
-    private User rider2 =  UserController.loadUser("rider2"); // rider
-    private User rider3 =  UserController.loadUser("rider3"); // rider
-    private User rider4 =  UserController.loadUser("rider4"); // rider
 
-    private User user = UserController.loadUser("billy"); // driver
+    private User rider1 =  new User(); // rider
+    private User rider2 =  new User(); // rider
+    private User rider3 =  new User(); // rider
+    private User rider4 =  new User(); // rider
 
-    private String userName = "user";
-//    private String startLocation1 = "8210 108 St NW Edmonton, AB T6E 5T2";
-//    private String endLocation1 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-//    private String startLocation2 = "8210 106 St NW Edmonton, AB T6E 5T2";
-//    private String endLocation2 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-//    private String startLocation3 = "8210 109 St NW Edmonton, AB T6E 5T2";
-//    private String endLocation3 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
-//    private String startLocation4 = "8210 110 St NW Edmonton, AB T6E 5T2";
-//    private String endLocation4 = "10189 106 Street Northwest, Edmonton, AB T5J 1H3";
     private LatLng startLocation1 = new LatLng(50,50);
     private LatLng endLocation1 = new LatLng(50,50);
     private LatLng startLocation2 = new LatLng(50,50);
@@ -46,14 +36,14 @@ public class SearchingUnitTest {
 
     @Before
     public void setUp() {
-        rider1.createRequest(startLocation1,endLocation1,10.00);
-        rider2.createRequest(startLocation2,endLocation2,10.00);
-        rider3.createRequest(startLocation3,endLocation3,10.00);
-        rider4.createRequest(startLocation4,endLocation4,10.00);
-        req1 = rider1.getLatestActiveRequest();
-        req2 = rider2.getLatestActiveRequest();
-        req3 = rider3.getLatestActiveRequest();
-        req4 = rider4.getLatestActiveRequest();
+        rider1.addActiveRiderRequest(new UserRequest(startLocation1,endLocation1,10.00,rider1));
+        rider2.addActiveRiderRequest(new UserRequest(startLocation2,endLocation2,10.00,rider2));
+        rider3.addActiveRiderRequest(new UserRequest(startLocation3,endLocation3,10.00,rider3));
+        rider4.addActiveRiderRequest(new UserRequest(startLocation4,endLocation4,10.00,rider4));
+        req1 = rider1.getActiveRequestsAsRider().get(0);
+        req2 = rider2.getActiveRequestsAsRider().get(0);
+        req3 = rider3.getActiveRequestsAsRider().get(0);
+        req4 = rider4.getActiveRequestsAsRider().get(0);
     }
 
     /**
@@ -73,16 +63,18 @@ public class SearchingUnitTest {
 
     @Test
     public void testGetRequests() {
-        user = UserController.loadUser(userName);
-        String passenger = "Passenger";
-        String passenger2 = "Passenger2";
-        UserRequest request = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, passenger);
-        UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, passenger2);
-        user.addRequest(request);
-        user.addRequest(request2);
+        //TODO: not searching by keyword, need to add this functionality
+        User user1 = UserController.getUser();
+        User user2 = new User();
 
-        ArrayList<UserRequest> retrieve = user.getRequests();
-        assertEquals(retrieve.get(0), request);
-        assertEquals(retrieve.get(1), request2);
+        UserRequest request1 = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, user1);
+        UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, user2);
+        user1.addActiveDriverRequest(request1);
+        user2.addActiveDriverRequest(request2);
+
+        ArrayList<UserRequest> retrieve1 = user1.getActiveRequestsAsDriver();
+        ArrayList<UserRequest> retrieve2 = user2.getActiveRequestsAsDriver();
+        assertEquals(retrieve1.get(0), request1);
+        assertEquals(retrieve2.get(1), request2);
     }
 }

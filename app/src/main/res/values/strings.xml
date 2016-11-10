@@ -78,6 +78,7 @@
     <!-- MarkerInfoDialog Strings -->
     <string name="markerInfo_accept">Accept</string>
     <string name="markerInfo_cancel">Cancel</string>
+    <string name="markerInfo_error">Unable to accept request\nPlease try again</string>
 
     <!-- Location Menu String-->
     <string name="view_profile">View Profile</string>
@@ -85,10 +86,17 @@
     <string name="request_list">View Requests</string>
     <string name="sign_out">Sign Out</string>
 
+    <!-- Request Detail Activity Strings-->
+    <string name="request_detail_title">Request Details</string>
+    <string name="willing_drivers">Willing Drivers</string>
+
     <!-- Multi Purpose Strings -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="title_activity_request_detail">RequestDetailActivity</string>
+    <string name="delete">Delete</string>
+    <string name="accept">Accept</string>
+    <string name="complete">Complete</string>
 
 </resources>

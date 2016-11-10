@@ -20,27 +20,31 @@ public class UserProfileUnitTest {
 
     @Before
     public void setUp() {
-        user =  UserController.loadUser("some1");
+        user =  UserController.getUser();
 
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
     }
     /**
     US 03.01.01
-    As a user, I want a proile with a unique username and my contact information.
+    As a user, I want a profile with a unique username and my contact information.
     */
     @Test
     public void testProfileCreation() {
 
-        String newName = UserController.getNewUserName();
-        String newPass = UserController.getNewPass();
-        String newEmail = UserController.getEmail();
-
-
-        User user = new User(newName, newPass, newEmail);
-        assertEquals(newName, user.getName());
-        assertEquals(newPass, user.getPassWord());
-        assertEquals(newEmail, user.getEmail());
+//        String newName = UserController.getNewUserName();
+//        String newPass = UserController.getNewPass();
+//        String newEmail = UserController.getEmail();
+//
+//        //Shouldn't we be searching through a list of created users
+//        //and comparing the newest one with out list?
+//        //There should be some way of checking our system so this
+//        // doesn't occur or an error is thrown -Dallin
+//        //TODO: add a for loop which checks for user independency
+//        User testUser = new User(newName, newPass, newEmail);
+//        assertEquals(newName, user.getName());
+//        assertEquals(newPass, user.getPassWord());
+//        assertEquals(newEmail, user.getEmail());
     }
      /**
     US 03.02.01
@@ -76,5 +80,6 @@ public class UserProfileUnitTest {
         assertEquals("7801234567", user.getPassWord());
         user.setEmail("test@ualberta.ca");
         assertEquals("test@ualberta.ca", user.getEmail());
+        //TODO: Perhaps this is more of a view test instead of controller
     }
 }

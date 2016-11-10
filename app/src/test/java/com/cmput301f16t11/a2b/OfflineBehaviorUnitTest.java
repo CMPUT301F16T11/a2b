@@ -30,7 +30,7 @@ public class OfflineBehaviorUnitTest {
     private LatLng start = new LatLng(50,50);
     private LatLng end = new LatLng(50,50);
     private int fare = 10;
-    private String rider = "Rider";
+    private User user = UserController.getUser();
 
     /**
     US 08.01.01
@@ -39,9 +39,9 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineAcceptedRequest(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare,rider);
-        UserRequest request1 = new UserRequest(start,end,fare,rider);
-        UserRequest request2 = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request1 = new UserRequest(start,end,fare,user);
+        UserRequest request2 = new UserRequest(start,end,fare,user);
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
@@ -68,9 +68,9 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineMadeRequests(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare,rider);
-        UserRequest request1 = new UserRequest(start,end,fare,rider);
-        UserRequest request2 = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request1 = new UserRequest(start,end,fare,user);
+        UserRequest request2 = new UserRequest(start,end,fare,user);
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
@@ -94,7 +94,7 @@ public class OfflineBehaviorUnitTest {
         //go offline
         UserController.setOffline();
         //create a request
-        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
         //go online
         UserController.goOnline();
         UserController.updateRequestList();
@@ -113,7 +113,7 @@ public class OfflineBehaviorUnitTest {
         UserController.setOffline();
         //grab list of requests
         ArrayList<UserRequest> requestList = UserController.getRequestList();
-        UserRequest request = new UserRequest(start,end,fare,rider);
+        UserRequest request = new UserRequest(start,end,fare,user);
         requestList.add(request);
         //accept one of them
         requestList.get(0).setAcceptedStatus(true);

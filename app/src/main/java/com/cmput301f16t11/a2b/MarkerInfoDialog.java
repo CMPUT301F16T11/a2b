@@ -42,6 +42,7 @@ public class MarkerInfoDialog extends DialogFragment {
         MarkerInfoDialog dialog = new MarkerInfoDialog();
 
         Bundle args = new Bundle();
+        args.putString("rider", req.getRider().getName().toString());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -55,35 +56,29 @@ public class MarkerInfoDialog extends DialogFragment {
         // Inflate the ride info
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        // Set the view & buttons
-        builder.setView(inflater.inflate(R.layout.dialog_marker_info, null));
-
-        return builder.create();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.dialog_marker_info, container, false);
+        // Inflate the parent view
+        View parent = inflater.inflate(R.layout.dialog_marker_info, null);
+        builder.setView(parent);
 
         // Assign views, get request and set views
-        assignViews();
+        assignViews(parent);
         req = getArguments().getParcelable("req");
+        req.getRider().setName(getArguments().getString("rider"));
         setViews();
 
-        return layout;
+        return builder.create();
     }
 
     /**
      * Find all views from layout view
      */
-    public void assignViews() {
-        riderText = (TextView)layout.findViewById(R.id.dialog_requestInfo_riderText);
-        startText = (TextView)layout.findViewById(R.id.dialog_requestInfo_startText);
-        endText = (TextView)layout.findViewById(R.id.dialog_requestInfo_endText);
-        fareText = (TextView)layout.findViewById(R.id.dialog_requestInfo_fareText);
-        acceptButton = (Button)layout.findViewById(R.id.dialog_markerInfo_accept);
-        cancelButton = (Button)layout.findViewById(R.id.dialog_markerInfo_cancel);
+    public void assignViews(View parent) {
+        riderText = (TextView)parent.findViewById(R.id.dialog_requestInfo_riderText);
+        startText = (TextView)parent.findViewById(R.id.dialog_requestInfo_startText);
+        endText = (TextView)parent.findViewById(R.id.dialog_requestInfo_endText);
+        fareText = (TextView)parent.findViewById(R.id.dialog_requestInfo_fareText);
+        acceptButton = (Button)parent.findViewById(R.id.dialog_markerInfo_accept);
+        cancelButton = (Button)parent.findViewById(R.id.dialog_markerInfo_cancel);
     }
 
 
@@ -112,7 +107,7 @@ public class MarkerInfoDialog extends DialogFragment {
         }
 
         // Set the textViews
-        riderText.setText(req.getRider());
+        riderText.setText(req.getRider().getName());
         startText.setText(startAddress);
         endText.setText(endAddress);
         fareText.setText(req.getFare().toString());
@@ -121,7 +116,9 @@ public class MarkerInfoDialog extends DialogFragment {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Ride accepting stuff
+                ElasticsearchRequestController.AddDriverAcceptanceToRequest addDriverTask = new ElasticsearchRequestController.AddDriverAcceptanceToRequest(getActivity());
+                addDriverTask.execute(req.getId(), UserController.getUser().getId());
+                getDialog().dismiss();
             }
         });
 
@@ -129,7 +126,7 @@ public class MarkerInfoDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // Hide the dialog when canceled
-                MarkerInfoDialog.this.getDialog().cancel();
+                getDialog().dismiss();
             }
         });
 

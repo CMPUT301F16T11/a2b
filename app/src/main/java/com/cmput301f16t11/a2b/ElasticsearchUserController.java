@@ -64,19 +64,64 @@ public class ElasticsearchUserController {
 
                     User user = result.getSourceAsObject(User.class);
 
-                    // ensure that the users id is set.
-                    // this is for debugging purposes and can be removed in production
-                    if (user.getId() == null) {
-                        // parse the response for the id
-                        JsonObject jsonResponse = result.getJsonObject();
-                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-                        JsonArray actualHits = hits.getAsJsonArray("hits");
-                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-                        String id = firstHit.get("_id").toString();
-                        user.setId(id);
-                    }
+//                    // ensure that the users id is set.
+//                    // this is for debugging purposes and can be removed in production
+//                    if (user == null) {
+//                        // parse the response for the id
+//                        JsonObject jsonResponse = result.getJsonObject();
+//                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
+//                        JsonArray actualHits = hits.getAsJsonArray("hits");
+//                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
+//                        String id = firstHit.get("_id").toString();
+//                        user.setId(id);
+//                    }
 
                     if (user!=null && user.getName().equals(params[0])) {
+                        return user;
+                    }
+                    else {
+                        return new User();
+                    }
+                } else {
+                    return new User();
+                }
+            } catch (IOException e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return new User();
+            }
+        }
+    }
+
+
+
+    /**
+     * Given a User object with only an id get the rest of the user
+     * If the user does not exit the return a new user
+     * Meant to be called after a request onject has been returned by elastic search
+     */
+
+    public static class RetriveUserInfo extends AsyncTask<User, Void, User> {
+        @Override
+        protected User doInBackground(User... users) {
+
+            verifySettings();
+
+            String search_string = "{\"query\": {\"match\": {\"id\": \"" + users[0].getId() + "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(userType)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+
+
+                    User user = result.getSourceAsObject(User.class);
+
+                    if (user.getId().equals(users[0].getId())) {
                         return user;
                     }
                     else {
@@ -161,6 +206,8 @@ public class ElasticsearchUserController {
     }
 
 
+
+
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
@@ -174,6 +221,12 @@ public class ElasticsearchUserController {
         }
     }
 
+    /**
+     * Get the id for the first hit
+     * @param jsonResponse
+     * @return string ID
+     */
+
     private static String  getIdFromResult(JsonObject jsonResponse){
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");
@@ -182,6 +235,11 @@ public class ElasticsearchUserController {
         return id;
     }
 
+    /**
+     * Get the userName for the first hit
+     * @param jsonResponse
+     * @return
+     */
     private static String getUserFromResult(JsonObject jsonResponse) {
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");

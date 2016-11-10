@@ -1,7 +1,9 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -12,11 +14,14 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 /**
  * Created by Wilky on 11/6/2016.
@@ -31,13 +36,50 @@ public class ElasticsearchRequestController {
     private static String inProgress = "inProgress";
 
 
+    /**
+     * Add an open request to elastic search server
+     * input - UserRequest
+     * output - Boolean of if it was added
+     */
+
+    public static class AddOpenRequestTask extends AsyncTask<UserRequest, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(UserRequest... requests) {
+            verifySettings();
+
+            Index userIndex = new Index.Builder(requests[0]).index(index).type(openRequest).build();
+
+            try {
+                DocumentResult result = client.execute(userIndex);
+                if (result.isSucceeded()) {
+                    requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to add user");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to add user to elasticsearch");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+    /**
+     * Get the 100 latest closed requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> riderList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -61,13 +103,18 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get open requests for a driver
+     * @depticated b/c if the driver has been set for a request then it should be inProgress or closed
+     */
+    @Deprecated
     public static class GetActiveDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -91,13 +138,72 @@ public class ElasticsearchRequestController {
         }
     }
 
+
+    /**
+     * Add a driver acceptance to a request
+     * info[0] is the request ID
+     * info[1] is the driver ID
+     */
+
+    public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
+        Context context;
+
+        public AddDriverAcceptanceToRequest(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+
+
+            // update an existing request
+            //TO DO: check it the request exists first
+
+            // update script
+
+            String script = "{ \"script\" : \" if (ctx._source.acceptedDrivers == null) {ctx._source.acceptedDrivers = [newDriver] } " +
+                    "else {ctx._source.acceptedDrivers += newDriver }\", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+
+
+            try {
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            // Notify the user if we were unable to accept the request
+            if (!result) {
+                Toast.makeText(context, context.getString(R.string.markerInfo_error), Toast.LENGTH_LONG).show();
+            }
+            super.onPostExecute(result);
+        }
+    }
+
+    /**
+     * Get the currently open Requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetActiveRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -121,13 +227,19 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get the closed requests for a driver
+     * input - userName of the driver
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetPastDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> driverList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -151,78 +263,117 @@ public class ElasticsearchRequestController {
         }
     }
 
-//    public static class GetActiveRequestsInRange extends AsyncTask<String, Void, ArrayList<UserRequest>> {
-//        @Override
-//        // Kind of a hack but
-//        //info[0] = lat
-//        //info[1] = lon
-//        //info[2] = distance in decimal km
-//        protected ArrayList<UserRequest> doInBackground(String... info) {
-//            verifySettings();
-//
-//            ArrayList<UserRequest> activeRequestsInRange;
-//            String query_stirng = "{\n" +
-//                    "    \"filtered\" : {\n" +
-//                    "        \"query\" : {\n" +
-//                    "            \"match_all\" : {}\n" +
-//                    "        },\n" +
-//                    "        \"filter\" : {\n" +
-//                    "            \"geo_distance\" : {\n" +
-//                    "                \"distance\" : \""+ info[2] +"\",\n" +
-//                    "                \"pin.location\" : {\n" +
-//                    "                    \"lat\" : "+info[0] +",\n" +
-//                    "                    \"lon\" : "+info[1] +"\n" +
-//                    "                }\n" +
-//                    "            }\n" +
-//                    "        }\n" +
-//                    "    }\n" +
-//                    "}";
-//
-//
-//
-//        }
-//
-//    }
-
-//    public static class AddOpenRequestTask extends AsyncTask<User, Void, Boolean> {
-//        @Override
-//        protected Boolean doInBackground(Request... requests) {
-//            verifySettings();
-//
-//            Index userIndex = new Index.Builder(requests[0]).index(index).type(openRequest).build();
-//
-//            try {
-//                DocumentResult result = client.execute(userIndex);
-//                if (result.isSucceeded()) {
-//                    requests[0].setId(result.getId());
-//                } else {
-//                    Log.i("Error", "Elasticsearch failed to add user");
-//                    return false;
-//                }
-//            } catch (Exception e) {
-//                Log.i("Error", "Failed to add user to elasticsearch");
-//                e.printStackTrace();
-//                return false;
-//            }
-//
-//            return true;
-//        }
-//    }
     /**
-     * Move a request from open to closed
-     *
+     * Get the inProgress requests for a rider
+     * input - userName of the rider
+     * output - ArrayList<UserRequest>
      */
 
-    public static class CloseRequest extends AsyncTask<UserRequest, Void, Boolean> {
+
+    public static class GetInPrgressRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(inProgress)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
+
+
+
+
+    /**
+     * Move a request from open to inProgress
+     * input - requests[0]
+     * output - Boolean of if the move worked
+     */
+
+
+    public static class MoveToInProgresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
+
+            // clear the list of accepted drivers
+            requests[0].clearAcceptedDrivers();
 
             // Delete the request from the list of open requests
             try {
                 DocumentResult result = client.execute(new Delete.Builder(requests[0].getId())
                         .index(index)
                         .type(openRequest)
+                        .build());
+                if (result.isSucceeded()) {
+                    //requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to delete open request");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to delete open request");
+                e.printStackTrace();
+                return false;
+            }
+
+            //Add the request to inprogress requests
+            Index requestIndex = new Index.Builder(requests[0]).index(index).type(inProgress).id(requests[0].getId()).build();
+
+            try {
+                DocumentResult result = client.execute(requestIndex);
+                if (result.isSucceeded()) {
+                    //requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to add closed request");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to add closed request");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+
+    /**
+     * Move a request from inProgress to closed
+     * input - requests[0]
+     * output - Boolean of if the move worked
+     */
+
+    public static class MoveToClosedRequest extends AsyncTask<UserRequest, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(UserRequest... requests) {
+            verifySettings();
+
+            // Delete the request from the list of inprogress requests
+            try {
+                DocumentResult result = client.execute(new Delete.Builder(requests[0].getId())
+                        .index(index)
+                        .type(inProgress)
                         .build());
                 if (result.isSucceeded()) {
                     //requests[0].setId(result.getId());
@@ -278,9 +429,10 @@ public class ElasticsearchRequestController {
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
 
-            String search_string = "{\"query\": { \"range\" : { \"startLocation\" { \"latitude\" : { \"gte\" : \""
-                    + params[0] + "\". \"lte\" : \"" + params[1] + "\"}. \"longitude\": { \"gte\" : \""
-                    + params[2] + "\". \"lte\" : \"" + params[3] + "\"}}}}}";
+            String search_string = "{\"query\" : { \"match_all\" : {}}, " +
+                    "\"filter\" : { \"geo_distance\" : { \"distance\" : \"3km\", " +
+                    "\"startLocation\" : [" + params[0] + ", " + params[1] + "]}}}";
+
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -305,17 +457,112 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Same as above but uses geo distance filter
+     * Get all active requests that are within distance of lat,lon
+     * Input - param[0] - distance, param[1] - lat, param[2] - lon
+     * Output - ArrayList<UserRequest>
+     */
+
+    public static class GetNearbyRequestsGeoFilter extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
+        public ArrayList<UserRequest> doInBackground(Double... params) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+
+            String search_string = "{ \"query\":{\n" +
+                    "    \"filtered\" : {\n" +
+                    "        \"query\" : {\n" +
+                    "            \"match_all\" : {}\n" +
+                    "        },\n" +
+                    "        \"filter\" : {\n" +
+                    "            \"geo_distance\" : {\n" +
+                    "                \"distance\" : \""+params[0]+"km\",\n" +
+                    "                \"startLocation.location\" : {\n" +
+                    "                    \"lat\" : "+ params[1] +",\n" +
+                    "                    \"lon\" : "+ params[2] +"}\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> tmp = result.getSourceAsObjectList(UserRequest.class);
+                    requestList.addAll(tmp);
+                } else {
+                    // No requests found in area
+                    Log.i("Error", "Failed to find any requests within in the area");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requestList;
+        }
+    }
+
+
+    /**
+     * GetRequest fetches the request with the given Id from the server
+     *
+     * input - String (request id)
+     * output - UserRequest
+     */
+
+    public static class GetOpenRequestById extends AsyncTask<String, Void, UserRequest> {
+        @Override
+        protected UserRequest doInBackground(String... requestID) {
+            verifySettings();
+
+            Get get = new Get.Builder(index,requestID[0]).type(openRequest).build();
+
+            UserRequest userRequest = null;
+
+            try {
+                JestResult result = client.execute(get);
+                if (result.isSucceeded()) {
+                    userRequest = result.getSourceAsObject(UserRequest.class);
+                }else{
+                    Log.i("Error","Filed to find request");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return null;
+            }
+
+            return userRequest;
+        }
+    }
+
+    /**
+     * Get a rider's requests that have been accepted by a driver
+     * input - String(Rider's userName)
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetAcceptedRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] +
+                    "\", \"accepted\": true}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
-                    .addType(openRequest)
+                    .addType(inProgress)
                     .build();
 
             try {
@@ -335,13 +582,19 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get a driver's inPorgress Requests
+     * input - the driver's userName
+     * output - ArrayList<UserRequest>
+     */
+
     public static class GetAcceptedDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"driver\": \"" + user[0] + "\", \"accepted\" : \"true\"}}";
+            String search_string = "{\"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
