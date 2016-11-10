@@ -99,6 +99,7 @@ public class RequestController {
          */
         ElasticsearchRequestController.GetNearbyRequests searchController = new ElasticsearchRequestController.GetNearbyRequests();
         ArrayList<UserRequest> nearBy = searchController.doInBackground(location.latitude - radius, location.longitude - radius, location.latitude + radius, location.longitude + radius);
+        nearbyRequests = nearBy;
         //return RequestController.tempFakeRequestList(); // for testing
         return nearBy;
     }
