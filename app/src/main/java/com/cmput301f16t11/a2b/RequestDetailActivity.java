@@ -181,7 +181,12 @@ public class RequestDetailActivity extends AppCompatActivity {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
             }
         });
-
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
+            }
+        });
 
     }
 
