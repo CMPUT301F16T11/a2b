@@ -114,15 +114,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="226dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <Button android:id="@+id/request_detail_delete"
         android:layout_width="73dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:textStyle="bold"
-        android:textSize="10sp"
+        android:textSize="9sp"
         android:text="@string/delete" />
 
     <Button android:id="@+id/request_detail_accept"
@@ -130,16 +129,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:textStyle="bold"
-        android:textSize="10sp"
+        android:textSize="9sp"
         android:text="@string/accept" />
 
-        <Button android:id="@+id/request_confirm"
+    <Button android:id="@+id/request_detail_pay"
+        android:layout_width="74dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textStyle="bold"
+        android:textSize="9sp"
+        android:text="@string/pay" />
+
+        <Button android:id="@+id/request_detail_complete"
             android:layout_width="74dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:textStyle="bold"
-            android:textSize="10sp"
-            android:text="@string/confirm" />
+            android:textSize="9sp"
+            android:text="@string/complete" />
+
     </LinearLayout>
 
     <TextView android:id="@+id/willing_drivers_title"
@@ -150,6 +158,7 @@
         android:textSize="17sp"
         android:textStyle="bold"
         android:text="@string/willing_drivers"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

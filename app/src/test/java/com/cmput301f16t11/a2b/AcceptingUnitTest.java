@@ -25,7 +25,6 @@ public class AcceptingUnitTest {
 
     /**
      * US 05.02.01
-<<<<<<< HEAD
      As a driver, I want to view a list of things I have accepted that are pending,
      each request with its description, and locations.
      */
@@ -33,8 +32,8 @@ public class AcceptingUnitTest {
     public void testDriverAcceptingRequest() {
 
         // random request that Billy wants to accept
-        User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare, driver);
+        MockUser user = new MockUser();
+        MockUserRequest billyRequest = new MockUserRequest(startLocation, endLocation, fare, driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         user.addActiveDriverRequest(billyRequest);
