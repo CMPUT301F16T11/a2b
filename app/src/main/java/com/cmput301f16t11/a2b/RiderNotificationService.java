@@ -22,7 +22,6 @@ import io.searchbox.core.Get;
  * driver that accepts that ride.
  * Will be terminated when the user
  */
-
 public class RiderNotificationService extends IntentService {
     private UserRequest request;
 
@@ -45,7 +44,7 @@ public class RiderNotificationService extends IntentService {
         ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
         while(true) {
 
-            ArrayList<User> serverAcceptedDrivers = getRequestFromId(request.getId());
+            ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
             ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
             sendNotificationOfAcceptedDriver(differentUser);
 
@@ -57,12 +56,18 @@ public class RiderNotificationService extends IntentService {
        }
     }
 
+    /**
+     * This is static call that allows the user to retrieve a valid intent to start a service
+     */
     public static Intent createIntentStartNotificationService(Context context) {
 
         Intent intent = new Intent(context, RiderNotificationService.class);
         return intent;
     }
 
+    /**
+     * Static call so that we can end this service without passing around the object
+     */
     public static void endService(){
 
         if(self != null){
@@ -70,6 +75,9 @@ public class RiderNotificationService extends IntentService {
         }
     }
 
+    /**
+     * This is from the ElasticRequestController it sets up the Droid client object
+     */
     private void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
@@ -82,13 +90,25 @@ public class RiderNotificationService extends IntentService {
         }
     }
 
+    /**
+     * This method return a collection of all the user that are in the server users but not in the original user
+     * @param userOriginal
+     * @param userServer
+     * @return list of accepted drivers for that request
+     */
     private ArrayList<User> findDifferenceRequests(ArrayList<User> userOriginal, ArrayList<User> userServer){
 
         userServer.removeAll(userOriginal);
         return userServer;
     }
 
-    private ArrayList<User> getRequestFromId(String requestId){
+    /**
+     * This is a method from the ElasticsearchRequestController as well that get the accepted drivers from
+     * a specfiic request id.
+     * @param requestId
+     * @return
+     */
+    private ArrayList<User> getAcceptedDriversFromId(String requestId){
         verifySettings();
         Get get = new Get.Builder(index, requestId).type(openRequest).build();
 
@@ -112,6 +132,10 @@ public class RiderNotificationService extends IntentService {
         return userRequest.getAcceptedDrivers();
     }
 
+    /**
+     * This send a notification that all the addedUsers have accepted that individual rider's request
+     * @param addedUsers
+     */
     private  void sendNotificationOfAcceptedDriver(ArrayList<User> addedUsers){
         String notification = "";
         for(User user: addedUsers){

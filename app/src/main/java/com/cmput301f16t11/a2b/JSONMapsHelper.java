@@ -1,9 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-/**
- * Created by john on 09/11/16.
- */
-
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -25,7 +21,7 @@ import java.util.List;
 
 /**
  * This class is used in create the JSON request from a list of lats and long and then parsing through
- * the results returned from hte google maps. Please not most of this code is taken from:
+ * the results returned from hte google maps. Please note most of this code is taken from:
  * http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
  */
 class JSONMapsHelper{
@@ -35,12 +31,19 @@ class JSONMapsHelper{
         this.act = act;
     }
 
+    /**
+     * This sets up the async task and calls it. This async task does alot of communication with google maps
+     * but then simply draws the correct route from these two locations on the map inside the activity.
+     * @param startLocation
+     * @param endLocation
+     */
     public void drawPathCoordinates(Marker startLocation, Marker endLocation){
 
         String url = createURl(startLocation, endLocation);
         urlParser impl  = new urlParser();
         impl.execute(url);
     }
+
     /**
      * This functions creates a URL JSON request from two google map markers
      * @param startLocation
@@ -70,7 +73,7 @@ class JSONMapsHelper{
     }
 
     /**
-     * This function connects with google server and get a JSON obkect able to draw the route
+     * This function connects with google server and get a JSON object able to draw the route
      * from a proper URL request.
      * @param url
      * @return JSON string object
@@ -136,7 +139,7 @@ class JSONMapsHelper{
      * @param result result from google server request
      * @return latlng list of all te points to draw lines to
      */
-    public List<LatLng> getDrawPath(String result) {
+    private List<LatLng> getDrawPath(String result) {
         List<LatLng> list;
         try {
             //Tranform the string into a json object
@@ -153,7 +156,7 @@ class JSONMapsHelper{
         }
     }
 
-    public String getDistance(String result){
+    private String getDistance(String result){
         try{
             JSONObject jsonObject = new JSONObject(result);
             JSONArray array = jsonObject.getJSONArray("routes");
@@ -172,16 +175,8 @@ class JSONMapsHelper{
     }
 
     /**
-     * draw all the lines on a map
-     * @param result all the points to draw lines to and from
-     */
-    private void drawLinesOnMap(List<LatLng> result){
-
-    }
-
-    /**
      * This is just copied and pasted from :http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
-     * Decoded poly line from jason object and turns them into a more undertsandable latLng list
+     * Decoded poly line from jason object and turns them into a more understandable latLng list
      * @param encoded
      * @return
      */
