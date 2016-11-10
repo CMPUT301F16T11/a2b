@@ -89,6 +89,7 @@
     <!-- Request Detail Activity Strings-->
     <string name="request_detail_title">Request Details</string>
     <string name="willing_drivers">Willing Drivers</string>
+    <string name="pay">Pay</string>
 
     <!-- Multi Purpose Strings -->
     <string name="ok">OK</string>

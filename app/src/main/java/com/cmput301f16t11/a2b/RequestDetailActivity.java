@@ -143,17 +143,15 @@ public class RequestDetailActivity extends AppCompatActivity {
     public void setButtons() {
         Button deleteButton = (Button) findViewById(R.id.request_detail_delete);
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
-        Button confirmButton = (Button) findViewById(R.id.request_confirm);
+        Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         // confirm and delete
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
-            if (request.hasConfirmedRider()) {
-                confirmButton.setEnabled(true);
             }
-            else {
-                confirmButton.setEnabled(false);
-            }
+        else if (UserController.checkMode() == Mode.DRIVER &&
+                request.getConfirmedDriver().equals(UserController.getUser())) {
+                completeButton.setEnabled(true);
         }
         else {
             deleteButton.setEnabled(false);
