@@ -269,6 +269,9 @@ public class ElasticsearchRequestController {
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
 
+            // clear the list of accepted drivers
+            requests[0].clearAcceptedDrivers();
+
             // Delete the request from the list of open requests
             try {
                 DocumentResult result = client.execute(new Delete.Builder(requests[0].getId())
@@ -436,8 +439,6 @@ public class ElasticsearchRequestController {
                     "        }\n" +
                     "    }\n" +
                     "}";
-
-
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
