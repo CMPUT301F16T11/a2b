@@ -52,9 +52,9 @@ public class LocationUnitTest {
         UserRequest request = new UserRequest(start,end,fare,rider);
 
         User driver = new User();
-        driver.addRequest(request);
-        LatLng testStart = driver.getRequests().get(0).getStartLocation();
-        LatLng testEnd = driver.getRequests().get(0).getEndLocation();
+        driver.addActiveDriverRequest(request);
+        LatLng testStart = driver.getActiveRequestsAsDriver().get(0).getStartLocation();
+        LatLng testEnd = driver.getActiveRequestsAsDriver().get(0).getEndLocation();
 
 
 

@@ -1,16 +1,15 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
@@ -86,7 +85,7 @@ public class RequestListActivity extends AppCompatActivity {
                     // TODO: feed in actual curr location
                     requests.clear();
                     //TODO: feed in chosen radius
-                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15);
+                    requests.addAll(RequestController.getNearbyRequests(new LatLng(53.5, -113.50), 15));
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver

@@ -46,7 +46,7 @@ public class SearchingUnitTest {
 
     @Before
     public void setUp() {
-        rider1.createRequest(startLocation1,endLocation1,10.00);
+        rider1.(startLocation1,endLocation1,10.00);
         rider2.createRequest(startLocation2,endLocation2,10.00);
         rider3.createRequest(startLocation3,endLocation3,10.00);
         rider4.createRequest(startLocation4,endLocation4,10.00);
@@ -78,10 +78,10 @@ public class SearchingUnitTest {
         String passenger2 = "Passenger2";
         UserRequest request = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, passenger);
         UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, passenger2);
-        user.addRequest(request);
-        user.addRequest(request2);
+        user.addActiveRiderRequest(request);
+        user.addActiveRiderRequest(request2);
 
-        ArrayList<UserRequest> retrieve = user.getRequests();
+        ArrayList<UserRequest> retrieve = user.getActiveRequestsAsRider();
         assertEquals(retrieve.get(0), request);
         assertEquals(retrieve.get(1), request2);
     }
