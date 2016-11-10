@@ -98,7 +98,6 @@ public class RequestListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
-                    Mode mode = UserController.checkMode();
                     if (UserController.checkMode().equals(Mode.DRIVER)) {
                         requests.clear();
                         requests.addAll(RequestController.getAcceptedByUser(UserController.getUser()));

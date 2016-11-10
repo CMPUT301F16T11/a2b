@@ -176,6 +176,7 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
         ElasticsearchRequestController.GetClosedRequests searchController =
                 new ElasticsearchRequestController.GetClosedRequests();
 
@@ -184,7 +185,8 @@ public class RequestController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (UserRequest request: userRequests) {
+        temp.addAll(userRequests);
+        for (UserRequest request: temp) {
             if (mode == Mode.DRIVER) {
                 if (!request.getConfirmedDriver().equals(user)) {
                     userRequests.remove(request);
@@ -193,6 +195,7 @@ public class RequestController {
             else if (mode == Mode.RIDER) {
                 if (!request.getRider().equals(user)) {
                     userRequests.remove(request);
+                    Log.i("search controller", "removed request");
                 }
             }
         }
