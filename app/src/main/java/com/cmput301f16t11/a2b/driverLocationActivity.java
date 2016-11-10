@@ -221,27 +221,11 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
      */
     public ArrayList<UserRequest> generateRequests(int radiusMeters, LatLng center){
         double distanceKm = radiusMeters/1000;
-
-        double lowerLat = center.latitude - (distanceKm/110.574);
-        double higherLat = center.latitude + (distanceKm/110.574);
-        double lowerLon = center.longitude - (distanceKm/111.320*Math.cos(center.longitude));
-        double higherLon = center.longitude + (distanceKm/111.320*Math.cos(center.longitude));
-
-       ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
-//        ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
-//        getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
-//
-//        try {
-//            nearbyRequests = getNearbyRequests.get();
-//            RequestController.setNearbyRequests(nearbyRequests);
-//            handleRequests(nearbyRequests);
-//        } catch (Exception e) {
-//            Log.i("Error", "AsyncTask failed to execute");
-//        }
+        ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
         RequestController.setNearbyRequests(nearbyRequests);
-        //handleRequests(nearbyRequests);
+
         return nearbyRequests;
     }
 
@@ -269,6 +253,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     MarkerInfoDialog dialog = MarkerInfoDialog.newInstance(requestMap.get(marker));
+                    dialog.setCancelable(true);
                     dialog.show(getFragmentManager().beginTransaction(), "dialog");
                     return true;
                 }

@@ -56,36 +56,41 @@ public class MarkerInfoDialog extends DialogFragment {
         // Inflate the ride info
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        // Set the view & buttons
-        builder.setView(inflater.inflate(R.layout.dialog_marker_info, null));
+        // Inflate the parent view
+        View parent = inflater.inflate(R.layout.dialog_marker_info, null);
+        builder.setView(parent);
+
+        // Assign views, get request and set views
+        assignViews(parent);
+        req = getArguments().getParcelable("req");
+        req.getRider().setName(getArguments().getString("rider"));
+        setViews();
 
         return builder.create();
     }
 
-    @Override
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        layout = inflater.inflate(R.layout.dialog_marker_info, container, false);
-
         // Assign views, get request and set views
         assignViews();
         req = getArguments().getParcelable("req");
         req.getRider().setName(getArguments().getString("rider"));
         setViews();
 
-        return layout;
-    }
+        return getView();
+    }*/
 
     /**
      * Find all views from layout view
      */
-    public void assignViews() {
-        riderText = (TextView)layout.findViewById(R.id.dialog_requestInfo_riderText);
-        startText = (TextView)layout.findViewById(R.id.dialog_requestInfo_startText);
-        endText = (TextView)layout.findViewById(R.id.dialog_requestInfo_endText);
-        fareText = (TextView)layout.findViewById(R.id.dialog_requestInfo_fareText);
-        acceptButton = (Button)layout.findViewById(R.id.dialog_markerInfo_accept);
-        cancelButton = (Button)layout.findViewById(R.id.dialog_markerInfo_cancel);
+    public void assignViews(View parent) {
+        riderText = (TextView)parent.findViewById(R.id.dialog_requestInfo_riderText);
+        startText = (TextView)parent.findViewById(R.id.dialog_requestInfo_startText);
+        endText = (TextView)parent.findViewById(R.id.dialog_requestInfo_endText);
+        fareText = (TextView)parent.findViewById(R.id.dialog_requestInfo_fareText);
+        acceptButton = (Button)parent.findViewById(R.id.dialog_markerInfo_accept);
+        cancelButton = (Button)parent.findViewById(R.id.dialog_markerInfo_cancel);
     }
 
 
@@ -131,7 +136,7 @@ public class MarkerInfoDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // Hide the dialog when canceled
-                MarkerInfoDialog.this.getDialog().cancel();
+                getDialog().dismiss();
             }
         });
 
