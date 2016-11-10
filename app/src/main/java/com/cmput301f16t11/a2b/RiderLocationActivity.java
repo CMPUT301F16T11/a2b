@@ -70,8 +70,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
+
+                Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                 UserController.setMode(Mode.DRIVER);
-                Intent driverIntent = new Intent(RiderLocationActivity.this, driverLocationActivity.class);
+
+
                 startActivity(driverIntent);
                 return true;
 
@@ -313,7 +316,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         displayRideConfirmationDlg(distance);
     }
 
-    void displayRideConfirmationDlg(String distance){
+    public void displayRideConfirmationDlg(String distance){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
 

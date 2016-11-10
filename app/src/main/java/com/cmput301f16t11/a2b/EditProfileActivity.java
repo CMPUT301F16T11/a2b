@@ -10,9 +10,16 @@ import android.widget.TextView;
 
 import java.util.regex.Pattern;
 
+/**
+ * This activity is used to change the User's profile appearance including:
+ *
+ */
 public class EditProfileActivity extends AppCompatActivity {
 
 
+    /**
+     * The User.
+     */
     User user;
     //TODO : WE can consider having profile picture implementation later for part 5
 
@@ -24,6 +31,9 @@ public class EditProfileActivity extends AppCompatActivity {
         setTexts();
     }
 
+    /**
+     * Sets texts.
+     */
     public void setTexts() {
         // Edit Texts should be set to what the current profile has
         user = UserController.getUser();
@@ -38,6 +48,11 @@ public class EditProfileActivity extends AppCompatActivity {
         username.setText(user.getName());
     }
 
+    /**
+     * Edit profile.
+     *
+     * @param v the v
+     */
     public void editProfile(View v) {
         EditText userPhoneNumText = (EditText) findViewById(R.id.phone_num);
         EditText userEmailText = (EditText) findViewById(R.id.email);
@@ -94,6 +109,11 @@ public class EditProfileActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Cancel edit.
+     *
+     * @param view the view
+     */
     public void cancelEdit(View view) {
 
         finish();
@@ -119,6 +139,11 @@ public class EditProfileActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Clear edit text.
+     *
+     * @param v the v
+     */
     public void clearEditText(View v){
         EditText text = (EditText)v;
         text.setText("");

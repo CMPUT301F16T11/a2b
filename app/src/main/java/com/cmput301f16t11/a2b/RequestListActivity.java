@@ -1,21 +1,18 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 
 public class RequestListActivity extends AppCompatActivity {
@@ -82,6 +79,7 @@ public class RequestListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
+
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
                         requests.addAll(RequestController.getNearbyRequests());
@@ -94,6 +92,7 @@ public class RequestListActivity extends AppCompatActivity {
                                 RequestController.getOwnActiveRequests(UserController.getUser()));
 
                     }
+
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver

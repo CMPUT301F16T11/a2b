@@ -2,8 +2,6 @@ package com.cmput301f16t11.a2b;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import io.searchbox.annotations.JestId;
 
@@ -66,6 +64,22 @@ public class User {
         this.email = email;
         phoneNumber = phone;
         this.id = null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        try {
+            User usr1 = (User) obj;
+            if (usr1.getName().equals(this.getName())) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 

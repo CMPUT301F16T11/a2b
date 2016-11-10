@@ -1,10 +1,12 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
+
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
 /**
@@ -195,7 +197,6 @@ public class RequestController {
             else if (mode == Mode.RIDER) {
                 if (!request.getRider().equals(user)) {
                     userRequests.remove(request);
-                    Log.i("search controller", "removed request");
                 }
             }
         }

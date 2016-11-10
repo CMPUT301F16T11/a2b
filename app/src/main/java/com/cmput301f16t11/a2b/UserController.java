@@ -12,13 +12,10 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static com.cmput301f16t11.a2b.R.id.user;
 
 /**
  * Controllers user and user functions

@@ -43,11 +43,11 @@
 
         <activity
             android:name=".RiderLocationActivity"
-            android:label="@string/title_activity_location" />
+            android:label="Rider" />
         <activity android:name=".EditProfileActivity" />
         <activity
-            android:name=".driverLocationActivity"
-            android:label="@string/title_activity_driver_location" />
+            android:name=".DriverLocationActivity"
+            android:label="Driver" />
         <activity android:name=".RequestListActivity" />
         <activity android:name=".RequestDetailActivity"></activity>
         <service
