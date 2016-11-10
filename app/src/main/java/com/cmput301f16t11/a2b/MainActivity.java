@@ -31,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
 //        }catch(Exception e){
 //
 //        }
+
+
 //
-//        ArrayList<UserRequest> ar =  RequestController.getNearbyRequestsGeoFilter(10.0, 37.4219983, -122.084);
+       //ArrayList<UserRequest> ar =  RequestController.getNearbyRequestsGeoFilter();
 
         //UserRequest mockReq1 = RequestController.getOpenRequestById("AVhPSldAd-2jFxhHx-yR");
 

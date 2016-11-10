@@ -109,18 +109,27 @@ public class RequestController {
          * For use in ride mode only
          * Gets all requests created by the user
          */
-        ArrayList<UserRequest> userRequests;
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
         }
         else {
             ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
-            userRequests = searchController.doInBackground(user.getName());
-            return userRequests;
+            try{
+                userRequests = searchController.execute(user.getName()).get();
+            }catch(Exception e){
+
+            }
+
         }
+        return userRequests;
     }
 
     public static ArrayList<UserRequest> getOwnUnactiveRequests(User user) {
