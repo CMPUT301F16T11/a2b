@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -59,7 +60,11 @@ public class RequestListActivity extends AppCompatActivity {
             }
         });
         this.requests.clear();
-        this.requests.addAll(RequestController.getNearbyRequests());
+        try {
+            this.requests.addAll(RequestController.getNearbyRequests());
+        } catch (Exception e) {
+            Log.e("line 62 crash", e.toString());
+        }
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
