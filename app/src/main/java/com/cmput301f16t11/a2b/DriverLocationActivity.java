@@ -170,7 +170,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
 
             @Override
             public void onMapClick(LatLng latLng) {
-               PlaceMarker(latLng);
+                PlaceMarker(latLng);
             }
         });
 
@@ -249,8 +249,8 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         // Add marker, clickListener, and hashmap entry for each request
         for (UserRequest req : list) {
             Marker tmp = mMap.addMarker(new MarkerOptions()
-            .position(req.getStartLocation())
-            .title(req.getFare().toString()));
+                    .position(req.getStartLocation())
+                    .title(req.getFare().toString()));
 
             // Display marker info dialog onClick
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -350,7 +350,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 }
             }
         });
-        
+
         searchByKeyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,9 +411,9 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             currentMarker.setTitle(address);
             currentMarker.showInfoWindow();
         }
-            catch(IOException e){
-                e.printStackTrace();
-            }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
