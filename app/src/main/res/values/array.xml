@@ -7,11 +7,10 @@
         <item>Completed Requests</item>
     </string-array>
     <string-array name="requestTypesRiderArray">
-        <item>Nearby Requests</item>
-        <item>Accepted Requests</item>
-        <item>Confirmed Requests</item>
-        <item>Completed Requests</item>
         <item>My Requests</item>
+        <item>My Accepted Requests</item>
+        <item>My Confirmed Requests</item>
+        <item>My Completed Requests</item>
     </string-array>
 
 </resources>

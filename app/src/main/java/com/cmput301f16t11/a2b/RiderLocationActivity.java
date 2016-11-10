@@ -45,7 +45,9 @@ import java.util.Scanner;
 /**
  * Main activity for riders to select their pickup and drop off locations.
  */
-public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
+            DrawingLocationActivity {
+
     private GoogleMap mMap;
     private Marker tripStartMarker;
     private Marker tripEndMarker;
@@ -68,13 +70,13 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
+                UserController.setMode(Mode.DRIVER);
                 Intent driverIntent = new Intent(RiderLocationActivity.this, driverLocationActivity.class);
                 startActivity(driverIntent);
                 return true;
 
             case R.id.viewRequests:
-                Intent requestIntent = new Intent(RiderLocationActivity.this,
-                                            RequestListActivity.class);
+                Intent requestIntent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                 startActivity(requestIntent);
                 return true;
 
@@ -98,7 +100,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         context = this;
-        //userController = new UserController(null); // TODO: actual login work
+
     }
 
     /**
@@ -300,7 +302,19 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
      * @param drawPoints
      * @param distance
      */
-    public void confirmDriveRequest(List<LatLng> drawPoints, String distance){
+    public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
+        //Draw the lines on the map
+        mMap.addPolyline( new PolylineOptions()
+                .addAll(drawPoints)
+                .width(12)
+                .color(Color.parseColor("#05b1fb"))//Google maps blue color
+                .geodesic(true)
+        );
+
+        displayRideConfirmationDlg(distance);
+    }
+
+    void displayRideConfirmationDlg(String distance){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
 
@@ -363,8 +377,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 }
 
                 UserRequest request = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
-                                                userFare,
-                                                UserController.getUser());
+                        userFare,
+                        UserController.getUser());
                 RequestController.addOpenRequest(request);
 
 // TODO: will add this once we have a way to terminate the service when the user requests
@@ -375,15 +389,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 dialog.dismiss();
             }
         });
-
-
-        //Draw the lines on the map
-        mMap.addPolyline( new PolylineOptions()
-                .addAll(drawPoints)
-                .width(12)
-                .color(Color.parseColor("#05b1fb"))//Google maps blue color
-                .geodesic(true)
-        );
 
         //Show the dialog
         dialog.show();

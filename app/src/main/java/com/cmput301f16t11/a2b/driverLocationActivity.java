@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +56,8 @@ import java.util.List;
  */
 public class driverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        DrawingLocationActivity{
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -91,6 +94,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
                 return true;
 
             case R.id.changeRole:
+                UserController.setMode(Mode.RIDER);
                 Intent driverIntent = new Intent(driverLocationActivity.this, RiderLocationActivity.class);
                 startActivity(driverIntent);
                 finish();
@@ -221,27 +225,11 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
      */
     public ArrayList<UserRequest> generateRequests(int radiusMeters, LatLng center){
         double distanceKm = radiusMeters/1000;
-
-        double lowerLat = center.latitude - (distanceKm/110.574);
-        double higherLat = center.latitude + (distanceKm/110.574);
-        double lowerLon = center.longitude - (distanceKm/111.320*Math.cos(center.longitude));
-        double higherLon = center.longitude + (distanceKm/111.320*Math.cos(center.longitude));
-
-       ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
-//        ElasticsearchRequestController.GetNearbyRequests getNearbyRequests = new ElasticsearchRequestController.GetNearbyRequests();
-//        getNearbyRequests.execute(lowerLat, higherLat, lowerLon, higherLon);
-//
-//        try {
-//            nearbyRequests = getNearbyRequests.get();
-//            RequestController.setNearbyRequests(nearbyRequests);
-//            handleRequests(nearbyRequests);
-//        } catch (Exception e) {
-//            Log.i("Error", "AsyncTask failed to execute");
-//        }
+        ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
         RequestController.setNearbyRequests(nearbyRequests);
-        //handleRequests(nearbyRequests);
+
         return nearbyRequests;
     }
 
@@ -269,6 +257,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     MarkerInfoDialog dialog = MarkerInfoDialog.newInstance(requestMap.get(marker));
+                    dialog.setCancelable(true);
                     dialog.show(getFragmentManager().beginTransaction(), "dialog");
                     return true;
                 }
@@ -425,6 +414,17 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
             catch(IOException e){
                 e.printStackTrace();
             }
+    }
+
+    public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
+
+        //Draw the lines on the map
+        mMap.addPolyline( new PolylineOptions()
+                .addAll(drawPoints)
+                .width(12)
+                .color(Color.parseColor("#05b1fb"))//Google maps blue color
+                .geodesic(true)
+        );
     }
 }
 
