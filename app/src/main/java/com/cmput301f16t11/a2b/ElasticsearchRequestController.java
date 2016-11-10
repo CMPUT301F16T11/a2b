@@ -16,6 +16,7 @@ import java.util.List;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
+import io.searchbox.core.DeleteByQuery;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
@@ -676,6 +677,32 @@ public class ElasticsearchRequestController {
             return accepted;
         }
     }
+
+    public static class deleteRiderRequests extends AsyncTask<String, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(String... request) {
+            verifySettings();
+
+            String delete_string = "{\"query\": {\"match\": {\"id\": \"" + request[0] + "\"}}}";
+            DeleteByQuery deleteRequest = new DeleteByQuery.Builder(delete_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                    client.execute(deleteRequest);
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+
+            //ABhPbY0Dd-2jFxhHx-yZ
 
     private static void verifySettings() {
         // Initialize client if necessary
