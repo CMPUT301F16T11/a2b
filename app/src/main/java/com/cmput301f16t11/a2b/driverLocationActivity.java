@@ -47,6 +47,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * DriverLocationActivity: this activity allows the driver to view a map, place pins, and search around
+ * those pins a specific radius to see any requests in that specified area. It also has a settings bar
+ * that allows the user to view profile see open requests or log out.
+ */
 public class driverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -121,6 +126,10 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
                 .build();
     }
 
+    /**
+     * This method sets up the places auto complete bar implemented by google places
+     * api.
+     */
     private void setUpAutoCompleteBar(){
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -148,6 +157,10 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
         });
     }
 
+    /**
+     * This method sets up the listeners to the map item. Specifically the location click
+     * button.
+     */
     public void setUpMapClicking(){
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -198,6 +211,14 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
             PlaceMarker(currentLatLng);
         }
     }
+
+    /**
+     * This method generate all the open rider requests withing a specified area.
+     *
+     * @param radiusMeters (int) radius of the search
+     * @param center (LatLng) center spot of the search
+     * @return a collection of user request within that area on the map
+     */
     public ArrayList<UserRequest> generateRequests(int radiusMeters, LatLng center){
         double distanceKm = radiusMeters/1000;
 
@@ -219,6 +240,7 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 
         return nearbyRequests;
     }
+
     /**
      * Adds a marker for every request on the list
      * Adds an entry to the hashmap for every (marker, request) pair
@@ -284,6 +306,9 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
 
     }
 
+    /**
+     * Set up all the listeners for the entire activity
+     */
     private void setListeners(){
         final SeekBar radius = (SeekBar) findViewById(R.id.radiusSeekBar);
         final TextView radiusSet = (TextView) findViewById(R.id.radiusText);
@@ -351,6 +376,12 @@ public class driverLocationActivity extends AppCompatActivity implements OnMapRe
         });
     }
 
+    /**
+     * Moves the current marker location to the latlng location. This will move the circle radius and also
+     * remove the prior marker if there is one. Also uses a geocoder to determine the actual address.
+     *
+     * @param latlng marker location
+     */
     public void PlaceMarker(LatLng latlng){
         if(currentMarker != null){
             currentMarker.remove();
