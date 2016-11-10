@@ -59,7 +59,6 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        this.requests.clear();
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
