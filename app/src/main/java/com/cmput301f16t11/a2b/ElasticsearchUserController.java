@@ -221,6 +221,12 @@ public class ElasticsearchUserController {
         }
     }
 
+    /**
+     * Get the id for the first hit
+     * @param jsonResponse
+     * @return string ID
+     */
+
     private static String  getIdFromResult(JsonObject jsonResponse){
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");
@@ -229,6 +235,11 @@ public class ElasticsearchUserController {
         return id;
     }
 
+    /**
+     * Get the userName for the first hit
+     * @param jsonResponse
+     * @return
+     */
     private static String getUserFromResult(JsonObject jsonResponse) {
         JsonObject hits = jsonResponse.getAsJsonObject("hits");
         JsonArray actualHits = hits.getAsJsonArray("hits");

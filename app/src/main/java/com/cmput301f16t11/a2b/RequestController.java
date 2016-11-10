@@ -200,6 +200,19 @@ public class RequestController {
 
     }
 
+    public static UserRequest getOpenRequestById(String id){
+        ElasticsearchRequestController.GetOpenRequestById getOpenRequestById = new ElasticsearchRequestController.GetOpenRequestById();
+        UserRequest ur = null;
+        try{
+            ur =getOpenRequestById.execute(id).get();
+        }catch(Exception e){
+
+        }
+        return ur;
+
+    }
+
+
 
 
 
