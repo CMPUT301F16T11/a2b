@@ -73,8 +73,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.viewRequests:
-                Intent requestIntent = new Intent(RiderLocationActivity.this,
-                                            RequestListActivity.class);
+                Intent requestIntent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                 startActivity(requestIntent);
                 return true;
 
@@ -99,6 +98,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
         context = this;
         //userController = new UserController(null); // TODO: actual login work
+
+
     }
 
     /**

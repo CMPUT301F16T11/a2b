@@ -36,8 +36,7 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-        this.requests = RequestController.getNearbyRequests();
-
+        this.requests = new ArrayList<UserRequest>();
     }
 
     @Override
@@ -59,6 +58,8 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        this.requests.clear();
+        this.requests.addAll(RequestController.getNearbyRequests());
         adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
                 android.R.id.text1, this.requests);
         listView.setAdapter(adapter);
