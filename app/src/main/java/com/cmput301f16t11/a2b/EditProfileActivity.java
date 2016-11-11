@@ -98,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity {
         Boolean changedEmail = email.equals(user.getEmail());
 
         //check if any updates have actually been made
-        if(changedEmail || changedPhoneNumber){
+        if(!changedEmail || !changedPhoneNumber){
 
             user.setPhoneNumber(phoneNumber);
             user.setEmail(email);
