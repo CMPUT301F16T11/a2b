@@ -47,8 +47,13 @@ public class RequestController {
         addOpenRequest.execute(request);
     }
 
-    public static void setRequestConfirmedDriver(UserRequest request, User user){
-        //TODO: add the eleastic search controller stuff
+    public static void setRequestConfirmedDriver(UserRequest request, User driver){
+        request.setConfirmedDriver(driver);
+
+        ElasticsearchRequestController.SetConfirmedDriver searchController =
+                new ElasticsearchRequestController.SetConfirmedDriver();
+        searchController.execute(request.getConfirmedDriver().getName());
+        completeRequest(request);
     }
 
 
@@ -289,9 +294,14 @@ public class RequestController {
     }
 
     public static void completeRequest(UserRequest request) {
+        // local updates
+        request.setCompletedStatus(true);
+
+        // server updates
         ElasticsearchRequestController.MoveToClosedRequest searchController =
                 new ElasticsearchRequestController.MoveToClosedRequest();
         searchController.execute(request);
-        request.setCompletedStatus(true);
+
+
     }
 }

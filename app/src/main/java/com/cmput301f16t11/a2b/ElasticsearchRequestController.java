@@ -192,10 +192,10 @@ public class ElasticsearchRequestController {
         }
     }
 
-    public static class setConfirmedDriver extends AsyncTask<String, Void, Boolean> {
+    public static class SetConfirmedDriver extends AsyncTask<String, Void, Boolean> {
         Context context;
 
-        public setConfirmedDriver(Context context) {
+        public SetConfirmedDriver(Context context) {
             this.context = context;
         }
 
