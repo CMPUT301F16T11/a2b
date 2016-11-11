@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="115dp">
+
+    <TextView
+        android:text ="Accept a ride from driver: "
+        android:id="@+id/acceptRide"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:text="Username"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:id="@+id/driverUsername"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="32dp"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:text ="@string/accept"
+        android:id="@+id/acceptDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        />
+
+    <Button
+        android:text ="@string/cancel"
+        android:id="@+id/cancelDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        />
+
+
+</RelativeLayout>

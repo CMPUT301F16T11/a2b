@@ -47,6 +47,15 @@ public class RequestController {
         addOpenRequest.execute(request);
     }
 
+    public static void setRequestConfirmedDriver(UserRequest request, User driver, Context cntxt){
+        request.setConfirmedDriver(driver);
+
+        ElasticsearchRequestController.SetConfirmedDriver searchController =
+                new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
+        searchController.execute(request.getConfirmedDriver().getName());
+        completeRequest(request);
+    }
+
 
     /**
      * Get all open requests within distatnce of lat, lon
@@ -284,10 +293,14 @@ public class RequestController {
         return true;
     }
 
-        public static void completeRequest(UserRequest request) {
-            ElasticsearchRequestController.MoveToClosedRequest searchController =
-                    new ElasticsearchRequestController.MoveToClosedRequest();
-            searchController.execute(request);
-            request.setCompletedStatus(true);
+    public static void completeRequest(UserRequest request) {
+        // local updates
+        request.setCompletedStatus(true);
+
+        // server updates
+        ElasticsearchRequestController.MoveToClosedRequest searchController =
+                new ElasticsearchRequestController.MoveToClosedRequest();
+        searchController.execute(request);
+
     }
 }

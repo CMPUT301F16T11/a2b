@@ -1,5 +1,8 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -55,14 +58,37 @@ public class RequestDetailActivity extends AppCompatActivity {
     }
 
     public void populateAcceptedDriversList() {
+        final Context context = this;
         acceptedDrivers = request.getAcceptedDrivers();
         driverList = (ListView) findViewById(R.id.accepted_list);
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+                final User driver = acceptedDrivers.get(position);
+                final Dialog dlg = new Dialog(context);
+                dlg.setContentView(R.layout.request_details_confirm_driver_dlg);
 
-                // TODO: dialog to confirm driver
+                final TextView username = (TextView)dlg.findViewById(R.id.driverUsername);
+                final Button cancelButton = (Button)dlg.findViewById(R.id.cancelDriver);
+                final Button confirmButton = (Button)dlg.findViewById(R.id.acceptDriver);
 
+                username.setText(driver.getName());
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dlg.dismiss();
+                    }
+                });
+
+                confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RequestController.setRequestConfirmedDriver(request, driver,
+                                RequestDetailActivity.this);
+                    }
+                });
             }
         });
         ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
@@ -146,34 +172,40 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
+        Mode mode = UserController.checkMode();
         // confirm and delete
+        User user = UserController.getUser();
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
             completeButton.setEnabled(false);
             if (request.hasConfirmedRider()) {
                 payButton.setEnabled(true);
-            } else if (UserController.checkMode() == Mode.DRIVER &&
+            }
+        }
+        else if (UserController.checkMode() == Mode.DRIVER &&
+                request.getConfirmedDriver() != null &&
                     request.getConfirmedDriver().equals(UserController.getUser())) {
-                completeButton.setEnabled(true);
-            } else {
+            completeButton.setEnabled(true);
+        }
+        else {
                 deleteButton.setEnabled(false);
                 completeButton.setEnabled(false);
-            }
-            // accept
-            if (UserController.checkMode() == Mode.DRIVER &&
-                    !request.getAcceptedDrivers().contains(UserController.getUser())) {
-                acceptButton.setEnabled(true);
-            } else {
-                acceptButton.setEnabled(false);
-            }
+        }
+        // accept
+        if (UserController.checkMode() == Mode.DRIVER &&
+                !request.getAcceptedDrivers().contains(UserController.getUser())) {
+            acceptButton.setEnabled(true);
+        } else {
+            acceptButton.setEnabled(false);
+        }
 
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    delete();
-                }
-            });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+            }
+        });
 
             // onClick Listeners
             acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -186,8 +218,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
-                    finish();
+                    delete();
                 }
             });
             completeButton.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +227,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                     RequestController.completeRequest(request);
                 }
             });
-        }
     }
 
     private void delete () {
@@ -212,7 +242,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    // deletes the date from habit obj
     public void deleteRequest(){
         RequestController.deleteRequest(request.getId());
         finish();
