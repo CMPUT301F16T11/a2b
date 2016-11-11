@@ -107,5 +107,6 @@
     <string name="delete">Delete</string>
     <string name="accept">Accept</string>
     <string name="complete">Complete</string>
+    <string name="title_activity_empty_map">Map</string>
 
 </resources>

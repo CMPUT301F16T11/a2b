@@ -127,24 +127,30 @@ public class RequestDetailActivity extends AppCompatActivity {
         });
 
         TextView startLocation = (TextView) findViewById(R.id.request_detail_pickup);
-        String location_string = getLocationString(request.getStartLocation());
-        startLocation.setText(location_string);
+        final String location_string_start = getLocationString(request.getStartLocation());
+        startLocation.setText(location_string_start);
         startLocation.setTextColor(Color.rgb(6, 69, 173));
         startLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO draw on map
+                Intent intent = new Intent(RequestDetailActivity.this, EmptyMapActivity.class);
+                Location location = new Location(request.getStartLocation().latitude, request.getStartLocation().longitude, location_string_start);
+                intent.putExtra("Location", location);
+                startActivity(intent);
             }
         });
 
         TextView endLocation = (TextView) findViewById(R.id.request_detail_dropoff);
-        location_string = getLocationString(request.getEndLocation());
-        endLocation.setText(location_string);
+        final String location_string_end = getLocationString(request.getEndLocation());
+        endLocation.setText(location_string_end);
         endLocation.setTextColor(Color.rgb(6, 69, 173));
         endLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO draw on map
+                Intent intent = new Intent(RequestDetailActivity.this, EmptyMapActivity.class);
+                Location location = new Location(request.getEndLocation().latitude, request.getEndLocation().longitude, location_string_end);
+                intent.putExtra("Location", location);
+                startActivity(intent);
             }
         });
 

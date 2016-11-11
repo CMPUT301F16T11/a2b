@@ -49,10 +49,15 @@
             android:name=".DriverLocationActivity"
             android:label="Driver" />
         <activity android:name=".RequestListActivity" />
-        <activity android:name=".RequestDetailActivity"></activity>
+        <activity android:name=".RequestDetailActivity" />
+
         <service
             android:name=".RiderNotificationService"
-            android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name=".EmptyMapActivity"
+            android:label="@string/title_activity_empty_map"></activity>
     </application>
 
 </manifest>
