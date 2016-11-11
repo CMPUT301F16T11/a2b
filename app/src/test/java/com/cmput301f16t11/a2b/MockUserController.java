@@ -5,7 +5,12 @@ package com.cmput301f16t11.a2b;
  */
 
 public class MockUserController extends UserController {
+    private static MockUser mockUser;
     public MockUserController(User u) {
         super(u);
+    }
+
+    public static MockUser getMockUser(){
+        return mockUser;
     }
 }

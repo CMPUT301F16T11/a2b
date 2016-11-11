@@ -7,11 +7,15 @@ import java.util.ArrayList;
  */
 
 public class MockRequestController extends RequestController {
-    
+    private static ArrayList<MockUserRequest> saveData;
+    private static MockUser mockUser;
+    public MockRequestController() {
+        saveData = new ArrayList<>();
+    }
     public static void addOpenRequest(MockUserRequest request) {
         //save request to a file or array
-        ArrayList<MockUserRequest> file = new ArrayList<MockUserRequest>();
-        file.add(request);
+        saveData.add(request);
 
     }
+
 }
