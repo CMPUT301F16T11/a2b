@@ -683,7 +683,7 @@ public class ElasticsearchRequestController {
         protected Boolean doInBackground(String... request) {
             verifySettings();
 
-            String delete_string = "{\"query\": {\"match\": {\"id\": \"" + request[0] + "\"}}}";
+            String delete_string = "{\"query\": {\"match\": {\"id\": \"" + "AVhQvib9d-2jFxhHx-y-" + "\"}}}";
             DeleteByQuery deleteRequest = new DeleteByQuery.Builder(delete_string)
                     .addIndex(index)
                     .addType(openRequest)

@@ -275,7 +275,13 @@ public class RequestController {
 
     public static Boolean deleteRequest(String id) {
         ElasticsearchRequestController.deleteRiderRequests deleteRequestsById = new ElasticsearchRequestController.deleteRiderRequests();
-        try
+        try {
+            deleteRequestsById.execute(id);
+
+        } catch(Exception e) {
+            return false;
+        }
+        return true;
     }
 
 

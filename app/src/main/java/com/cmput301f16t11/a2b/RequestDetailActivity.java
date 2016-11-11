@@ -1,9 +1,11 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -183,10 +185,28 @@ public class RequestDetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
+                delete();
             }
         });
 
     }
 
+    private void delete () {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Are you sure you want to delete this ride request?")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteRequest();
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+    // deletes the date from habit obj
+    public void deleteRequest() {
+        RequestController.deleteRequest(request.getId());
+        finish();
+    }
 }
