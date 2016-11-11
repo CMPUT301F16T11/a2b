@@ -666,8 +666,8 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] +
-                    "\", \"accepted\": true}}}";
+            String search_string = "{\"query\": { \"match\": [{\"rider.userName\": \"" + user[0] +
+                    "\"}, {\"accepted\": true}]}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)

@@ -26,7 +26,9 @@
         android:layout_gravity="bottom|left"
         android:text="Search By Keyword"
         android:layout_marginBottom="30dp"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="8dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"/>
 
     <Button
         android:layout_width="175dp"
@@ -35,7 +37,9 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom = "30dp"
         android:text="Search Near Pin"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="8dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"/>
 
     <SeekBar
         android:id="@+id/radiusSeekBar"
