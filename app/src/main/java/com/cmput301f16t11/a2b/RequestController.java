@@ -280,7 +280,9 @@ public class RequestController {
     }
 
     public static void completeRequest(UserRequest request) {
-
+        ElasticsearchRequestController.MoveToClosedRequest searchController =
+                new ElasticsearchRequestController.MoveToClosedRequest();
+        searchController.execute(request);
     }
 
 
