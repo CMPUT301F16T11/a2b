@@ -41,6 +41,7 @@ public class RequestListActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         // listView Stuff
+        requests.clear();
         listView = (ListView) findViewById(R.id.requestList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
