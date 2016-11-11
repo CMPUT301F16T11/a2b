@@ -279,7 +279,9 @@ public class RequestController {
         return false;
     }
 
+    public static void completeRequest(UserRequest request) {
 
+    }
 
 
 

@@ -181,7 +181,12 @@ public class RequestDetailActivity extends AppCompatActivity {
                     finish();
                 }
             });
-//        completeButton.setOn
+            completeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestController.completeRequest(request);
+                }
+            });
 
 
         }
