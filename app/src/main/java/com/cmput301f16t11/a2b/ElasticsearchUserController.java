@@ -11,7 +11,9 @@ import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
 
+import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
+import io.searchbox.core.Get;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
@@ -92,40 +94,29 @@ public class ElasticsearchUserController {
      * Meant to be called after a request onject has been returned by elastic search
      */
 
-    public static class RetriveUserInfo extends AsyncTask<User, Void, User> {
+    public static class RetrieveUserInfo extends AsyncTask<User, Void, User> {
         @Override
         protected User doInBackground(User... users) {
 
             verifySettings();
 
-            String search_string = "{\"query\": {\"match\": {\"id\": \"" + users[0].getId() + "\"}}}";
+            Get get = new Get.Builder(index, users[0].getId()).type("user").build();
 
-            Search search = new Search.Builder(search_string)
-                    .addIndex(index)
-                    .addType(userType)
-                    .build();
+            User user = new User();
 
             try {
-                SearchResult result = client.execute(search);
+                JestResult result = client.execute(get);
                 if (result.isSucceeded()) {
-
-
-                    User user = result.getSourceAsObject(User.class);
-
-                    if (user.getId().equals(users[0].getId())) {
-                        return user;
-                    }
-                    else {
-                        return new User();
-                    }
+                    user = result.getSourceAsObject(User.class);
                 } else {
-                    return new User();
+                    Log.i("Error", "Filed to find request");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
                 e.printStackTrace();
-                return new User();
             }
+
+            return user;
         }
     }
 

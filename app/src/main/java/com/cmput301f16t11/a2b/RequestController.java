@@ -241,8 +241,8 @@ public class RequestController {
     private static ArrayList<User> getUserInfo(ArrayList<User> users){
         ArrayList<User> actualUserObjects = new ArrayList<>();
         for(User user: users){
-            ElasticsearchUserController.RetriveUserInfo impl =
-                    new ElasticsearchUserController.RetriveUserInfo();
+            ElasticsearchUserController.RetrieveUserInfo impl =
+                    new ElasticsearchUserController.RetrieveUserInfo();
             User actualUser;
             try {
                 actualUser = impl.execute(user).get();
