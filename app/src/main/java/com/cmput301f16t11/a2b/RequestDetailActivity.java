@@ -58,6 +58,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+
+                // dialog
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
                 intent.putExtra("username", acceptedDrivers.get(position).toString());
                 startActivity(intent);
@@ -170,6 +172,12 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
             }
         });
 
