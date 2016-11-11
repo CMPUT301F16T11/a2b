@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="32dp"
-    android:layout_marginEnd="32dp"
-    android:layout_marginTop="64dp"
-    android:layout_marginBottom="64dp">
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:layout_gravity="center">
 
-    <TextView android:id="@+id/dialog_rideComplete_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop = "16dp"
-        android:layout_marginBottom="16dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:text="@string/rideComplete_title"/>
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:layout_marginBottom="32dp"
+    android:layout_marginTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@string/rideComplete_title" />
+
+    </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_rideComplete_driverLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp">
 
         <TextView android:id="@+id/dialog_rideComplete_driverTitle"
@@ -35,13 +44,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_horizontal"
+            android:textAlignment="textEnd"
             android:text="Test Driver"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_rideComplete_riderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:weightSum="3">
 
@@ -57,13 +69,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_horizontal"
+            android:textAlignment="textEnd"
             android:text="Test Rider"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_rideComplete_startLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:weightSum="3">
 
@@ -79,13 +94,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_horizontal"
+            android:textAlignment="textEnd"
             android:text="Test Pickup"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_rideComplete_endLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:weightSum="3">
 
@@ -95,19 +113,24 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:minLines="1"
             android:text="@string/rideComplete_endTitle"/>
 
         <TextView android:id="@+id/dialog_rideComplete_endText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_horizontal"
+            android:textAlignment="textEnd"
             android:text="Test Dropoff"/>
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_rideComplete_fareLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:weightSum="3">
 
@@ -123,16 +146,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center_horizontal"
-            android:text="Test Fare"/>
+            android:text="Test Fare"
+            android:textAlignment="textEnd"/>
     </LinearLayout>
 
-    <Button android:id="@+id/dialog_rideComplete_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:textStyle="bold"
-        android:text="@string/ok" />
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center">
+
+        <Button android:id="@+id/dialog_rideComplete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"/>
+    </LinearLayout>
 
 </LinearLayout>
