@@ -283,6 +283,7 @@ public class RequestController {
         ElasticsearchRequestController.MoveToClosedRequest searchController =
                 new ElasticsearchRequestController.MoveToClosedRequest();
         searchController.execute(request);
+        request.setCompletedStatus(true);
     }
 
 
