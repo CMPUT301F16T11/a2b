@@ -1,5 +1,8 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -55,14 +58,36 @@ public class RequestDetailActivity extends AppCompatActivity {
     }
 
     public void populateAcceptedDriversList() {
+        final Context context = this;
         acceptedDrivers = request.getAcceptedDrivers();
         driverList = (ListView) findViewById(R.id.accepted_list);
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+                final User driver = acceptedDrivers.get(position);
+                final Dialog dlg = new Dialog(context);
+                dlg.setContentView(R.layout.request_details_confirm_driver_dlg);
 
-                // TODO: dialog to confirm driver
+                final TextView username = (TextView)dlg.findViewById(R.id.driverUsername);
+                final Button cancelButton = (Button)dlg.findViewById(R.id.cancelDriver);
+                final Button confirmButton = (Button)dlg.findViewById(R.id.acceptDriver);
 
+                username.setText(driver.getName());
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dlg.dismiss();
+                    }
+                });
+
+                confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RequestController.setRequestConfirmedDriver(request, driver);
+                    }
+                });
             }
         });
         ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,

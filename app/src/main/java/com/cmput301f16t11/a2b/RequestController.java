@@ -47,6 +47,10 @@ public class RequestController {
         addOpenRequest.execute(request);
     }
 
+    public static void setRequestConfirmedDriver(UserRequest request, User user){
+        //TODO: add the eleastic search controller stuff
+    }
+
 
     /**
      * Get all open requests within distatnce of lat, lon
