@@ -27,3 +27,11 @@ RequestListActivity:
      * (Available here:
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
+
+         /**
+     * The following dialog contained in "RequestDetailActivity" is a derivative of an answer to
+     * "How to display a Yes/No dialog box on Android?" by "Steve Haley," a user on
+     * stack overflow, used under CC-BY-SA by CMPUT301F16T11.
+     * Available here:
+     * http://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
+     */
