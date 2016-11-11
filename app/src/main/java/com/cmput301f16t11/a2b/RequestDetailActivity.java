@@ -217,7 +217,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    // deletes the date from habit obj
     public void deleteRequest(){
         RequestController.deleteRequest(request.getId());
         finish();

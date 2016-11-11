@@ -192,6 +192,52 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class setConfirmedDriver extends AsyncTask<String, Void, Boolean> {
+        Context context;
+
+        public setConfirmedDriver(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+
+
+            // update an existing request
+            //TO DO: check it the request exists first
+
+            // update script
+
+            String script = "{ \"script\" : \" ctx._source.confirmedDriver = newDriver }\", \"params\" : "+
+                    "{\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+
+
+            try {
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            // Notify the user if we were unable to accept the request
+            if (!result) {
+                Toast.makeText(context, context.getString(R.string.markerInfo_error), Toast.LENGTH_LONG).show();
+            }
+            super.onPostExecute(result);
+        }
+    }
+
     /**
      * Get the currently open Requests for a rider
      * input - userName of the rider
