@@ -47,11 +47,11 @@ public class RequestController {
         addOpenRequest.execute(request);
     }
 
-    public static void setRequestConfirmedDriver(UserRequest request, User driver){
+    public static void setRequestConfirmedDriver(UserRequest request, User driver, Context cntxt){
         request.setConfirmedDriver(driver);
 
         ElasticsearchRequestController.SetConfirmedDriver searchController =
-                new ElasticsearchRequestController.SetConfirmedDriver();
+                new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
         searchController.execute(request.getConfirmedDriver().getName());
         completeRequest(request);
     }

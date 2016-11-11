@@ -85,7 +85,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                 confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        RequestController.setRequestConfirmedDriver(request, driver);
+                        RequestController.setRequestConfirmedDriver(request, driver,
+                                RequestDetailActivity.this);
                     }
                 });
             }
