@@ -32,13 +32,19 @@ public class RequestDetailActivity extends AppCompatActivity {
      * used under CC-BY-SA by CMPUT301F16T11.
      * (Available here:
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
+     *
+     * The following dialog contained in "RequestDetailActivity" is a derivative of an answer to
+     * "How to display a Yes/No dialog box on Android?" by "Steve Haley," a user on
+     * stack overflow, used under CC-BY-SA by CMPUT301F16T11.
+     * Available here:
+     * http://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
      */
-    // TODO: Allow option to confirm on accepted Driver click if appliactable
     // potentially a dialog with a complete button is applicable
     // if not a view user button
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
-    ArrayList<User> acceptedDrivers;
+    private ArrayList<User> acceptedDrivers;
+    private int currPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,34 @@ public class RequestDetailActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+                currPosition = position;
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                RequestController.setRequestConfirmedDriver(request,
+                                        acceptedDrivers.get(currPosition),
+                                        RequestDetailActivity.this);
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                // do nada
+                                break;
+                        }
+                    }
+                };
+                String messageString = "Accept " + acceptedDrivers.get(currPosition).getName() +
+                                        " as your driver?";
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage(messageString)
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
+                // the below dialog wasn't working. I don't know how it was set up to work so
+                // i created the above dialog in the meanwhile for actual functionality.
+                // At whatever point someone can re-enable the below dialog as long as they get it
+                // working. (since visually its more consistent with the app)
+                /*
                 final User driver = acceptedDrivers.get(position);
                 final Dialog dlg = new Dialog(context);
                 dlg.setContentView(R.layout.request_details_confirm_driver_dlg);
@@ -89,6 +123,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                                 RequestDetailActivity.this);
                     }
                 });
+                */
+
             }
         });
         ArrayAdapter<User> adapter = new ArrayAdapter<>(this,
@@ -179,9 +215,6 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
-        Mode mode = UserController.checkMode();
-        // confirm and delete
-        User user = UserController.getUser();
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
@@ -189,13 +222,18 @@ public class RequestDetailActivity extends AppCompatActivity {
             if (request.hasConfirmedRider()) {
                 payButton.setEnabled(true);
             }
+            else {
+                payButton.setEnabled(false);
+            }
         }
         else if (UserController.checkMode() == Mode.DRIVER &&
                 request.getConfirmedDriver() != null &&
                     request.getConfirmedDriver().equals(UserController.getUser())) {
             completeButton.setEnabled(true);
+            payButton.setEnabled(false);
         }
         else {
+                payButton.setEnabled(false);
                 deleteButton.setEnabled(false);
                 completeButton.setEnabled(false);
         }
