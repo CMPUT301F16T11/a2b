@@ -759,4 +759,28 @@ public class ElasticsearchRequestController {
             client = (JestDroidClient) factory.getObject();
         }
     }
+
+    public ArrayList<User> getAcceptedDriversFromId(String requestId){
+        verifySettings();
+
+        Get get = new Get.Builder(index, requestId).type(openRequest).build();
+        UserRequest userRequest;
+
+        try {
+            JestResult result = client.execute(get);
+            if (result.isSucceeded()) {
+                userRequest = result.getSourceAsObject(UserRequest.class);
+            }
+            else{
+                Log.i("Error", "Failed to find any accepted requests");
+                return new ArrayList<>();
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Failed to communicate with elasticsearch server");
+            e.printStackTrace();
+            return null;
+        }
+
+        return userRequest.getAcceptedDrivers();
+    }
 }

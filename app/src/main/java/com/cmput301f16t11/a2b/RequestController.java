@@ -7,6 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
+import io.searchbox.client.JestResult;
+import io.searchbox.core.Get;
+
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
 /**
@@ -210,6 +213,10 @@ public class RequestController {
             }
         }
         return userRequests;
+    }
+    public static ArrayList<User> getAcceptedDrivers(UserRequest request) {
+        ElasticsearchRequestController searchController = new ElasticsearchRequestController();
+        return searchController.getAcceptedDriversFromId(request.getId());
     }
 
     public static ArrayList<UserRequest> getConfirmedByRiders(User user, Mode mode) {

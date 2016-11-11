@@ -59,7 +59,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     public void populateAcceptedDriversList() {
         final Context context = this;
-        acceptedDrivers = request.getAcceptedDrivers();
+        acceptedDrivers = RequestController.getAcceptedDrivers(request);
         driverList = (ListView) findViewById(R.id.accepted_list);
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
