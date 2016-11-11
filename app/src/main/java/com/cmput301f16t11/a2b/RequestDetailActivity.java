@@ -59,10 +59,8 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 
-                // dialog
-                Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", acceptedDrivers.get(position).toString());
-                startActivity(intent);
+                // TODO: dialog to confirm driver
+                
             }
         });
         ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
@@ -151,6 +149,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
+            completeButton.setEnabled(false);
             if (request.hasConfirmedRider()) {
                 payButton.setEnabled(true);
             }
@@ -164,6 +163,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         }
         else {
             deleteButton.setEnabled(false);
+            completeButton.setEnabled(false);
         }
         // accept
         if (UserController.checkMode() == Mode.DRIVER &&
@@ -179,14 +179,17 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
+                finish();
             }
         });
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
+                finish();
             }
         });
+//        completeButton.setOn
 
     }
 
