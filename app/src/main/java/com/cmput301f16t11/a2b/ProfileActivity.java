@@ -17,7 +17,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        setTextViews();
 
         // adding edit button functionality
         Button edit = (Button) findViewById(R.id.editProfile);
@@ -33,6 +32,28 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
+        try {
+            Intent intent = getIntent();
+            String username = intent.getStringExtra("username");
+            this.user = UserController.getUserFromName(username);
+        } catch(Exception e) {
+            this.user = UserController.getUser();
+        }
+        if (this.user == null) {
+            this.user = UserController.getUser();
+        }
+        String usgh = this.user.getName();
+        if (this.user.getName() == null) {
+           this.user = UserController.getUser();
+        }
+        // set buttons
+        Button editButton = (Button) findViewById(R.id.editProfile);
+        if (user.equals(UserController.getUser())) {
+            editButton.setEnabled(true);
+        }
+        else {
+            editButton.setEnabled(false);
+        }
         setTextViews();
     }
 
@@ -43,16 +64,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void setTextViews() {
-        User user = UserController.getUser();
 
-        //Populating text attrubutes
+        //Populating text attributes
         TextView userNameTV = (TextView) findViewById(R.id.userName);
         TextView emailTV = (TextView) findViewById(R.id.emailText);
         TextView phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTextView);
 
-        userNameTV.setText(user.getName());
-        emailTV.setText(user.getEmail());
-        phoneNumberTV.setText(user.getPhoneNumber());
+        userNameTV.setText(this.user.getName());
+        emailTV.setText(this.user.getEmail());
+        phoneNumberTV.setText(this.user.getPhoneNumber());
     }
 
 }

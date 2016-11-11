@@ -143,6 +143,19 @@ public class UserController {
         context.startActivity(intent);
     }
 
+    public static User getUserFromName(String username) {
+        User user = new User();
+        try {
+            ElasticsearchUserController.CheckUserTask searchController =
+                    new ElasticsearchUserController.CheckUserTask();
+            searchController.execute(username);
+            user = searchController.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public static void goOnline() {
     }
 
