@@ -1,10 +1,12 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.searchly.jestdroid.DroidClientConfig;
@@ -12,6 +14,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Get;
@@ -23,37 +26,46 @@ import io.searchbox.core.Get;
  * Will be terminated when the user
  */
 public class RiderNotificationService extends IntentService {
-    private UserRequest request;
 
     //Elastic search stuff
     private static JestDroidClient client;
     private static String index = "f16t11";
 
     private static String openRequest = "openRequest";
+    private static String user = "user";
+    private static ArrayList<UserRequest> requestMonitoring = new ArrayList<>();
     private static RiderNotificationService self;
 
-    public RiderNotificationService(UserRequest request){
-        super("intent service");
-        this.request = request;
-        self = this;
+    public RiderNotificationService(){
+        super("Rider Notification service");
+        this.self = this;
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
         verifySettings();
-        ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
         while(true) {
+            for (UserRequest request : requestMonitoring) {
+                ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
+                ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
+                ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
 
-            ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
-            ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
-            sendNotificationOfAcceptedDriver(differentUser);
+                //If there is an accepted user
+                if(differentUser.size() != 0){
+                    sendNotificationOfAcceptedDriver(serverAcceptedDrivers, request.getId());
 
-           try{
-               Thread.sleep(10000);
-           }catch(InterruptedException e){
-               e.printStackTrace();
-           }
-       }
+                    for(User user: differentUser){
+                        addDriverToMonitor(request, user);
+                    }
+                }
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -66,11 +78,34 @@ public class RiderNotificationService extends IntentService {
     }
 
     /**
-     * Static call so that we can end this service without passing around the object
+     * determines if a service is started so there is only one service at any point
+     * @return
      */
-    public static void endService(){
+    public static Boolean isRecieveServiceStarted(){
 
-        if(self != null){
+        if(self == null){
+            return false;
+        }
+        return true;
+    }
+
+    public void addDriverToMonitor(UserRequest request, User user){
+        int index = requestMonitoring.indexOf(request);
+        requestMonitoring.get(index).addAcceptedDriver(user);
+    }
+
+    public static void addRequestToBeNotified(UserRequest request){
+
+        requestMonitoring.add(request);
+    }
+
+    /**
+     * So we will no longer send request about that request id
+     */
+    public static void endNotification(String id){
+
+        requestMonitoring.remove(id);
+        if(requestMonitoring.size() == 0){
             self.stopSelf();
         }
     }
@@ -97,8 +132,21 @@ public class RiderNotificationService extends IntentService {
      * @return list of accepted drivers for that request
      */
     private ArrayList<User> findDifferenceRequests(ArrayList<User> userOriginal, ArrayList<User> userServer){
+        if(userServer == null){
+            return new ArrayList<>();
+        }
 
-        userServer.removeAll(userOriginal);
+        for(User userOr : userOriginal){
+            for(int i = 0; i< userServer.size();){
+                if(userServer.get(i).getId().equals(userOr.getId())){
+                    userServer.remove(i);
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+
         return userServer;
     }
 
@@ -110,8 +158,8 @@ public class RiderNotificationService extends IntentService {
      */
     private ArrayList<User> getAcceptedDriversFromId(String requestId){
         verifySettings();
-        Get get = new Get.Builder(index, requestId).type(openRequest).build();
 
+        Get get = new Get.Builder(index, requestId).type(openRequest).build();
         UserRequest userRequest;
 
         try {
@@ -121,7 +169,7 @@ public class RiderNotificationService extends IntentService {
             }
             else{
                 Log.i("Error", "Failed to find any accepted requests");
-                return null;
+                return new ArrayList<>();
             }
         } catch (Exception e) {
             Log.i("Error", "Failed to communicate with elasticsearch server");
@@ -136,12 +184,13 @@ public class RiderNotificationService extends IntentService {
      * This send a notification that all the addedUsers have accepted that individual rider's request
      * @param addedUsers
      */
-    private  void sendNotificationOfAcceptedDriver(ArrayList<User> addedUsers){
+    private  void sendNotificationOfAcceptedDriver(ArrayList<User> addedUsers, String requestId){
         String notification = "";
         for(User user: addedUsers){
-            notification = notification + user.getName() +", ";
+            String name = getUserName(user.getId());
+            notification = notification + name +", ";
         }
-        notification = notification + "has Accepted request" + request.getId();
+        notification = notification + "has Accepted request " + requestId;
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
@@ -153,5 +202,25 @@ public class RiderNotificationService extends IntentService {
         // hide the notification after its selected
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, noti);
+    }
+
+    private String getUserName(String usernameId){
+        Get get = new Get.Builder(index, usernameId).type(user).build();
+        User user;
+        try {
+            JestResult result = client.execute(get);
+            if (result.isSucceeded()) {
+                user = result.getSourceAsObject(User.class);
+                return user.getName();
+            }
+            else{
+                Log.i("Error", "Failed to find any accepted requests");
+                return "<username not found>";
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Failed to communicate with elasticsearch server");
+            e.printStackTrace();
+            return "<username not found>";
+        }
     }
 }
