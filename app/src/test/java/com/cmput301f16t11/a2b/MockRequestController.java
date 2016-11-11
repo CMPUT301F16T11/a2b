@@ -7,8 +7,7 @@ import java.util.ArrayList;
  */
 
 public class MockRequestController extends RequestController {
-
-    @Override
+    
     public static void addOpenRequest(MockUserRequest request) {
         //save request to a file or array
         ArrayList<MockUserRequest> file = new ArrayList<MockUserRequest>();

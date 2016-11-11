@@ -20,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView mUsernameView;
     private View mProgressView;
     private View mLoginFormView;
+    private CheckBox box;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.user);
+        box = (CheckBox) findViewById(R.id.user_sign_in_checkbox);
 
 
         Button mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
@@ -120,9 +123,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
 
-            // Set User Controller & Run Background tasks to get request info then save file
+            // Set User Controller & Save User If Checked
             UserController.setUser(user);
-            UserController.saveInFile(this);
+            if (box.isChecked()) {
+                UserController.saveInFile(this);
+            }
 
             Intent intent = new Intent(this, RiderLocationActivity.class);
             startActivity(intent);
