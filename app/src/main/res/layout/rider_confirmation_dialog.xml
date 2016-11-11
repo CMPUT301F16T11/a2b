@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="48dp"
-    android:layout_marginBottom="48dp"
-    android:layout_marginEnd="32dp"
-    android:layout_marginStart="32dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +32,7 @@
 
         <TextView android:id="@+id/rideConf_startTitle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:gravity="center_vertical|end"
@@ -60,7 +59,7 @@
 
         <TextView android:id="@+id/rideConf_endTitle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:gravity="center_vertical|end"
@@ -113,7 +112,7 @@
         <TextView android:id="@+id/rideConf_fareTitle"
             android:text="@string/enter_fare"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:gravity="center_vertical|end"
@@ -121,10 +120,10 @@
 
         <EditText android:id="@+id/rideConf_fareText"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="2"
             android:textAlignment="textEnd"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <LinearLayout android:id="@+id/rideConf_descripRow"
@@ -163,6 +162,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
         android:weightSum="2">
 

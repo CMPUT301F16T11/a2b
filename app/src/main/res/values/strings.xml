@@ -73,7 +73,7 @@
     <string name="rideComplete_driverTitle">Driver:</string>
     <string name="rideComplete_riderTitle">Rider:</string>
     <string name="rideComplete_startTitle">Pickup:</string>
-    <string name="rideComplete_endTitle">Destination:</string>
+    <string name="rideComplete_endTitle">Dropoff:</string>
     <string name="rideComplete_fareTitle">Fare:</string>
 
     <!-- request_info_dialog Strings -->

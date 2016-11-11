@@ -2,15 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:weightSum="6">
+    android:layout_gravity="center">
 
     <TextView android:id="@+id/dialog_requestInfo_title"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:layout_gravity="center_horizontal"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -18,10 +16,10 @@
 
     <LinearLayout android:id="@+id/dialog_requestInfo_rider"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:weightSum="3"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp">
 
@@ -37,17 +35,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
+            android:textAlignment="textEnd"
             android:text="testRider"/>
 
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_requestInfo_start"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:weightSum="3"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp">
 
@@ -63,17 +61,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
+            android:textAlignment="textEnd"
             android:text="testStart"/>
 
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_requestInfo_end"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:weightSum="3"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp">
 
@@ -89,17 +87,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
+            android:textAlignment="textEnd"
             android:text="testEnd"/>
 
     </LinearLayout>
 
     <LinearLayout android:id="@+id/dialog_requestInfo_fare"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:weightSum="3"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp">
 
@@ -115,7 +113,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
+            android:textAlignment="textEnd"
             android:text="testFare"/>
 
     </LinearLayout>
