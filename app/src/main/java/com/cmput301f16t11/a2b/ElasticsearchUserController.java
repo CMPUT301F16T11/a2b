@@ -171,10 +171,14 @@ public class ElasticsearchUserController {
 
             try {
                 DocumentResult result = client.execute(userIndex);
-                if (!result.isSucceeded())  {
-                    Log.i("Error", "Elasticsearch failed to update user");
-                    return false;
+                if (result.isSucceeded()) {
+                    users[0].setId(result.getId()); //TODO: I added this line. Not sure if its needed - Dallin
                 }
+                else{
+                        Log.i("Error", "Elasticsearch failed to update user");
+                        return false;
+                }
+
             } catch (Exception e) {
                 Log.i("Error", "Failed to add user to elasticsearch");
                 e.printStackTrace();

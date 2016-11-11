@@ -104,6 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
             user.setEmail(email);
             UserController.setUser(user);
             UserController.updateUserInDb();
+            UserController.saveInFile(this);
         }
 
         finish();
