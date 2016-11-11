@@ -284,13 +284,10 @@ public class RequestController {
         return true;
     }
 
-        public static void completeRequest(UserRequest request) {
-            ElasticsearchRequestController.MoveToClosedRequest searchController =
-                    new ElasticsearchRequestController.MoveToClosedRequest();
-            searchController.execute(request);
-            request.setCompletedStatus(true);
+    public static void completeRequest(UserRequest request) {
+        ElasticsearchRequestController.MoveToClosedRequest searchController =
+                new ElasticsearchRequestController.MoveToClosedRequest();
+        searchController.execute(request);
+        request.setCompletedStatus(true);
     }
-
-
-
 }
