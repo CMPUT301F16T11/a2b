@@ -757,27 +757,32 @@ public class ElasticsearchRequestController {
         }
     }
 
-    public ArrayList<User> getAcceptedDriversFromId(String requestId){
-        verifySettings();
+    public static class getAcceptedUsersForRequest extends AsyncTask<String, Void, ArrayList<User>>{
 
-        Get get = new Get.Builder(index, requestId).type(openRequest).build();
-        UserRequest userRequest;
+        @Override
+        protected ArrayList<User> doInBackground(String ... requestId) {
+            verifySettings();
 
-        try {
-            JestResult result = client.execute(get);
-            if (result.isSucceeded()) {
-                userRequest = result.getSourceAsObject(UserRequest.class);
+            Get get = new Get.Builder(index, requestId[0]).type(openRequest).build();
+            UserRequest userRequest;
+
+            try {
+                JestResult result = client.execute(get);
+                if (result.isSucceeded()) {
+                    userRequest = result.getSourceAsObject(UserRequest.class);
+                }
+                else{
+                    Log.i("Error", "Failed to find any accepted requests");
+                    return new ArrayList<>();
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return null;
             }
-            else{
-                Log.i("Error", "Failed to find any accepted requests");
-                return new ArrayList<>();
-            }
-        } catch (Exception e) {
-            Log.i("Error", "Failed to communicate with elasticsearch server");
-            e.printStackTrace();
-            return null;
+
+            return userRequest.getAcceptedDrivers();
         }
 
-        return userRequest.getAcceptedDrivers();
     }
 }

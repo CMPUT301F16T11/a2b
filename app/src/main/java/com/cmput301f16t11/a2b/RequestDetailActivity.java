@@ -91,9 +91,10 @@ public class RequestDetailActivity extends AppCompatActivity {
                 });
             }
         });
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
+        ArrayAdapter<User> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, acceptedDrivers);
 
+        driverList.setAdapter(adapter);
     }
 
     public void populateFields() {

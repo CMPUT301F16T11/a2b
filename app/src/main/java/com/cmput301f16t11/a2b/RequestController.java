@@ -214,9 +214,44 @@ public class RequestController {
         }
         return userRequests;
     }
+
+    /**
+     * get all the accepted driver for specfic request id
+     * @param request request you want to get accepted drivers for
+     * @return
+     */
     public static ArrayList<User> getAcceptedDrivers(UserRequest request) {
-        ElasticsearchRequestController searchController = new ElasticsearchRequestController();
-        return searchController.getAcceptedDriversFromId(request.getId());
+        ElasticsearchRequestController.getAcceptedUsersForRequest searchController =
+                new ElasticsearchRequestController.getAcceptedUsersForRequest();
+        ArrayList<User> users;
+        try {
+            users = searchController.execute(request.getId()).get();
+             return getUserInfo(users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  new ArrayList<>();
+        }
+    }
+
+    /**
+     * Gets the actual object of all user ignore the request ids
+     * @param users Arraylist of user object with only ids
+     * @return returns a list of all actual user objects
+     */
+    private static ArrayList<User> getUserInfo(ArrayList<User> users){
+        ArrayList<User> actualUserObjects = new ArrayList<>();
+        for(User user: users){
+            ElasticsearchUserController.RetriveUserInfo impl =
+                    new ElasticsearchUserController.RetriveUserInfo();
+            User actualUser;
+            try {
+                actualUser = impl.execute(user).get();
+                actualUserObjects.add(actualUser);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return actualUserObjects;
     }
 
     public static ArrayList<UserRequest> getConfirmedByRiders(User user, Mode mode) {

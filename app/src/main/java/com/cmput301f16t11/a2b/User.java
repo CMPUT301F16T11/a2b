@@ -140,9 +140,9 @@ public class User {
 //        return this.mode;
 //    }
     public String getId() {return id;}
-    public String toString() {
-        return this.userName;
-    }
+
+    @Override
+    public String toString() {return this.userName;}
 
     //Setters
     public void setPhoneNumber(String phoneNumber) {
