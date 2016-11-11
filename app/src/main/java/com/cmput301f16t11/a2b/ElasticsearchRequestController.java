@@ -23,9 +23,6 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
 
-import static android.R.attr.id;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-
 
 /**
  * Created by Wilky on 11/6/2016.
