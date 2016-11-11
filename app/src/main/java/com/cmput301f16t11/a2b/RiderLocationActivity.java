@@ -108,9 +108,9 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     /**
      * Set up all the on click listeners for this activity
      */
-    private void setButtonListeners(){
-        final Button setLocation = (Button)findViewById(R.id.setLocationButton);
-        final Button cancelTrip = (Button)findViewById(R.id.cancelTrip);
+    private void setButtonListeners() {
+        final Button setLocation = (Button) findViewById(R.id.setLocationButton);
+        final Button cancelTrip = (Button) findViewById(R.id.cancelTrip);
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         cancelTrip.setEnabled(false);
@@ -118,26 +118,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tripStartMarker != null){
-                    tripStartMarker.remove();
-                    tripStartMarker = null;
-                }
-                if(tripEndMarker != null){
-                    tripEndMarker.remove();
-                    tripEndMarker = null;
-                }
-                if(currentMarker != null){
-                    currentMarker.remove();
-                    currentMarker = null;
-                }
 
-                //Reset button state when they cancel
-                setLocation.setText(R.string.set_start);
-
-                //Once they cancel it disable this button until they place another pin
-                cancelTrip.setEnabled(false);
-
-                mMap.clear();
+                resetMap();
             }
         });
 
@@ -145,7 +127,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             @Override
             public void onPlaceSelected(Place place) {
                 LatLng location = place.getLatLng();
-                if(currentMarker != null){
+                if (currentMarker != null) {
                     currentMarker.remove();
                 }
 
@@ -240,8 +222,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         Geocoder geoCoder = new Geocoder(context);
                         List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
                         String address = "";
-                        if(!matches.isEmpty()){
-                            address = matches.get(0).getAddressLine(0) + ' ' +  matches.get(0).getLocality();
+                        if (!matches.isEmpty()) {
+                            address = matches.get(0).getAddressLine(0) + ' ' + matches.get(0).getLocality();
                         }
 
                         currentMarker.setTitle(address);
@@ -281,14 +263,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     /**
      * A quick permission check to ensure that we location services enabled
      */
-    private void ensureLocationPermissions(){
+    private void ensureLocationPermissions() {
         //Check if we have the right permissions to use location
         Boolean i = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (i) {
             mMap.setMyLocationEnabled(true);
-        }
-
-        else {
+        } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
@@ -301,12 +281,13 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
      * This method is called after the route has been retrieved from the google servers. It creates and shows
      * the confirmation_trip dialog which prompts the user to enter a fare amount. It also draws polyline points
      * on the map of the route they will be taking.
+     *
      * @param drawPoints
      * @param distance
      */
-    public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
+    public void drawRouteOnMap(List<LatLng> drawPoints, String distance) {
         //Draw the lines on the map
-        mMap.addPolyline( new PolylineOptions()
+        mMap.addPolyline(new PolylineOptions()
                 .addAll(drawPoints)
                 .width(12)
                 .color(Color.parseColor("#05b1fb"))//Google maps blue color
@@ -320,21 +301,21 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
 
-        final TextView from = (TextView)dialog.findViewById(R.id.fromText);
-        final TextView to = (TextView)dialog.findViewById(R.id.toText);
-        final TextView distanceDlg = (TextView)dialog.findViewById(R.id.distance);
-        final TextView fairEstimate = (TextView)dialog.findViewById(R.id.fairEstimate);
+        final TextView from = (TextView) dialog.findViewById(R.id.fromText);
+        final TextView to = (TextView) dialog.findViewById(R.id.toText);
+        final TextView distanceDlg = (TextView) dialog.findViewById(R.id.distance);
+        final TextView fairEstimate = (TextView) dialog.findViewById(R.id.fairEstimate);
 
-        final Button cancel = (Button)dialog.findViewById(R.id.cancelRequest);
-        final Button confirm = (Button)dialog.findViewById(R.id.confirmRequest);
-        final EditText amount= (EditText)dialog.findViewById(R.id.Fare);
+        final Button cancel = (Button) dialog.findViewById(R.id.cancelRequest);
+        final Button confirm = (Button) dialog.findViewById(R.id.confirmRequest);
+        final EditText amount = (EditText) dialog.findViewById(R.id.Fare);
 
         //Set all the right values in the dialog
         final double fairAmount = FairEstimation.estimateFair(distance);
         from.setText(tripStartMarker.getTitle());
         to.setText(tripEndMarker.getTitle());
-        distanceDlg.setText("Distance: "+ distance);
-        fairEstimate.setText("Fair Estimate: $"+ Double.toString(fairAmount));
+        distanceDlg.setText("Distance: " + distance);
+        fairEstimate.setText("Fair Estimate: $" + Double.toString(fairAmount));
 
         //set up the on click listeners for dialog
 
@@ -383,11 +364,19 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         UserController.getUser());
                 RequestController.addOpenRequest(request);
 
-// TODO: will add this once we have a way to terminate the service when the user requests
-// Start the service for rider notifications
-//                Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
-//                startService(intent);
+                //Start the rider service if it is not already started
+                if(!RiderNotificationService.isRecieveServiceStarted()) {
+                    Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
+                    startService(intent);
+                }
 
+                //Add this request to be monitored
+                RiderNotificationService.addRequestToBeNotified(request);
+
+                //Clear the map
+                resetMap();
+
+                //
                 dialog.dismiss();
             }
         });
@@ -396,9 +385,34 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         dialog.show();
     }
 
-    static class FairEstimation{
+    public void resetMap() {
+        final Button setLocation = (Button) findViewById(R.id.setLocationButton);
+        final Button cancelTrip = (Button) findViewById(R.id.cancelTrip);
+        if (tripStartMarker != null) {
+            tripStartMarker.remove();
+            tripStartMarker = null;
+        }
+        if (tripEndMarker != null) {
+            tripEndMarker.remove();
+            tripEndMarker = null;
+        }
+        if (currentMarker != null) {
+            currentMarker.remove();
+            currentMarker = null;
+        }
 
-        static public double estimateFair(String strDistance){
+        //Reset button state when they cancel
+        setLocation.setText(R.string.set_start);
+
+        //Once they cancel it disable this button until they place another pin
+        cancelTrip.setEnabled(false);
+
+        mMap.clear();
+    }
+
+    static class FairEstimation {
+
+        static public double estimateFair(String strDistance) {
             Scanner sc = new Scanner(strDistance);
             double distanceKm = sc.nextDouble();
 
@@ -409,13 +423,15 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             rate += distanceKm * 1.25;
 
             DecimalFormat df = new DecimalFormat("#.##");
-            String dx=df.format(rate);
-            rate=Double.valueOf(dx);
+            String dx = df.format(rate);
+            rate = Double.valueOf(dx);
 
             return rate;
         }
     }
 }
+
+
 
 
 

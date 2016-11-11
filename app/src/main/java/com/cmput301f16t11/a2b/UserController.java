@@ -137,6 +137,7 @@ public class UserController {
 
     public static void logOut(Context context) {
         context.deleteFile(USRFILE);
+        UserController.user = null;
 
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);

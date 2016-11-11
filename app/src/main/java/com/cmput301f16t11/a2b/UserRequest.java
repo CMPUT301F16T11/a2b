@@ -151,7 +151,7 @@ public class UserRequest implements Parcelable {
     public boolean hasConfirmedRider() {
         return this.confirmedDriver != null;
     }
-
+    public void  addAcceptedDriver(User user){this.acceptedDrivers.add(user);}
 
     /* Parcelable Stuff */
 

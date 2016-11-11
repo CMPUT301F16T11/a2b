@@ -31,8 +31,8 @@ public class RequestDetailActivity extends AppCompatActivity {
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
     // TODO: Allow option to confirm on accepted Driver click if appliactable
-            // potentially a dialog with a complete button is applicable
-            // if not a view user button
+    // potentially a dialog with a complete button is applicable
+    // if not a view user button
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
     ArrayList<User> acceptedDrivers;
@@ -60,9 +60,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-                Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", acceptedDrivers.get(position).toString());
-                startActivity(intent);
+
+                // TODO: dialog to confirm driver
+
             }
         });
         ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,
@@ -83,8 +83,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
-        else {
+        } else {
             driverName.setText("No confirmed driver :(");
         }
 
@@ -151,44 +150,53 @@ public class RequestDetailActivity extends AppCompatActivity {
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
+            completeButton.setEnabled(false);
             if (request.hasConfirmedRider()) {
                 payButton.setEnabled(true);
-            }
-            else {
-                payButton.setEnabled(false);
-            }
-        }
-        else if (UserController.checkMode() == Mode.DRIVER &&
-                request.getConfirmedDriver().equals(UserController.getUser())) {
+            } else if (UserController.checkMode() == Mode.DRIVER &&
+                    request.getConfirmedDriver().equals(UserController.getUser())) {
                 completeButton.setEnabled(true);
-        }
-        else {
-            deleteButton.setEnabled(false);
-        }
-        // accept
-        if (UserController.checkMode() == Mode.DRIVER &&
-                !request.getAcceptedDrivers().contains(UserController.getUser())) {
+            } else {
+                deleteButton.setEnabled(false);
+                completeButton.setEnabled(false);
+            }
+            // accept
+            if (UserController.checkMode() == Mode.DRIVER &&
+                    !request.getAcceptedDrivers().contains(UserController.getUser())) {
                 acceptButton.setEnabled(true);
-        }
-        else {
-            acceptButton.setEnabled(false);
-        }
-
-        // onClick Listeners
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RequestController.addAcceptance(request, RequestDetailActivity.this);
+            } else {
+                acceptButton.setEnabled(false);
             }
-        });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                delete();
-            }
-        });
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    delete();
+                }
+            });
 
+            // onClick Listeners
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestController.addAcceptance(request, RequestDetailActivity.this);
+                    finish();
+                }
+            });
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //RequestController.deleteRequest(request.getId(), RequestDetailActivity.this);
+                    finish();
+                }
+            });
+            completeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RequestController.completeRequest(request);
+                }
+            });
+        }
     }
 
     private void delete () {
@@ -205,8 +213,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         dialog.show();
     }
     // deletes the date from habit obj
-    public void deleteRequest() {
+    public void deleteRequest(){
         RequestController.deleteRequest(request.getId());
         finish();
-    }
+        }
 }

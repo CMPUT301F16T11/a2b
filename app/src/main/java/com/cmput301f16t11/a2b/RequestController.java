@@ -274,6 +274,7 @@ public class RequestController {
     }
 
     public static Boolean deleteRequest(String id) {
+<<<<<<< HEAD
         ElasticsearchRequestController.deleteRiderRequests deleteRequestsById = new ElasticsearchRequestController.deleteRiderRequests();
         try {
             deleteRequestsById.execute(id);
@@ -282,9 +283,19 @@ public class RequestController {
             return false;
         }
         return true;
+=======
+//        ElasticsearchRequestController.deleteRiderRequests deleteRequestsById = new ElasticsearchRequestController.deleteRiderRequests();
+//        try
+        return false;
+>>>>>>> ea117c91c365d26af75bf0a354b4bfdb0665076e
     }
 
-
+    public static void completeRequest(UserRequest request) {
+        ElasticsearchRequestController.MoveToClosedRequest searchController =
+                new ElasticsearchRequestController.MoveToClosedRequest();
+        searchController.execute(request);
+        request.setCompletedStatus(true);
+    }
 
 
 
