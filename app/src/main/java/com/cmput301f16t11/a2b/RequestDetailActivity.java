@@ -171,34 +171,40 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
+        Mode mode = UserController.checkMode();
         // confirm and delete
+        User user = UserController.getUser();
         if (UserController.checkMode() ==
                 Mode.RIDER && UserController.getUser().equals(request.getRider())) {
             deleteButton.setEnabled(true);
             completeButton.setEnabled(false);
             if (request.hasConfirmedRider()) {
                 payButton.setEnabled(true);
-            } else if (UserController.checkMode() == Mode.DRIVER &&
+            }
+        }
+        else if (UserController.checkMode() == Mode.DRIVER &&
+                request.getConfirmedDriver() != null &&
                     request.getConfirmedDriver().equals(UserController.getUser())) {
-                completeButton.setEnabled(true);
-            } else {
+            completeButton.setEnabled(true);
+        }
+        else {
                 deleteButton.setEnabled(false);
                 completeButton.setEnabled(false);
-            }
-            // accept
-            if (UserController.checkMode() == Mode.DRIVER &&
-                    !request.getAcceptedDrivers().contains(UserController.getUser())) {
-                acceptButton.setEnabled(true);
-            } else {
-                acceptButton.setEnabled(false);
-            }
+        }
+        // accept
+        if (UserController.checkMode() == Mode.DRIVER &&
+                !request.getAcceptedDrivers().contains(UserController.getUser())) {
+            acceptButton.setEnabled(true);
+        } else {
+            acceptButton.setEnabled(false);
+        }
 
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    delete();
-                }
-            });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+            }
+        });
 
             // onClick Listeners
             acceptButton.setOnClickListener(new View.OnClickListener() {
@@ -221,7 +227,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                     RequestController.completeRequest(request);
                 }
             });
-        }
     }
 
     private void delete () {

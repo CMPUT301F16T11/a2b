@@ -9,6 +9,7 @@
     <string name="action_user_not_found">Error, User Not Found</string>
     <string name="field_required">Error, Field Is Required</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="signin_checkbox">Remember Me</string>
 
 
     <!-- Sign Up Activity -->
@@ -59,6 +60,13 @@
     <string name="title_activity_driver_location">Map</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
 
+    <!-- Rider Request Confirmation Dialog Strings -->
+    <string name="rideConf_title">Request Details</string>
+    <string name="rideConf_startTitle">Pickup:</string>
+    <string name="rideConf_endTitle">Dropoff:</string>
+    <string name="rideConf_distanceTitle">Distance:</string>
+    <string name="rideConf_descripTitle">Description:</string>
+    <string name="rideConf_enterFare">Enter Fare:</string>
 
     <!-- RideCompleteDialog Strings -->
     <string name="rideComplete_title">Ride Details</string>

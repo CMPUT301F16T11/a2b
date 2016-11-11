@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -301,21 +302,37 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
 
-        final TextView from = (TextView) dialog.findViewById(R.id.fromText);
-        final TextView to = (TextView) dialog.findViewById(R.id.toText);
-        final TextView distanceDlg = (TextView) dialog.findViewById(R.id.distance);
-        final TextView fairEstimate = (TextView) dialog.findViewById(R.id.fairEstimate);
-
-        final Button cancel = (Button) dialog.findViewById(R.id.cancelRequest);
-        final Button confirm = (Button) dialog.findViewById(R.id.confirmRequest);
-        final EditText amount = (EditText) dialog.findViewById(R.id.Fare);
+        final TextView from = (TextView)dialog.findViewById(R.id.rideConf_startText);
+        final TextView to = (TextView)dialog.findViewById(R.id.rideConf_endText);
+        final TextView distanceDlg = (TextView)dialog.findViewById(R.id.rideConf_distanceText);
+        //final EditText description = (EditText)dialog.findViewById(R.id.rideConf_descripText);
+        final Button cancel = (Button)dialog.findViewById(R.id.cancelRequest);
+        final Button confirm = (Button)dialog.findViewById(R.id.confirmRequest);
+        final EditText amount= (EditText)dialog.findViewById(R.id.rideConf_fareText);
 
         //Set all the right values in the dialog
         final double fairAmount = FairEstimation.estimateFair(distance);
-        from.setText(tripStartMarker.getTitle());
-        to.setText(tripEndMarker.getTitle());
-        distanceDlg.setText("Distance: " + distance);
-        fairEstimate.setText("Fair Estimate: $" + Double.toString(fairAmount));
+        String fromText = "";
+        String endText = "";
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> start = geoCoder.getFromLocation(tripStartMarker.getPosition().latitude, tripStartMarker.getPosition().longitude, 1);
+            List<Address> end = geoCoder.getFromLocation(tripEndMarker.getPosition().latitude, tripEndMarker.getPosition().longitude, 1);
+            if(!start.isEmpty()){
+                fromText = start.get(0).getAddressLine(0);
+            }
+            if(!end.isEmpty()) {
+                endText = end.get(0).getAddressLine(0);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
+        from.setText(fromText);
+        to.setText(endText);
+        distanceDlg.setText(distance);
+        amount.setText(Double.toString(fairAmount));
+        amount.setHint(Double.toString(fairAmount));
 
         //set up the on click listeners for dialog
 
