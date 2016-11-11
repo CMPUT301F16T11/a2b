@@ -278,16 +278,16 @@ public class RequestController {
         try {
             deleteRequestsById.execute(id);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    public static void completeRequest(UserRequest request) {
-        ElasticsearchRequestController.MoveToClosedRequest searchController =
-                new ElasticsearchRequestController.MoveToClosedRequest();
-        searchController.execute(request);
-        request.setCompletedStatus(true);
+        public static void completeRequest(UserRequest request) {
+            ElasticsearchRequestController.MoveToClosedRequest searchController =
+                    new ElasticsearchRequestController.MoveToClosedRequest();
+            searchController.execute(request);
+            request.setCompletedStatus(true);
     }
 }
