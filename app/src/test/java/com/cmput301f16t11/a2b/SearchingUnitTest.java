@@ -15,10 +15,10 @@ import static org.junit.Assert.assertEquals;
 
 public class SearchingUnitTest {
 
-    private User rider1 =  new User(); // rider
-    private User rider2 =  new User(); // rider
-    private User rider3 =  new User(); // rider
-    private User rider4 =  new User(); // rider
+    private User rider1 =  new User("rider1","r1@email.com"); // rider
+    private User rider2 =  new User("rider2","r2@email.com"); // rider
+    private User rider3 =  new User("rider3","r3@email.com"); // rider
+    private User rider4 =  new User("rider4","r4@email.com"); // rider
 
     private LatLng startLocation1 = new LatLng(50,50);
     private LatLng endLocation1 = new LatLng(50,50);
@@ -37,15 +37,15 @@ public class SearchingUnitTest {
     @Before
     public void setUp() {
 
-
-        rider1.addActiveRiderRequest(new UserRequest(startLocation1,endLocation1,10.00,rider1));
-        rider2.addActiveRiderRequest(new UserRequest(startLocation2,endLocation2,10.00,rider2));
-        rider3.addActiveRiderRequest(new UserRequest(startLocation3,endLocation3,10.00,rider3));
-        rider4.addActiveRiderRequest(new UserRequest(startLocation4,endLocation4,10.00,rider4));
-        req1 = rider1.getActiveRequestsAsRider().get(0);
-        req2 = rider2.getActiveRequestsAsRider().get(0);
-        req3 = rider3.getActiveRequestsAsRider().get(0);
-        req4 = rider4.getActiveRequestsAsRider().get(0);
+        req1 = new UserRequest(startLocation1,endLocation1,10.00,rider1);
+        rider1.addActiveRiderRequest(req1);
+//        rider2.addActiveRiderRequest(new UserRequest(startLocation2,endLocation2,10.00,rider2));
+//        rider3.addActiveRiderRequest(new UserRequest(startLocation3,endLocation3,10.00,rider3));
+//        rider4.addActiveRiderRequest(new UserRequest(startLocation4,endLocation4,10.00,rider4));
+//
+//        req2 = rider2.getActiveRequestsAsRider().get(0);
+//        req3 = rider3.getActiveRequestsAsRider().get(0);
+//        req4 = rider4.getActiveRequestsAsRider().get(0);
 
     }
 

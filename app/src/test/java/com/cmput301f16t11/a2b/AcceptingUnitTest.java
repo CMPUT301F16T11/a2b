@@ -1,12 +1,11 @@
 package com.cmput301f16t11.a2b;
 
+import com.google.android.gms.common.UserRecoverableException;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.mockito.runners.MockitoJUnitRunner;
+
 
 
 import java.util.ArrayList;
@@ -14,45 +13,56 @@ import java.util.ArrayList;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+
 
 /**
  * Created by tothd on 10/24/2016.
  */
 
 public class AcceptingUnitTest {
-    private MockUser driver =  MockUserController.getMockUser();
+    private User user;
+    private UserRequest request;
     private LatLng startLocation = new LatLng(50,50);
     private LatLng endLocation = new LatLng(50,50);
     private Number fare = 10.00;
 
 
+    @Before
+    public void setup(){
+        user = new User();
+        request = new UserRequest(startLocation,endLocation,fare,user);
+    }
+    /**
+     * US 05.01.01
+     As a driver,  I want to accept a request I agree with and accept that offered payment upon completion.
+     */
+
+    @Test
+    public void testDriverAcceptingRequest() {
+
+        // random request that is accepted
+        user.addActiveDriverRequest(request);
+        assertTrue(user.getActiveRequestsAsDriver().size() > 0);
+        user.addActiveDriverRequest(request);
+        assertTrue(user.hasAcceptedRequests(request));
+    }
+
+    @Test
+    public void testDriverNotAcceptingRequest() {
+        // request that is not accepted
+        user.addActiveDriverRequest(request);
+        assertTrue(user.getActiveRequestsAsDriver().size() > 0);
+        
+        assertFalse(user.hasAcceptedRequests(request));
+    }
     /**
      * US 05.02.01
      As a driver, I want to view a list of things I have accepted that are pending,
      each request with its description, and locations.
      */
     @Test
-    public void testDriverAcceptingRequest() {
+    public void testViewAcceptedRequestDescriptionLocation(){
 
-        // random request that Billy wants to accept
-        User user = new User();
-        UserRequest billyRequest = new UserRequest(startLocation,endLocation,fare,driver);
-        user.addDriverRequest(billyRequest);
-        assertTrue(user.getActiveRequestsAsDriver().size() > 0);
-        user.addActiveDriverRequest(billyRequest);
-        assertTrue(user.hasAcceptedRequests(billyRequest));
-    }
-
-    @Test
-    public void testDriverNotAcceptingRequest() {
-
-        // random request that Billy wants to accept
-        MockUser user = new MockUser();
-        MockUserRequest billyRequest = new MockUserRequest(startLocation,endLocation,fare,driver);
-        user.addDriverRequest(billyRequest);
-        assertTrue(user.getActiveRequestsAsDriver().size() > 0);
-        assertFalse(user.hasAcceptedRequests(billyRequest));
     }
 
 
@@ -61,76 +71,27 @@ public class AcceptingUnitTest {
      As a driver, I want to be notified if my ride offer was accepted.
      */
 
+    @Test
+    public void testNotificationOfferAccepted(){
+        user.addActiveDriverRequest(request);
+        //get the list of requests
+        ArrayList<UserRequest> requestList = user.getActiveRequestsAsDriver();
+        requestList.get(0).setAcceptedStatus(true);
 
-//    @Test
-//    public void testNotificationOfferAccepted(){
-//        MockUserRequest request = new MockUserRequest(startLocation,endLocation,fare,driver);
-//        //get the list of requests
-//        ArrayList<MockUserRequest> requestList = driver.getActiveRequestsAsDriver();
-//        //check if any are accepted
-//        for(MockUserRequest r: requestList)
-//            if(request.getAcceptedStatus()){
-//                //if there are any accepted send notification
-//                driver.notifyUser(r);
-//                request = r;
-//            }
-//
-//        //test if notification was sent
-//        assertEquals(request.sentNotification(),true);
-//
-//    }
+        //check if any are accepted
+        for(UserRequest r: requestList)
+            if(request.getAcceptedStatus()){
+                //if there are any accepted send notification
+                //driver.notifyUser(r); TODO: notify user method
+                request = r;
+            }
+
+        //test if notification was sent
+        assertEquals(request.sentNotification(),true);
+
+    }
+
+
 
 }
-
-//    @Test
-//    public void testDriverAcceptingRequest() {
-//
-//        // random request that Billy wants to accept
-//        User user = new User();
-//        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
-//        user.addActiveDriverRequest(billyRequest);
-//        assertTrue(user.getActiveRequestsAsDriver().size() > 0);
-//        assertTrue(user.hasAcceptedRequests(billyRequest));
-//    }
-
-
-//TODO: Fix tests such that they comply with new User modelling
-//
-//    @Test
-//    public void testDriverNotAcceptingRequest() {
-//
-//        // random request that Billy wants to accept
-//        User user = new User();
-//        UserRequest billyRequest = new UserRequest(startLocation, endLocation, fare);
-//        user.addRequest(billyRequest);
-//        assertTrue(user.getRequests().size() > 0);
-//        assertFalse(user.hasAcceptedRequests(billyRequest));
-//    }
-//
-//
-//    /**
-//     * US 05.04.01
-//     As a driver, I want to be notified if my ride offer was accepted.
-//     */
-//
-//
-//    @Test
-//    public void testNotificationOfferAccepted(){
-//        UserRequest request = new UserRequest(startLocation,endLocation,fare);
-//        //get the list of requests
-//        ArrayList<UserRequest> requestList = driver.getRequests();
-//        //check if any are accepted
-//        for(UserRequest r: requestList)
-//            if(request.getAcceptedStatus()){
-//                //if there are any accepted send notification
-//                driver.notifyUser(r);
-//                request = r;
-//            }
-//
-//        //test if notification was sent
-//        assertEquals(request.sentNotification(),true);
-//
-//    }
-//
-//}
 

@@ -20,10 +20,6 @@ public class RequestController {
     public static ArrayList<UserRequest> nearbyRequests;
 
 
-    public static ArrayList<UserRequest> getRequestNear(String address, Number radius){
-        return new ArrayList<UserRequest>();
-    }
-
     public static ArrayList<UserRequest> getRequestNear(LatLng location, Number radius) {
         return new ArrayList<UserRequest>();
     }

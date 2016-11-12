@@ -20,8 +20,7 @@ public class UserProfileUnitTest {
 
     @Before
     public void setUp() {
-        user =  new User();
-
+        user =  new User("user",oldEmail,oldNumber);
         user.setEmail(oldEmail);
         user.setPhoneNumber(oldNumber);
     }
