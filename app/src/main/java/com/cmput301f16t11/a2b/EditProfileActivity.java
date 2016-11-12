@@ -63,7 +63,6 @@ public class EditProfileActivity extends AppCompatActivity {
         AlertDialog dlg = new AlertDialog.Builder(this).create();
         dlg.setTitle("Cannot Update Profile");
 
-        boolean isValid = !isValidPhoneNumber(phoneNumber);
 
         if(!isValidEmail(email)){
             //Warn the user that you cannot update it with invalid info
@@ -81,8 +80,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         else
         if(!isValidPhoneNumber(phoneNumber)){
-            //Warn the user that you cannot
-            dlg.setMessage("The phone number is not valid please input a valid email.");
+            //Warn the user that you cannot use invalid info
+            dlg.setMessage("The phone number is not valid please input a valid phone number.");
             dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
