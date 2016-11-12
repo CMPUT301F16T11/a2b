@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Main activity for riders to select their pickup and drop off locations.
+ * Main map activity for riders to select their pickup and drop off locations.
  */
 public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
             DrawingLocationActivity {
@@ -313,8 +313,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
      * the confirmation_trip dialog which prompts the user to enter a fare amount. It also draws polyline points
      * on the map of the route they will be taking.
      *
-     * @param drawPoints
-     * @param distance
+     * @param drawPoints list of LatLng objs to draw points of
+     * @param distance distance between
      */
     public void drawRouteOnMap(List<LatLng> drawPoints, String distance) {
         tripDistance = distance;
@@ -434,6 +434,9 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         dialog.show();
     }
 
+    /**
+     * Resets the map to default opener
+     */
     public void resetMap() {
         final Button setLocation = (Button) findViewById(R.id.setLocationButton);
         final Button cancelTrip = (Button) findViewById(R.id.cancelTrip);
@@ -459,8 +462,17 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mMap.clear();
     }
 
+    /**
+     * A class to estimate a recommended fare between two points
+     */
     static class FairEstimation {
 
+        /**
+         * Estimates fair fare between two points
+         *
+         * @param strDistance distance between the points
+         * @return double of fair fare
+         */
         static public double estimateFair(String strDistance) {
             Scanner sc = new Scanner(strDistance);
             double distanceKm = sc.nextDouble();

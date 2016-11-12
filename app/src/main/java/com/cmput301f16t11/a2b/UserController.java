@@ -29,76 +29,112 @@ public class UserController {
 
     private static String USRFILE = "user.sav";
 
-    public UserController(User u) {
-        user = u;
-    }
-
+    /**
+     * Sets the user for the current session
+     *
+     * @param newUser the user obj for curr session
+     */
     static public void setUser(User newUser) {
         user = newUser;
     }
 
+    /**
+     * sets the mode for the current session
+     *
+     * @see Mode
+     * @param newMode the mode to set
+     */
     static public void setMode(Mode newMode) {
         mode = newMode;
     }
 
+    /**
+     * returns the current mode
+     *
+     * @see Mode
+     *
+     * @return current mode
+     */
     static public Mode checkMode() {
         return mode;
     }
 
+    /**
+     * gets the user for the current session
+     *
+     * @see User
+     * @return the current user obj
+     */
     static public User getUser() {
             return user;
     }
 
+    /**
+     * Updates a user value in elasticsearchserver
+     *
+     * @see ElasticsearchUserController
+     */
     static public void updateUserInDb(){
         ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
         updateUserInfoTask.execute(UserController.getUser());
     }
 
-    static public void updateLocation(LatLng location) {
-        lastLocation = location;
-    }
-    static public LatLng getLastLocation() {
-        return lastLocation;
-    }
-
-
-
     // getters
+
+    /**
+     * Gets username for curr user session
+     *
+     * @return String username
+     */
    static public String getName() {
         return user.getName();
     }
 
+    /**
+     * Gets email for curr user session
+     *
+     * @return String email
+     */
    static public String getEmail() {
         return user.getEmail();
     }
 
+    /**
+     * Gets phone number for curr user session
+     *
+     * @return String phone number
+     */
     static public String getPhoneNumber() {
         return user.getPhoneNumber();
     }
 
     //setters
 
+    /**
+     * Sets the current username
+     *
+     * @param name the curr username
+     */
     static public void setName(String name) {
         user.setName(name);
     }
 
+    /**
+     * Sets the current email
+     *
+     * @param email the curr email
+     */
     static public void setEmail(String email) {
         user.setEmail(email);
     }
 
+    /**
+     * Sets the curr phone number
+     *
+     * @param phoneNumber the curr phone number
+     */
     static public void setPhoneNumber(String phoneNumber) {
          user.setPhoneNumber(phoneNumber);
-    }
-
-
-    // access elastic
-    public static ArrayList<UserRequest> getRequestList() {
-
-        ArrayList<UserRequest> fakeList = new ArrayList<>();
-        return fakeList;
-    }
-
-    public static void setOffline() {
     }
 
 
@@ -121,6 +157,12 @@ public class UserController {
          }
     }
 
+    /**
+     * Loads user data from file if still logged in
+     *
+     * @param activity curr applciation context
+     * @return true if successful, false if no saved user
+     */
     public static Boolean loadFromFile(Activity activity) {
         try {
             FileInputStream fis = activity.openFileInput(USRFILE);
@@ -135,6 +177,11 @@ public class UserController {
         return true;
     }
 
+    /**
+     * logs the user out of their current session
+     *
+     * @param context current application context
+     */
     public static void logOut(Context context) {
         context.deleteFile(USRFILE);
         UserController.user = null;
@@ -143,6 +190,15 @@ public class UserController {
         context.startActivity(intent);
     }
 
+    /**
+     * Gets user object from user name by querying elasticsearch server
+     *
+     * @see ElasticsearchUserController
+     * @See User
+     *
+     * @param username username of user
+     * @return the User obj corresponding to username
+     */
     public static User getUserFromName(String username) {
         User user = new User();
         try {
@@ -156,27 +212,4 @@ public class UserController {
         return user;
     }
 
-    public static void goOnline() {
-    }
-
-    public static void updateRequestList() {
-    }
-
-    public static void runBackgroundTasks(String name, LoginActivity loginActivity, boolean b) {
-
-    }
-
-    public static void setClosedRequestsAsRider(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsRider(requests);
-    }
-    public static void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
-        user.setClosedRequestsAsDriver(requests);
-    }
-    public static void setActiveRequestsAsRider(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsRider(requests);
-
-    }
-    public static void setActiveRequestAsDriver(Collection<UserRequest> requests) {
-        user.setActiveRequestsAsDriver(requests);
-    }
 }

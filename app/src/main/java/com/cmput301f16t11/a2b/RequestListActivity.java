@@ -11,10 +11,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 
+/**
+ * This activity displays a list of requests which corresponds to the current user mode as well
+ * as the selected requests to view in the spinner (also in this activity)
+ */
 public class RequestListActivity extends AppCompatActivity {
     /**
      * This work, "MainHabitActivity," contains a derivative

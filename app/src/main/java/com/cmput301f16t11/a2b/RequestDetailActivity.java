@@ -1,7 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.Dialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +23,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This activity displays the details of a request and allows interaction with it:
+ * accept a driver, delete a request, confirm a driver, enable payment, complete a request,
+ * accept a request
+ */
 public class RequestDetailActivity extends AppCompatActivity {
     /**
      * This work, "RequestDetailActivity," contains a derivative
@@ -63,6 +66,10 @@ public class RequestDetailActivity extends AppCompatActivity {
         setButtons();
     }
 
+    /**
+     * populates list of drivers who have accepted this request <p>
+     * Allows the click of a driver to create dialog to allow user to confirm drier acceptance
+     */
     public void populateAcceptedDriversList() {
         final Context context = this;
         acceptedDrivers = RequestController.getAcceptedDrivers(request);
@@ -133,6 +140,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         driverList.setAdapter(adapter);
     }
 
+    /**
+     * populates the textviews with (sometimes clickable) request information
+     */
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
         if (request.getConfirmedDriver() != null) {
@@ -195,6 +205,12 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Gets an address from a LatLng obj using geocoder
+     *
+     * @param location the LatLng of the location to get an address for
+     * @return String of the address
+     */
     public String getLocationString(LatLng location) {
 
         Geocoder geocoder = new Geocoder(this);
@@ -210,6 +226,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         return location.toString();
     }
 
+    /**
+     * Sets up buttons on detail page and has logic to check if they should be clickable or not
+     */
     public void setButtons() {
         Button deleteButton = (Button) findViewById(R.id.request_detail_delete);
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
@@ -274,6 +293,10 @@ public class RequestDetailActivity extends AppCompatActivity {
             });
     }
 
+    /**
+     * Called when delete button is pressed. Creates dialog confirming deletion of request.
+     * Then deletes request
+     */
     private void delete () {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Are you sure you want to delete this ride request?")
@@ -287,7 +310,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    public void deleteRequest(){
+    private void deleteRequest(){
         RequestController.deleteRequest(request.getId());
         finish();
         }

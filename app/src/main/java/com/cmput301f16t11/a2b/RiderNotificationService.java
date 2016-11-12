@@ -94,6 +94,12 @@ public class RiderNotificationService extends IntentService {
         return true;
     }
 
+    /**
+     * Adds a request to monitor on the driver side
+     *
+     * @param request request to monitor
+     * @param user the driver
+     */
     public void addDriverToMonitor(UserRequest request, User user){
         int index = requestMonitoring.indexOf(request);
 
@@ -102,6 +108,11 @@ public class RiderNotificationService extends IntentService {
         }
     }
 
+    /**
+     * Add a request to be notified about
+     *
+     * @param request the request to be notified about
+     */
     public static void addRequestToBeNotified(UserRequest request){
 
        synchronized (requestMonitoring){
@@ -217,6 +228,12 @@ public class RiderNotificationService extends IntentService {
         notificationManager.notify(0, noti);
     }
 
+    /**
+     * Gets a username from a user id
+     *
+     * @param usernameId user id (string)
+     * @return the username corresponding to usernameId
+     */
     private String getUserName(String usernameId){
         Get get = new Get.Builder(index, usernameId).type(user).build();
         User user;

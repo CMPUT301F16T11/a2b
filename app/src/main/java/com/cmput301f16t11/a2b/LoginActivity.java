@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     private boolean isUserValid(String usr) {
         ElasticsearchUserController.CheckUserTask checkUserTask = new ElasticsearchUserController.CheckUserTask();
 
@@ -238,7 +237,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mUsernameView.setAdapter(adapter);
     }
 
-
+    /**
+     * Checks address
+     */
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
