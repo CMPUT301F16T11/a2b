@@ -399,6 +399,7 @@ public class SignUpActivity extends AppCompatActivity {
         return new User(userName, passWord, userEmail, userPhone);
     }
 
+
     /**
      * Method that assigns all variables to respective views
      */
