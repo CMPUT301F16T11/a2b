@@ -1,6 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import com.google.android.gms.common.UserRecoverableException;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
@@ -62,6 +61,19 @@ public class AcceptingUnitTest {
      */
     @Test
     public void testViewAcceptedRequestDescriptionLocation(){
+        request.setAcceptedStatus(true);
+        user.addActiveDriverRequest(request);
+
+        UserRequest req2 = new UserRequest(new LatLng (23,23),new LatLng(33,33),11.0,user);
+        req2.setAcceptedStatus(true);
+
+        user.addActiveDriverRequest(req2);
+
+        ArrayList<UserRequest> reqList = user.getRequestsAsDriver();
+
+        assertEquals(reqList.get(0), request);
+        assertEquals(reqList.get(1), req2);
+
 
     }
 
@@ -82,7 +94,7 @@ public class AcceptingUnitTest {
         for(UserRequest r: requestList)
             if(request.getAcceptedStatus()){
                 //if there are any accepted send notification
-                //driver.notifyUser(r); TODO: notify user method
+                //driver.notifyUser(r); TODO: create working notifyUser method
                 request = r;
             }
 
