@@ -43,7 +43,6 @@ public class UserRequest implements Parcelable {
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
-        RequestController.addOpenRequest(this);
         this.id = null;
         acceptedDrivers = new ArrayList<User>();
 
@@ -59,7 +58,6 @@ public class UserRequest implements Parcelable {
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
-        RequestController.addOpenRequest(this);
         this.id = null;
         acceptedDrivers = new ArrayList<User>();
 

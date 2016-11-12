@@ -10,6 +10,6 @@ public class MockUserRequest extends UserRequest {
 
     public MockUserRequest(LatLng start, LatLng end, Number fare, User user){
         super(start,end,fare,user);
-        MockRequestController.addOpenRequest(this);
+
     }
 }

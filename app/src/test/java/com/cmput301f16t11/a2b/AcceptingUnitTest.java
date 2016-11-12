@@ -19,30 +19,8 @@ import static org.mockito.Mockito.mock;
 /**
  * Created by tothd on 10/24/2016.
  */
-@RunWith(MockitoJUnitRunner.class)
+
 public class AcceptingUnitTest {
-
-    @Mock
-    User mockUser;
-
-    public AcceptingUnitTest() {
-        mockUser = mock(User.class);
-    }
-
-    public MockUser getDriver() {
-        return driver;
-    }
-
-    public User getMockUser() {
-        return mockUser;
-    }
-
-    public void setMockUser(User mockUser) {
-        this.mockUser = mockUser;
-    }
-
-
-
     private MockUser driver =  MockUserController.getMockUser();
     private LatLng startLocation = new LatLng(50,50);
     private LatLng endLocation = new LatLng(50,50);
@@ -58,8 +36,8 @@ public class AcceptingUnitTest {
     public void testDriverAcceptingRequest() {
 
         // random request that Billy wants to accept
-        MockUser user = new MockUser();
-        MockUserRequest billyRequest = new MockUserRequest(startLocation, endLocation, fare, driver);
+        User user = new User();
+        UserRequest billyRequest = new UserRequest(startLocation,endLocation,fare,driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         user.addActiveDriverRequest(billyRequest);
@@ -71,7 +49,7 @@ public class AcceptingUnitTest {
 
         // random request that Billy wants to accept
         MockUser user = new MockUser();
-        MockUserRequest billyRequest = new MockUserRequest(startLocation, endLocation, fare, driver);
+        MockUserRequest billyRequest = new MockUserRequest(startLocation,endLocation,fare,driver);
         user.addDriverRequest(billyRequest);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
         assertFalse(user.hasAcceptedRequests(billyRequest));
@@ -84,23 +62,23 @@ public class AcceptingUnitTest {
      */
 
 
-    @Test
-    public void testNotificationOfferAccepted(){
-        MockUserRequest request = new MockUserRequest(startLocation,endLocation,fare,driver);
-        //get the list of requests
-        ArrayList<MockUserRequest> requestList = driver.getActiveRequestsAsDriver();
-        //check if any are accepted
-        for(MockUserRequest r: requestList)
-            if(request.getAcceptedStatus()){
-                //if there are any accepted send notification
-                driver.notifyUser(r);
-                request = r;
-            }
-
-        //test if notification was sent
-        assertEquals(request.sentNotification(),true);
-
-    }
+//    @Test
+//    public void testNotificationOfferAccepted(){
+//        MockUserRequest request = new MockUserRequest(startLocation,endLocation,fare,driver);
+//        //get the list of requests
+//        ArrayList<MockUserRequest> requestList = driver.getActiveRequestsAsDriver();
+//        //check if any are accepted
+//        for(MockUserRequest r: requestList)
+//            if(request.getAcceptedStatus()){
+//                //if there are any accepted send notification
+//                driver.notifyUser(r);
+//                request = r;
+//            }
+//
+//        //test if notification was sent
+//        assertEquals(request.sentNotification(),true);
+//
+//    }
 
 }
 
