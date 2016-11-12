@@ -45,26 +45,31 @@ public class RiderNotificationService extends IntentService {
     protected void onHandleIntent(Intent workIntent) {
         verifySettings();
         while(true) {
-            for (UserRequest request : requestMonitoring) {
-                ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
-                ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
-                ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
+            //Added to avoid editing this list while the background thread looks at it
+            synchronized (requestMonitoring) {
+                for (UserRequest request : requestMonitoring) {
+                    ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
+                    ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
+                    ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
 
-                //If there is an accepted user
-                if(differentUser.size() != 0){
-                    sendNotificationOfAcceptedDriver(serverAcceptedDrivers, request.getId());
+                    //If there is an accepted user
+                    if (differentUser.size() != 0) {
+                        sendNotificationOfAcceptedDriver(serverAcceptedDrivers, request.getId());
 
-                    for(User user: differentUser){
-                        addDriverToMonitor(request, user);
+                        for (User user : differentUser) {
+                            addDriverToMonitor(request, user);
+                        }
                     }
                 }
-
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
+
+            //We need this here so we arent constantly hogging resource and communication with server
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -91,12 +96,17 @@ public class RiderNotificationService extends IntentService {
 
     public void addDriverToMonitor(UserRequest request, User user){
         int index = requestMonitoring.indexOf(request);
-        requestMonitoring.get(index).addAcceptedDriver(user);
+
+        synchronized (requestMonitoring) {
+            requestMonitoring.get(index).addAcceptedDriver(user);
+        }
     }
 
     public static void addRequestToBeNotified(UserRequest request){
 
-        requestMonitoring.add(request);
+       synchronized (requestMonitoring){
+           requestMonitoring.add(request);
+       }
     }
 
     /**
@@ -104,8 +114,11 @@ public class RiderNotificationService extends IntentService {
      */
     public static void endNotification(String id){
 
-        requestMonitoring.remove(id);
-        if(requestMonitoring.size() == 0){
+        synchronized (requestMonitoring) {
+            requestMonitoring.remove(id);
+        }
+
+        if (requestMonitoring.size() == 0) {
             self.stopSelf();
         }
     }
@@ -194,7 +207,7 @@ public class RiderNotificationService extends IntentService {
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
-                .setSmallIcon(R.drawable.common_plus_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.ic_notification_a2b)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

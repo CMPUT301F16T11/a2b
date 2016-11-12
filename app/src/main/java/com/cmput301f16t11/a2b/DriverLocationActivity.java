@@ -260,7 +260,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     .position(req.getStartLocation())
                     .title(req.getFare().toString())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            ;
 
             // Display marker info dialog onClick
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

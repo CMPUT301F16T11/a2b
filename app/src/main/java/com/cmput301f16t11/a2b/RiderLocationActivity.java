@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,9 +75,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                 UserController.setMode(Mode.DRIVER);
-
-
                 startActivity(driverIntent);
+                finish();
                 return true;
 
             case R.id.viewRequests:
@@ -95,6 +95,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+
         setContentView(R.layout.activity_rider_location);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -102,8 +104,22 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        context = this;
+        startUpNotificationService();
 
+    }
+
+    public void startUpNotificationService(){
+        ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser());
+
+        //Start the rider service if it is not already started start it up and add all own active requests
+        if(!RiderNotificationService.isRecieveServiceStarted()) {
+            Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
+            startService(intent);
+
+            for(UserRequest request : currentOpenRequests){
+                RiderNotificationService.addRequestToBeNotified(request);
+            }
+        }
     }
 
     /**
@@ -275,7 +291,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     0);
             mMap.setMyLocationEnabled(true);
         }
-
     }
 
     /**
@@ -381,13 +396,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         UserController.getUser());
                 RequestController.addOpenRequest(request);
 
-                //Start the rider service if it is not already started
-                if(!RiderNotificationService.isRecieveServiceStarted()) {
-                    Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
-                    startService(intent);
-                }
+
 
                 //Add this request to be monitored
+
                 RiderNotificationService.addRequestToBeNotified(request);
 
                 //Clear the map
