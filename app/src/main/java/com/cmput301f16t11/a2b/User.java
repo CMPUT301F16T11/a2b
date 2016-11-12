@@ -240,7 +240,7 @@ public class User {
 //    }
 
     public boolean hasAcceptedRequests(UserRequest request) {
-        return true;
+        return request.getAcceptedStatus();
     }
 
 

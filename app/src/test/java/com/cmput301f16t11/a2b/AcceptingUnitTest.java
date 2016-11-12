@@ -42,8 +42,11 @@ public class AcceptingUnitTest {
         // random request that is accepted
         user.addActiveDriverRequest(request);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
-        user.addActiveDriverRequest(request);
-        assertTrue(user.hasAcceptedRequests(request));
+
+        user.getRequestsAsDriver().get(0).setAcceptedStatus(true);
+        assertTrue(request.getAcceptedStatus());
+
+        //TODO: accept offered payment upon completion
     }
 
     @Test
