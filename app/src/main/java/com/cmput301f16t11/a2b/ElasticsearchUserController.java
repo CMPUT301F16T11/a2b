@@ -12,6 +12,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.io.IOException;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
@@ -158,6 +159,38 @@ public class ElasticsearchUserController {
                 return false;
             }
 
+            return true;
+        }
+    }
+
+    /**
+     * Removes a user from the DB
+     */
+    public static class DeleteUserTask extends AsyncTask<User, Void, Boolean> {
+        /**
+         * Deletes a user from db
+         *
+         * @param users the user obj to delete
+         * @return true if successful, false otherwise
+         */
+        @Override
+        protected Boolean doInBackground(User... users) {
+            // Delete the user
+            try {
+                DocumentResult result = client.execute(new Delete.Builder(users[0].getId())
+                        .index(index)
+                        .type(userType)
+                        .build());
+                if (result.isSucceeded()) {
+                } else {
+                    Log.i("Error", "Elasticsearch failed to delete user");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Elasticsearch failed to delete user");
+                e.printStackTrace();
+                return false;
+            }
             return true;
         }
     }
