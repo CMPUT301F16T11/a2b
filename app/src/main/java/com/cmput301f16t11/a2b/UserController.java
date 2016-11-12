@@ -212,4 +212,35 @@ public class UserController {
         return user;
     }
 
+
+    // offline - not implemented
+
+    /**
+     * NOT IMPLEMENTED
+     */
+    public static void setOffline() {
+
+    }
+
+    /**
+     * NOT IMPLEMENTED
+     */
+    public static void goOnline() {
+
+    }
+
+    /**
+     * NOT IMPLEMENTED
+     */
+    public static void updateRequestList() {
+
+    }
+
+    /**
+     * NOT IMPLEMENTED
+     * @return
+     */
+    public static ArrayList<UserRequest> getRequestList() {
+        return new ArrayList<UserRequest>();
+    }
 }
