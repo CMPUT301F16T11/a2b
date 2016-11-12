@@ -30,7 +30,7 @@ public class OfflineBehaviorUnitTest {
     private LatLng start = new LatLng(50,50);
     private LatLng end = new LatLng(50,50);
     private int fare = 10;
-    private User user = UserController.getUser();
+    private User user = new User();
 
     /**
     US 08.01.01
@@ -112,14 +112,15 @@ public class OfflineBehaviorUnitTest {
         //go offline
         UserController.setOffline();
         //grab list of requests
-        ArrayList<UserRequest> requestList = UserController.getRequestList();
+        ArrayList<UserRequest> requestList = new ArrayList<>();
         UserRequest request = new UserRequest(start,end,fare,user);
         requestList.add(request);
+        user.setActiveRequestsAsRider(requestList);
         //accept one of them
-        requestList.get(0).setAcceptedStatus(true);
+        user.getActiveRequestsAsRider().get(0).setAcceptedStatus(true);
         //go online
         UserController.goOnline();
         //check that accepted request has been sent
-        assertTrue(UserController.getRequestList().get(0).getAcceptedStatus());
+        assertTrue(user.getActiveRequestsAsRider().get(0).getAcceptedStatus());
     }
 }

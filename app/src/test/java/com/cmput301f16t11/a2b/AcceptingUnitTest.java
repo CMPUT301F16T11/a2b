@@ -43,7 +43,7 @@ public class AcceptingUnitTest {
         user.addActiveDriverRequest(request);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
 
-        user.getRequestsAsDriver().get(0).setAcceptedStatus(true);
+        user.getActiveRequestsAsDriver().get(0).setAcceptedStatus(true);
         assertTrue(request.getAcceptedStatus());
 
         //TODO: accept offered payment upon completion
@@ -72,7 +72,7 @@ public class AcceptingUnitTest {
 
         user.addActiveDriverRequest(req2);
 
-        ArrayList<UserRequest> reqList = user.getRequestsAsDriver();
+        ArrayList<UserRequest> reqList = user.getActiveRequestsAsDriver();
 
         assertEquals(reqList.get(0), request);
         assertEquals(reqList.get(1), req2);

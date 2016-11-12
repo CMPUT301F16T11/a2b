@@ -24,7 +24,7 @@ import java.util.Collection;
 public class UserController {
     private static User user = null;
     private static Mode mode = Mode.RIDER;
-    private static LatLng lastLocation;
+
 
 
     private static String USRFILE = "user.sav";

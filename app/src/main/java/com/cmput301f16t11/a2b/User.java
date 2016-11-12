@@ -162,6 +162,13 @@ public class User {
         return this.activeRequestsAsRider;
 
     }
+    public ArrayList<UserRequest> getActiveRequestsAsDriver() {
+        /**
+         * Returns all ACTIVE requests created by the user as a rider
+         */
+        return this.requestsAsDriver;
+
+    }
 
 //    public UserRequest getLatestActiveDriverRequest() {
 //        /**

@@ -35,7 +35,7 @@ public class RequestController {
      * @return ArrayList<UserRequest> nearbyRequests
      */
     public static ArrayList<UserRequest> getNearbyRequests() {
-        return nearbyRequests;
+        return nearbyRequests = new ArrayList<>();
     }
 
     /**

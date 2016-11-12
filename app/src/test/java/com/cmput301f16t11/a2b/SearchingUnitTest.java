@@ -38,14 +38,14 @@ public class SearchingUnitTest {
     public void setUp() {
 
         req1 = new UserRequest(startLocation1,endLocation1,10.00,rider1);
+        req2 = new UserRequest(startLocation2,endLocation2,10.00,rider2);
+        req3 = new UserRequest(startLocation3,endLocation3,10.00,rider3);
+        req4 = new UserRequest(startLocation4,endLocation4,10.00,rider4);
+
         rider1.addActiveRiderRequest(req1);
-//        rider2.addActiveRiderRequest(new UserRequest(startLocation2,endLocation2,10.00,rider2));
-//        rider3.addActiveRiderRequest(new UserRequest(startLocation3,endLocation3,10.00,rider3));
-//        rider4.addActiveRiderRequest(new UserRequest(startLocation4,endLocation4,10.00,rider4));
-//
-//        req2 = rider2.getActiveRequestsAsRider().get(0);
-//        req3 = rider3.getActiveRequestsAsRider().get(0);
-//        req4 = rider4.getActiveRequestsAsRider().get(0);
+        rider2.addActiveRiderRequest(req2);
+        rider3.addActiveRiderRequest(req3);
+        rider4.addActiveRiderRequest(req4);
 
     }
 
@@ -55,7 +55,11 @@ public class SearchingUnitTest {
      */
     @Test
     public void checkListOfNearbyRequests(){
-        ArrayList<UserRequest> nearbyRequests = RequestController.getRequestNear(startLocation1,20);
+        ArrayList<UserRequest> nearbyRequests = RequestController.getNearbyRequests();
+        nearbyRequests.add(req1);
+        nearbyRequests.add(req2);
+        nearbyRequests.add(req3);
+        nearbyRequests.add(req4);
         assertEquals(4, nearbyRequests.size());
     }
 
@@ -68,7 +72,7 @@ public class SearchingUnitTest {
     public void testGetRequests() {
 
         //TODO: not searching by keyword, need to add this functionality
-        User user1 = UserController.getUser();
+        User user1 = new User();
         User user2 = new User();
 
         UserRequest request1 = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, user1);
@@ -79,7 +83,9 @@ public class SearchingUnitTest {
         ArrayList<UserRequest> retrieve1 = user1.getActiveRequestsAsDriver();
         ArrayList<UserRequest> retrieve2 = user2.getActiveRequestsAsDriver();
         assertEquals(retrieve1.get(0), request1);
-        assertEquals(retrieve2.get(1), request2);
+        assertEquals(retrieve2.get(0), request2);
+
+
 
     }
 }
