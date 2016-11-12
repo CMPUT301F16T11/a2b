@@ -181,21 +181,22 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 PlaceMarker(latLng);
             }
         });
-
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
                 try{
-                    LatLng newLocation = (new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    PlaceMarker(newLocation);
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(newLocation)      // Sets the center of the map to location user
-                            .zoom(11)                   // Sets the zoom
-                            .bearing(0)                // Sets the orientation of the camera to east
-                            .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    if(mLastLocation != null) {
+                        LatLng newLocation = (new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                        PlaceMarker(newLocation);
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(newLocation)      // Sets the center of the map to location user
+                                .zoom(11)                   // Sets the zoom
+                                .bearing(0)                // Sets the orientation of the camera to east
+                                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                                .build();                   // Creates a CameraPosition from the builder
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
                 }catch(SecurityException e){
                     e.printStackTrace();
                 }
