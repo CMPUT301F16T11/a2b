@@ -1,22 +1,17 @@
 package com.cmput301f16t11.a2b;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
+/**
+ * ProfileActivity allows a user to view their own profile as well as though of other users
+ */
 public class ProfileActivity extends AppCompatActivity {
     /**
      * The following work, ProfileActivity, contains a derivative of an answer to
@@ -81,12 +76,20 @@ public class ProfileActivity extends AppCompatActivity {
         setTextViews();
     }
 
+    /**
+     * Launches the EditProfile activity if the user is on their own profile page
+     *
+     * @see EditProfileActivity
+     */
     private void launchProfileEditor() {
         Intent intent = new Intent(this, EditProfileActivity.class);
         setResult(Activity.RESULT_OK, intent);
         startActivity(intent);
     }
 
+    /**
+     * Sets the textviews to display email, username and phone number
+     */
     private void setTextViews() {
 
         //Populating text attributes
@@ -97,6 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
         userNameTV.setText(this.user.getName());
         emailTV.setText(this.user.getEmail());
         phoneNumberTV.setText(this.user.getFormattedPhoneNumber());
+
+        // deprecated code to make phone number & email clickable
 
 //        if (!this.user.equals(UserController.getUser())) {
 //            this.context = this;

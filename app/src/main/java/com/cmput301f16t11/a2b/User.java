@@ -6,11 +6,11 @@ import java.util.Collection;
 import io.searchbox.annotations.JestId;
 
 /**
- * Model for User class
+ * User class model, contains username, email and phone number
  */
 public class User {
     @JestId
-    private  String id;
+    private String id;
 
     private transient ArrayList<UserRequest> requestsAsRider;
     private transient ArrayList<UserRequest> requestsAsDriver;
@@ -23,7 +23,10 @@ public class User {
     private String phoneNumber;
 //    private Mode mode;
 
-    User(){
+    /**
+     * null constructor for user
+     */
+    User() {
 //        mode = Mode.RIDER;
         requestsAsRider = new ArrayList<UserRequest>();
         requestsAsDriver = new ArrayList<UserRequest>();
@@ -31,6 +34,12 @@ public class User {
         activeRequestsAsDriver = new ArrayList<UserRequest>();
     }
 
+    /**
+     * constructor for user with name and email
+     *
+     * @param name  username
+     * @param email email
+     */
     User(String name, String email) {
 //        mode = Mode.RIDER;
         requestsAsRider = new ArrayList<UserRequest>();
@@ -41,7 +50,7 @@ public class User {
         this.email = email;
     }
 
-    User(String name,  String email, String phone) {
+    User(String name, String email, String phone) {
 //        mode = Mode.RIDER;
         requestsAsRider = new ArrayList<UserRequest>();
         requestsAsDriver = new ArrayList<UserRequest>();
@@ -53,6 +62,14 @@ public class User {
     }
 
 
+    /**
+     * constructor to fill all fields
+     *
+     * @param name  username
+     * @param pass  password?
+     * @param email email address
+     * @param phone phone number
+     */
     User(String name, String pass, String email, String phone) {
 //        mode = Mode.RIDER;
         requestsAsRider = new ArrayList<UserRequest>();
@@ -83,26 +100,61 @@ public class User {
     }
 
 
-   //Getters
-    public String getName(){
+    //Getters
+
+    /**
+     * gets user name  of user
+     *
+     * @return curr username
+     */
+    public String getName() {
         return userName;
     }
-    public String getPassWord() { return passWord;}
-    public String getEmail() { return email;}
+
+    /**
+     * gets password? of user
+     *
+     * @return the curr password
+     * @deprecated no passwords!
+     */
+    public String getPassWord() {
+        return passWord;
+    }
+
+    /**
+     * gets email of user
+     *
+     * @return gets curr email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * gets curr phone number of user
+     *
+     * @return the curr phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    /**
+     * gets a string version of the phone numeber - (xxx)123-4567
+     *
+     * @return the formatted string
+     */
     public String getFormattedPhoneNumber() {
         String temp = "(" + phoneNumber.substring(0, 3) + ") " + phoneNumber.substring(3, 6) +
                 "-" + phoneNumber.substring(6, 10);
         return temp;
     }
-    public ArrayList<UserRequest> getRequestsAsRider() {
-        /**
-         * Returns all requests created by the user as a rider
-         */
-        return this.requestsAsRider;
-    }
+
+    /**
+     * returns all active requests created by the user as a rider
+     *
+     * @return list of UserRequests created by rider that are active
+     */
     public ArrayList<UserRequest> getActiveRequestsAsRider() {
         /**
          * Returns all ACTIVE requests created by the user as a rider
@@ -110,19 +162,6 @@ public class User {
         return this.activeRequestsAsRider;
 
     }
-    public ArrayList<UserRequest> getRequestsAsDriver() {
-        /**
-         * Returns all requests that the user has accepted as a driver
-         */
-        return this.requestsAsDriver;
-    }
-    public static ArrayList<UserRequest> getActiveRequestsAsDriver() {
-        /**
-         * Returns all ACTIVE requests that the user has accepted as a driver
-         */
-        return activeRequestsAsDriver;
-    }
-
 
 //    public UserRequest getLatestActiveDriverRequest() {
 //        /**
@@ -144,33 +183,91 @@ public class User {
 //    public Mode getMode() {
 //        return this.mode;
 //    }
-    public String getId() {return id;}
+
+    /**
+     * get user id
+     *
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
 
     @Override
-    public String toString() {return this.userName;}
+    public String toString() {
+        return this.userName;
+    }
 
     //Setters
+
+    /**
+     * Sets phone number
+     *
+     * @param phoneNumber to set
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    /**
+     * Sets username
+     *
+     * @param name new username
+     */
     public void setName(String name) {
         this.userName = name;
     }
+
+    /**
+     * set email
+     *
+     * @param email new email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
+
+    /**
+     * set password
+     *
+     * @param pass new password
+     */
     public void setPassWord(String pass) {
         this.passWord = pass;
     }
+
+    /**
+     * set user id
+     *
+     * @param id new id
+     */
     public void setId(String id) {
         this.id = id;
     }
+
+    /**
+     * set a closed request by driver
+     *
+     * @param requests list of UserRequests
+     */
     public void setClosedRequestsAsDriver(Collection<UserRequest> requests) {
         this.requestsAsDriver.addAll(requests);
     }
+
+    /**
+     * set a closed request for rider
+     *
+     * @param requests list of UserRequests
+     */
     public void setClosedRequestsAsRider(Collection<UserRequest> requests) {
         this.requestsAsRider.addAll(requests);
     }
+
+    /**
+     * sets active requests as rider
+     *
+     * @param requests list of UserRequests
+     */
     public void setActiveRequestsAsRider(Collection<UserRequest> requests) {
         /**
          * add entire collection of active requests to rider list
@@ -179,6 +276,12 @@ public class User {
         this.activeRequestsAsRider.addAll(requests);
         setClosedRequestsAsRider(this.activeRequestsAsRider);
     }
+
+    /**
+     * set active requests as driver
+     *
+     * @param requests list of UserRequests
+     */
     public void setActiveRequestsAsDriver(Collection<UserRequest> requests) {
         /**
          * add entire collection of active requests to driver list
@@ -189,6 +292,12 @@ public class User {
     }
 
     // Request transactions
+
+    /**
+     * add an active rider request
+     *
+     * @param request UserRequest
+     */
     public void addActiveRiderRequest(UserRequest request) {
         /**
          * Add an active request to the list of active rider requests
@@ -197,6 +306,12 @@ public class User {
         this.activeRequestsAsDriver.add(request);
         this.addRiderRequest(request);
     }
+
+    /**
+     * Add an active driver request
+     *
+     * @param request UserRequest
+     */
     public void addActiveDriverRequest(UserRequest request) {
         /**
          * Add an active request to the list of active driver requests
@@ -205,18 +320,33 @@ public class User {
         this.activeRequestsAsDriver.add(request);
         this.addDriverRequest(request);
     }
+
+    /**
+     * add a rider request
+     *
+     * @param request UserRequest
+     */
     public void addRiderRequest(UserRequest request) {
         /**
          * add a request to list of rider requests
          */
         this.requestsAsRider.add(request);
     }
+
+    /**
+     * Add a driver request
+     *
+     * @param request UserRequest
+     */
     public void addDriverRequest(UserRequest request) {
         /**
          * Add a q request to list of driver requests
          */
         this.requestsAsDriver.add(request);
     }
+
+
+
     public void removeActiveRiderRequest(UserRequest request) {
         /**
          * Remove an active request from the list of active rider requests
@@ -242,6 +372,5 @@ public class User {
     public boolean hasAcceptedRequests(UserRequest request) {
         return request.getAcceptedStatus();
     }
-
 
 }

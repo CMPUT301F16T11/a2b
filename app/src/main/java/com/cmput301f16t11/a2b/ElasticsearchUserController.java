@@ -19,7 +19,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Wilky on 11/5/2016.
+ * Elasticsearch controller to deal with user stuff on the elasticsearch server
  */
 
 public class ElasticsearchUserController {
@@ -29,11 +29,14 @@ public class ElasticsearchUserController {
 
     /**
      * AsyncTask used to determine whether or not the entered username is already taken.
-     *
-     * Input: Username string
-     * Output: User object if exists, null if no user exists
      */
     public static class CheckUserTask extends AsyncTask<String, Void, User> {
+        /**
+         * Determines whether or not the username is taken
+         *
+         * @param params the username in question
+         * @return User if username is available. null otherwise
+         */
         @Override
         protected User doInBackground(String... params) {
 
@@ -89,12 +92,14 @@ public class ElasticsearchUserController {
 
 
     /**
-     * Given a User object with only an id get the rest of the user
-     * If the user does not exit the return a new user
-     * Meant to be called after a request onject has been returned by elastic search
+     * Given a user id, generate the user object
      */
-
     public static class RetrieveUserInfo extends AsyncTask<User, Void, User> {
+        /**
+         * Given a user id, generate the user object
+         * @param users userID
+         * @return user obj
+         */
         @Override
         protected User doInBackground(User... users) {
 
@@ -127,6 +132,12 @@ public class ElasticsearchUserController {
      * Output: Boolean representing elasticsearch result
      */
     public static class AddUserTask extends AsyncTask<User, Void, Boolean> {
+        /**
+         * Adds a user to elasticsearch server
+         *
+         * @param users the user to add
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(User... users) {
             verifySettings();
@@ -160,6 +171,12 @@ public class ElasticsearchUserController {
      */
 
     public static class UpdateUserInfoTask extends AsyncTask<User, Void, Boolean> {
+        /**
+         * Updates a user account's details
+         *
+         * @param users new user obj
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(User... users) {
             verifySettings();
@@ -202,34 +219,5 @@ public class ElasticsearchUserController {
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
         }
-    }
-
-    /**
-     * Get the id for the first hit
-     * @param jsonResponse
-     * @return string ID
-     */
-
-    private static String  getIdFromResult(JsonObject jsonResponse){
-        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-        JsonArray actualHits = hits.getAsJsonArray("hits");
-        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-        String id = firstHit.get("_id").toString();
-        return id;
-    }
-
-    /**
-     * Get the userName for the first hit
-     * @param jsonResponse
-     * @return
-     */
-    private static String getUserFromResult(JsonObject jsonResponse) {
-        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-        JsonArray actualHits = hits.getAsJsonArray("hits");
-        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-        JsonObject source = firstHit.getAsJsonObject("_source");
-        String name = source.get("userName").toString();
-        name = name.substring(1, name.length()-1);
-        return name;
     }
 }

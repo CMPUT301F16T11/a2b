@@ -25,7 +25,7 @@ import io.searchbox.core.Update;
 
 
 /**
- * Created by Wilky on 11/6/2016.
+ * Controller for all queries and updates to the elasticsearch server regarded UserRequest objects.
  */
 
 public class ElasticsearchRequestController {
@@ -38,12 +38,15 @@ public class ElasticsearchRequestController {
 
 
     /**
-     * Add an open request to elastic search server
-     * input - UserRequest
-     * output - Boolean of if it was added
+     * Adds an open request to elastic search server
      */
-
     public static class AddOpenRequestTask extends AsyncTask<UserRequest, Void, Boolean> {
+        /**
+         * Adds a UserRequest object to the openRequest list on the server
+         *
+         * @param requests the UserRequest obj in question
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
@@ -70,11 +73,16 @@ public class ElasticsearchRequestController {
 
     /**
      * Get the 100 latest closed requests for a rider
-     * input - userName of the rider
-     * output - ArrayList<UserRequest>
      */
 
     public static class GetPastRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets the 100 latest closed requests made by a rider
+         * Gets the 100 latest closed requests made by a rider
+         *
+         * @param user the rider in question
+         * @return ArrayList of the UserRequest objs in question
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -106,10 +114,18 @@ public class ElasticsearchRequestController {
 
     /**
      * Get open requests for a driver
-     * @depticated b/c if the driver has been set for a request then it should be inProgress or closed
+     * @deprecated b/c if the driver has been set for a request then it should be inProgress or closed
      */
     @Deprecated
     public static class GetActiveDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets active requests for a driver
+         *
+         * @param user the driver
+         * @return ArrayList of UserRequest objs in questions
+         * @deprecated
+         */
+        @Deprecated
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -149,10 +165,20 @@ public class ElasticsearchRequestController {
     public static class AddDriverAcceptanceToRequest extends AsyncTask<String, Void, Boolean> {
         Context context;
 
+        /**
+         * Constructor for AddDriverAcceptanceToRequest
+         * @param context current context
+         */
         public AddDriverAcceptanceToRequest(Context context) {
             this.context = context;
         }
 
+        /**
+         * Adds a driver acceptance to a request
+         *
+         * @param info id of the driver (string)
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
@@ -192,13 +218,27 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Sets a confirmed driver to a UserRequest
+     */
     public static class SetConfirmedDriver extends AsyncTask<String, Void, Boolean> {
         Context context;
 
+        /**
+         * Constructor for SetConfirmedDriver
+         *
+         * @param context the current context
+         */
         public SetConfirmedDriver(Context context) {
             this.context = context;
         }
 
+        /**
+         * Sets a confirmed driver for a UserRequest on the elasticsearch server
+         *
+         * @param info the user ID of the driver
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
@@ -229,6 +269,11 @@ public class ElasticsearchRequestController {
             return true;
         }
 
+        /**
+         * Notifies the user if unable to accept the request (with a toast message)
+         *
+         * @param result true if successful (no message), false otherwise (message sends)
+         */
         protected void onPostExecute(Boolean result) {
             // Notify the user if we were unable to accept the request
             if (!result) {
@@ -240,11 +285,15 @@ public class ElasticsearchRequestController {
 
     /**
      * Get the currently open Requests for a rider
-     * input - userName of the rider
-     * output - ArrayList<UserRequest>
      */
 
     public static class GetActiveRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets the current open Requests for a rider
+         *
+         * @param user the userID of the rider in question
+         * @return an ArrayList of UserRequest objs that are active and started by the rider
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -276,11 +325,15 @@ public class ElasticsearchRequestController {
 
     /**
      * Get the closed requests for a driver
-     * input - userName of the driver
-     * output - ArrayList<UserRequest>
      */
 
     public static class GetPastDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets the closed requests for a driver
+         *
+         * @param user the userID of the driver in question
+         * @return ArrayList of closed UserRequest objs by the driver
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -312,12 +365,14 @@ public class ElasticsearchRequestController {
 
     /**
      * Get the inProgress requests for a rider
-     * input - userName of the rider
-     * output - ArrayList<UserRequest>
      */
-
-
     public static class GetInPrgressRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets requests in in progress state by the rider
+         *
+         * @param user the username of the rider
+         * @return ArrayList of UserRequest objs that are in progress and created by user
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -347,7 +402,16 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Gets in progress requests
+     */
     public static class GetInPrgressRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets in progress requests
+         *
+         * @param user the userId of the driver
+         * @return ArrayList of in progress UserRequests
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -382,12 +446,14 @@ public class ElasticsearchRequestController {
 
     /**
      * Move a request from open to inProgress
-     * input - requests[0]
-     * output - Boolean of if the move worked
      */
-
-
     public static class MoveToInProgresseRequest extends AsyncTask<UserRequest, Void, Boolean> {
+        /**
+         * Moves a request from open to in progress states on elasticsearch server
+         *
+         * @param requests UserRequest obj in question
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
@@ -437,11 +503,13 @@ public class ElasticsearchRequestController {
 
     /**
      * Move a request from inProgress to closed
-     * input - requests[0]
-     * output - Boolean of if the move worked
      */
-
     public static class MoveToClosedRequest extends AsyncTask<UserRequest, Void, Boolean> {
+        /**
+         * Close a request on the elasticsearch server
+         * @param requests UserRequest objs to be closed
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(UserRequest... requests) {
             verifySettings();
@@ -485,8 +553,17 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Gets the current closed requests
+     */
     public static class GetClosedRequests extends
                                     AsyncTask<String, Void, ArrayList<UserRequest>>  {
+        /**
+         * Gets the current closed requests for the user
+         *
+         * @param user userID of user in question
+         * @return ArrayList of UserRequest objs that are currently closed
+         */
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
 
@@ -514,22 +591,17 @@ public class ElasticsearchRequestController {
         }
     }
 
+
     /**
-     * Get the id of the first hit in jsonResponse
-     *
-     * @param jsonResponse
-     * @return string
+     * Gets requests nearby the specified location
      */
-    private static String  getIdFromResult(JsonObject jsonResponse){
-        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-        JsonArray actualHits = hits.getAsJsonArray("hits");
-        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-        String id = firstHit.get("_id").toString();
-        return id;
-    }
-
-
     public static class GetNearbyRequests extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets the requests nearby the specified location
+         *
+         * @param params the specified location
+         * @return ArrayList of the UserRequest objs in question
+         */
         public ArrayList<UserRequest> doInBackground(Double... params) {
             verifySettings();
 
@@ -564,13 +636,14 @@ public class ElasticsearchRequestController {
     }
 
     /**
-     * Same as above but uses geo distance filter
-     * Get all active requests that are within distance of lat,lon
-     * Input - param[0] - distance, param[1] - lat, param[2] - lon
-     * Output - ArrayList<UserRequest>
+     * Gets nearby requests using geo distance filter
      */
-
     public static class GetNearbyRequestsGeoFilter extends AsyncTask<Double, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets nearby requests using geo distance filter
+         * @param params specified location
+         * @return ArrayList of UserRequest objects nearby
+         */
         public ArrayList<UserRequest> doInBackground(Double... params) {
             verifySettings();
 
@@ -619,12 +692,14 @@ public class ElasticsearchRequestController {
 
     /**
      * GetRequest fetches the request with the given Id from the server
-     *
-     * input - String (request id)
-     * output - UserRequest
      */
-
     public static class GetOpenRequestById extends AsyncTask<String, Void, UserRequest> {
+        /**
+         * fetches the request with the given id from the server
+         *
+         * @param requestID id of the request in question
+         * @return UserRequest obj corresponding to requestID
+         */
         @Override
         protected UserRequest doInBackground(String... requestID) {
             verifySettings();
@@ -653,11 +728,14 @@ public class ElasticsearchRequestController {
 
     /**
      * Get a rider's requests that have been accepted by a driver
-     * input - String(Rider's userName)
-     * output - ArrayList<UserRequest>
      */
-
     public static class GetAcceptedRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Get a rider's requests that have been accepted by a driver
+         *
+         * @param user the rider who created requests
+         * @return ArrayList of the rider's UserRequests that have been accepted by >=1 driver
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -689,12 +767,16 @@ public class ElasticsearchRequestController {
     }
 
     /**
-     * Get a driver's inPorgress Requests
-     * input - the driver's userName
-     * output - ArrayList<UserRequest>
+     * Get a driver's inProgress Requests
      */
 
     public static class GetAcceptedDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Get a driver's in progress requests
+         *
+         * @param user username of the driver
+         * @return ArrayList of UserRequests that the driver is the confirmed driver of
+         */
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -724,7 +806,16 @@ public class ElasticsearchRequestController {
         }
     }
 
-    public static class deleteRiderRequests extends AsyncTask<String, Void, Boolean> {
+    /**
+     * Delete a rider request
+     */
+    public static class DeleteRiderRequests extends AsyncTask<String, Void, Boolean> {
+        /**
+         * Deletes a rider request
+         *
+         * @param request the requestID of the request to be deleted
+         * @return true if successful, false otherwise
+         */
         @Override
         protected Boolean doInBackground(String... request) {
             verifySettings();
@@ -757,8 +848,17 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Get users who have accepted the request
+     */
     public static class getAcceptedUsersForRequest extends AsyncTask<String, Void, ArrayList<User>>{
 
+        /**
+         * Get users who have accepted the request
+         *
+         * @param requestId requestID of the request in question
+         * @return ArrayList of User objs who have accepted the request corresponding to requestID
+         */
         @Override
         protected ArrayList<User> doInBackground(String ... requestId) {
             verifySettings();

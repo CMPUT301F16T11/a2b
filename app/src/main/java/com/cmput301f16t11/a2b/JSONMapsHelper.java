@@ -156,6 +156,12 @@ class JSONMapsHelper{
         }
     }
 
+    /**
+     * Gets the distance from the result
+     *
+     * @param result JSON obj of the result
+     * @return String distance
+     */
     private String getDistance(String result){
         try{
             JSONObject jsonObject = new JSONObject(result);

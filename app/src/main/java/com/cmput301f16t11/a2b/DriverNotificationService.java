@@ -69,6 +69,8 @@ public class DriverNotificationService extends IntentService {
 
     /**
      * This is static call that allows the user to retrieve a valid intent to start a service
+     *
+     * @param context the context of which the intent should be created form
      */
     public static Intent createIntentStartNotificationService(Context context) {
 
@@ -94,8 +96,8 @@ public class DriverNotificationService extends IntentService {
     /**
      * This is a method from the ElasticsearchRequestController that finds thein progress request from
      * the server is there is any.
-     * @param requestId
-     * @return
+     * @param requestId id of the desired request
+     * @return the request object corresponding to the requestId argument from inProgress
      */
     private UserRequest getInProgressRequest(String requestId){
         verifySettings();
@@ -121,9 +123,10 @@ public class DriverNotificationService extends IntentService {
 
     /**
      * Sends a notification to the phone that the rider has accepted the driver ride.
-     * @param request
+     *
+     * @param request the request that a notification will be sent regarding
      */
-    private  void sendNotificationOfRiderConfirmed(UserRequest request){
+    private void sendNotificationOfRiderConfirmed(UserRequest request){
         String notification = request.getRider()+ "has confirmed your request."+ request.getId();
 
         notification = notification + "has Accepted request" + request.getId();
@@ -145,7 +148,8 @@ public class DriverNotificationService extends IntentService {
     /**
      * Sends a notification to the current phone that the rider had rejected the ride the driver
      * offered.
-     * @param request
+     *
+     * @param request the request that has been rejected
      */
     private  void sendNotificationOfRiderRejected(UserRequest request){
         String notification = request.getRider()+ "has reject your request.";

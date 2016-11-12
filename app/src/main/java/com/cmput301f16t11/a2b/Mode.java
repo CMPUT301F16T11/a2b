@@ -1,7 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 /**
- * Created by jm on 2016-11-06.
+ * An enum class for rider and driver user modes
  */
 
 public enum Mode {

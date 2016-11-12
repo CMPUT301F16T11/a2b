@@ -49,9 +49,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * DriverLocationActivity: this activity allows the driver to view a map, place pins, and search around
- * those pins a specific radius to see any requests in that specified area. It also has a settings bar
- * that allows the user to view profile see open requests or log out.
+ * This activity allows the driver to view a map, place pins, and search around
+ * those pins a specific radius to see any requests in that specified area.
+ * It also has a settings bar that allows the user to view profile see a more detailed
+ * list of requests or log out.
+ *
  */
 public class DriverLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -434,6 +436,13 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         }
     }
 
+    /**
+     * IMplements drawRouteOnMap
+     * <p>
+     * @see DrawingLocationActivity
+     * @param drawPoints a list of the points to be drawn on the map
+     * @param distance the distance between points
+     */
     public void drawRouteOnMap(List<LatLng> drawPoints, String distance){
 
         //Draw the lines on the map

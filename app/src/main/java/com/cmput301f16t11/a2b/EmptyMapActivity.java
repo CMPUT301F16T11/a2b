@@ -13,6 +13,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * A view for a map activity to show locations when clicked. Used to show locations within the
+ * app instead of created a map intent using the phones default map app
+ */
 public class EmptyMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;

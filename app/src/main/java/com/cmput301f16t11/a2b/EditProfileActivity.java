@@ -11,15 +11,10 @@ import android.widget.TextView;
 import java.util.regex.Pattern;
 
 /**
- * This activity is used to change the User's profile appearance including:
+ * This activity is used to change the User's profile fields (email, phone no.)
  *
  */
 public class EditProfileActivity extends AppCompatActivity {
-
-
-    /**
-     * The User.
-     */
     User user;
     //TODO : WE can consider having profile picture implementation later for part 5
 
@@ -32,7 +27,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets texts.
+     * Sets the textview objects to display the current data.
+     * Also sets these textviews to be editable.
      */
     public void setTexts() {
         // Edit Texts should be set to what the current profile has
@@ -49,9 +45,9 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Edit profile.
+     * Method which allows the user to edit their profile
      *
-     * @param v the v
+     * @param v the current view
      */
     public void editProfile(View v) {
         EditText userPhoneNumText = (EditText) findViewById(R.id.phone_num);
@@ -110,15 +106,20 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Cancel edit.
+     * Exits the EditProfile activity. Returns to ProfileActivity.
      *
-     * @param view the view
+     * @see ProfileActivity
      */
-    public void cancelEdit(View view) {
-
+    public void cancelEdit() {
         finish();
     }
 
+    /**
+     * Checks if a phone number is valid.
+     *
+     * @param number the number to check for validity
+     * @return true if valid, false otherwise
+     */
     private Boolean isValidPhoneNumber(String number){
         Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
         Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}");
@@ -140,12 +141,12 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Clear edit text.
+     * Clear a textview (editable)
      *
-     * @param v the v
+     * @param v the textview in question
      */
     public void clearEditText(View v){
-        EditText text = (EditText)v;
+        EditText text = (EditText) v;
         text.setText("");
     }
 

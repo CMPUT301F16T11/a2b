@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 /**
- * Created by Wilky on 11/7/2016.
  *
  * Viewed on November 7, 2016
  * https://developer.android.com/guide/topics/ui/dialogs.html
@@ -74,7 +73,7 @@ public class RideCompleteDialog extends DialogFragment {
 
         return builder.create();
     }
-
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.dialog_ride_complete, container, false);

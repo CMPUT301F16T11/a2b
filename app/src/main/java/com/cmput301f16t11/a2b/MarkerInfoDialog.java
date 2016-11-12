@@ -15,9 +15,8 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by Wilky on 11/7/2016.
+ * Dialog with marker details with the ability to create new request
  */
-
 public class MarkerInfoDialog extends DialogFragment {
 
     private View layout;
@@ -69,6 +68,8 @@ public class MarkerInfoDialog extends DialogFragment {
 
     /**
      * Find all views from layout view
+     *
+     * @param parent the parent view
      */
     public void assignViews(View parent) {
         riderText = (TextView)parent.findViewById(R.id.dialog_requestInfo_riderText);
