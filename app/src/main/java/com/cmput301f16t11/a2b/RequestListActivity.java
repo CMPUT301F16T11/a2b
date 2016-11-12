@@ -83,7 +83,11 @@ public class RequestListActivity extends AppCompatActivity {
 
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        requests.addAll(RequestController.getNearbyRequests());
+                        try {
+                            requests.addAll(RequestController.getNearbyRequests());
+                        } catch (NullPointerException e) {
+                            Log.i("No requests found", "requestlistactivity");
+                        }
                     }
                     else {
                         // rider mode!
