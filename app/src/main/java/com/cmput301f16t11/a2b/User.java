@@ -15,7 +15,7 @@ public class User {
     private transient ArrayList<UserRequest> requestsAsRider;
     private transient ArrayList<UserRequest> requestsAsDriver;
     private transient ArrayList<UserRequest> activeRequestsAsRider;
-    private transient ArrayList<UserRequest> activeRequestsAsDriver;
+    private static transient ArrayList<UserRequest> activeRequestsAsDriver;
 
     private String userName;
     private String passWord;
@@ -156,19 +156,6 @@ public class User {
         return this.activeRequestsAsRider;
 
     }
-
-    /**
-     * Returns all active requests that the user has accepted as a driver
-     *
-     * @return list of UserRequests that are active and accepted by a driver
-     */
-    public ArrayList<UserRequest> getActiveRequestsAsDriver() {
-        /**
-         * Returns all ACTIVE requests that the user has accepted as a driver
-         */
-        return this.activeRequestsAsDriver;
-    }
-
 
 //    public UserRequest getLatestActiveDriverRequest() {
 //        /**

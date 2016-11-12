@@ -19,8 +19,8 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="26dp"
         android:id="@+id/requestTitle"
-        android:textSize="30dp"
-        />
+        android:textSize="32sp"
+        android:textColor="@color/colorPrimary"/>
 
     <Spinner
         android:layout_width="match_parent"
@@ -28,8 +28,7 @@
         android:layout_alignBottom="@+id/requestTitle"
         android:id="@+id/requestSpinner"
         android:layout_marginStart="175dp"
-        android:layout_alignTop="@+id/requestTitle"
-        />
+        android:layout_alignTop="@+id/requestTitle" />
 
     <ListView
         android:layout_width="match_parent"
@@ -37,6 +36,6 @@
         android:layout_below="@+id/requestTitle"
         android:layout_alignStart="@+id/requestTitle"
         android:layout_marginTop="17dp"
-        android:id="@+id/requestList"/>
+        android:id="@+id/requestList" />
 
 </RelativeLayout>

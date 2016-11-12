@@ -19,7 +19,7 @@ import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
 /**
- * Created by Wilky on 11/5/2016.
+ * Elasticsearch controller to deal with user stuff on the elasticsearch server
  */
 
 public class ElasticsearchUserController {

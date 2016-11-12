@@ -13,7 +13,7 @@ import io.searchbox.core.Get;
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
 /**
- * Created by brianofrim on 2016-10-13.
+ * Request Controller to deal with all local backend Request work
  */
 public class RequestController {
 

@@ -22,7 +22,7 @@ public class MockUser extends User {
         activeRequestsAsDriver = new ArrayList<>();
     }
 
-//    public ArrayList<MockUserRequest> getActiveRequestsAsDriver() {
+//    public static ArrayList<MockUserRequest> getActiveRequestsAsDriver() {
 //        /**
 //         * Returns all ACTIVE requests that the user has accepted as a driver
 //         */
