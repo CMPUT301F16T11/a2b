@@ -55,6 +55,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker tripEndMarker;
     private Marker currentMarker;
     private Context context;
+    private String tripDistance = "? km";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -141,17 +142,27 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         });
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+
             @Override
             public void onPlaceSelected(Place place) {
                 LatLng location = place.getLatLng();
                 if (currentMarker != null) {
                     currentMarker.remove();
                 }
+                //Move the camera to where they searched
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place.getLatLng())      // Sets the center of the map to location user
+                        .zoom(11)
+                        .bearing(0)
+                        .tilt(0)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                //Put a marker where they searched
                 currentMarker = mMap.addMarker(new MarkerOptions()
                         .position(location)
                         .title(place.getAddress().toString())
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 currentMarker.showInfoWindow();
             }
 
@@ -212,10 +223,14 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                } else {
-
                     JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                     helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
+
+                    setLocation.setEnabled(false);
+
+                } else {
+
+                    displayRideConfirmationDlg(tripDistance);
                 }
 
             }
@@ -302,6 +317,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
      * @param distance
      */
     public void drawRouteOnMap(List<LatLng> drawPoints, String distance) {
+        tripDistance = distance;
+
+        //We want them to be unable to push the set location button until distance has been properly calcuated
+        Button setLocationBut = (Button)findViewById(R.id.setLocationButton);
+        setLocationBut.setEnabled(true);
+
         //Draw the lines on the map
         mMap.addPolyline(new PolylineOptions()
                 .addAll(drawPoints)
@@ -310,7 +331,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .geodesic(true)
         );
 
-        displayRideConfirmationDlg(distance);
     }
 
     public void displayRideConfirmationDlg(String distance){

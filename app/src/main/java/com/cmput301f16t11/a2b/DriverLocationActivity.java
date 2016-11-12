@@ -141,6 +141,14 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                //Move the camera to where they searched
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place.getLatLng())      // Sets the center of the map to location user
+                        .zoom(11)
+                        .bearing(0)
+                        .tilt(0)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 PlaceMarker(place.getLatLng());
             }
