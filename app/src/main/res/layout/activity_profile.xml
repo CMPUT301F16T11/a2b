@@ -24,7 +24,7 @@
         />
 
     <TextView
-        android:text="888-888-8888"
+        android:autoLink="phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/phoneNumberTextView"
@@ -33,7 +33,7 @@
         android:textSize="15dp" />
 
     <TextView
-        android:text="myemail@gmail.com"
+        android:autoLink="email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/emailText"

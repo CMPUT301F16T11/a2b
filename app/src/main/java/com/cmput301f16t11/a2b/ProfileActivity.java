@@ -1,16 +1,41 @@
 package com.cmput301f16t11.a2b;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 
 public class ProfileActivity extends AppCompatActivity {
-    User user;
+    /**
+     * The following work, ProfileActivity, contains a derivative of an answer to
+     * "How to make a phone call programatically?" by "Lior," edited by "The Alpha,"
+     * users on stack overflow. It is used under CC-BY-SA by CMPUT301F16T11.
+     *
+     * Available here: http://stackoverflow.com/questions/4816683/how-to-make-a-phone-call-programatically
+     * Date accessed: Nov. 11, 2016
+     *
+     * The following work, ProfileActivity, contains a derivative of android developer tutorial
+     * "Requesting Permissions at Run Time." Used under Apache 2.0.
+     *
+     * Available here:
+     * https://developer.android.com/training/permissions/requesting.html
+     * Date accessed: Nov. 11, 2016
+     *
+     */
+    private User user;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +56,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
-        super.onResume();  // Always call the superclass method first
+        super.onResume();  // Always call the superclass method first;
         try {
             Intent intent = getIntent();
             String username = intent.getStringExtra("username");
@@ -42,9 +67,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (this.user == null) {
             this.user = UserController.getUser();
         }
-        String usgh = this.user.getName();
         if (this.user.getName() == null) {
-           this.user = UserController.getUser();
+            this.user = UserController.getUser();
         }
         // set buttons
         Button editButton = (Button) findViewById(R.id.editProfile);
@@ -72,7 +96,30 @@ public class ProfileActivity extends AppCompatActivity {
 
         userNameTV.setText(this.user.getName());
         emailTV.setText(this.user.getEmail());
-        phoneNumberTV.setText(this.user.getPhoneNumber());
-    }
+        phoneNumberTV.setText(this.user.getFormattedPhoneNumber());
 
+//        if (!this.user.equals(UserController.getUser())) {
+//            this.context = this;
+//            // make them click!
+//            // launch email or phone call activity
+//            emailTV.setTextColor(Color.BLUE);
+//            emailTV.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.putExtra(android.content.Intent.EXTRA_EMAIL, user.getEmail());
+//                    context.startActivity(intent);
+//                }
+//            });
+//            phoneNumberTV.setTextColor(Color.BLUE);
+//            phoneNumberTV.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(Intent.ACTION_DIAL);
+//                    intent.setData(Uri.parse("tel:" + user.getPhoneNumber()));
+//                    context.startActivity(intent);
+//                }
+//            });
+    }
 }
+

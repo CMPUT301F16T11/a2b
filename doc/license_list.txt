@@ -35,3 +35,11 @@ RequestListActivity:
      * Available here:
      * http://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
      */
+
+          * The following work, ProfileActivity, contains a derivative of android developer tutorial
+     * "Requesting Permissions at Run Time." Used under Apache 2.0.
+     *
+     * Available here:
+     * https://developer.android.com/training/permissions/requesting.html
+     * Date accessed: Nov. 11, 2016
+     *

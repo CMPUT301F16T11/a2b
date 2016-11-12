@@ -92,6 +92,11 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+    public String getFormattedPhoneNumber() {
+        String temp = "(" + phoneNumber.substring(0, 3) + ") " + phoneNumber.substring(3, 6) +
+                "-" + phoneNumber.substring(6, 10);
+        return temp;
+    }
     public ArrayList<UserRequest> getRequestsAsRider() {
         /**
          * Returns all requests created by the user as a rider
