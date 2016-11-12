@@ -25,8 +25,7 @@
         android:id="@+id/searchByKeyword"
         android:layout_gravity="bottom|left"
         android:text="Search By Keyword"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="32dp"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"/>
 
@@ -35,9 +34,8 @@
         android:layout_height="50dp"
         android:id="@+id/searchNearPin"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom = "30dp"
+        android:layout_marginBottom="32dp"
         android:text="Search Near Pin"
-        android:layout_marginRight="8dp"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"/>
 

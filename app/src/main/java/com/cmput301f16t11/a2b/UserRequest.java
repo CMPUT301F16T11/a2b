@@ -45,7 +45,6 @@ public class UserRequest implements Parcelable {
         this.paymentReceived = false;
         this.id = null;
         acceptedDrivers = new ArrayList<User>();
-
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {

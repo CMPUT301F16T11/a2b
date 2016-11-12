@@ -141,6 +141,14 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
+                //Move the camera to where they searched
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place.getLatLng())      // Sets the center of the map to location user
+                        .zoom(11)
+                        .bearing(0)
+                        .tilt(0)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 PlaceMarker(place.getLatLng());
             }
@@ -173,21 +181,22 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 PlaceMarker(latLng);
             }
         });
-
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
                 try{
-                    LatLng newLocation = (new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                    PlaceMarker(newLocation);
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(newLocation)      // Sets the center of the map to location user
-                            .zoom(11)                   // Sets the zoom
-                            .bearing(0)                // Sets the orientation of the camera to east
-                            .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    if(mLastLocation != null) {
+                        LatLng newLocation = (new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+                        PlaceMarker(newLocation);
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(newLocation)      // Sets the center of the map to location user
+                                .zoom(11)                   // Sets the zoom
+                                .bearing(0)                // Sets the orientation of the camera to east
+                                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                                .build();                   // Creates a CameraPosition from the builder
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
                 }catch(SecurityException e){
                     e.printStackTrace();
                 }
@@ -260,7 +269,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     .position(req.getStartLocation())
                     .title(req.getFare().toString())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-            ;
 
             // Display marker info dialog onClick
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

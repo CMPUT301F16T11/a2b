@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -54,6 +55,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker tripEndMarker;
     private Marker currentMarker;
     private Context context;
+    private String tripDistance = "? km";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,9 +76,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                 UserController.setMode(Mode.DRIVER);
-
-
                 startActivity(driverIntent);
+                finish();
                 return true;
 
             case R.id.viewRequests:
@@ -95,6 +96,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+
         setContentView(R.layout.activity_rider_location);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -102,8 +105,22 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        context = this;
+        startUpNotificationService();
 
+    }
+
+    public void startUpNotificationService(){
+        ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser());
+
+        //Start the rider service if it is not already started start it up and add all own active requests
+        if(!RiderNotificationService.isRecieveServiceStarted()) {
+            Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
+            startService(intent);
+
+            for(UserRequest request : currentOpenRequests){
+                RiderNotificationService.addRequestToBeNotified(request);
+            }
+        }
     }
 
     /**
@@ -125,17 +142,27 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         });
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+
             @Override
             public void onPlaceSelected(Place place) {
                 LatLng location = place.getLatLng();
                 if (currentMarker != null) {
                     currentMarker.remove();
                 }
+                //Move the camera to where they searched
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(place.getLatLng())      // Sets the center of the map to location user
+                        .zoom(11)
+                        .bearing(0)
+                        .tilt(0)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                //Put a marker where they searched
                 currentMarker = mMap.addMarker(new MarkerOptions()
                         .position(location)
                         .title(place.getAddress().toString())
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                 currentMarker.showInfoWindow();
             }
 
@@ -196,10 +223,14 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                } else {
-
                     JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                     helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
+
+                    setLocation.setEnabled(false);
+
+                } else {
+
+                    displayRideConfirmationDlg(tripDistance);
                 }
 
             }
@@ -275,7 +306,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     0);
             mMap.setMyLocationEnabled(true);
         }
-
     }
 
     /**
@@ -287,6 +317,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
      * @param distance
      */
     public void drawRouteOnMap(List<LatLng> drawPoints, String distance) {
+        tripDistance = distance;
+
+        //We want them to be unable to push the set location button until distance has been properly calcuated
+        Button setLocationBut = (Button)findViewById(R.id.setLocationButton);
+        setLocationBut.setEnabled(true);
+
         //Draw the lines on the map
         mMap.addPolyline(new PolylineOptions()
                 .addAll(drawPoints)
@@ -295,7 +331,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .geodesic(true)
         );
 
-        displayRideConfirmationDlg(distance);
     }
 
     public void displayRideConfirmationDlg(String distance){
@@ -381,13 +416,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         UserController.getUser());
                 RequestController.addOpenRequest(request);
 
-                //Start the rider service if it is not already started
-                if(!RiderNotificationService.isRecieveServiceStarted()) {
-                    Intent intent = RiderNotificationService.createIntentStartNotificationService(context);
-                    startService(intent);
-                }
+
 
                 //Add this request to be monitored
+
                 RiderNotificationService.addRequestToBeNotified(request);
 
                 //Clear the map
