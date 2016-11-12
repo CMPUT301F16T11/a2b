@@ -52,7 +52,7 @@ public class AcceptingUnitTest {
         // request that is not accepted
         user.addActiveDriverRequest(request);
         assertTrue(user.getActiveRequestsAsDriver().size() > 0);
-        
+
         assertFalse(user.hasAcceptedRequests(request));
     }
     /**
