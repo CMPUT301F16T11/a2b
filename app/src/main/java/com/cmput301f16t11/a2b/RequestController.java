@@ -35,7 +35,10 @@ public class RequestController {
      * @return ArrayList<UserRequest> nearbyRequests
      */
     public static ArrayList<UserRequest> getNearbyRequests() {
-        return nearbyRequests = new ArrayList<>();
+        if (nearbyRequests == null) {
+            return new ArrayList<UserRequest>();
+        }
+        return nearbyRequests;
     }
 
     /**
