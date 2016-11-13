@@ -109,6 +109,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
 
             case R.id.signOut:
                 UserController.logOut(this);
+                finish();
 
             default:
                 return super.onOptionsItemSelected(item);
