@@ -214,7 +214,8 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         }catch(SecurityException e){
             e.printStackTrace();
         }
-        if (mLastLocation != null) {
+        //We only want to load their current location if this is the first time
+        if (mLastLocation != null && currentMarker == null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()))      // Sets the center of the map to location user
                     .zoom(11)                   // Sets the zoom
@@ -230,7 +231,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             handleRequests(requests);
 
             //Place a marker at the start at it last known location
-
             PlaceMarker(currentLatLng);
         }
     }
@@ -313,10 +313,10 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     0);
             mMap.setMyLocationEnabled(true);
         }
+
         setUpAutoCompleteBar();
         setUpMapClicking();
         setListeners();
-
     }
 
     /**
