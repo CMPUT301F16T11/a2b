@@ -123,7 +123,7 @@ public class RiderNotificationService extends IntentService {
     /**
      * So we will no longer send request about that request id
      */
-    public static void endNotification(String id){
+    public static void endNotifiscation(String id){
 
         synchronized (requestMonitoring) {
             requestMonitoring.remove(id);
@@ -178,7 +178,7 @@ public class RiderNotificationService extends IntentService {
      * This is a method from the ElasticsearchRequestController as well that get the accepted drivers from
      * a specfiic request id.
      * @param requestId
-     * @return
+     * @returnD
      */
     private ArrayList<User> getAcceptedDriversFromId(String requestId){
         verifySettings();
