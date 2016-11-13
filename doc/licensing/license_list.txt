@@ -33,3 +33,24 @@ stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
 Date accessed: Nov. 11, 2016
+
+The work in JSONMapHelper is a derivative of 
+Draw path between two points using Google Maps Android API v2 by "zeeshan0026" a user on
+stack overflow, used under CC-BY-SA by CMPUT301F16T11.
+Available here:
+http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
+Date accessed: Nov. 9, 2016
+
+The work in RiderNotificationService is a derivative of
+Using Service to run background and create notification by "Konstantin Loginov" a user on 
+stack overflow, used under CC-BY-SA by CMPUT301F16T11.
+Available here:
+http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
+Date accessed: Nov. 9, 2016
+
+The work is RiderLocationActivity involving reveres geocoding is a derivatve of
+How to reverse Geocode in google maps api 2 android by "ianhanniballake"
+a user on stack overflow, used under CC-BY-SA by CMPUT301F16T11.
+Available here:
+http://stackoverflow.com/questions/15191037/how-to-reverse-geocode-in-google-maps-api-2-android
+Date accessed: Nov. 10, 2016
