@@ -30,20 +30,9 @@ public class UserProfileUnitTest {
     */
     @Test
     public void testProfileCreation() {
-
-//        String newName = UserController.getNewUserName();
-//        String newPass = UserController.getNewPass();
-//        String newEmail = UserController.getEmail();
-//
-//        //Shouldn't we be searching through a list of created users
-//        //and comparing the newest one with out list?
-//        //There should be some way of checking our system so this
-//        // doesn't occur or an error is thrown -Dallin
-//        //TODO: add a for loop which checks for user independency
-//        User testUser = new User(newName, newPass, newEmail);
-//        assertEquals(newName, user.getName());
-//        assertEquals(newPass, user.getPassWord());
-//        assertEquals(newEmail, user.getEmail());
+        setUp();
+        UserController.setUser(user);
+        assertEquals(user, UserController.getUser());
     }
      /**
     US 03.02.01
