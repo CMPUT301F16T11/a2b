@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by tothd on 11/10/2016.
+ * Mock class that is not yet implemented. Will be used later.
  */
 
 public class MockUserRequest extends UserRequest {

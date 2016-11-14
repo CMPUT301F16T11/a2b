@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 /**
  * Created by tothd on 11/10/2016.
+ * Not being used anywhere but will possibly used for part 5
  */
 
 public class MockUser extends User {
