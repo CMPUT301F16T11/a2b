@@ -1,6 +1,12 @@
 Welcome to a2b, a CMPUT301 project! 
 
-Installation is simple, just install the apk file like any other android app!
+
+** Please Note**
+** Older Android emulators have problems sending location. While the app    ** 
+** run fine on the emulator, the current location may not work. We          **
+** recommend using the app on emulator sdk 24 and above. The assignment     **
+** required functionality will run on 18 and above, however for the full    **
+** experience we recommend 24 and above.                                    **
 
 Running on lab machines:
 Please note our maps api uses google play services so please install the newest version of google play 
@@ -9,6 +15,8 @@ api 18 that has google api(or else the map wont render). Here are some simple ti
 running on emulator in the lab machine. After you have this emulator set up please change the jdk path
 to: /usr/lib/jvm/java-8-oracle. This is done by going file-> Project Structure-> Sdk location-> Jdk path and 
 then changing that path to /usr/lib/jvm/java-8-oracle.
+
+
 
 Licensing stuff: 
 	This project is licensed under Apache 2.0. Please see the LICENSE file in the main dir
