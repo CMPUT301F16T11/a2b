@@ -8,6 +8,10 @@ Welcome to a2b, a CMPUT301 project!
 ** required functionality will run on 18 and above, however for the full    **
 ** experience we recommend 24 and above.                                    **
 
+If you want details on this issue and how to get it working on older APIs, 
+this guide details it: 
+http://stackoverflow.com/questions/19372399/running-google-map-application-on-android-emulator
+
 Running on lab machines:
 Please note our maps api uses google play services so please install the newest version of google play 
 service from sdk manager, it is under extras. After this point you must create an emulator at least of
