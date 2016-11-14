@@ -101,7 +101,6 @@ public class EditProfileActivity extends AppCompatActivity {
             UserController.updateUserInDb();
             UserController.saveInFile(this);
         }
-
         finish();
     }
 
@@ -110,7 +109,7 @@ public class EditProfileActivity extends AppCompatActivity {
      *
      * @see ProfileActivity
      */
-    public void cancelEdit() {
+    public void cancelEdit(View v) {
         finish();
     }
 

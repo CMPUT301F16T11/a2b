@@ -430,7 +430,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             }
 
             currentMarker.setTitle(address);
-            currentMarker.showInfoWindow();
         }
         catch(IOException e){
             e.printStackTrace();

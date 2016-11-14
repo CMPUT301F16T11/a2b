@@ -52,19 +52,15 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first;
-        try {
-            Intent intent = getIntent();
-            String username = intent.getStringExtra("username");
-            this.user = UserController.getUserFromName(username);
-        } catch(Exception e) {
-            this.user = UserController.getUser();
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        if(username == null){
+            user = UserController.getUser();
         }
-        if (this.user == null) {
-            this.user = UserController.getUser();
+        else{
+            user = UserController.getUserFromName(username);
         }
-        if (this.user.getName() == null) {
-            this.user = UserController.getUser();
-        }
+
         // set buttons
         Button editButton = (Button) findViewById(R.id.editProfile);
         if (user.equals(UserController.getUser())) {
@@ -100,31 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
         userNameTV.setText(this.user.getName());
         emailTV.setText(this.user.getEmail());
         phoneNumberTV.setText(this.user.getFormattedPhoneNumber());
-
-        // deprecated code to make phone number & email clickable
-
-//        if (!this.user.equals(UserController.getUser())) {
-//            this.context = this;
-//            // make them click!
-//            // launch email or phone call activity
-//            emailTV.setTextColor(Color.BLUE);
-//            emailTV.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(Intent.ACTION_SEND);
-//                    intent.putExtra(android.content.Intent.EXTRA_EMAIL, user.getEmail());
-//                    context.startActivity(intent);
-//                }
-//            });
-//            phoneNumberTV.setTextColor(Color.BLUE);
-//            phoneNumberTV.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(Intent.ACTION_DIAL);
-//                    intent.setData(Uri.parse("tel:" + user.getPhoneNumber()));
-//                    context.startActivity(intent);
-//                }
-//            });
     }
 }
 

@@ -90,6 +90,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             if (result) {
                                 //TODO: Launch next activity after user creation (MainActivity?)
+                                UserController.setUser(newUser);
                                 Intent intent =
                                         new Intent(SignUpActivity.this, RiderLocationActivity.class);
                                 startActivity(intent);
@@ -339,8 +340,8 @@ public class SignUpActivity extends AppCompatActivity {
                         checkUserTask.execute(username);
                         try {
                             result = checkUserTask.get();
-                            errorMsg.setText(result.getId());
-                            errorMsg.setVisibility(View.VISIBLE);
+//                            errorMsg.setText(result.getId());
+//                            errorMsg.setVisibility(View.VISIBLE);
                         } catch (Exception e) {
                             Log.i("Error", "Failed to get result from asynctask");
                         }
@@ -398,7 +399,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         return new User(userName, passWord, userEmail, userPhone);
     }
-
 
     /**
      * Method that assigns all variables to respective views
