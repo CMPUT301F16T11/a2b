@@ -59,6 +59,19 @@ public class UserController {
         return mode;
     }
 
+    static public void updateRating(int r) {
+        int currTotalRating = user.getTotalRating();
+        int currTotal = user.getDriverCompletions();
+
+        int newTotal = currTotal+1;
+        int newTotalRating = currTotalRating + r;
+        int newRating = newTotalRating/newTotal;
+
+        user.setRating(newRating);
+        user.setDriverCompletions(newTotal);
+        user.setTotalRating(newTotalRating);
+    }
+
     /**
      * gets the user for the current session
      *

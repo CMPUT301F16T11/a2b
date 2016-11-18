@@ -23,6 +23,10 @@ public class User {
     private String email;
     private String phoneNumber;
     private Vehicle car;
+    private int driverCompletions;
+    private int totalRating;
+    private int rating;
+
 //    private Mode mode;
 
     /**
@@ -73,6 +77,7 @@ public class User {
         this.email = email;
         phoneNumber = phone;
         this.car = car;
+        rating = -1;
     }
 
 
@@ -187,6 +192,17 @@ public class User {
 
     }
 
+    /**
+     * Method to get the user's current rating
+     *
+     * @return rating : int
+     */
+    public int getRating() {return rating;}
+
+    public int getTotalRating() {return totalRating;}
+
+    public int getDriverCompletions() {return driverCompletions;}
+
 //    public UserRequest getLatestActiveDriverRequest() {
 //        /**
 //         * Automatically considers current mode of user (driver or rider) and returns the latests
@@ -268,6 +284,12 @@ public class User {
     public void setId(String id) {
         this.id = id;
     }
+
+    public void setRating(int i) {rating = i;}
+
+    public void setTotalRating(int i) {totalRating = i;}
+
+    public void setDriverCompletions(int i) {driverCompletions = i;}
 
     /**
      * set a closed request by driver

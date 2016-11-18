@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -34,8 +37,10 @@ public class RideCompleteDialog extends DialogFragment {
     private TextView dropoff;
     private TextView fare;
     private Button okButton;
+    private ArrayList<ImageView> starList = new ArrayList<>();
 
     private UserRequest req;
+    private int rating = -1;
 
     /**
      * Static creator method that assigns UserRequest to dialog
@@ -99,6 +104,11 @@ public class RideCompleteDialog extends DialogFragment {
         dropoff = (TextView) layout.findViewById(R.id.dialog_rideComplete_endText);
         fare = (TextView) layout.findViewById(R.id.dialog_rideComplete_fareText);
         okButton = (Button) layout.findViewById(R.id.dialog_rideComplete_button);
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_1));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_2));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_3));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_4));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_5));
     }
 
     /**
@@ -115,8 +125,37 @@ public class RideCompleteDialog extends DialogFragment {
 
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (rating != -1) {
+                    UserController.updateRating(rating);
+                }
                 RideCompleteDialog.this.getDialog().dismiss();
             }
         });
+
+        for (ImageView star : starList) {
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int num = starList.indexOf(v);
+                    rating = num;
+                    emptyStars(num);
+                    fillStars(num);
+                }
+            });
+        }
+    }
+
+    public void emptyStars(int num) {
+        for (int i = 4; i > num; i++) {
+            ImageView curr = starList.get(i);
+            curr.setImageResource(R.drawable.star_empty);
+        }
+    }
+
+    public void fillStars(int num) {
+        for (int i = num; i > -1; i--) {
+            ImageView curr = starList.get(i);
+            curr.setImageResource(R.drawable.star_full);
+        }
     }
 }
