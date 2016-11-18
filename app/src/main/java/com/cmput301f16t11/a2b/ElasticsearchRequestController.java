@@ -250,7 +250,7 @@ public class ElasticsearchRequestController {
             // update script
 
             String script = "{ \"script\" : \" ctx._source.confirmedDriver = newDriver }\", \"params\" : "+
-                    "{\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+                    "{\"newDriver\" : {\"id\":\""  + info[0] +"\"}}}";
 
 
             try {
