@@ -11,6 +11,7 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
+import io.searchbox.core.MultiGet;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
@@ -836,17 +838,7 @@ public class ElasticsearchRequestController {
         }
     }
 
-    private static void verifySettings() {
-        // Initialize client if necessary
-        if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
-            DroidClientConfig config = builder.build();
 
-            JestClientFactory factory = new JestClientFactory();
-            factory.setDroidClientConfig(config);
-            client = (JestDroidClient) factory.getObject();
-        }
-    }
 
     /**
      * Get users who have accepted the request
@@ -885,4 +877,130 @@ public class ElasticsearchRequestController {
         }
 
     }
+
+
+
+    public static class GetRequestsByUserNameKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] +
+                    "\"}}}";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+    public static class GetRequestsByDescriptionKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... description) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\n" +
+                    " \"from\" : 0, \"size\" : 20,\n" +
+                    "    \"query\": {\n" +
+                    "        \"match\": {\n" +
+                    "            \"description\": \"" + description[0] + "\"\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}'";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+    public static class GetRequestsByStartLocationKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... description) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\n" +
+                    " \"from\" : 0, \"size\" : 20,\n" +
+                    "    \"query\": {\n" +
+                    "        \"match\": {\n" +
+                    "            \"startLocation\": \"" + description[0] + "\"\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}'";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+
+    private static void verifySettings() {
+        // Initialize client if necessary
+        if (client == null) {
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
+            DroidClientConfig config = builder.build();
+
+            JestClientFactory factory = new JestClientFactory();
+            factory.setDroidClientConfig(config);
+            client = (JestDroidClient) factory.getObject();
+        }
+    }
+
+
+
 }
