@@ -108,6 +108,11 @@
     <string name="request_list">View Requests</string>
     <string name="sign_out">Sign Out</string>
 
+    <!-- Request List Activity Strings-->
+    <string name="max_price">Max Price</string>
+    <string name="max_price_per_km">Max Price/KM</string>
+    <string name="no_sort_value">No Sorting</string>
+
     <!-- Request Detail Activity Strings-->
     <string name="request_detail_title">Request Details</string>
     <string name="willing_drivers">Willing Drivers</string>
@@ -122,5 +127,6 @@
     <string name="accept">Accept</string>
     <string name="complete">Complete</string>
     <string name="title_activity_empty_map">Map</string>
+    <string name="insert_value">Insert Value</string>
 
 </resources>

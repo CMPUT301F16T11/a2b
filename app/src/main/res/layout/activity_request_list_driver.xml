@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_request_driver"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cmput301f16t11.a2b.RequestListActivity">
+    <!--The following work, activity_request_list.xml, contains a derivative of an answer to-->
+    <!--"Adding EditText alongside RadioButton" by "codeMagic," a stack overflow user.-->
+    <!--It is used under CC-BY-SA by CMPUT301F16T11. Accessed on Nov. 18, 2016.-->
+    <!--Available here: -->
+    <!--http://stackoverflow.com/questions/17795156/adding-edittext-alongside-radiobutton-->
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp">
+        <RadioGroup
+            android:id="@+id/lactate_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/lactate_default_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_sort_value"
+                android:textSize="15sp"/>
+
+            <RadioButton
+                android:id="@+id/lactate_calibrated_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_price"
+                android:textSize="15sp"/>
+            <RadioButton
+                android:id="@+id/lactate_custom_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/max_price_per_km"
+                android:textSize="15sp"/>
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/insert_max_price_per_km"
+            android:textSize="12sp"
+            android:text="@string/insert_value"
+            android:layout_below="@+id/insert_max_price"
+            android:layout_toEndOf="@+id/lactate_radio"
+            android:layout_marginStart="27dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/insert_max_price"
+            android:layout_marginTop="24dp"
+            android:textSize="12sp"
+            android:text="@string/insert_value"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/insert_max_price_per_km" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="17dp"
+            android:id="@+id/requestList" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
+
+        <TextView
+            android:text="Requests"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="26dp"
+            android:id="@+id/requestTitle"
+            android:textSize="32sp"
+            android:textColor="@color/colorPrimary"/>
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/requestSpinner"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="26dp"
+            android:layout_weight="0.85" />
+    </LinearLayout>
+
+</RelativeLayout>
