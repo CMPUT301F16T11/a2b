@@ -67,7 +67,7 @@ public class ProfileActivity extends AppCompatActivity {
             editButton.setEnabled(true);
         }
         else {
-            editButton.setEnabled(false);
+            editButton.setVisibility(View.GONE);
         }
         setTextViews();
     }
