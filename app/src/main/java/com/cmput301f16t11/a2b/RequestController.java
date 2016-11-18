@@ -275,6 +275,14 @@ public class RequestController {
             }
         }
         return actualUserObjects;
+    }    /**
+     * Gets the price per kilometer involved in a request
+     *
+     * @param request the UserRequest obj that we are getting price/km for
+     * @return double of price per km ($/km)
+     */
+    public static double getPricePerKM(UserRequest request) {
+        return (request.getFare().doubleValue() / request.getDistance());
     }
 
     /**
