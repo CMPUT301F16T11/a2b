@@ -23,11 +23,38 @@
             android:textColor="@color/redText"
             android:visibility="gone"/>
 
+        <TextView android:id="@+id/activity_signup_radioMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/activity_signup_errorMsg"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:text="@string/signup_accountType" />
+
+        <RadioGroup android:id="@+id/activity_signup_buttonGroup"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@id/activity_signup_radioMsg"
+            android:orientation="horizontal">
+            <RadioButton android:id="@+id/activity_signup_riderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_rider" />
+            <RadioButton android:id="@+id/activity_signup_bothButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_both"
+                android:checked="true"/>
+        </RadioGroup>
+
         <EditText android:id="@+id/activity_signup_usr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="48dp"
-            android:layout_below="@id/activity_signup_errorMsg"
+            android:layout_below="@id/activity_signup_buttonGroup"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="14sp"
@@ -49,91 +76,20 @@
             android:textSize="14sp"
             android:textStyle="italic" />
 
-        <TextView android:id="@+id/activity_signup_pwdSpec"
+        <TextView android:id="@+id/activity_signup_contactMsg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/activity_signup_usrMsg"
-            android:layout_marginTop="24dp"
+            android:layout_below="@+id/activity_signup_usrMsg"
             android:layout_centerHorizontal="true"
-            android:gravity="center_horizontal"
-            android:text="@string/signup_pwd_specs"
-            android:textStyle="italic" />
-
-        <EditText android:id="@+id/activity_signup_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/activity_signup_pwdSpec"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="48dp"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textSize="14sp"
-            android:hint="@string/signup_pwd_hint" />
-
-        <EditText android:id="@+id/activity_signup_pwdConf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
-            android:layout_below="@id/activity_signup_pwd"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:textSize="14sp"
-            android:hint="@string/signup_pwdConf_hint" />
-
-        <ImageView android:id="@+id/activity_signup_pwdIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@id/activity_signup_pwdConf" />
-
-        <LinearLayout android:id="@+id/activity_signup_pwdStrength"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="3"
-            android:layout_below="@id/activity_signup_pwdConf"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp">
-            <TextView android:id="@+id/activity_signup_weakPwd"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/signup_pwdWeak"
-                android:background="@color/signup_weak_off"/>
-
-            <TextView android:id="@+id/activity_signup_goodPwd"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/signup_pwdGood"
-                android:background="@color/signup_good_off" />
-
-            <TextView android:id="@+id/activity_signup_strongPwd"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/signup_pwdStrong"
-                android:background="@color/signup_strong_off" />
-        </LinearLayout>
-
-        <TextView android:id="@+id/activity_signup_pwdMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp"
-            android:layout_below="@id/activity_signup_pwdStrength"
-            android:textStyle="italic"/>
+            android:layout_marginTop="32dp"
+            android:textSize="16sp"
+            android:text="@string/signup_contact_msg" />
 
         <EditText android:id="@+id/activity_signup_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/activity_signup_pwdConf"
-            android:layout_marginTop="64dp"
+            android:layout_below="@id/activity_signup_contactMsg"
+            android:layout_marginTop="8dp"
             android:inputType="textEmailAddress"
             android:textSize="14sp"
             android:hint="@string/signup_email_hint"/>
@@ -146,13 +102,61 @@
             android:inputType="phone"
             android:textSize="14sp"
             android:hint="@string/signup_phone_hint" />
+        <RelativeLayout android:id="@+id/activity_signup_carLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_signup_phone">
+
+            <TextView android:id="@+id/activity_signup_carMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_centerHorizontal="true"
+                android:textSize="16sp"
+                android:text="@string/signup_car_msg" />
+
+            <EditText android:id="@+id/activity_signup_carYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activity_signup_carMsg"
+                android:layout_marginTop="8dp"
+                android:hint="@string/carYear"
+                android:inputType="number"
+                android:maxLength="4" />
+
+            <EditText android:id="@+id/activity_signup_carMake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activity_signup_carYear"
+                android:layout_marginTop="8dp"
+                android:hint="@string/carMake"
+                android:inputType="text" />
+
+            <EditText android:id="@+id/activity_signup_carModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activity_signup_carMake"
+                android:layout_marginTop="8dp"
+                android:hint="@string/carModel"
+                android:inputType="text" />
+
+            <EditText android:id="@+id/activity_signup_carColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/activity_signup_carModel"
+                android:layout_marginTop="8dp"
+                android:hint="@string/carColor"
+                android:inputType="text" />
+        </RelativeLayout>
 
         <Button android:id="@+id/activity_signup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_signup_phone"
+            android:layout_below="@+id/activity_signup_carLayout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="@string/signup_button" />
+            android:text="@string/signup_button"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 </ScrollView>
