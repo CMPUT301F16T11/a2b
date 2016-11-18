@@ -920,14 +920,13 @@ public class ElasticsearchRequestController {
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
             String search_string = "{\n" +
-                    " \"from\" : 0, \"size\" : 20,"+
-                    "    \"match\" : {\n" +
-                    "        \"description\" : {\n" +
-                    "            \"query\" : \""+ description[0] +"\",\n" +
-                    "            \"cutoff_frequency\" : 0.001\n" +
+                    " \"from\" : 0, \"size\" : 20,\n" +
+                    "    \"query\": {\n" +
+                    "        \"match\": {\n" +
+                    "            \"description\": \"" + description[0] + "\"\n" +
                     "        }\n" +
                     "    }\n" +
-                    "}";
+                    "}'";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
