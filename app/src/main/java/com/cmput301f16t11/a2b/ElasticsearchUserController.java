@@ -10,12 +10,16 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
+import io.searchbox.core.MultiGet;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
@@ -238,7 +242,68 @@ public class ElasticsearchUserController {
 
     }
 
+    public static class getUsersFromIds extends AsyncTask<String,Void,ArrayList<User>>{
+        @Override
+        protected ArrayList<User> doInBackground(String ... userIds) {
+            verifySettings();
 
+            Collection<String> userIdList = new ArrayList<String>();
+            ArrayList<User> users = new ArrayList<User>();
+
+            for(int i=0; i<userIds.length; i++)
+                userIdList.add(userIds[i]);
+
+            MultiGet multiGet = new MultiGet.Builder.ById(index,userType).addId(userIdList).build();
+
+
+
+            try {
+                JestResult result = client.execute(multiGet);
+                if (result.isSucceeded()) {
+                    List<User> foundUsers = result.getSourceAsObjectList(User.class);
+                    users.addAll(foundUsers);
+                }else{
+                    Log.i("Error","Filed to find request");
+                    return users;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return users;
+            }
+
+            return users;
+
+        }
+    }
+
+    public static class getUsersFromId extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... userId) {
+            verifySettings();
+
+            Get get = new Get.Builder(index,userId[0]).type(userType).build();
+
+            User user = null;
+
+            try {
+                JestResult result = client.execute(get);
+                if (result.isSucceeded()) {
+                    user = result.getSourceAsObject(User.class);
+                }else{
+                    Log.i("Error","Filed to find request");
+                    return null;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return null;
+            }
+
+            return user;
+        }
+    }
 
 
     private static void verifySettings() {
