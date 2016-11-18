@@ -887,8 +887,8 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": [{\"rider.userName\": \"" + user[0] +
-                    "\"}]}}";
+            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] +
+                    "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -924,6 +924,44 @@ public class ElasticsearchRequestController {
                     "    \"query\": {\n" +
                     "        \"match\": {\n" +
                     "            \"description\": \"" + description[0] + "\"\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}'";
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+    public static class GetRequestsByStartLocationKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... description) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+            String search_string = "{\n" +
+                    " \"from\" : 0, \"size\" : 20,\n" +
+                    "    \"query\": {\n" +
+                    "        \"match\": {\n" +
+                    "            \"startLocation\": \"" + description[0] + "\"\n" +
                     "        }\n" +
                     "    }\n" +
                     "}'";
