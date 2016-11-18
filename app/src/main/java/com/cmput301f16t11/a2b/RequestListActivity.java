@@ -43,6 +43,10 @@ public class RequestListActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        // choose contentview
+        if (UserController.checkMode() == Mode.DRIVER) {
+            setContentView(R.layout.activity_request_list_driver);
+        }
         // listView Stuff
         requests.clear();
         listView = (ListView) findViewById(R.id.requestList);
