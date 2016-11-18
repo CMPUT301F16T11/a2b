@@ -54,3 +54,17 @@ a user on stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/15191037/how-to-reverse-geocode-in-google-maps-api-2-android
 Date accessed: Nov. 10, 2016
+
+The following work, activity_request_list.xml, contains a derivative of an answer to
+"Adding EditText alongside RadioButton" by "codeMagic," a stack overflow user.
+It is used under CC-BY-SA by CMPUT301F16T11. Accessed on Nov. 18, 2016.
+Available here: 
+    http://stackoverflow.com/questions/17795156/adding-edittext-alongside-radiobutton
+Date accessed: Nov. 10, 2016
+
+The following work, LoginActivity, contains a derivaitive to an answer to 
+'Android execute function after pressing "Enter" for EditText," by "AL Sweigart,"
+a stack overflow user. It is used under CC-BY-SA by CMPUT301F16T11. 
+Available here: 
+http://stackoverflow.com/questions/8233586/android-execute-function-after-pressing-enter-for-edittext
+Date accessed: Nov. 18, 2016
