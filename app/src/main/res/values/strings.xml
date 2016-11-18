@@ -37,7 +37,15 @@
     <string name="signup_pwdStr_error">Password isn\'t strong enough</string>
     <string name="signup_creation_error">Unable to create user</string>
     <string name="signup_usrLen_error">Please enter a username</string>
-
+    <string name="signup_contact_msg">Contact Information</string>
+    <string name="signup_car_msg">Vehicle Information</string>
+    <string name="signup_carYear_error">Please enter a proper car year</string>
+    <string name="signup_carMake_error">Please enter a proper car make</string>
+    <string name="signup_carModel_error">Please enter a proper car model</string>
+    <string name="signup_carColor_error">Please enter a proper car color</string>
+    <string name="signup_accountType">Account Type</string>
+    <string name="signup_rider">Rider</string>
+    <string name="signup_both">Rider + Driver</string>
 
     <string name="title_activity_location">Map</string>
 
@@ -45,6 +53,12 @@
      <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
          AIzaSyCcJvOdnYtQ9ES2-SQRYlHoHgGnc46Pfco
     </string>
+
+    <!-- Generic Vehicle Strings -->
+    <string name="carYear">Year</string>
+    <string name="carMake">Make</string>
+    <string name="carModel">Model</string>
+    <string name="carColor">Color</string>
 
     <!--Main map activtiy-->
     <string name="set_start">Set Start Location</string>

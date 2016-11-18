@@ -17,10 +17,12 @@ public class User {
     private transient ArrayList<UserRequest> activeRequestsAsRider;
     private static transient ArrayList<UserRequest> activeRequestsAsDriver;
 
+
     private String userName;
     private String passWord;
     private String email;
     private String phoneNumber;
+    private Vehicle car;
 //    private Mode mode;
 
     /**
@@ -59,6 +61,18 @@ public class User {
         userName = name;
         this.email = email;
         phoneNumber = phone;
+    }
+
+    User(String name, String email, String phone, Vehicle car) {
+//        mode = Mode.RIDER;
+        requestsAsRider = new ArrayList<UserRequest>();
+        requestsAsDriver = new ArrayList<UserRequest>();
+        activeRequestsAsRider = new ArrayList<UserRequest>();
+        activeRequestsAsDriver = new ArrayList<UserRequest>();
+        userName = name;
+        this.email = email;
+        phoneNumber = phone;
+        this.car = car;
     }
 
 
