@@ -409,4 +409,46 @@ public class RequestController {
         searchController.execute(request);
 
     }
+
+    public static ArrayList<UserRequest> queryByKeywordLocation(String keywords){
+        ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
+                new ElasticsearchRequestController.GetRequestsByStartLocationKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByStartLocationKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+    }
+
+    public static ArrayList<UserRequest> queryByKeywordUserName(String keywords){
+        ElasticsearchRequestController.GetRequestsByUserNameKeyword getRequestsByUserNameKeyword =
+                new ElasticsearchRequestController.GetRequestsByUserNameKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByUserNameKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+
+    }
+
+    public static ArrayList<UserRequest> queryByKeywordDescription(String keywords){
+        ElasticsearchRequestController.GetRequestsByDescriptionKeyword getRequestsByDescriptionKeyword=
+                new ElasticsearchRequestController.GetRequestsByDescriptionKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByDescriptionKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+
+
+    }
 }
