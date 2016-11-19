@@ -102,7 +102,6 @@
         android:layout_toEndOf="@+id/carModel" />
 
     <TextView
-
         android:text="@string/carMake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

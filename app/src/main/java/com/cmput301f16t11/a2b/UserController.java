@@ -61,14 +61,14 @@ public class UserController {
 
     static public void updateRating(int r) {
         int currTotalRating = user.getTotalRating();
-        int currTotal = user.getDriverCompletions();
+        int currTotal = user.getNumRatings();
 
         int newTotal = currTotal+1;
         int newTotalRating = currTotalRating + r;
         double newRating = newTotalRating/newTotal;
 
         user.setRating(newRating);
-        user.setDriverCompletions(newTotal);
+        user.setNumRatings(newTotal);
         user.setTotalRating(newTotalRating);
     }
 

@@ -23,9 +23,9 @@ public class User {
     private String email;
     private String phoneNumber;
     private Vehicle car;
-    private int driverCompletions;
+    private double rating;
     private int numRatings;
-    private double totalRating;
+    private int totalRating;
 
 //    private Mode mode;
 
@@ -54,8 +54,9 @@ public class User {
         activeRequestsAsDriver = new ArrayList<UserRequest>();
         userName = name;
         this.email = email;
-        numRatings = -1;
-        totalRating = -1;
+        numRatings = 0;
+        totalRating = 0;
+        rating = -1;
     }
 
     User(String name, String email, String phone) {
@@ -67,8 +68,9 @@ public class User {
         userName = name;
         this.email = email;
         phoneNumber = phone;
-        numRatings = -1;
-        totalRating = -1;
+        numRatings = 0;
+        totalRating = 0;
+        rating = -1;
     }
 
     User(String name, String email, String phone, Vehicle car) {
@@ -81,8 +83,9 @@ public class User {
         this.email = email;
         phoneNumber = phone;
         this.car = car;
-        numRatings = -1;
-        totalRating = -1;
+        numRatings = 0;
+        totalRating = 0;
+        rating = -1;
     }
 
 
@@ -204,9 +207,9 @@ public class User {
      */
     public int getNumRatings() {return numRatings;}
 
-    public double getTotalRating() {return totalRating;}
+    public int getTotalRating() {return totalRating;}
 
-    public int getDriverCompletions() {return driverCompletions;}
+    public double getRating() {return rating;}
 
 //    public UserRequest getLatestActiveDriverRequest() {
 //        /**
@@ -290,11 +293,11 @@ public class User {
         this.id = id;
     }
 
-    //public void setRating(double i) {totalRating = i;}
+    public void setRating(double i) {rating = i;}
 
-    //public void setTotalRating(int i) {totalRating = i;}
+    public void setTotalRating(int i) {totalRating = i;}
 
-    public void setDriverCompletions(int i) {driverCompletions = i;}
+    public void setNumRatings(int i) {numRatings = i;}
 
     /**
      * set a closed request by driver
