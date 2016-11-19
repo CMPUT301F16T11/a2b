@@ -76,11 +76,10 @@ public class RequestController {
      * @param cntxt the current application context
      */
     public static void setRequestConfirmedDriver(UserRequest request, User driver, Context cntxt){
+
         request.setConfirmedDriver(driver.getId());
-
-
         ElasticsearchRequestController.SetConfirmedDriver searchController = new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
-        searchController.execute(driver.getId());
+        searchController.execute(request.getId(), driver.getId());
         completeRequest(request);
     }
 
