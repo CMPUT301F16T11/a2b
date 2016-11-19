@@ -57,6 +57,15 @@
             android:textSize="16sp"
             android:text="test@email.com"/>
 
+        <TextView
+            android:text="Rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/ratingText"
+            android:layout_below="@id/emailText"
+            />
+
 
     <Button
         android:layout_width="100dp"
@@ -71,7 +80,7 @@
         android:layout_alignEnd="@+id/phoneNumberTextView" />
 
     <TextView
-        android:text="Model"
+        android:text="@string/carModel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -82,7 +91,7 @@
         android:layout_toEndOf="@+id/carMake" />
 
     <TextView
-        android:text="Color"
+        android:text="@string/carColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -93,7 +102,8 @@
         android:layout_toEndOf="@+id/carModel" />
 
     <TextView
-        android:text="Make"
+
+        android:text="@string/carMake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/carMake"
@@ -104,7 +114,7 @@
         android:layout_toEndOf="@+id/carYear" />
 
     <TextView
-        android:text="1989"
+        android:text="@string/carYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
