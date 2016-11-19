@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
+
 /**
  * ProfileActivity allows a user to view their own profile as well as though of other users
  */
@@ -97,7 +99,8 @@ public class ProfileActivity extends AppCompatActivity {
         TextView carYear = (TextView) findViewById(R.id.carYear);
         TextView carMake = (TextView) findViewById(R.id.carMake);
         TextView carModel = (TextView) findViewById(R.id.carModel);
-        TextView carColor = (TextView) findViewById(R.id.carColor) ;
+        TextView carColor = (TextView) findViewById(R.id.carColor);
+        TextView rating = (TextView) findViewById(R.id.ratingText);
 
         Vehicle vehicle = user.getCar();
         if(vehicle.isSet()){
@@ -116,6 +119,12 @@ public class ProfileActivity extends AppCompatActivity {
         userNameTV.setText(this.user.getName());
         emailTV.setText(this.user.getEmail());
         phoneNumberTV.setText(this.user.getFormattedPhoneNumber());
+        if(this.user.getRating() != -1) {
+            rating.setText(new DecimalFormat("##.##").format(this.user.getRating()) + "/5");
+        }
+        else{
+            rating.setText("Unrated");
+        }
     }
 }
 
