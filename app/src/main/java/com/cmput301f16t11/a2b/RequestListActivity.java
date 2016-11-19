@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,14 +22,14 @@ import java.util.ArrayList;
  * This activity displays a list of requests which corresponds to the current user mode as well
  * as the selected requests to view in the spinner (also in this activity)
  *
- * This work, "MainHabitActivity," contains a derivative
+ * This work, "RequestListActivity," contains a derivative
  * "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
  * used under CC-BY-SA by CMPUT301F16T11.
  * (Available here:
  * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
  * Accessed Nov. 11, 2016
  *
- * This work, "MainHabitActivity," contains a derivative of example code from "Radio Buttons,"
+ * This work, "RequestListActivity," contains a derivative of example code from "Radio Buttons,"
  * from Android Developer Tutorials. It is used under Apache 2.0 by CMPUT301F16T11.
  * Available here:
  * https://developer.android.com/guide/topics/ui/controls/radiobutton.html
@@ -46,9 +47,6 @@ public class RequestListActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerChoices;
     private EditText maxPricePerKM;
     private EditText maxPrice;
-    private RadioButton noFilterButton;
-    private RadioButton maxPriceFilterButton;
-    private RadioButton maxPricePerKMFilterButton;
 
 
     @Override
@@ -86,10 +84,17 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        // Radio Button Stuff
-        noFilterButton = (RadioButton) findViewById(R.id.request_list_no_filter);
-        maxPriceFilterButton = (RadioButton) findViewById(R.id.request_list_max_price);
-        maxPricePerKMFilterButton = (RadioButton) findViewById(R.id.request_list_max_price_per_km);
+
+        if (UserController.checkMode() == Mode.DRIVER) {
+            // EditText stuff
+            maxPrice = (EditText) findViewById(R.id.insert_max_price);
+            maxPricePerKM = (EditText) findViewById(R.id.insert_max_price_per_km);
+            maxPrice.setEnabled(false);
+            maxPricePerKM.setEnabled(false);
+            maxPrice.setFocusable(true);
+            maxPricePerKM.setFocusable(true);
+            ((View) findViewById(R.id.activity_request_driver)).clearFocus();
+        }
 
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
@@ -174,7 +179,39 @@ public class RequestListActivity extends AppCompatActivity {
         });
     }
 
-    public void radioButtonOnClickListener(View v) {
 
+    /**
+     *
+     * @param v
+     */
+    public void radioButtonOnClickListener(View v) {
+        // here is where the above cited android developers tutorial code is used
+        // check if button is checked
+        boolean checked = ((RadioButton) v).isChecked();
+
+        // which button?
+        switch(v.getId()) {
+            case R.id.request_list_no_filter:
+                if (checked) {
+                    maxPrice.setEnabled(false);
+                    maxPricePerKM.setEnabled(false);
+                    v.clearFocus();
+                    break;
+                }
+            case R.id.request_list_max_price:
+                if (checked) {
+                    maxPrice.setEnabled(true);
+                    maxPrice.requestFocus();
+                    maxPricePerKM.setEnabled(false);
+                    break;
+                }
+            case R.id.request_list_max_price_per_km:
+                if (checked) {
+                    maxPrice.setEnabled(false);
+                    maxPricePerKM.setEnabled(true);
+                    maxPricePerKM.requestFocus();
+                    break;
+                }
+        }
     }
 }

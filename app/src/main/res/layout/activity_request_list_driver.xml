@@ -53,24 +53,26 @@
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/insert_max_price_per_km"
+            android:id="@+id/insert_max_price"
+            android:layout_marginTop="24dp"
             android:textSize="12sp"
             android:text="@string/insert_value"
-            android:layout_below="@+id/insert_max_price"
-            android:layout_toEndOf="@+id/lactate_radio"
-            android:layout_marginStart="27dp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/insert_max_price_per_km"
+            android:selectAllOnFocus="true"/>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/insert_max_price"
-            android:layout_marginTop="24dp"
+            android:id="@+id/insert_max_price_per_km"
             android:textSize="12sp"
             android:text="@string/insert_value"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/insert_max_price_per_km" />
+            android:layout_marginStart="18dp"
+            android:layout_alignBottom="@+id/filters"
+            android:layout_toEndOf="@+id/filters"
+            android:selectAllOnFocus="true"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="wrap_content"
