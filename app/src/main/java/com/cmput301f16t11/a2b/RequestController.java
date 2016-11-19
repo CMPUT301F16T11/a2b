@@ -76,11 +76,11 @@ public class RequestController {
      * @param cntxt the current application context
      */
     public static void setRequestConfirmedDriver(UserRequest request, User driver, Context cntxt){
-        request.setConfirmedDriver(driver);
+        request.setConfirmedDriver(driver.getId());
 
-        ElasticsearchRequestController.SetConfirmedDriver searchController =
-                new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
-        searchController.execute(request.getConfirmedDriver().getName());
+
+        ElasticsearchRequestController.SetConfirmedDriver searchController = new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
+        searchController.execute(driver.getId());
         completeRequest(request);
     }
 
@@ -245,7 +245,7 @@ public class RequestController {
     public static ArrayList<User> getAcceptedDrivers(UserRequest request) {
         ElasticsearchRequestController.getAcceptedUsersForRequest searchController =
                 new ElasticsearchRequestController.getAcceptedUsersForRequest();
-        ArrayList<User> users;
+        ArrayList<String> users;
         try {
             users = searchController.execute(request.getId()).get();
              return getUserInfo(users);
@@ -261,14 +261,14 @@ public class RequestController {
      * @param users Arraylist of user object with only ids
      * @return returns a list of all actual user objects
      */
-    private static ArrayList<User> getUserInfo(ArrayList<User> users){
+    private static ArrayList<User> getUserInfo(ArrayList<String> users){
         ArrayList<User> actualUserObjects = new ArrayList<>();
-        for(User user: users){
-            ElasticsearchUserController.RetrieveUserInfo impl =
-                    new ElasticsearchUserController.RetrieveUserInfo();
+        for(String userId: users){
+            ElasticsearchUserController.RetrieveUserInfoFromId impl =
+                    new ElasticsearchUserController.RetrieveUserInfoFromId();
             User actualUser;
             try {
-                actualUser = impl.execute(user).get();
+                actualUser = impl.execute(userId).get();
                 actualUserObjects.add(actualUser);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -407,8 +407,8 @@ public class RequestController {
         ElasticsearchRequestController.MoveToClosedRequest searchController =
                 new ElasticsearchRequestController.MoveToClosedRequest();
         searchController.execute(request);
-
     }
+
 
     public static ArrayList<UserRequest> queryByKeywordLocation(String keywords){
         ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
@@ -452,3 +452,4 @@ public class RequestController {
 
     }
 }
+

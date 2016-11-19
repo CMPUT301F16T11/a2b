@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -34,8 +37,12 @@ public class RideCompleteDialog extends DialogFragment {
     private TextView dropoff;
     private TextView fare;
     private Button okButton;
+    private ArrayList<ImageView> starList = new ArrayList<>();
 
     private UserRequest req;
+    private int rating = -1;
+    private String confirmedDriverName;
+    private String riderName;
 
     /**
      * Static creator method that assigns UserRequest to dialog
@@ -47,8 +54,10 @@ public class RideCompleteDialog extends DialogFragment {
         RideCompleteDialog dialog = new RideCompleteDialog();
 
         Bundle args = new Bundle();
-        args.putString("rider", req.getConfirmedDriver().getName().toString());
-        args.putString("driver", req.getRider().getName().toString());
+        User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriver());
+        User rider = UserController.getUserFromId(req.getRider());
+        args.putString("rider", confirmedDriver.getName());
+        args.putString("driver", rider.getName());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -81,8 +90,8 @@ public class RideCompleteDialog extends DialogFragment {
         // Assign views, get request and set views
         assignViews();
         req = getArguments().getParcelable("req");
-        req.getConfirmedDriver().setName(getArguments().getString("driver"));
-        req.getRider().setName(getArguments().getString("rider"));
+        confirmedDriverName = getArguments().getString("driver");
+        riderName = getArguments().getString("rider");
         setViews();
 
         return layout;
@@ -99,6 +108,11 @@ public class RideCompleteDialog extends DialogFragment {
         dropoff = (TextView) layout.findViewById(R.id.dialog_rideComplete_endText);
         fare = (TextView) layout.findViewById(R.id.dialog_rideComplete_fareText);
         okButton = (Button) layout.findViewById(R.id.dialog_rideComplete_button);
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_1));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_2));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_3));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_4));
+        starList.add((ImageView) layout.findViewById(R.id.dialog_rideComplete_5));
     }
 
     /**
@@ -107,16 +121,45 @@ public class RideCompleteDialog extends DialogFragment {
      *  Sets okButton click listener
      */
     public void setViews() {
-        driver.setText(req.getConfirmedDriver().getName());
-        rider.setText(req.getRider().getName());
+        driver.setText(confirmedDriverName);
+        rider.setText(riderName);
         pickup.setText(req.getStartLocation().toString());
         dropoff.setText(req.getEndLocation().toString());
         fare.setText(req.getFare().toString());
 
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if (rating != -1) {
+                    UserController.updateRating(rating);
+                }
                 RideCompleteDialog.this.getDialog().dismiss();
             }
         });
+
+        for (ImageView star : starList) {
+            star.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int num = starList.indexOf(v);
+                    rating = num;
+                    emptyStars(num);
+                    fillStars(num);
+                }
+            });
+        }
+    }
+
+    public void emptyStars(int num) {
+        for (int i = 4; i > num; i++) {
+            ImageView curr = starList.get(i);
+            curr.setImageResource(R.drawable.star_empty);
+        }
+    }
+
+    public void fillStars(int num) {
+        for (int i = num; i > -1; i--) {
+            ImageView curr = starList.get(i);
+            curr.setImageResource(R.drawable.star_full);
+        }
     }
 }

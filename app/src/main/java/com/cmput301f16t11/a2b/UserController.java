@@ -59,6 +59,19 @@ public class UserController {
         return mode;
     }
 
+    static public void updateRating(int r) {
+        int currTotalRating = user.getTotalRating();
+        int currTotal = user.getDriverCompletions();
+
+        int newTotal = currTotal+1;
+        int newTotalRating = currTotalRating + r;
+        int newRating = newTotalRating/newTotal;
+
+        user.setRating(newRating);
+        user.setDriverCompletions(newTotal);
+        user.setTotalRating(newTotalRating);
+    }
+
     /**
      * gets the user for the current session
      *
@@ -212,6 +225,41 @@ public class UserController {
         }
         return user;
     }
+
+    /**
+     * Calls the elastic search to get the user object
+     * @param id id of the user you want to get the user object from
+     * @return a user object of the given id
+     */
+    public static User getUserFromId(String id){
+        User user = new User();
+        try {
+            ElasticsearchUserController.getUsersFromId userImpl =
+                    new ElasticsearchUserController.getUsersFromId();
+            userImpl.execute(id);
+            user = userImpl.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public static ArrayList<User> getUsersFromIds(ArrayList<String> userIds){
+
+        ArrayList<User> users = new ArrayList<>();
+        try {
+            ElasticsearchUserController.getUsersFromIds userImpl =
+                    new ElasticsearchUserController.getUsersFromIds();
+            userImpl.execute(userIds);
+            users = userImpl.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
 
 
     // offline - not implemented

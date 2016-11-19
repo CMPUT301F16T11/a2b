@@ -48,16 +48,16 @@ public class RiderNotificationService extends IntentService {
             //Added to avoid editing this list while the background thread looks at it
             synchronized (requestMonitoring) {
                 for (UserRequest request : requestMonitoring) {
-                    ArrayList<User> acceptedDrivers = request.getAcceptedDrivers();
-                    ArrayList<User> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
-                    ArrayList<User> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
+                    ArrayList<String> acceptedDrivers = request.getAcceptedDrivers();
+                    ArrayList<String> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
+                    ArrayList<String> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
 
                     //If there is an accepted user
                     if (differentUser.size() != 0) {
                         sendNotificationOfAcceptedDriver(serverAcceptedDrivers, request.getId());
 
-                        for (User user : differentUser) {
-                            addDriverToMonitor(request, user);
+                        for (String userId: differentUser) {
+                            addDriverToMonitor(request, userId);
                         }
                     }
                 }
@@ -98,13 +98,14 @@ public class RiderNotificationService extends IntentService {
      * Adds a request to monitor on the driver side
      *
      * @param request request to monitor
-     * @param user the driver
+     * @param userId the driver
      */
-    public void addDriverToMonitor(UserRequest request, User user){
+    public void addDriverToMonitor(UserRequest request, String userId){
         int index = requestMonitoring.indexOf(request);
 
         synchronized (requestMonitoring) {
-            requestMonitoring.get(index).addAcceptedDriver(user);
+
+            requestMonitoring.get(index).addAcceptedDriver(userId);
         }
     }
 
@@ -155,14 +156,14 @@ public class RiderNotificationService extends IntentService {
      * @param userServer
      * @return list of accepted drivers for that request
      */
-    private ArrayList<User> findDifferenceRequests(ArrayList<User> userOriginal, ArrayList<User> userServer){
+    private ArrayList<String> findDifferenceRequests(ArrayList<String> userOriginal, ArrayList<String> userServer){
         if(userServer == null){
             return new ArrayList<>();
         }
 
-        for(User userOr : userOriginal){
+        for(String userOr : userOriginal){
             for(int i = 0; i< userServer.size();){
-                if(userServer.get(i).getId().equals(userOr.getId())){
+                if(userServer.get(i).equals(userOr)){
                     userServer.remove(i);
                 }
                 else{
@@ -180,7 +181,7 @@ public class RiderNotificationService extends IntentService {
      * @param requestId
      * @returnD
      */
-    private ArrayList<User> getAcceptedDriversFromId(String requestId){
+    private ArrayList<String> getAcceptedDriversFromId(String requestId){
         verifySettings();
 
         Get get = new Get.Builder(index, requestId).type(openRequest).build();
@@ -208,11 +209,11 @@ public class RiderNotificationService extends IntentService {
      * This send a notification that all the addedUsers have accepted that individual rider's request
      * @param addedUsers
      */
-    private  void sendNotificationOfAcceptedDriver(ArrayList<User> addedUsers, String requestId){
+    private  void sendNotificationOfAcceptedDriver(ArrayList<String> addedUsers, String requestId){
         String notification = "";
-        for(User user: addedUsers){
-            String name = getUserName(user.getId());
-            notification = notification + name +", ";
+        for(String userId: addedUsers){
+            String name = getUserName(userId);
+            notification = notification + name + " ";
         }
         notification = notification + "has Accepted request " + requestId;
 

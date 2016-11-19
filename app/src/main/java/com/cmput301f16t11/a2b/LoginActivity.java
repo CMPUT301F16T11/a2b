@@ -17,13 +17,17 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +37,13 @@ import java.util.List;
  *
  * No passwords will be prompted.
  *
+ *
+ * The following work, LoginActivity, contains a derivaitive to an answer to
+ * 'Android execute function after pressing "Enter" for EditText," by "AL Sweigart,"
+ * a stack overflow user. It is used under CC-BY-SA by CMPUT301F16T11.
+ * Available here:
+ * http://stackoverflow.com/questions/8233586/android-execute-function-after-pressing-enter-for-edittext
+ * Date accessed: Nov. 18, 2016
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -68,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         box = (CheckBox) findViewById(R.id.user_sign_in_checkbox);
 
 
-        Button mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
+        final Button mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +95,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
         });
+        /**
+         * The following segment of LoginActivity contains a derivative of
+         */
+        mUsernameView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    mSignInButton.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);

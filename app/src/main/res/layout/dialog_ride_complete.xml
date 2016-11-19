@@ -150,6 +150,54 @@
             android:textAlignment="textEnd"/>
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/dialog_rideComplete_ratingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView android:id="@+id/dialog_rideComplete_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/star_empty"
+            android:tint="@color/yellow" />
+
+        <ImageView android:id="@+id/dialog_rideComplete_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/star_empty"
+            android:tint="@color/yellow" />
+
+        <ImageView android:id="@+id/dialog_rideComplete_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/star_empty"
+            android:tint="@color/yellow" />
+
+        <ImageView android:id="@+id/dialog_rideComplete_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/star_empty"
+            android:tint="@color/yellow" />
+
+        <ImageView android:id="@+id/dialog_rideComplete_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/star_empty"
+            android:tint="@color/yellow" />
+
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

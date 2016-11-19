@@ -9,65 +9,6 @@
     android:gravity="center_horizontal"
     tools:context="com.cmput301f16t11.a2b.ProfileActivity">
 
-    <ImageView android:id="@+id/imageView2"
-        android:layout_width="196dp"
-        android:layout_height="196dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/iconuserdefault"
-        android:cropToPadding="true"
-        android:adjustViewBounds="true" />
-
-    <TextView
-        android:text="Name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/imageView2"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/userName"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"/>
-
-    <TextView
-        android:autoLink="phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_below="@id/userName"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/phoneNumberTextView"
-        android:textSize="16sp"
-        android:text="780-123-1234"/>
-
-    <TextView
-        android:autoLink="email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/phoneNumberTextView"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/emailText"
-        android:textSize="16sp"
-        android:text="test@email.com"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/emailText"
-        android:layout_centerHorizontal="true"
-        android:text="Edit"
-        android:id="@+id/editProfile"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/white"/>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,5 +18,101 @@
         android:scaleX="3"
         android:scaleY="3"
         android:background="@mipmap/ic_a2b_icon"/>
+
+
+
+        <TextView
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:id="@+id/userName"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:autoLink="phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_below="@id/userName"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/phoneNumberTextView"
+            android:textSize="16sp"
+            android:text="780-123-1234"/>
+
+        <TextView
+            android:autoLink="email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/phoneNumberTextView"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/emailText"
+            android:textSize="16sp"
+            android:text="test@email.com"/>
+
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:id="@+id/editProfile"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:layout_marginTop="75dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/carColor"
+        android:layout_alignEnd="@+id/phoneNumberTextView" />
+
+    <TextView
+        android:text="Model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:id="@+id/carModel"
+        android:paddingLeft="10dp"
+        android:layout_alignBaseline="@+id/carMake"
+        android:layout_alignBottom="@+id/carMake"
+        android:layout_toEndOf="@+id/carMake" />
+
+    <TextView
+        android:text="Color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:paddingLeft="10dp"
+        android:id="@+id/carColor"
+        android:layout_alignBaseline="@+id/carModel"
+        android:layout_alignBottom="@+id/carModel"
+        android:layout_toEndOf="@+id/carModel" />
+
+    <TextView
+        android:text="Make"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/carMake"
+        android:paddingLeft="10dp"
+        android:textSize="12sp"
+        android:layout_alignBaseline="@+id/carYear"
+        android:layout_alignBottom="@+id/carYear"
+        android:layout_toEndOf="@+id/carYear" />
+
+    <TextView
+        android:text="1989"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingTop="80dp"
+        android:textSize="12sp"
+        android:id="@+id/carYear"
+        android:layout_below="@+id/emailText"
+        android:layout_toStartOf="@+id/editProfile" />
+
 
 </RelativeLayout>

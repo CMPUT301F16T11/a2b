@@ -99,18 +99,18 @@ public class ElasticsearchUserController {
     /**
      * Given a user id, generate the user object
      */
-    public static class RetrieveUserInfo extends AsyncTask<User, Void, User> {
+    public static class RetrieveUserInfoFromId extends AsyncTask<String, Void, User> {
         /**
          * Given a user id, generate the user object
          * @param users userID
          * @return user obj
          */
         @Override
-        protected User doInBackground(User... users) {
+        protected User doInBackground(String... users) {
 
             verifySettings();
 
-            Get get = new Get.Builder(index, users[0].getId()).type("user").build();
+            Get get = new Get.Builder(index, users[0]).type("user").build();
 
             User user = new User();
 
@@ -242,20 +242,15 @@ public class ElasticsearchUserController {
 
     }
 
-    public static class getUsersFromIds extends AsyncTask<String,Void,ArrayList<User>>{
+    public static class getUsersFromIds extends AsyncTask<ArrayList<String>,Void,ArrayList<User>>{
         @Override
-        protected ArrayList<User> doInBackground(String ... userIds) {
+        protected ArrayList<User> doInBackground(ArrayList<String> ... userIds) {
             verifySettings();
 
-            Collection<String> userIdList = new ArrayList<String>();
-            ArrayList<User> users = new ArrayList<User>();
-
-            for(int i=0; i<userIds.length; i++)
-                userIdList.add(userIds[i]);
+            Collection<String> userIdList = userIds[0];
+            ArrayList<User> users = new ArrayList<>();
 
             MultiGet multiGet = new MultiGet.Builder.ById(index,userType).addId(userIdList).build();
-
-
 
             try {
                 JestResult result = client.execute(multiGet);
