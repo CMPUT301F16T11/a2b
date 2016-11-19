@@ -20,29 +20,32 @@
         android:layout_height="match_parent"
         android:layout_marginTop="90dp">
         <RadioGroup
-            android:id="@+id/lactate_radio"
+            android:id="@+id/filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <RadioButton
-                android:id="@+id/lactate_default_value"
+                android:id="@+id/request_list_no_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_sort_value"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:onClick="radioButtonOnClickListener"/>
 
             <RadioButton
-                android:id="@+id/lactate_calibrated_value"
+                android:id="@+id/request_list_max_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/max_price"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:onClick="radioButtonOnClickListener"/>
             <RadioButton
-                android:id="@+id/lactate_custom_value"
+                android:id="@+id/request_list_max_price_per_km"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/max_price_per_km"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:onClick="radioButtonOnClickListener"/>
         </RadioGroup>
 
         <EditText

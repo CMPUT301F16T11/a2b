@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -18,14 +20,24 @@ import java.util.ArrayList;
 /**
  * This activity displays a list of requests which corresponds to the current user mode as well
  * as the selected requests to view in the spinner (also in this activity)
+ *
+ * This work, "MainHabitActivity," contains a derivative
+ * "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
+ * used under CC-BY-SA by CMPUT301F16T11.
+ * (Available here:
+ * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
+ * Accessed Nov. 11, 2016
+ *
+ * This work, "MainHabitActivity," contains a derivative of example code from "Radio Buttons,"
+ * from Android Developer Tutorials. It is used under Apache 2.0 by CMPUT301F16T11.
+ * Available here:
+ * https://developer.android.com/guide/topics/ui/controls/radiobutton.html
+ * Accessed Nov. 18, 2016
+ *
  */
 public class RequestListActivity extends AppCompatActivity {
     /**
-     * This work, "MainHabitActivity," contains a derivative
-     * "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
-     * used under CC-BY-SA by Joey-Michael Fallone.
-     * (Available here:
-     * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
+
      */
     private ArrayList<UserRequest> requests;
     private ShadedListAdapter adapter;
@@ -34,6 +46,9 @@ public class RequestListActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerChoices;
     private EditText maxPricePerKM;
     private EditText maxPrice;
+    private RadioButton noFilterButton;
+    private RadioButton maxPriceFilterButton;
+    private RadioButton maxPricePerKMFilterButton;
 
 
     @Override
@@ -71,21 +86,21 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        // Radio Button Stuff
+        noFilterButton = (RadioButton) findViewById(R.id.request_list_no_filter);
+        maxPriceFilterButton = (RadioButton) findViewById(R.id.request_list_max_price);
+        maxPricePerKMFilterButton = (RadioButton) findViewById(R.id.request_list_max_price_per_km);
 
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
-            requests.clear();
-            requests.addAll(RequestController.getNearbyRequests());
         } else {
             // rider
             String[] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
-            requests.clear();
-            requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser()));
         }
 
         adapter = new ShadedListAdapter(this, this.requests);
@@ -101,6 +116,7 @@ public class RequestListActivity extends AppCompatActivity {
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
                         try {
+                            requests.clear();
                             requests.addAll(RequestController.getNearbyRequests());
                         } catch (NullPointerException e) {
                             Log.i("No requests found", "requestlistactivity");
@@ -156,5 +172,9 @@ public class RequestListActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+    }
+
+    public void radioButtonOnClickListener(View v) {
+
     }
 }
