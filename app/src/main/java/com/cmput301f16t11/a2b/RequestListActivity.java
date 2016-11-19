@@ -27,7 +27,7 @@ public class RequestListActivity extends AppCompatActivity {
      * http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
      */
     private ArrayList<UserRequest> requests;
-    private ArrayAdapter<UserRequest> adapter;
+    private ShadedListAdapter adapter;
     private ListView listView;
     private Spinner spinner;
     private ArrayAdapter<String> spinnerChoices;
@@ -37,7 +37,7 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-        this.requests = new ArrayList<UserRequest>();
+        this.requests = new ArrayList<>();
     }
 
     @Override
@@ -60,24 +60,24 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        adapter = new ShadedListAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
-                android.R.id.text1, this.requests);
-        listView.setAdapter(adapter);
-        spinner = (Spinner) findViewById(R.id.requestSpinner);
-        adapter.notifyDataSetChanged();
 
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
+            requests = RequestController.getNearbyRequests();
         } else {
             // rider
             String[] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
+            requests = RequestController.getOwnActiveRequests(UserController.getUser());
         }
 
+        adapter = new ShadedListAdapter(this, this.requests);
+        adapter.notifyDataSetChanged();
+        spinner = (Spinner) findViewById(R.id.requestSpinner);
         spinner.setAdapter(spinnerChoices);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override

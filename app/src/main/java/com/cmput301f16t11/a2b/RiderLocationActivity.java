@@ -43,6 +43,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Main map activity for riders to select their pickup and drop off locations.
@@ -334,7 +336,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     }
 
-    public void displayRideConfirmationDlg(String distance){
+    public void displayRideConfirmationDlg(final String distance){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
 
@@ -412,15 +414,18 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     return;
                 }
 
-                UserRequest request = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
+                //This code grabs the double from a string "12.7 km"
+                Scanner sc = new Scanner(distance);
+                double doubleDistance = sc.nextDouble();
+
+                UserRequest request = new UserRequest(tripStartMarker.getPosition(),
+                        tripEndMarker.getPosition(),
                         userFare,
-                        UserController.getUser());
+                        UserController.getUser().getId(),
+                        doubleDistance);
                 RequestController.addOpenRequest(request);
 
-
-
                 //Add this request to be monitored
-
                 RiderNotificationService.addRequestToBeNotified(request);
 
                 //Clear the map

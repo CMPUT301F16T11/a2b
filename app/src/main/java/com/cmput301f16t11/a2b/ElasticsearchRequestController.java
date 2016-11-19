@@ -843,7 +843,7 @@ public class ElasticsearchRequestController {
     /**
      * Get users who have accepted the request
      */
-    public static class getAcceptedUsersForRequest extends AsyncTask<String, Void, ArrayList<User>>{
+    public static class getAcceptedUsersForRequest extends AsyncTask<String, Void, ArrayList<String>>{
 
         /**
          * Get users who have accepted the request
@@ -852,7 +852,7 @@ public class ElasticsearchRequestController {
          * @return ArrayList of User objs who have accepted the request corresponding to requestID
          */
         @Override
-        protected ArrayList<User> doInBackground(String ... requestId) {
+        protected ArrayList<String> doInBackground(String ... requestId) {
             verifySettings();
 
             Get get = new Get.Builder(index, requestId[0]).type(openRequest).build();
