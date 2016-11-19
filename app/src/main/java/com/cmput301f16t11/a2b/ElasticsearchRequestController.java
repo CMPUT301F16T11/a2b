@@ -90,7 +90,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> riderList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"riderId\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -301,7 +301,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"riderId\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -341,7 +341,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> driverList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"confirmedDriverId\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -372,7 +372,7 @@ public class ElasticsearchRequestController {
         /**
          * Gets requests in in progress state by the rider
          *
-         * @param user the username of the rider
+         * @param user the id of the rider
          * @return ArrayList of UserRequest objs that are in progress and created by user
          */
         @Override
@@ -380,7 +380,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"rider.userName\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"riderId\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -743,7 +743,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": [{\"rider.userName\": \"" + user[0] +
+            String search_string = "{\"query\": { \"match\": [{\"riderId\": \"" + user[0] +
                     "\"}, {\"accepted\": true}]}}";
 
             Search search = new Search.Builder(search_string)
@@ -776,7 +776,7 @@ public class ElasticsearchRequestController {
         /**
          * Get a driver's in progress requests
          *
-         * @param user username of the driver
+         * @param user id of the driver
          * @return ArrayList of UserRequests that the driver is the confirmed driver of
          */
         @Override
@@ -784,7 +784,7 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"driver.userName\": \"" + user[0] + "\"}}}";
+            String search_string = "{\"query\": { \"match\": {\"confirmedDriverId\": \"" + user[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)

@@ -126,7 +126,7 @@ public class RequestController {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
 
             try {
-                userRequests = searchController.execute(user.getName()).get();
+                userRequests = searchController.execute(user.getId()).get();
             } catch(Exception e){
                 e.printStackTrace();
             }
@@ -134,7 +134,7 @@ public class RequestController {
         else {
             ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
             try{
-                userRequests = searchController.execute(user.getName()).get();
+                userRequests = searchController.execute(user.getId()).get();
             }catch(Exception e){
 
             }
@@ -163,7 +163,7 @@ public class RequestController {
         ElasticsearchRequestController.GetAcceptedRequests searchController =
                 new ElasticsearchRequestController.GetAcceptedRequests();
         try {
-            userRequests = searchController.execute(user.getName()).get();
+            userRequests = searchController.execute(user.getId()).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -190,7 +190,7 @@ public class RequestController {
                 new ElasticsearchRequestController.GetAcceptedDriverRequests();
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         try {
-            userRequests = searchController.execute(user.getName()).get();
+            userRequests = searchController.execute(user.getId()).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -216,7 +216,7 @@ public class RequestController {
                 new ElasticsearchRequestController.GetClosedRequests();
 
         try {
-            userRequests = searchController.execute(user.getName()).get();
+            userRequests = searchController.execute(user.getId()).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -308,7 +308,7 @@ public class RequestController {
             ElasticsearchRequestController.GetInPrgressRiderRequests searchController =
                     new ElasticsearchRequestController.GetInPrgressRiderRequests();
             try {
-                temp = searchController.execute(user.getName()).get();
+                temp = searchController.execute(user.getId()).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -318,7 +318,7 @@ public class RequestController {
             ElasticsearchRequestController.GetInPrgressRequests searchController =
                     new ElasticsearchRequestController.GetInPrgressRequests();
             try {
-                temp = searchController.execute(user.getName()).get();
+                temp = searchController.execute(user.getId()).get();
                 ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
                 temp_copy.addAll(temp);
                 for (UserRequest request: temp_copy) {
@@ -410,4 +410,46 @@ public class RequestController {
     }
 
 
+    public static ArrayList<UserRequest> queryByKeywordLocation(String keywords){
+        ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
+                new ElasticsearchRequestController.GetRequestsByStartLocationKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByStartLocationKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+    }
+
+    public static ArrayList<UserRequest> queryByKeywordUserName(String keywords){
+        ElasticsearchRequestController.GetRequestsByUserNameKeyword getRequestsByUserNameKeyword =
+                new ElasticsearchRequestController.GetRequestsByUserNameKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByUserNameKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+
+    }
+
+    public static ArrayList<UserRequest> queryByKeywordDescription(String keywords){
+        ElasticsearchRequestController.GetRequestsByDescriptionKeyword getRequestsByDescriptionKeyword=
+                new ElasticsearchRequestController.GetRequestsByDescriptionKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByDescriptionKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+
+
+    }
 }
+
