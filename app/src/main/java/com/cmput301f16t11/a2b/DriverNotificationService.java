@@ -197,6 +197,7 @@ public class DriverNotificationService extends IntentService {
 
     public static void serviceHandler(UserRequest req, Activity activity) {
         if (!DriverNotificationService.isStarted()) {
+            new DriverNotificationService();
             Intent intent = createIntentDriverNotificationService(activity);
             activity.startService(intent);
         }

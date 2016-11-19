@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -59,6 +60,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Context context;
     private String tripDistance = "? km";
 
+    private int LOCATION_PERMISSIONS = -1;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -99,6 +102,16 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (permission==PackageManager.PERMISSION_DENIED) {
+            Boolean waiting = true;
+
+            while (waiting) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSIONS);
+            }
+        }*/
+
         context = this;
 
         setContentView(R.layout.activity_rider_location);
