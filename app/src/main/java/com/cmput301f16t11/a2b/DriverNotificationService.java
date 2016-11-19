@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,6 +13,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Get;
@@ -24,20 +26,25 @@ import io.searchbox.core.Get;
 
 public class DriverNotificationService extends IntentService {
     private User driver;
-    private UserRequest request;
+    private ArrayList<UserRequest> requests = new ArrayList<>();
 
     //Elastic search stuff
     private static JestDroidClient client;
     private static String index = "f16t11";
 
-    private static String inProgress = "openRequest";
+    private static String type = "inProgress";
     private static DriverNotificationService self;
 
-    public DriverNotificationService(User driver, UserRequest request){
+    public DriverNotificationService(){
         super("intent service");
-        this.driver = driver;
-        this.request = request;
+        self = this;
+        driver = UserController.getUser();
+    }
 
+    public DriverNotificationService(ArrayList<UserRequest> requests) {
+        super("intent service");
+        this.requests = requests;
+        driver = UserController.getUser();
         self = this;
     }
 
@@ -45,25 +52,36 @@ public class DriverNotificationService extends IntentService {
     protected void onHandleIntent(Intent workIntent) {
         verifySettings();
         while(true) {
+            synchronized (requests) {
+                // Iterator idea taken to avoid exceptions while removing inside for loop
+                // Taken from the link below on November 18, 2016
+                // http://stackoverflow.com/questions/223918/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re
+                for (Iterator<UserRequest> iterator = requests.iterator(); iterator.hasNext(); ) {
+                    UserRequest request = iterator.next();
+                    UserRequest serverRequest = getInProgressRequest(request.getId());
+                    if (serverRequest != null) {
+                        //If the driver is accepted notify him also notify the drivers that are not chose
+                        if (serverRequest.getConfirmedDriver().equals(driver.getId())) {
+                            sendNotificationOfRiderConfirmed(serverRequest);
+                        } else {
+                            sendNotificationOfRiderRejected(serverRequest);
+                        }
+                        iterator.remove();
+                    }
+                }
 
-//            UserRequest serverRequest = getInProgressRequest(request.getId());
-//            if(serverRequest != null){
-//
-//                //If the driver is accepted notify him also notify the drivers that are not chose
-//                if(serverRequest.getConfirmedDriver().getName().equals(driver.getName())){
-//                    sendNotificationOfRiderConfirmed(serverRequest);
-//                }
-//                else{
-//                    sendNotificationOfRiderRejected(serverRequest);
-//                }
-//                stopSelf();
-//            }
-//
-//            try{
-//                Thread.sleep(10000);
-//            }catch(InterruptedException e){
-//                e.printStackTrace();
-//            }
+                // If there are no more requests stop the service
+                if (requests.size() == 0) {
+                    stopSelf();
+                }
+            }
+
+            // Wait 3s before trying again
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
        }
     }
 
@@ -72,9 +90,8 @@ public class DriverNotificationService extends IntentService {
      *
      * @param context the context of which the intent should be created form
      */
-    public static Intent createIntentStartNotificationService(Context context) {
-
-        Intent intent = new Intent(context, RiderNotificationService.class);
+    public static Intent createIntentDriverNotificationService(Context context) {
+        Intent intent = new Intent(context, DriverNotificationService.class);
         return intent;
     }
 
@@ -101,7 +118,7 @@ public class DriverNotificationService extends IntentService {
      */
     private UserRequest getInProgressRequest(String requestId){
         verifySettings();
-        Get get = new Get.Builder(index, requestId).type(inProgress).build();
+        Get get = new Get.Builder(index, requestId).type(type).build();
 
         UserRequest userRequest;
         try {
@@ -127,9 +144,7 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that a notification will be sent regarding
      */
     private void sendNotificationOfRiderConfirmed(UserRequest request){
-        String notification = request.getRider()+ "has confirmed your request."+ request.getId();
-
-        notification = notification + "has Accepted request" + request.getId();
+        String notification = request.getRider()+ " has accepted your ride for request " + request.getId();
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
@@ -152,9 +167,7 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that has been rejected
      */
     private  void sendNotificationOfRiderRejected(UserRequest request){
-        String notification = request.getRider()+ "has reject your request.";
-
-        notification = notification + "has Accepted request" + request.getId();
+        String notification = request.getRider()+ " has taken another ride for request " + request.getId();
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
@@ -167,7 +180,28 @@ public class DriverNotificationService extends IntentService {
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(0, noti);
-
-        //TODO: re-enable the driver to be able to accept requests
     }
+
+    public void addRequest(UserRequest req) {
+        synchronized (requests) {
+            requests.add(req);
+        }
+    }
+
+    public static Boolean isStarted() {
+        if (self==null) {
+            return false;
+        }
+        return true;
+    }
+
+    public static void serviceHandler(UserRequest req, Activity activity) {
+        if (!DriverNotificationService.isStarted()) {
+            Intent intent = createIntentDriverNotificationService(activity);
+            activity.startService(intent);
+        }
+
+        DriverNotificationService.self.addRequest(req);
+    }
+
 }

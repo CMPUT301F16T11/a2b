@@ -87,6 +87,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                 RequestController.setRequestConfirmedDriver(request,
                                         acceptedDrivers.get(currPosition),
                                         RequestDetailActivity.this);
+                                DriverNotificationService.serviceHandler(request, RequestDetailActivity.this);
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 // do nada
