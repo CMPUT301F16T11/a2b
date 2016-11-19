@@ -451,5 +451,11 @@ public class RequestController {
 
 
     }
+    public static void updateDriverRating(String driverId, Double newRating){
+        ElasticsearchUserController.AddToDriverRating addToDriverRating =
+                new ElasticsearchUserController.AddToDriverRating();
+        addToDriverRating.execute(driverId,newRating.toString());
+
+    }
 }
 

@@ -24,8 +24,8 @@ public class User {
     private String phoneNumber;
     private Vehicle car;
     private int driverCompletions;
-    private int totalRating;
-    private double rating;
+    private int numRatings;
+    private double totalRating;
 
 //    private Mode mode;
 
@@ -54,6 +54,8 @@ public class User {
         activeRequestsAsDriver = new ArrayList<UserRequest>();
         userName = name;
         this.email = email;
+        numRatings = -1;
+        totalRating = -1;
     }
 
     User(String name, String email, String phone) {
@@ -65,6 +67,8 @@ public class User {
         userName = name;
         this.email = email;
         phoneNumber = phone;
+        numRatings = -1;
+        totalRating = -1;
     }
 
     User(String name, String email, String phone, Vehicle car) {
@@ -77,7 +81,8 @@ public class User {
         this.email = email;
         phoneNumber = phone;
         this.car = car;
-        rating = -1;
+        numRatings = -1;
+        totalRating = -1;
     }
 
 
@@ -197,9 +202,9 @@ public class User {
      *
      * @return rating : int
      */
-    public double getRating() {return rating;}
+    public int getNumRatings() {return numRatings;}
 
-    public int getTotalRating() {return totalRating;}
+    public double getTotalRating() {return totalRating;}
 
     public int getDriverCompletions() {return driverCompletions;}
 
@@ -285,9 +290,9 @@ public class User {
         this.id = id;
     }
 
-    public void setRating(double i) {rating = i;}
+    //public void setRating(double i) {totalRating = i;}
 
-    public void setTotalRating(int i) {totalRating = i;}
+    //public void setTotalRating(int i) {totalRating = i;}
 
     public void setDriverCompletions(int i) {driverCompletions = i;}
 

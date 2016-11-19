@@ -3,6 +3,7 @@ package com.cmput301f16t11.a2b;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.common.math.DoubleMath;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
@@ -22,6 +23,7 @@ import io.searchbox.core.Index;
 import io.searchbox.core.MultiGet;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
+import io.searchbox.core.Update;
 
 /**
  * Elasticsearch controller to deal with user stuff on the elasticsearch server
@@ -297,6 +299,65 @@ public class ElasticsearchUserController {
             }
 
             return user;
+        }
+    }
+
+    public static class AddToDriverRating extends AsyncTask<String, Void, Boolean>{
+        @Override
+        /**
+         * info[0] = the driver id
+         * info[1] = the new rating as a double string
+         */
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+            Double rating = Double.parseDouble(info[1]);
+
+            // update scripts
+            String updateNumRatings = "{\n" +
+                    "    \"script\" : \"ctx._source.numRatings += one\",\n" +
+                    "    \"params\" : {\n" +
+                    "        \"one\" : 1\n" +
+                    "    }\n" +
+                    "}";
+            String updateTotalRating = "{\n" +
+                    "    \"script\" : \"ctx._source.totalRating += rating\",\n" +
+                    "    \"params\" : {\n" +
+                    "        \"rating\" : "+ rating.toString() +"\n" +
+                    "    }\n" +
+                    "}";
+
+
+            //preform the update to number of ratings
+            try {
+                DocumentResult result = client.execute(new Update.Builder(updateNumRatings).index(index).type(userType).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Elasticsearch failed to update user rating");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                Log.i("Error", "Failed to update user rating");
+                e.printStackTrace();
+                return false;
+            }
+
+            //preform the update to the total rating
+            try {
+                DocumentResult result = client.execute(new Update.Builder(updateTotalRating).index(index).type(userType).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Elasticsearch failed to update user rating");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                Log.i("Error", "Failed to update user rating");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
         }
     }
 
