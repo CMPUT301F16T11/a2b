@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import com.google.gson.Gson;
@@ -31,6 +32,8 @@ public class RequestListActivity extends AppCompatActivity {
     private ListView listView;
     private Spinner spinner;
     private ArrayAdapter<String> spinnerChoices;
+    private EditText maxPricePerKM;
+    private EditText maxPrice;
 
 
     @Override
@@ -74,13 +77,15 @@ public class RequestListActivity extends AppCompatActivity {
             String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
-            requests = RequestController.getNearbyRequests();
+            requests.clear();
+            requests.addAll(RequestController.getNearbyRequests());
         } else {
             // rider
             String[] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
             spinnerChoices = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
-            requests = RequestController.getOwnActiveRequests(UserController.getUser());
+            requests.clear();
+            requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser()));
         }
 
         adapter = new ShadedListAdapter(this, this.requests);
