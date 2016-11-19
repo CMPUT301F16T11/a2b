@@ -119,6 +119,7 @@ public class MarkerInfoDialog extends DialogFragment {
             public void onClick(View v) {
                 ElasticsearchRequestController.AddDriverAcceptanceToRequest addDriverTask = new ElasticsearchRequestController.AddDriverAcceptanceToRequest(getActivity());
                 addDriverTask.execute(req.getId(), UserController.getUser().getId());
+                DriverNotificationService.serviceHandler(req, getActivity());
                 getDialog().dismiss();
             }
         });

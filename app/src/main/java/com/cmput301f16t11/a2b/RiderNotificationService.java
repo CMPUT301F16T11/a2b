@@ -63,7 +63,7 @@ public class RiderNotificationService extends IntentService {
                 }
             }
 
-            //We need this here so we arent constantly hogging resource and communication with server
+            //We need this here so we aren't constantly hogging resource and communication with server
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
@@ -210,12 +210,18 @@ public class RiderNotificationService extends IntentService {
      * @param addedUsers
      */
     private  void sendNotificationOfAcceptedDriver(ArrayList<String> addedUsers, String requestId){
-        String notification = "";
-        for(String userId: addedUsers){
-            String name = getUserName(userId);
-            notification = notification + name + " ";
+        String notification;
+        notification = addedUsers.get(0);
+        for(int i = 1; i < addedUsers.size(); i++){
+            String name = getUserName(addedUsers.get(i));
+            if (i==addedUsers.size()-1) {
+                notification += " & " + name + " have";
+            } else {
+                notification += ", " + name;
+            }
         }
-        notification = notification + "has Accepted request " + requestId;
+        if (addedUsers.size()==1) {notification += " has";}
+        notification = notification + " accepted request " + requestId;
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
