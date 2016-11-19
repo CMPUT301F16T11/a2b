@@ -131,7 +131,7 @@ public class User {
 
 
     //Getters
-
+    public Vehicle getCar(){return car;}
     /**
      * gets user name  of user
      *

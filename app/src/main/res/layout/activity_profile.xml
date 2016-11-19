@@ -10,6 +10,7 @@
     tools:context="com.cmput301f16t11.a2b.ProfileActivity">
 
     <ImageView
+        android:id = "@+id/a2b_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -74,10 +75,9 @@
         android:id="@+id/editProfile"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
-        android:layout_marginTop="75dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/carColor"
-        android:layout_alignEnd="@+id/phoneNumberTextView" />
+        android:layout_above="@id/a2b_logo"
+        android:layout_marginBottom="64dp"/>
 
     <TextView
         android:text="@string/carModel"
