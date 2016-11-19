@@ -255,19 +255,19 @@ public class ElasticsearchRequestController {
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
-
+            String requestId = info[0];
+            String driverId = info[1];
 
             // update an existing request
             //TO DO: check it the request exists first
 
             // update script
 
-            String script = "{ \"script\" : \" ctx._source.confirmedDriver = newDriver }\", \"params\" : "+
-                    "{\"newDriver\" : {\"id\":\""  + info[0] +"\"}}}";
-
+            String script = "{ \"script\" : \" ctx._source.confirmedDriverId = newDriver }\", \"params\" : "+
+                    "{\"newDriver\" : {\"id\":\""  + driverId +"\"}}}";
 
             try {
-                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(requestId).build());
 
                 if (!result.isSucceeded()) {
                     Log.i("Error", "Failed to find user requests for rider");

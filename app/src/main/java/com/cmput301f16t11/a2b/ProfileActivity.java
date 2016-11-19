@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 /**
  * ProfileActivity allows a user to view their own profile as well as though of other users
  */
@@ -92,6 +94,24 @@ public class ProfileActivity extends AppCompatActivity {
         TextView userNameTV = (TextView) findViewById(R.id.userName);
         TextView emailTV = (TextView) findViewById(R.id.emailText);
         TextView phoneNumberTV = (TextView) findViewById(R.id.phoneNumberTextView);
+        TextView carYear = (TextView) findViewById(R.id.carYear);
+        TextView carMake = (TextView) findViewById(R.id.carMake);
+        TextView carModel = (TextView) findViewById(R.id.carModel);
+        TextView carColor = (TextView) findViewById(R.id.carColor) ;
+
+        Vehicle vehicle = user.getCar();
+        if(vehicle.isSet()){
+            carYear.setText(String.valueOf(vehicle.getYear()));
+            carMake.setText(vehicle.getMake());
+            carModel.setText(vehicle.getModel());
+            carColor.setText(vehicle.getColor());
+        }
+        else {
+            carYear.setVisibility(View.GONE);
+            carMake.setVisibility(View.GONE);
+            carModel.setVisibility(View.GONE);
+            carColor.setVisibility(View.GONE);
+        }
 
         userNameTV.setText(this.user.getName());
         emailTV.setText(this.user.getEmail());

@@ -5,17 +5,16 @@ package com.cmput301f16t11.a2b;
  */
 
 public class Vehicle {
-    private static String make;
-    private static String model;
-    private static String color;
-    private static int year;
+    private String make;
+    private String model;
+    private String color;
+    private int year;
 
     public Vehicle(){
         make = "";
         model = "";
         color = "";
         year = 0;
-
     }
 
     public Vehicle(String make, String model, String color, int year){
@@ -23,39 +22,46 @@ public class Vehicle {
         this.model = model;
         this.color = color;
         this.year = year;
-
     }
 
 
-    public static String getMake() {
+    public Boolean isSet(){
+
+        if(make.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    public String getMake() {
         return make;
     }
 
-    public static void setMake(String make) {
-        Vehicle.make = make;
+    public void setMake(String make) {
+        this.make = make;
     }
 
-    public static String getModel() {
+    public String getModel() {
         return model;
     }
 
-    public static void setModel(String model) {
-        Vehicle.model = model;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public static String getColor() {
+    public String getColor() {
         return color;
     }
 
-    public static void setColor(String color) {
-        Vehicle.color = color;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    public static int getYear() {
+    public int getYear() {
         return year;
     }
 
-    public static void setYear(int year) {
-        Vehicle.year = year;
+    public void setYear(int year) {
+        this.year = year;
     }
 }

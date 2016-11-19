@@ -128,5 +128,6 @@
     <string name="complete">Complete</string>
     <string name="title_activity_empty_map">Map</string>
     <string name="insert_value">Insert Value</string>
+    <string name="empty_wallet">0.00</string>
 
 </resources>
