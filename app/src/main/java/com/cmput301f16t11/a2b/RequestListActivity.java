@@ -76,6 +76,7 @@ public class RequestListActivity extends AppCompatActivity {
         }
 
         adapter = new ShadedListAdapter(this, this.requests);
+        listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         spinner = (Spinner) findViewById(R.id.requestSpinner);
         spinner.setAdapter(spinnerChoices);
