@@ -90,7 +90,17 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> riderList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\":0. \"to\":100, \"query\": {\"match\": {\"riderId\": \"" + user[0] + "\"}}}";
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"term\" : {\n" +
+                    "                    \"riderId\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -127,6 +137,7 @@ public class ElasticsearchRequestController {
          * @return ArrayList of UserRequest objs in questions
          * @deprecated
          */
+
         @Deprecated
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
@@ -301,7 +312,17 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"riderId\": \"" + user[0] + "\"}}}";
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"term\" : {\n" +
+                    "                    \"riderId\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -380,7 +401,17 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"riderId\": \"" + user[0] + "\"}}}";
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"term\" : {\n" +
+                    "                    \"riderId\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
