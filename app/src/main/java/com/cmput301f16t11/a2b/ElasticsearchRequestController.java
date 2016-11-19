@@ -362,7 +362,18 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> driverList = new ArrayList<UserRequest>();
-            String search_string = "{\"from\": 0, \"to\": 100, \"query\": { \"match\": {\"confirmedDriverId\": \"" + user[0] + "\"}}}";
+
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"term\" : {\n" +
+                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
@@ -815,7 +826,17 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": {\"confirmedDriverId\": \"" + user[0] + "\"}}}";
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"term\" : {\n" +
+                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
