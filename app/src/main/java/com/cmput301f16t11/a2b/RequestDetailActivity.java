@@ -146,13 +146,15 @@ public class RequestDetailActivity extends AppCompatActivity {
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
         if (request.getConfirmedDriver() != null) {
-            driverName.setText(request.getConfirmedDriver().toString());
+            driverName.setText(
+                    UserController.getUserFromId(request.getConfirmedDriver()).getName());
             driverName.setTextColor(Color.rgb(6, 69, 173));
             driverName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                    intent.putExtra("username", request.getConfirmedDriver().toString());
+                    intent.putExtra("username",
+                            UserController.getUserFromId(request.getConfirmedDriver()).getName());
                     startActivity(intent);
                 }
             });
@@ -161,13 +163,14 @@ public class RequestDetailActivity extends AppCompatActivity {
         }
 
         TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
-        riderName.setText(request.getRider().toString());
+        riderName.setText(UserController.getUserFromId(request.getRider()).getName());
         riderName.setTextColor(Color.rgb(6, 69, 173));
         riderName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username", request.getRider().toString());
+                intent.putExtra("username",
+                        UserController.getUserFromId(request.getRider()).getName());
                 startActivity(intent);
             }
         });

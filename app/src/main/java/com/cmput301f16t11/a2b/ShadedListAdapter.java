@@ -38,7 +38,6 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
     @Override
     public View getView(int pos, View v, ViewGroup vGroup) {
-        View view = super.getView(pos, v, vGroup);
         // Get the data item for this position
         UserRequest request = requests.get(pos);
 
@@ -48,7 +47,10 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
         if (pos % 2 == 0) {
             // if even, shade the background
-            view.setBackgroundColor(Color.rgb(224, 224, 224));
+            v.setBackgroundColor(Color.rgb(224, 224, 224));
+        }
+        else{
+            v.setBackgroundColor(Color.WHITE);
         }
 
         return setViews(v, request);
