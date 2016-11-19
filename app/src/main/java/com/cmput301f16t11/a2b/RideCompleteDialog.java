@@ -41,6 +41,8 @@ public class RideCompleteDialog extends DialogFragment {
 
     private UserRequest req;
     private int rating = -1;
+    private String confirmedDriverName;
+    private String riderName;
 
     /**
      * Static creator method that assigns UserRequest to dialog
@@ -52,8 +54,10 @@ public class RideCompleteDialog extends DialogFragment {
         RideCompleteDialog dialog = new RideCompleteDialog();
 
         Bundle args = new Bundle();
-        args.putString("rider", req.getConfirmedDriver().getName().toString());
-        args.putString("driver", req.getRider().getName().toString());
+        User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriver());
+        User rider = UserController.getUserFromId(req.getRider());
+        args.putString("rider", confirmedDriver.getName());
+        args.putString("driver", rider.getName());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -86,8 +90,8 @@ public class RideCompleteDialog extends DialogFragment {
         // Assign views, get request and set views
         assignViews();
         req = getArguments().getParcelable("req");
-        req.getConfirmedDriver().setName(getArguments().getString("driver"));
-        req.getRider().setName(getArguments().getString("rider"));
+        confirmedDriverName = getArguments().getString("driver");
+        riderName = getArguments().getString("rider");
         setViews();
 
         return layout;
@@ -117,8 +121,8 @@ public class RideCompleteDialog extends DialogFragment {
      *  Sets okButton click listener
      */
     public void setViews() {
-        driver.setText(req.getConfirmedDriver().getName());
-        rider.setText(req.getRider().getName());
+        driver.setText(confirmedDriverName);
+        rider.setText(riderName);
         pickup.setText(req.getStartLocation().toString());
         dropoff.setText(req.getEndLocation().toString());
         fare.setText(req.getFare().toString());

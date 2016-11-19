@@ -10,7 +10,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class MockUserRequest extends UserRequest {
 
     public MockUserRequest(LatLng start, LatLng end, Number fare, User user){
-        super(start,end,fare,user);
+        super(start,end,fare, user.getId());
 
     }
 }

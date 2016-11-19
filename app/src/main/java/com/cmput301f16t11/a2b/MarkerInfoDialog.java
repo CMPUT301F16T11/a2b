@@ -19,7 +19,6 @@ import java.util.List;
  */
 public class MarkerInfoDialog extends DialogFragment {
 
-    private View layout;
     private TextView riderText;
     private TextView startText;
     private TextView endText;
@@ -28,6 +27,7 @@ public class MarkerInfoDialog extends DialogFragment {
     private Button cancelButton;
 
     private UserRequest req;
+    private String riderName;
 
     /**
      * Static creator method that assigns UserRequest to dialog
@@ -39,7 +39,9 @@ public class MarkerInfoDialog extends DialogFragment {
         MarkerInfoDialog dialog = new MarkerInfoDialog();
 
         Bundle args = new Bundle();
-        args.putString("rider", req.getRider().getName().toString());
+        String riderId = req.getRider();
+        User user = UserController.getUserFromId(riderId);
+        args.putString("rider", user.getName());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -60,7 +62,7 @@ public class MarkerInfoDialog extends DialogFragment {
         // Assign views, get request and set views
         assignViews(parent);
         req = getArguments().getParcelable("req");
-        req.getRider().setName(getArguments().getString("rider"));
+        riderName = getArguments().getString("rider");
         setViews();
 
         return builder.create();
@@ -106,7 +108,7 @@ public class MarkerInfoDialog extends DialogFragment {
         }
 
         // Set the textViews
-        riderText.setText(req.getRider().getName());
+        riderText.setText(riderName);
         startText.setText(startAddress);
         endText.setText(endAddress);
         fareText.setText(req.getFare().toString());

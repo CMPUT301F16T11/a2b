@@ -46,25 +46,25 @@ public class DriverNotificationService extends IntentService {
         verifySettings();
         while(true) {
 
-            UserRequest serverRequest = getInProgressRequest(request.getId());
-            if(serverRequest != null){
-
-                //If the driver is accepted notify him also notify the drivers that are not chose
-                if(serverRequest.getConfirmedDriver().getName().equals(driver.getName())){
-                    sendNotificationOfRiderConfirmed(serverRequest);
-                }
-                else{
-                    sendNotificationOfRiderRejected(serverRequest);
-                }
-                stopSelf();
-            }
-
-            try{
-                Thread.sleep(10000);
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
+//            UserRequest serverRequest = getInProgressRequest(request.getId());
+//            if(serverRequest != null){
+//
+//                //If the driver is accepted notify him also notify the drivers that are not chose
+//                if(serverRequest.getConfirmedDriver().getName().equals(driver.getName())){
+//                    sendNotificationOfRiderConfirmed(serverRequest);
+//                }
+//                else{
+//                    sendNotificationOfRiderRejected(serverRequest);
+//                }
+//                stopSelf();
+//            }
+//
+//            try{
+//                Thread.sleep(10000);
+//            }catch(InterruptedException e){
+//                e.printStackTrace();
+//            }
+       }
     }
 
     /**

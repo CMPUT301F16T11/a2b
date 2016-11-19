@@ -17,9 +17,9 @@ import io.searchbox.annotations.JestId;
  * (if any), fare and other details.
  */
 public class UserRequest implements Parcelable {
-    private ArrayList<User> acceptedDrivers;
-    private User confirmedDriver;
-    private User rider;
+    private ArrayList<String> acceptedDriverIds; // all the rider ids
+    private String confirmedDriverId;
+    private String riderId;
     private Point startLocation;
     private Point endLocation;
 
@@ -34,48 +34,47 @@ public class UserRequest implements Parcelable {
     @JestId
     private String id;
 
-    public UserRequest(LatLng start, LatLng end, Number fare, User rider){
+    public UserRequest(LatLng start, LatLng end, Number fare, String riderId){
         this.startLocation = new Point(start.latitude,start.longitude);
         this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
-        this.rider = rider;
+        this.riderId = riderId;
         this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
         this.id = null;
-        acceptedDrivers = new ArrayList<User>();
+        acceptedDriverIds = new ArrayList<>();
     }
 
-    public UserRequest(LatLng start, LatLng end, Number fare, User rider, Double distance) {
+    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance) {
         this.startLocation = new Point(start.latitude,start.longitude);
         this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
-        this.rider = rider;
+        this.riderId = riderId;
         this.distance = distance;
         this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         this.accepted = false;
         this.completed = false;
         this.paymentReceived = false;
         this.id = null;
-        acceptedDrivers = new ArrayList<User>();
-
+        acceptedDriverIds = new ArrayList<>();
     }
 
     public void clearAcceptedDrivers(){
-        acceptedDrivers = new ArrayList<User>();
+        acceptedDriverIds.clear();
     }
 
     // Getters
-    public User getConfirmedDriver() {
-        return this.confirmedDriver;
+    public String getConfirmedDriver() {
+        return this.confirmedDriverId;
     }
 
-    public ArrayList<User> getAcceptedDrivers() {
-        return this.acceptedDrivers;
+    public ArrayList<String> getAcceptedDrivers() {
+        return this.acceptedDriverIds;
     }
-    public User getRider() {
-        return rider;
+    public String getRider() {
+        return riderId;
     }
     public LatLng getEndLocation() {
         return new LatLng(this.endLocation.getLat(),this.endLocation.getLon());
@@ -84,8 +83,9 @@ public class UserRequest implements Parcelable {
         return fare;
     }
     public LatLng getStartLocation() {
-        return new LatLng(this.startLocation.getLat(),this.startLocation.getLon());
+        return new LatLng(this.startLocation.getLat(), this.startLocation.getLon());
     }
+
     public boolean getAcceptedStatus(){
         return accepted;
     }
@@ -112,13 +112,12 @@ public class UserRequest implements Parcelable {
     }
 
     // setters
-
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setConfirmedDriver(User d) {
-        this.confirmedDriver = d;
+    public void setConfirmedDriver(String id) {
+        this.confirmedDriverId = id;
     }
 
     public void setStartLocation(LatLng startLocation) {
@@ -146,9 +145,9 @@ public class UserRequest implements Parcelable {
         return paymentReceived;
     }
     public boolean hasConfirmedRider() {
-        return this.confirmedDriver != null;
+        return this.confirmedDriverId != null;
     }
-    public void  addAcceptedDriver(User user){this.acceptedDrivers.add(user);}
+    public void  addAcceptedDriver(String id){this.acceptedDriverIds.add(id);}
 
     /* Parcelable Stuff */
 
