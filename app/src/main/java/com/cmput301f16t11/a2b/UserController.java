@@ -65,7 +65,7 @@ public class UserController {
 
         int newTotal = currTotal+1;
         int newTotalRating = currTotalRating + r;
-        int newRating = newTotalRating/newTotal;
+        double newRating = newTotalRating/newTotal;
 
         user.setRating(newRating);
         user.setDriverCompletions(newTotal);

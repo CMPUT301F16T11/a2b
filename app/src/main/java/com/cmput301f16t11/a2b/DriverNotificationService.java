@@ -30,7 +30,7 @@ public class DriverNotificationService extends IntentService {
     private static JestDroidClient client;
     private static String index = "f16t11";
 
-    private static String inProgress = "inProgress";
+    private static String inProgress = "openRequest";
     private static DriverNotificationService self;
 
     public DriverNotificationService(User driver, UserRequest request){

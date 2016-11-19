@@ -25,7 +25,7 @@ public class User {
     private Vehicle car;
     private int driverCompletions;
     private int totalRating;
-    private int rating;
+    private double rating;
 
 //    private Mode mode;
 
@@ -197,7 +197,7 @@ public class User {
      *
      * @return rating : int
      */
-    public int getRating() {return rating;}
+    public double getRating() {return rating;}
 
     public int getTotalRating() {return totalRating;}
 
@@ -285,7 +285,7 @@ public class User {
         this.id = id;
     }
 
-    public void setRating(int i) {rating = i;}
+    public void setRating(double i) {rating = i;}
 
     public void setTotalRating(int i) {totalRating = i;}
 
