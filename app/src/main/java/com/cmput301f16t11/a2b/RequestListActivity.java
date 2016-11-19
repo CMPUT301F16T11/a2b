@@ -42,8 +42,16 @@ public class RequestListActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+        //TODO: Refactor (extraction)
         super.onResume();
         // listView Stuff
+        // two content views (depending on driver vs rider)
+        if (UserController.checkMode() == Mode.DRIVER) {
+            setContentView(R.layout.activity_request_list_driver);
+        }
+        else {
+            setContentView(R.layout.activity_request_list);
+        }
         requests.clear();
         listView = (ListView) findViewById(R.id.requestList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

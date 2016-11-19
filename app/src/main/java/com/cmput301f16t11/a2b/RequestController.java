@@ -100,7 +100,7 @@ public class RequestController {
         try{
             nearbyRequests = getNearbyRequestsGeoFilter.execute(distance,lat,lon).get();
         }catch(Exception e){
-            Log.i("Error", "Failiure");
+            Log.i("Error", "Failure");
             e.printStackTrace();
         }
 
