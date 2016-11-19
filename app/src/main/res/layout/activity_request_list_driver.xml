@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/no_sort_value"
                 android:textSize="15sp"
-                android:onClick="radioButtonOnClickListener"/>
+                android:onClick="radioButtonOnClickListener"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/request_list_max_price"
@@ -56,10 +57,9 @@
             android:id="@+id/insert_max_price"
             android:layout_marginTop="24dp"
             android:textSize="12sp"
-            android:text="@string/insert_value"
+            android:text="@string/empty_wallet"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/insert_max_price_per_km"
-            android:selectAllOnFocus="true"/>
+            android:layout_alignStart="@+id/insert_max_price_per_km"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -68,11 +68,10 @@
             android:ems="10"
             android:id="@+id/insert_max_price_per_km"
             android:textSize="12sp"
-            android:text="@string/insert_value"
+            android:text="@string/empty_wallet"
             android:layout_marginStart="18dp"
             android:layout_alignBottom="@+id/filters"
-            android:layout_toEndOf="@+id/filters"
-            android:selectAllOnFocus="true"/>
+            android:layout_toEndOf="@+id/filters" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="wrap_content"

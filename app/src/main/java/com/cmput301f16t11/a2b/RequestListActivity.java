@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -33,6 +36,13 @@ import java.util.ArrayList;
  * from Android Developer Tutorials. It is used under Apache 2.0 by CMPUT301F16T11.
  * Available here:
  * https://developer.android.com/guide/topics/ui/controls/radiobutton.html
+ * Accessed Nov. 18, 2016
+ *
+ * This work, "RequestListActivity," contains a derivative of example code from "Show Keyboard
+ * Automatically," answer by "Feonix," a stackoverflow user. Used under CC-BY-SA by
+ * CMPUT301F16T11.
+ * Available here:
+ * http://stackoverflow.com/questions/14759253/show-keyboard-automatically
  * Accessed Nov. 18, 2016
  *
  */
@@ -93,7 +103,7 @@ public class RequestListActivity extends AppCompatActivity {
             maxPricePerKM.setEnabled(false);
             maxPrice.setFocusable(true);
             maxPricePerKM.setFocusable(true);
-            ((View) findViewById(R.id.activity_request_driver)).clearFocus();
+            hideKeyboard();
         }
 
         // spinner stuff
@@ -112,7 +122,10 @@ public class RequestListActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         spinner = (Spinner) findViewById(R.id.requestSpinner);
+        spinner.setFocusable(true);
+        spinner.requestFocus();
         spinner.setAdapter(spinnerChoices);
+        hideKeyboard();
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -194,7 +207,9 @@ public class RequestListActivity extends AppCompatActivity {
             case R.id.request_list_no_filter:
                 if (checked) {
                     maxPrice.setEnabled(false);
+                    maxPrice.setText(R.string.empty_wallet);
                     maxPricePerKM.setEnabled(false);
+                    maxPricePerKM.setText(R.string.empty_wallet);
                     v.clearFocus();
                     break;
                 }
@@ -202,16 +217,36 @@ public class RequestListActivity extends AppCompatActivity {
                 if (checked) {
                     maxPrice.setEnabled(true);
                     maxPrice.requestFocus();
+                    maxPrice.setText("");
+                    showKeyboard(maxPrice);
                     maxPricePerKM.setEnabled(false);
+                    maxPricePerKM.setText(R.string.empty_wallet);
                     break;
                 }
             case R.id.request_list_max_price_per_km:
                 if (checked) {
                     maxPrice.setEnabled(false);
+                    maxPrice.setText(R.string.empty_wallet);
                     maxPricePerKM.setEnabled(true);
                     maxPricePerKM.requestFocus();
+                    maxPricePerKM.setText("");
+                    showKeyboard(maxPricePerKM);
                     break;
                 }
+        }
+    }
+
+    private void showKeyboard(EditText editText) {
+        InputMethodManager imm =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    private void hideKeyboard() {// Check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 }
