@@ -274,11 +274,11 @@ public class RequestListActivity extends AppCompatActivity {
                 }
             case R.id.request_list_max_price_per_km:
                 if (checked) {
-                    maxPrice.setEnabled(false);
                     maxPricePerKM.setEnabled(true);
                     maxPricePerKM.requestFocus();
-                    maxPrice.setText("");
+                    maxPricePerKM.setText("");
                     showKeyboard(maxPricePerKM);
+                    maxPrice.setEnabled(false);
                     this.filterMaxPrice = false;
                     this.filterMaxPricePerKM = true;
                     break;
