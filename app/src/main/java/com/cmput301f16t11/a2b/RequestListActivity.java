@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.TextKeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -19,7 +21,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.google.gson.Gson;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -58,6 +64,8 @@ public class RequestListActivity extends AppCompatActivity {
     private ArrayAdapter<String> spinnerChoices;
     private EditText maxPricePerKM;
     private EditText maxPrice;
+    private Boolean filterMaxPrice;
+    private Boolean filterMaxPricePerKM;
 
 
     @Override
@@ -73,6 +81,8 @@ public class RequestListActivity extends AppCompatActivity {
         //TODO: Refactor (extraction)
         super.onResume();
         hideKeyboard();
+        this.filterMaxPrice = Boolean.FALSE;
+        this.filterMaxPricePerKM = Boolean.FALSE;
         // listView Stuff
         // two content views (depending on driver vs rider)
         if (UserController.checkMode() == Mode.DRIVER) {
@@ -104,8 +114,35 @@ public class RequestListActivity extends AppCompatActivity {
             maxPricePerKM = (EditText) findViewById(R.id.insert_max_price_per_km);
             maxPrice.setEnabled(false);
             maxPricePerKM.setEnabled(false);
-//            maxPrice.setFocusable(true);
-//            maxPricePerKM.setFocusable(true);
+            maxPricePerKM.setText(R.string.empty_wallet);
+            maxPrice.setText(R.string.empty_wallet);
+            maxPricePerKM.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        filterMaxPricePerKM = true;
+                        filterMaxPrice =false;
+                        updateData();
+                        hideKeyboard();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            maxPrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                        filterMaxPrice = true;
+                        filterMaxPricePerKM = false;
+                        spinner.setSelection(spinner.getSelectedItemPosition(), false);
+                        updateData();
+                        hideKeyboard();
+                        return true;
+                    }
+                    return false;
+                }
+            });
             hideKeyboard();
         }
 
@@ -137,9 +174,10 @@ public class RequestListActivity extends AppCompatActivity {
                     if (UserController.checkMode() == Mode.DRIVER) {
                         try {
                             requests.clear();
-                            requests.addAll(RequestController.getNearbyRequests());
+                            requests.addAll(
+                                    getFilteredRequests(RequestController.getNearbyRequests()));
                         } catch (NullPointerException e) {
-                            Log.i("No requests found", "requestlistactivity");
+                            Log.i("No requests found", "driver mode");
                         }
                     }
                     else {
@@ -156,7 +194,9 @@ public class RequestListActivity extends AppCompatActivity {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
                     if (UserController.checkMode().equals(Mode.DRIVER)) {
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByUser(UserController.getUser()));
+                        requests.addAll(
+                                getFilteredRequests(RequestController.getAcceptedByUser(
+                                        UserController.getUser())));
                     } else {
                         // users
                         requests.clear();
@@ -171,8 +211,9 @@ public class RequestListActivity extends AppCompatActivity {
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
                     requests.clear();
-                    requests.addAll(RequestController.getConfirmedByRiders(UserController.getUser(),
-                            UserController.checkMode()));
+                    requests.addAll(
+                            getFilteredRequests(RequestController.getConfirmedByRiders(
+                                    UserController.getUser(), UserController.checkMode())));
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 } else if (position == 3) {
@@ -180,10 +221,10 @@ public class RequestListActivity extends AppCompatActivity {
                     // if driver, display completed as driver
                     // if rider, display completed as rider
                     requests.clear();
-                    requests.addAll(RequestController.getCompletedRequests(UserController.getUser(),
-                            UserController.checkMode()));
+                    requests.addAll(getFilteredRequests(
+                            RequestController.getCompletedRequests(UserController.getUser(),
+                            UserController.checkMode())));
                     adapter.notifyDataSetChanged();
-//                    populateRequestList();
                 }
             }
 
@@ -214,7 +255,10 @@ public class RequestListActivity extends AppCompatActivity {
                     maxPrice.setText(R.string.empty_wallet);
                     maxPricePerKM.setEnabled(false);
                     maxPricePerKM.setText(R.string.empty_wallet);
+                    this.filterMaxPricePerKM = false;
+                    this.filterMaxPrice = false;
                     v.clearFocus();
+                    updateData();
                     break;
                 }
             case R.id.request_list_max_price:
@@ -224,17 +268,19 @@ public class RequestListActivity extends AppCompatActivity {
                     maxPrice.setText("");
                     showKeyboard(maxPrice);
                     maxPricePerKM.setEnabled(false);
-                    maxPricePerKM.setText(R.string.empty_wallet);
+                    this.filterMaxPricePerKM = false;
+                    this.filterMaxPrice = true;
                     break;
                 }
             case R.id.request_list_max_price_per_km:
                 if (checked) {
                     maxPrice.setEnabled(false);
-                    maxPrice.setText(R.string.empty_wallet);
                     maxPricePerKM.setEnabled(true);
                     maxPricePerKM.requestFocus();
-                    maxPricePerKM.setText("");
+                    maxPrice.setText("");
                     showKeyboard(maxPricePerKM);
+                    this.filterMaxPrice = false;
+                    this.filterMaxPricePerKM = true;
                     break;
                 }
         }
@@ -252,5 +298,56 @@ public class RequestListActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private ArrayList<UserRequest> getFilteredRequests(ArrayList<UserRequest> listOfRequests) {
+        if (!this.filterMaxPricePerKM && !this.filterMaxPrice) {
+            return listOfRequests;
+        }
+
+        ArrayList<UserRequest> tempList = new ArrayList<UserRequest>();
+        if (this.filterMaxPricePerKM) {
+            for (UserRequest request: listOfRequests) {
+                if (RequestController.getPricePerKM(request) <= this.getCurrentPricePerKM()) {
+                    tempList.add(request);
+                }
+            }
+        }
+        else if (this.filterMaxPrice) {
+            for (UserRequest request: listOfRequests) {
+                if (request.getFare().doubleValue() <= this.getCurrentPrice()) {
+                    tempList.add(request);
+                }
+            }
+        }
+        return tempList;
+    }
+
+    private double getCurrentPricePerKM() {
+        try {
+            return Double.parseDouble(this.maxPricePerKM.getText().toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private double getCurrentPrice() {
+        try {
+            return Double.parseDouble(this.maxPrice.getText().toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private void updateData() {
+        // click another entry in the spinner and then the original one to reload data
+        int pos = spinner.getSelectedItemPosition();
+        if (pos == 3) {
+            spinner.setSelection(pos - 1, false);
+        }
+        else {
+            spinner.setSelection(pos + 1, false);
+        }
+        spinner.setSelection(pos, false);
     }
 }
