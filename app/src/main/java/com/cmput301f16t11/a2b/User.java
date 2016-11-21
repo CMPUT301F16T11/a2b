@@ -26,6 +26,7 @@ public class User {
     private double rating;
     private int numRatings;
     private int totalRating;
+    private Boolean canDrive;
 
 //    private Mode mode;
 
@@ -46,18 +47,6 @@ public class User {
      * @param name  username
      * @param email email
      */
-    User(String name, String email) {
-//        mode = Mode.RIDER;
-        requestsAsRider = new ArrayList<UserRequest>();
-        requestsAsDriver = new ArrayList<UserRequest>();
-        activeRequestsAsRider = new ArrayList<UserRequest>();
-        activeRequestsAsDriver = new ArrayList<UserRequest>();
-        userName = name;
-        this.email = email;
-        numRatings = 0;
-        totalRating = 0;
-        rating = -1;
-    }
 
     User(String name, String email, String phone) {
 //        mode = Mode.RIDER;
@@ -67,6 +56,7 @@ public class User {
         activeRequestsAsDriver = new ArrayList<UserRequest>();
         userName = name;
         this.email = email;
+        this.canDrive = false;
         phoneNumber = phone;
         numRatings = 0;
         totalRating = 0;
@@ -81,6 +71,7 @@ public class User {
         activeRequestsAsDriver = new ArrayList<UserRequest>();
         userName = name;
         this.email = email;
+        this.canDrive = true;
         phoneNumber = phone;
         this.car = car;
         numRatings = 0;
@@ -147,6 +138,15 @@ public class User {
      * @return the curr password
      * @deprecated no passwords!
      */
+
+    /**
+     * Check whether this user has signed up to include driving capabilities
+     *
+     * @return true if you are signed up to drive
+     */
+    public Boolean canDrive() {
+        return this.canDrive;
+    }
     public String getPassWord() {
         return passWord;
     }
@@ -280,6 +280,15 @@ public class User {
      *
      * @param pass new password
      */
+
+    /**
+     * Allow a rider to drive or remove the ability of a rider/driver to drive
+     *
+     * @param ability true if ability to drive, false otherwise
+     */
+    public void setDriveAbility(Boolean ability) {
+        this.canDrive = ability;
+    }
     public void setPassWord(String pass) {
         this.passWord = pass;
     }

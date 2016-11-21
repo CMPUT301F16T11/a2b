@@ -59,6 +59,9 @@ public class UserController {
         return mode;
     }
 
+    static public Boolean canDrive() {
+        return user.canDrive();
+    }
     static public void updateRating(int r) {
         int currTotalRating = user.getTotalRating();
         int currTotal = user.getNumRatings();

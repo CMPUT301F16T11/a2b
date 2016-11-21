@@ -78,11 +78,15 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-
-                Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
-                UserController.setMode(Mode.DRIVER);
-                startActivity(driverIntent);
-                finish();
+                if (UserController.canDrive()) {
+                    Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
+                    UserController.setMode(Mode.DRIVER);
+                    startActivity(driverIntent);
+                    finish();
+                }
+                else {
+                    showNotADriverDialog();
+                }
                 return true;
 
             case R.id.viewRequests:
@@ -508,6 +512,23 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             return rate;
         }
+    }
+
+    private void showNotADriverDialog() {
+        final Context context = this;
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        finish();
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(R.string.not_a_driver).setPositiveButton("OK", dialogClickListener).show();
+
     }
 }
 

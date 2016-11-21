@@ -264,6 +264,7 @@ public class RequestListActivity extends AppCompatActivity {
             case R.id.request_list_max_price:
                 if (checked) {
                     maxPrice.setEnabled(true);
+                    maxPricePerKM.setText(R.string.empty_wallet);
                     maxPrice.requestFocus();
                     maxPrice.setText("");
                     showKeyboard(maxPrice);
@@ -275,6 +276,7 @@ public class RequestListActivity extends AppCompatActivity {
             case R.id.request_list_max_price_per_km:
                 if (checked) {
                     maxPricePerKM.setEnabled(true);
+                    maxPricePerKM.setText(R.string.empty_wallet);
                     maxPricePerKM.requestFocus();
                     maxPricePerKM.setText("");
                     showKeyboard(maxPricePerKM);
