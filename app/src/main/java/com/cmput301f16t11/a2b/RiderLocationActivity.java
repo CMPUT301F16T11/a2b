@@ -364,6 +364,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         final Button cancel = (Button)dialog.findViewById(R.id.cancelRequest);
         final Button confirm = (Button)dialog.findViewById(R.id.confirmRequest);
         final EditText amount= (EditText)dialog.findViewById(R.id.rideConf_fareText);
+        final EditText description = (EditText)dialog.findViewById(R.id.rideConf_descripText);
 
         //Set all the right values in the dialog
         final double fairAmount = FairEstimation.estimateFair(distance);
@@ -439,7 +440,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         tripEndMarker.getPosition(),
                         userFare,
                         UserController.getUser().getId(),
-                        doubleDistance);
+                        doubleDistance,
+                        description.getText().toString());
                 RequestController.addOpenRequest(request);
 
                 //Add this request to be monitored
