@@ -44,6 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textStyle="bold"
             android:text="@string/rideComplete_riderTitle"/>
 
         <TextView android:id="@+id/request_detail_rider"
@@ -96,7 +97,7 @@
     <LinearLayout android:id="@+id/dialog_rideComplete_fareLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:weightSum="3">
 
         <TextView android:id="@+id/request_detail_fare_head"
@@ -111,6 +112,36 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:text="Test Fare"/>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/activity_requestDetail_descrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+        <LinearLayout android:id="@+id/activity_requestDetail_descripTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:weightSum="3">
+            <TextView android:id="@+id/activity_requestDetail_descripTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="@string/requestInfo_descripTitle" />
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <TextView android:id="@+id/activity_requestDetail_descripText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is a test description"/>
+        </ScrollView>
+
     </LinearLayout>
 
     <LinearLayout

@@ -207,6 +207,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         TextView fare = (TextView) findViewById(R.id.request_detail_fare);
         fare.setText("$" + request.getFare().toString());
 
+        TextView description = (TextView) findViewById(R.id.activity_requestDetail_descripText);
+        description.setText(request.getDescription());
+
     }
 
     /**
