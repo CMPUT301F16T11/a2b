@@ -118,4 +118,41 @@
 
     </LinearLayout>
 
+    <LinearLayout android:id="@+id/dialog_requestInfo_descrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+        <LinearLayout android:id="@+id/dialog_requestInfo_descripTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp">
+            <TextView android:id="@+id/dialog_RequestInfo_descripTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textStyle="bold"
+                android:text="@string/requestInfo_descripTitle" />
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <TextView android:id="@+id/dialog_requestInfo_descripText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This is a test description"/>
+        </ScrollView>
+
+    </LinearLayout>
+
 </LinearLayout>

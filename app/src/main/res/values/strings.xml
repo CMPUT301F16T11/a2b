@@ -96,6 +96,7 @@
     <string name="requestInfo_startTitle">Pickup:</string>
     <string name="requestInfo_endTitle">Destination:</string>
     <string name="requestInfo_fareTitle">Fare:</string>
+    <string name="requestInfo_descripTitle">Description:</string>
 
     <!-- MarkerInfoDialog Strings -->
     <string name="markerInfo_accept">Accept</string>
