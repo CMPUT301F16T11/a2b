@@ -521,7 +521,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             public void onClick(DialogInterface dialog, int which) {
                 switch(which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        finish();
                         break;
                 }
             }

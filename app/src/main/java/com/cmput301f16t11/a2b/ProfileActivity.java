@@ -103,13 +103,12 @@ public class ProfileActivity extends AppCompatActivity {
         TextView rating = (TextView) findViewById(R.id.ratingText);
 
         Vehicle vehicle = user.getCar();
-        if(vehicle.isSet()){
+        try {
             carYear.setText(String.valueOf(vehicle.getYear()));
             carMake.setText(vehicle.getMake());
             carModel.setText(vehicle.getModel());
             carColor.setText(vehicle.getColor());
-        }
-        else {
+        } catch (NullPointerException e) {
             carYear.setVisibility(View.GONE);
             carMake.setVisibility(View.GONE);
             carModel.setVisibility(View.GONE);

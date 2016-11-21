@@ -129,6 +129,6 @@
     <string name="title_activity_empty_map">Map</string>
     <string name="insert_value">Insert Value</string>
     <string name="empty_wallet">0.00</string>
-    <string name="not_a_driver">You need to be a driver to do that! Please create a new account as "rider or driver"</string>
+    <string name="not_a_driver">You need to be a driver to do that! Please create a new rider/driver account instead of a rider only account.</string>
 
 </resources>
