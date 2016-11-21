@@ -64,9 +64,13 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
         User rider = UserController.getUserFromId(request.getRider());
 
-        riderEntry.setText(rider.getName());
-        fareEntry.setText(request.getFare().toString());
-        dateEntry.setText(request.getDateString());
+        try {
+            riderEntry.setText(rider.getName());
+            fareEntry.setText(request.getFare().toString());
+            dateEntry.setText(request.getDateString());
+        } catch (NullPointerException e) {
+            Log.e("Shaded ERROR:", "No user found in request");
+        }
 
         return view;
     }
