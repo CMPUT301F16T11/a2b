@@ -111,7 +111,7 @@
     <!-- Request List Activity Strings-->
     <string name="max_price">Max Price</string>
     <string name="max_price_per_km">Max Price/KM</string>
-    <string name="no_sort_value">No Sorting</string>
+    <string name="no_sort_value">No Filter</string>
 
     <!-- Request Detail Activity Strings-->
     <string name="request_detail_title">Request Details</string>

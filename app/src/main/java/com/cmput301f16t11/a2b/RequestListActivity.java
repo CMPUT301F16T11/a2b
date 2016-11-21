@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -64,12 +65,14 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     @Override
     public void onResume() {
         //TODO: Refactor (extraction)
         super.onResume();
+        hideKeyboard();
         // listView Stuff
         // two content views (depending on driver vs rider)
         if (UserController.checkMode() == Mode.DRIVER) {
@@ -101,8 +104,8 @@ public class RequestListActivity extends AppCompatActivity {
             maxPricePerKM = (EditText) findViewById(R.id.insert_max_price_per_km);
             maxPrice.setEnabled(false);
             maxPricePerKM.setEnabled(false);
-            maxPrice.setFocusable(true);
-            maxPricePerKM.setFocusable(true);
+//            maxPrice.setFocusable(true);
+//            maxPricePerKM.setFocusable(true);
             hideKeyboard();
         }
 
@@ -125,7 +128,6 @@ public class RequestListActivity extends AppCompatActivity {
         spinner.setFocusable(true);
         spinner.requestFocus();
         spinner.setAdapter(spinnerChoices);
-        hideKeyboard();
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -201,11 +203,13 @@ public class RequestListActivity extends AppCompatActivity {
         // here is where the above cited android developers tutorial code is used
         // check if button is checked
         boolean checked = ((RadioButton) v).isChecked();
+        v.clearFocus();
 
         // which button?
         switch(v.getId()) {
             case R.id.request_list_no_filter:
                 if (checked) {
+                    hideKeyboard();
                     maxPrice.setEnabled(false);
                     maxPrice.setText(R.string.empty_wallet);
                     maxPricePerKM.setEnabled(false);
