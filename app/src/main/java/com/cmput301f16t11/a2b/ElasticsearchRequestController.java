@@ -188,7 +188,7 @@ public class ElasticsearchRequestController {
 
         /**
          * Adds a driver acceptance to a request
-         *
+         * 
          * @param info id of the driver (string)
          * @return true if successful, false otherwise
          */

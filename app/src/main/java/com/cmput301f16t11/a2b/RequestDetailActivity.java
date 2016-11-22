@@ -272,6 +272,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             acceptButton.setEnabled(false);
         }
 
+        // onClick Listeners
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,26 +280,19 @@ public class RequestDetailActivity extends AppCompatActivity {
             }
         });
 
-            // onClick Listeners
-            acceptButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RequestController.addAcceptance(request, RequestDetailActivity.this);
-                    finish();
-                }
-            });
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    delete();
-                }
-            });
-            completeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    RequestController.completeRequest(request);
-                }
-            });
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestController.addAcceptance(request, RequestDetailActivity.this);
+                finish();
+            }
+        });
+        completeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestController.completeRequest(request);
+            }
+        });
     }
 
     private void setStatus() {
