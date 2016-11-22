@@ -411,11 +411,10 @@ public class SignUpActivity extends AppCompatActivity {
             String model = carModel.getText().toString();
             String color = carColor.getText().toString();
             car = new Vehicle(make, model, color, year);
+            return new User(userName, userEmail, userPhone, car);
         } else {
-            car = new Vehicle();
+            return new User(userName, userEmail, userPhone);
         }
-
-        return new User(userName, userEmail, userPhone, car);
     }
 
     /**

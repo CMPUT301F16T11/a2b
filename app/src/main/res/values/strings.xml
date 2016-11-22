@@ -96,6 +96,7 @@
     <string name="requestInfo_startTitle">Pickup:</string>
     <string name="requestInfo_endTitle">Destination:</string>
     <string name="requestInfo_fareTitle">Fare:</string>
+    <string name="requestInfo_descripTitle">Description:</string>
 
     <!-- MarkerInfoDialog Strings -->
     <string name="markerInfo_accept">Accept</string>
@@ -111,7 +112,7 @@
     <!-- Request List Activity Strings-->
     <string name="max_price">Max Price</string>
     <string name="max_price_per_km">Max Price/KM</string>
-    <string name="no_sort_value">No Sorting</string>
+    <string name="no_sort_value">No Filter</string>
 
     <!-- Request Detail Activity Strings-->
     <string name="request_detail_title">Request Details</string>
@@ -129,5 +130,6 @@
     <string name="title_activity_empty_map">Map</string>
     <string name="insert_value">Insert Value</string>
     <string name="empty_wallet">0.00</string>
+    <string name="not_a_driver">You need to be a driver to do that! Please create a new rider/driver account instead of a rider only account.</string>
 
 </resources>

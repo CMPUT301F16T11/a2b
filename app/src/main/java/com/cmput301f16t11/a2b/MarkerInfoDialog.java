@@ -23,6 +23,7 @@ public class MarkerInfoDialog extends DialogFragment {
     private TextView startText;
     private TextView endText;
     private TextView fareText;
+    private TextView description;
     private Button acceptButton;
     private Button cancelButton;
 
@@ -78,6 +79,7 @@ public class MarkerInfoDialog extends DialogFragment {
         startText = (TextView)parent.findViewById(R.id.dialog_requestInfo_startText);
         endText = (TextView)parent.findViewById(R.id.dialog_requestInfo_endText);
         fareText = (TextView)parent.findViewById(R.id.dialog_requestInfo_fareText);
+        description = (TextView)parent.findViewById(R.id.dialog_requestInfo_descripText);
         acceptButton = (Button)parent.findViewById(R.id.dialog_markerInfo_accept);
         cancelButton = (Button)parent.findViewById(R.id.dialog_markerInfo_cancel);
     }
@@ -112,6 +114,7 @@ public class MarkerInfoDialog extends DialogFragment {
         startText.setText(startAddress);
         endText.setText(endAddress);
         fareText.setText(req.getFare().toString());
+        description.setText(req.getDescription());
 
         // Set the button click listeners
         acceptButton.setOnClickListener(new View.OnClickListener() {

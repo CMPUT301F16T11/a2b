@@ -777,7 +777,7 @@ public class ElasticsearchRequestController {
         /**
          * Get a rider's requests that have been accepted by a driver
          *
-         * @param user the rider who created requests
+         * @param user the id of the rider who created requests
          * @return ArrayList of the rider's UserRequests that have been accepted by >=1 driver
          */
         @Override
@@ -785,8 +785,22 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
-            String search_string = "{\"query\": { \"match\": [{\"riderId\": \"" + user[0] +
-                    "\"}, {\"accepted\": true}]}}";
+
+            String search_string = "{\n" +
+                    "    \"query\": {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                 \"bool\" : {\n" +
+                    "                    \"must\" : [\n" +
+                    "                        { \"term\" : { \"riderId\":\"" + user[0] + "\"} }, \n" +
+                    "                        { \"term\" : { \"accepted\":true } } \n" +
+                    "                    ]\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)

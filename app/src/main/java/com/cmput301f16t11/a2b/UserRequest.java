@@ -30,6 +30,7 @@ public class UserRequest implements Parcelable {
     private boolean accepted;
     private boolean completed;
     private boolean paymentReceived;
+    private String description;
 
     @JestId
     private String id;
@@ -58,6 +59,21 @@ public class UserRequest implements Parcelable {
         this.completed = false;
         this.paymentReceived = false;
         this.id = null;
+        acceptedDriverIds = new ArrayList<>();
+    }
+
+    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance, String description) {
+        this.startLocation = new Point(start.latitude,start.longitude);
+        this.endLocation = new Point(end.latitude,end.longitude);
+        this.fare = fare;
+        this.riderId = riderId;
+        this.distance = distance;
+        this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
+        this.accepted = false;
+        this.completed = false;
+        this.paymentReceived = false;
+        this.id = null;
+        this.description = description;
         acceptedDriverIds = new ArrayList<>();
     }
 
@@ -110,6 +126,8 @@ public class UserRequest implements Parcelable {
     public String getId() {
         return id;
     }
+    public String getDescription() {return description;}
+
 
     // setters
     public void setId(String id) {
