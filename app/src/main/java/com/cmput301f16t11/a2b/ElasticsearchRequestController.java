@@ -202,8 +202,8 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{ \"script\" : \" if (ctx._source.acceptedDrivers == null) {ctx._source.acceptedDrivers = [newDriver] } " +
-                    "else {ctx._source.acceptedDrivers += newDriver }\", \"params\" : {\"newDriver\" : {\"id\":\""  + info[1] +"\"}}}";
+            String script = "{ \"script\" : \" if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } " +
+                    "else {ctx._source.acceptedDriverIds += newDriver }\", \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
 
             try {
