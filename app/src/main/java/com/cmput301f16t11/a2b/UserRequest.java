@@ -94,7 +94,7 @@ public class UserRequest implements Parcelable {
     }
     public boolean sentNotification() {
         return true;
-    }
+    } //TODO: actually check to see if notification was  sent
     public long getTimeCreatedInMillis() {
         return this.timeCreatedInMillis;
     }

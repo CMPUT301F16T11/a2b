@@ -27,7 +27,7 @@ public class LocationUnitTest {
     public void testSetStartEndLocations(){
 
         //create a new request
-        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
         User rider = new User();
 
         //enter in the start and end points chosen
@@ -49,7 +49,7 @@ public class LocationUnitTest {
     @Test
     public void testEndStartEndLocations(){
 
-        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
 
         User driver = new User();
         driver.addActiveDriverRequest(request);

@@ -417,7 +417,7 @@ public class User {
         return this.activeRequestsAsDriver.size();
     }
 
-    public void notifyUser(UserRequest r) {
+    public void notifyUser(UserRequest r) {//TODO:connect this with Rider/DriverNotificationService
     }
 //    public void setMode(Mode mode) {
 //        this.mode = mode;

@@ -29,7 +29,7 @@ public class AcceptingUnitTest {
     @Before
     public void setup(){
         user = new User();
-        request = new UserRequest(startLocation,endLocation,fare,user);
+        request = new UserRequest(startLocation,endLocation,fare,user.getId());
     }
     /**
      * US 05.01.01
@@ -67,7 +67,7 @@ public class AcceptingUnitTest {
         request.setAcceptedStatus(true);
         user.addActiveDriverRequest(request);
 
-        UserRequest req2 = new UserRequest(new LatLng (23,23),new LatLng(33,33),11.0,user);
+        UserRequest req2 = new UserRequest(new LatLng (23,23),new LatLng(33,33),11.0,user.getId());
         req2.setAcceptedStatus(true);
 
         user.addActiveDriverRequest(req2);

@@ -37,10 +37,10 @@ public class SearchingUnitTest {
     @Before
     public void setUp() {
 
-        req1 = new UserRequest(startLocation1,endLocation1,10.00,rider1);
-        req2 = new UserRequest(startLocation2,endLocation2,10.00,rider2);
-        req3 = new UserRequest(startLocation3,endLocation3,10.00,rider3);
-        req4 = new UserRequest(startLocation4,endLocation4,10.00,rider4);
+        req1 = new UserRequest(startLocation1,endLocation1,10.00,rider1.getId());
+        req2 = new UserRequest(startLocation2,endLocation2,10.00,rider2.getId());
+        req3 = new UserRequest(startLocation3,endLocation3,10.00,rider3.getId());
+        req4 = new UserRequest(startLocation4,endLocation4,10.00,rider4.getId());
 
         rider1.addActiveRiderRequest(req1);
         rider2.addActiveRiderRequest(req2);
@@ -75,8 +75,8 @@ public class SearchingUnitTest {
         User user1 = new User();
         User user2 = new User();
 
-        UserRequest request1 = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, user1);
-        UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, user2);
+        UserRequest request1 = new UserRequest(new LatLng(51,51), new LatLng(50,50), 123, user1.getId());
+        UserRequest request2 = new UserRequest(new LatLng(52,52), new LatLng(53,53), 23, user2.getId());
         user1.addActiveDriverRequest(request1);
         user2.addActiveDriverRequest(request2);
 

@@ -39,9 +39,9 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineAcceptedRequest(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare,user);
-        UserRequest request1 = new UserRequest(start,end,fare,user);
-        UserRequest request2 = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
+        UserRequest request1 = new UserRequest(start,end,fare,user.getId());
+        UserRequest request2 = new UserRequest(start,end,fare,user.getId());
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
@@ -68,9 +68,9 @@ public class OfflineBehaviorUnitTest {
     @Test
     public void testOfflineMadeRequests(){
         //build a list of requests
-        UserRequest request = new UserRequest(start,end,fare,user);
-        UserRequest request1 = new UserRequest(start,end,fare,user);
-        UserRequest request2 = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
+        UserRequest request1 = new UserRequest(start,end,fare,user.getId());
+        UserRequest request2 = new UserRequest(start,end,fare,user.getId());
         ArrayList<UserRequest> requestList = new ArrayList<>();
         requestList.add(request);
         requestList.add(request1);
@@ -94,7 +94,7 @@ public class OfflineBehaviorUnitTest {
         //go offline
         UserController.setOffline();
         //create a request
-        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
         //go online
         UserController.goOnline();
         UserController.updateRequestList();
@@ -113,7 +113,7 @@ public class OfflineBehaviorUnitTest {
         UserController.setOffline();
         //grab list of requests
         ArrayList<UserRequest> requestList = new ArrayList<>();
-        UserRequest request = new UserRequest(start,end,fare,user);
+        UserRequest request = new UserRequest(start,end,fare,user.getId());
         requestList.add(request);
         user.setActiveRequestsAsRider(requestList);
         //accept one of them

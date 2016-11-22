@@ -28,7 +28,7 @@ public class StatusUnitTest {
      */
     @Before
     public void setUp(){
-        req = new UserRequest(startLocation, endLocation,fare,user);
+        req = new UserRequest(startLocation, endLocation,fare,user.getId());
     }
 
     @Test
