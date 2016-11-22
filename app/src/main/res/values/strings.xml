@@ -118,6 +118,7 @@
     <string name="request_detail_title">Request Details</string>
     <string name="willing_drivers">Willing Drivers</string>
     <string name="pay">Pay</string>
+    <string name="status">Status:</string>
 
     <!-- Multi Purpose Strings -->
     <string name="ok">OK</string>
@@ -132,4 +133,10 @@
     <string name="empty_wallet">0.00</string>
     <string name="not_a_driver">You need to be a driver to do that! Please create a new rider/driver account instead of a rider only account.</string>
 
+    <!-- Request Status Strings -->
+    <string name="waiting">Waiting for a Driver to Accept</string>
+    <string name="accepted">Accepted By Driver(s)</string>
+    <string name="confirmed">Rider Has Confirmed Driver\'s Acceptance</string>
+    <string name="in_progress">The Ride is in Progress</string>
+    <string name="paid">Completed and Paid For</string>
 </resources>

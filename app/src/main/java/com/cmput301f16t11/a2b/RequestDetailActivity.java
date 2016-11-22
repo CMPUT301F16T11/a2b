@@ -64,6 +64,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         populateAcceptedDriversList();
         populateFields();
         setButtons();
+        setStatus();
     }
 
     /**
@@ -236,7 +237,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     /**
      * Sets up buttons on detail page and has logic to check if they should be clickable or not
      */
-    public void setButtons() {
+    private void setButtons() {
         Button deleteButton = (Button) findViewById(R.id.request_detail_delete);
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
@@ -298,6 +299,24 @@ public class RequestDetailActivity extends AppCompatActivity {
                     RequestController.completeRequest(request);
                 }
             });
+    }
+
+    private void setStatus() {
+        TextView status = (TextView) findViewById(R.id.request_detail_status);
+        switch (request.getRequestStatus()) {
+            case WAITING:
+                status.setText(R.string.waiting);
+                break;
+            case ACCEPTED:
+                status.setText(R.string.accepted);
+                break;
+            case CONFIRMED:
+                status.setText(R.string.confirmed);
+                break;
+            case IN_PROGRESS:
+                status.setText(R.string.paid);
+        }
+
     }
 
     /**

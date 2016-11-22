@@ -333,6 +333,10 @@ public class RequestController {
         return temp;
     }
 
+    public static RequestStatus getRequestStatus(UserRequest request) {
+        return request.getRequestStatus();
+    }
+
     /**
      * Move a request from open to inProgress
      *

@@ -31,6 +31,7 @@ public class UserRequest implements Parcelable {
     private boolean completed;
     private boolean paymentReceived;
     private String description;
+    private transient boolean inProgress;
 
     @JestId
     private String id;
@@ -143,6 +144,10 @@ public class UserRequest implements Parcelable {
         this.startLocation.setLon(startLocation.longitude);
 
     }
+
+    public void setInProgress() {
+        this.inProgress = true;
+    }
     public void setEndLocation(LatLng endLocation) {
         this.endLocation.setLat(endLocation.latitude);
         this.endLocation.setLon(endLocation.longitude);
@@ -166,6 +171,25 @@ public class UserRequest implements Parcelable {
         return this.confirmedDriverId != null;
     }
     public void  addAcceptedDriver(String id){this.acceptedDriverIds.add(id);}
+    public RequestStatus getRequestStatus() {
+        if (this.confirmedDriverId == null) {
+            if (this.acceptedDriverIds.size() == 0) {
+                return RequestStatus.WAITING;
+            }
+            else {
+                return RequestStatus.ACCEPTED;
+            }
+        }
+        else {
+            if (this.paymentReceived) {
+                return RequestStatus.PAID;
+            }
+            if (this.inProgress) {
+                return RequestStatus.IN_PROGRESS;
+            }
+            return RequestStatus.CONFIRMED;
+        }
+    }
 
     /* Parcelable Stuff */
 

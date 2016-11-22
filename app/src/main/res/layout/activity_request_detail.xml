@@ -114,6 +114,28 @@
             android:text="Test Fare"/>
     </LinearLayout>
 
+    <LinearLayout  android:id="@+id/request_detail_statusLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:weightSum="3">
+
+        <TextView android:id="@+id/request_detail_status_head"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:text="@string/status"/>
+
+        <TextView android:id="@+id/request_detail_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="placeholder"/>
+
+
+    </LinearLayout>
+
     <LinearLayout android:id="@+id/activity_requestDetail_descrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
