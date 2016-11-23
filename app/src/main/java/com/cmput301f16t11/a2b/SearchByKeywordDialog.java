@@ -86,7 +86,7 @@ public class SearchByKeywordDialog extends Dialog {
     public String getSearchString(){
         return searchString;
     }
-    
+
     private String getEditTextString(){
         final EditText editText = (EditText) findViewById(R.id.textKeyword);
         return editText.getText().toString();
