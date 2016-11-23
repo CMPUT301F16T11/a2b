@@ -78,9 +78,17 @@ public class RequestController {
     public static void setRequestConfirmedDriver(UserRequest request, User driver, Context cntxt){
 
         request.setConfirmedDriver(driver.getId());
-        ElasticsearchRequestController.SetConfirmedDriver searchController = new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
-        searchController.execute(request.getId(), driver.getId());
-        completeRequest(request);
+        ElasticsearchRequestController.MoveToInProgresseRequest moveController = new  ElasticsearchRequestController.MoveToInProgresseRequest();
+        moveController.execute(request);
+
+        try{
+            if(moveController.get()){
+                ElasticsearchRequestController.SetConfirmedDriver searchController = new ElasticsearchRequestController.SetConfirmedDriver(cntxt);
+                searchController.execute(request.getId(), driver.getId());
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
 

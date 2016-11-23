@@ -375,19 +375,30 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         searchByKeyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(context);
-                dialog.setContentView(R.layout.search_by_keyword);
-                final Button cancelButton = (Button) dialog.findViewById(R.id.cancelKeyword);
-                final Button confirm = (Button) dialog.findViewById(R.id.okKeyword);
-
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                final SearchByKeywordDialog dialog = new SearchByKeywordDialog(context);
                 dialog.show();
+
+                SearchByKeywordDialog.searchCriteria  criteria = dialog.getSelectedCriteria();
+                String searchString = dialog.getSearchString();
+                switch(criteria){
+                    //User hit cancel so do nothing
+                    case NOT_SET:{
+                        return;
+                    }
+                    case DESCRIPTION:{
+                        //TODO: Search by description from controller
+                        return;
+                    }
+                    case START:{
+                        //TODO: Search by start location
+                        return;
+                    }
+                    case END:{
+                        //TODO: Search by the end location
+                        return;
+                    }
+
+                }
             }
         });
     }

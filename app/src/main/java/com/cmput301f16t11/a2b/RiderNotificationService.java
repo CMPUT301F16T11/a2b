@@ -210,18 +210,13 @@ public class RiderNotificationService extends IntentService {
      * @param addedUsers
      */
     private  void sendNotificationOfAcceptedDriver(ArrayList<String> addedUsers, String requestId){
-        String notification;
-        notification = addedUsers.get(0);
-        for(int i = 1; i < addedUsers.size(); i++){
-            String name = getUserName(addedUsers.get(i));
-            if (i==addedUsers.size()-1) {
-                notification += " & " + name + " have";
-            } else {
-                notification += ", " + name;
-            }
+        String notification = "";
+        for(int i = 0; i < addedUsers.size(); i++){
+            notification += getUserName(addedUsers.get(i)) + " & ";
         }
-        if (addedUsers.size()==1) {notification += " has";}
-        notification = notification + " accepted request " + requestId;
+        //Remove the last 3c chars
+        notification = notification.substring(0, notification.length()-3);
+        notification = notification + " has accepted request " + requestId;
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)

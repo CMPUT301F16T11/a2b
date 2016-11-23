@@ -146,4 +146,8 @@
     <string name="confirmed">Rider Has Confirmed Driver\'s Acceptance</string>
     <string name="in_progress">The Ride is in Progress</string>
     <string name="paid">Completed and Paid For</string>
+
+    <!-- Search by keyword dialog -->
+    <string name="search_by_keyword">Search By Keyword</string>
+    <string name="description">Description</string>
 </resources>

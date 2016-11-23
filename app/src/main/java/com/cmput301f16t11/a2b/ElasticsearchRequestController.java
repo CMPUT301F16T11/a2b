@@ -264,10 +264,10 @@ public class ElasticsearchRequestController {
             // update script
 
             String script = "{ \"script\" : \" ctx._source.confirmedDriverId = newDriver }\", \"params\" : "+
-                    "{\"newDriver\" : {\"id\":\""  + driverId +"\"}}}";
+                    "{\"newDriver\" : \""  + driverId +"\"}}";
 
             try {
-                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(requestId).build());
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(inProgress).id(requestId).build());
 
                 if (!result.isSucceeded()) {
                     Log.i("Error", "Failed to find user requests for rider");
@@ -1058,7 +1058,7 @@ public class ElasticsearchRequestController {
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.164.200.4:9200");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
