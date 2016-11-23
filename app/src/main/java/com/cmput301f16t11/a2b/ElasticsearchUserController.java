@@ -365,7 +365,7 @@ public class ElasticsearchUserController {
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.162.68.100:9200");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.164.200.4:9200");
             //DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
 
