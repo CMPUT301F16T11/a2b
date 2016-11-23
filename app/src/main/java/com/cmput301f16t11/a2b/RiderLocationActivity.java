@@ -441,7 +441,9 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         userFare,
                         UserController.getUser().getId(),
                         doubleDistance,
-                        description.getText().toString());
+                        description.getText().toString(),
+                        context);
+
                 RequestController.addOpenRequest(request);
 
                 //Add this request to be monitored

@@ -1,13 +1,18 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import io.searchbox.annotations.JestId;
 
@@ -22,6 +27,8 @@ public class UserRequest implements Parcelable {
     private String riderId;
     private Point startLocation;
     private Point endLocation;
+    private String startLocationName;
+    private String endLocationString;
 
     private Number fare;
     private Double distance;
@@ -46,7 +53,24 @@ public class UserRequest implements Parcelable {
         this.completed = false;
         this.paymentReceived = false;
         this.id = null;
-        acceptedDriverIds = new ArrayList<>();
+        this.acceptedDriverIds = new ArrayList<>();
+
+        //This is added so that we can search by a location name
+        try {
+            Geocoder geoCoder = new Geocoder(null);
+            List<Address> startString = geoCoder.getFromLocation(start.latitude, end.longitude, 1);
+            List<Address> endString = geoCoder.getFromLocation(end.latitude, end.longitude, 1);
+            if(!startString.isEmpty()){
+                this.startLocationName = startString.get(0).getAddressLine(0);
+            }
+            if(!endString.isEmpty()) {
+                this.startLocationName = endString.get(0).getAddressLine(0);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
+
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance) {
@@ -63,7 +87,7 @@ public class UserRequest implements Parcelable {
         acceptedDriverIds = new ArrayList<>();
     }
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance, String description) {
+    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance, String description, Context context) {
         this.startLocation = new Point(start.latitude,start.longitude);
         this.endLocation = new Point(end.latitude,end.longitude);
         this.fare = fare;
@@ -76,6 +100,22 @@ public class UserRequest implements Parcelable {
         this.id = null;
         this.description = description;
         acceptedDriverIds = new ArrayList<>();
+
+        try {
+            //May investigate a better way of doing this context thing
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> startString = geoCoder.getFromLocation(start.latitude, end.longitude, 1);
+            List<Address> endString = geoCoder.getFromLocation(end.latitude, end.longitude, 1);
+            if(!startString.isEmpty()){
+                this.startLocationName = startString.get(0).getAddressLine(0);
+            }
+            if(!endString.isEmpty()) {
+                this.endLocationString= endString.get(0).getAddressLine(0);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
     }
 
     public void clearAcceptedDrivers(){
