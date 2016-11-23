@@ -318,6 +318,15 @@ public class User {
     }
 
     /**
+     * Set the car obj for the user
+     *
+     * @param vehicle the car object
+     */
+    public void setCar(Vehicle vehicle) {
+        this.car = vehicle;
+    }
+
+    /**
      * set a closed request for rider
      *
      * @param requests list of UserRequests

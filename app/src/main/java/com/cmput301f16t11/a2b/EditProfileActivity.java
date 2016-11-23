@@ -15,7 +15,14 @@ import java.util.regex.Pattern;
  *
  */
 public class EditProfileActivity extends AppCompatActivity {
-    User user;
+    private User user;
+
+    EditText phoneNum;
+    EditText email;
+    EditText make;
+    EditText year;
+    EditText color;
+    EditText model;
     //TODO : WE can consider having profile picture implementation later for part 5
 
     @Override
@@ -34,13 +41,22 @@ public class EditProfileActivity extends AppCompatActivity {
         // Edit Texts should be set to what the current profile has
         user = UserController.getUser();
 
-        // populate with existing info
-        EditText phoneNum = (EditText) findViewById(R.id.phone_num);
-        EditText email = (EditText) findViewById(R.id.email);
         TextView username = (TextView) findViewById(R.id.profile_name);
+
+        phoneNum = (EditText) findViewById(R.id.phone_num);
+        email = (EditText) findViewById(R.id.email);
+        make = (EditText) findViewById(R.id.edit_make_field);
+        year = (EditText) findViewById(R.id.edit_year_field);
+        color = (EditText) findViewById(R.id.edit_color_field);
+        model = (EditText) findViewById(R.id.edit_model_field);
 
         phoneNum.setText(user.getPhoneNumber(), TextView.BufferType.EDITABLE);
         email.setText(user.getEmail(), TextView.BufferType.EDITABLE);
+        make.setText(user.getCar().getMake(), TextView.BufferType.EDITABLE);
+        year.setText(user.getCar().getModel(), TextView.BufferType.EDITABLE);
+        color.setText(user.getCar().getColor(), TextView.BufferType.EDITABLE);
+        model.setText(user.getCar().getModel(), TextView.BufferType.EDITABLE);
+
         username.setText(user.getName());
     }
 
@@ -52,9 +68,19 @@ public class EditProfileActivity extends AppCompatActivity {
     public void editProfile(View v) {
         EditText userPhoneNumText = (EditText) findViewById(R.id.phone_num);
         EditText userEmailText = (EditText) findViewById(R.id.email);
+        make = (EditText) findViewById(R.id.edit_make_field);
+        year = (EditText) findViewById(R.id.edit_year_field);
+        color = (EditText) findViewById(R.id.edit_color_field);
+        model = (EditText) findViewById(R.id.edit_model_field);
 
         String phoneNumber = userPhoneNumText.getText().toString();
         String email = userEmailText.getText().toString();
+
+        // car inputs
+        String newMake = make.getText().toString();
+        String newYear = year.getText().toString();
+        String newColor = color.getText().toString();
+        String newModel = model.getText().toString();
 
         AlertDialog dlg = new AlertDialog.Builder(this).create();
         dlg.setTitle("Cannot Update Profile");
@@ -74,7 +100,6 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
-        else
         if(!isValidPhoneNumber(phoneNumber)){
             //Warn the user that you cannot use invalid info
             dlg.setMessage("The phone number is not valid please input a valid phone number.");
@@ -89,14 +114,34 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+        if (!isValidYear(newYear)) {
+            //Warn the user that you cannot use invalid info
+            dlg.setMessage("That doesn't look like a valid year for car details.");
+            dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            dlg.show();
+            return;
+        }
+
         Boolean changedPhoneNumber = phoneNumber.equals(user.getPhoneNumber());
         Boolean changedEmail = email.equals(user.getEmail());
+        Boolean changedMake = newMake.equals(user.getCar().getMake());
+        Boolean changedYear = newYear.equals(user.getCar().getYear());
+        Boolean changedColor = newColor.equals(user.getCar().getColor());
+        Boolean changedModel = newModel.equals(user.getCar().getModel());
 
         //check if any updates have actually been made
-        if(!changedEmail || !changedPhoneNumber){
+        if(!changedEmail || !changedPhoneNumber || !changedMake || !changedYear || !changedColor ||
+                !changedModel) {
 
             user.setPhoneNumber(phoneNumber);
             user.setEmail(email);
+            user.setCar(new Vehicle(newMake, newModel, newColor, Integer.parseInt(newYear)));
             UserController.setUser(user);
             UserController.updateUserInDb();
             UserController.saveInFile(this);
@@ -120,6 +165,14 @@ public class EditProfileActivity extends AppCompatActivity {
      * @return true if valid, false otherwise
      */
     private Boolean isValidPhoneNumber(String number){
+        Pattern format1 = Pattern.compile("[0-9]{4}"); // 7801234567
+        if (format1.matcher(number).matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean isValidYear(String number){
         Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
         Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}");
 
