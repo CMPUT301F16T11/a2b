@@ -379,6 +379,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 dialog.show();
 
                 SearchByKeywordDialog.searchCriteria  criteria = dialog.getSelectedCriteria();
+                String searchString = dialog.getSearchString();
                 switch(criteria){
                     //User hit cancel so do nothing
                     case NOT_SET:{

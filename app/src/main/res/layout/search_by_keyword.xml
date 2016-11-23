@@ -31,6 +31,7 @@
         android:onClick=""
         >
         <RadioButton
+            android:text="@string/start_location"
             android:id="@+id/startSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,10 +40,10 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:checked="true"
-            android:text="Start Location" />
+             />
 
         <RadioButton
-            android:text="End Location"
+            android:text="@string/end_location"
             android:id="@+id/endSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
             android:layout_marginLeft="10dp" />
 
         <RadioButton
-            android:text="Description"
+            android:text="@string/description"
             android:id="@+id/descriptionSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

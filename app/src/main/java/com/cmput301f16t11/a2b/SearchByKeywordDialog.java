@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 
 /**
@@ -21,6 +22,7 @@ public class SearchByKeywordDialog extends Dialog {
     }
 
     private searchCriteria selectedCriteria;
+    private String searchString;
 
     SearchByKeywordDialog(Context context){
         super(context);
@@ -62,6 +64,7 @@ public class SearchByKeywordDialog extends Dialog {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchString = getEditTextString();
                 dismiss();
             }
         });
@@ -76,7 +79,17 @@ public class SearchByKeywordDialog extends Dialog {
         });
     }
 
-    public searchCriteria getSelectedCriteria(){
+    public searchCriteria getSelectedCriteria() {
         return selectedCriteria;
     }
+
+    public String getSearchString(){
+        return searchString;
+    }
+    
+    private String getEditTextString(){
+        final EditText editText = (EditText) findViewById(R.id.textKeyword);
+        return editText.getText().toString();
+    }
+
 }
