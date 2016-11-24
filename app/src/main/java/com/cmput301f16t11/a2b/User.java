@@ -375,7 +375,7 @@ public class User {
          * Add an active request to the list of active rider requests
          * Automatically adds to overall list
          */
-        this.activeRequestsAsDriver.add(request);
+        this.activeRequestsAsRider.add(request);
         this.addRiderRequest(request);
     }
 
