@@ -206,11 +206,12 @@ public class RequestController {
         // (get requests accepted by the curr user)
         saveLoadController = new saveLoad_Controller(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        // check network
         if(!isNetworkAvailable(context)) {
             userRequests = saveLoadController.loadFromFile("acceptedByMe.sav");
         } else {
-            ElasticsearchRequestController.GetAcceptedDriverRequests searchController =
-                    new ElasticsearchRequestController.GetAcceptedDriverRequests();
+            ElasticsearchRequestController.GetAcceptedByMe searchController =
+                    new ElasticsearchRequestController.GetAcceptedByMe();
 
             try {
                 userRequests = searchController.execute(user.getId()).get();
@@ -346,14 +347,14 @@ public class RequestController {
                     new ElasticsearchRequestController.GetInPrgressRequests();
             try {
                 temp = searchController.execute(user.getId()).get();
+                // work around for elasticsearchrequestcontroller
                 ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
                 temp_copy.addAll(temp);
                 for (UserRequest request: temp_copy) {
-                    if (!request.getAcceptedDriverIDs().contains(user)) {
+                    if (!request.getConfirmedDriverID().equals(user.getId())) {
                         temp.remove(request);
                     }
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

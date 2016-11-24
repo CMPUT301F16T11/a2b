@@ -489,6 +489,60 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class GetDriverRequestConfirmedByRider extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Gets in progress requests
+         *
+         * @param user the userId of the driver
+         * @return ArrayList of in progress UserRequests
+         */
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
+
+            // workaround this bug, can't solve it
+            // workaround is in RequestController.
+
+
+            //TODO: Why isn't below working?
+
+//            String search_string =  "{\n" +
+//                    "    \"query\" : {\n" +
+//                    "        \"constant_score\" : {\n" +
+//                    "            \"filter\" : {\n" +
+//                    "                \"term\" : {\n" +
+//                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
+//                    "                }\n" +
+//                    "            }\n" +
+//                    "        }\n" +
+//                    "    }\n" +
+//                    "}";
+//
+//            Search search = new Search.Builder(search_string)
+//                    .addIndex(index)
+//                    .addType(inProgress)
+//                    .build();
+//
+//            try {
+//                SearchResult result = client.execute(search);
+//                if (result.isSucceeded()) {
+//                    List<UserRequest> foundRequests =
+//                            result.getSourceAsObjectList(UserRequest.class);
+//                    requestList.addAll(foundRequests);
+//                } else {
+//                    Log.i("Error", "Failed to find user requests for driver");
+//                }
+//            } catch (Exception e) {
+//                Log.i("Error", "Failed to communicate with elasticsearch server");
+//                e.printStackTrace();
+//            }
+
+            return requestList;
+        }
+    }
+
 
 
     /**
@@ -890,14 +944,33 @@ public class ElasticsearchRequestController {
                     "    \"query\" : {\n" +
                     "        \"constant_score\" : {\n" +
                     "            \"filter\" : {\n" +
-                    "                \"terms\" : {\n" +
+                    "                \"term\" : {\n" +
                     "                    \"acceptedDriverIds\":\""+ user[0] +"\"\n" +
                     "                }\n" +
                     "            }\n" +
                     "        }\n" +
                     "    }\n" +
                     "}";
-            return new ArrayList<UserRequest>();
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(openRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    requests.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests by this user");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return requests;
         }
     }
 

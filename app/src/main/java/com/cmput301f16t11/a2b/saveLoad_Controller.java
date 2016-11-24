@@ -57,12 +57,12 @@ public class saveLoad_Controller {
     public void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
-
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
 
             Gson gson = new Gson();
-            gson.toJson(offlineRequestListIn, out);
-            out.flush();
+            gson.toJson(offlineRequestListIn, writer);
+            writer.flush();
 
             fos.close();
         } catch (FileNotFoundException e) {

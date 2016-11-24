@@ -200,7 +200,7 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.clear();
                         requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
-                                        UserController.getUser(), getParent())));
+                                        UserController.getUser(), RequestListActivity.this)));
                     } else {
                         // users
                         requests.clear();
