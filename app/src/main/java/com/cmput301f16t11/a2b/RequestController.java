@@ -240,18 +240,74 @@ public class RequestController {
         temp.addAll(userRequests);
         for (UserRequest request: temp) {
             if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user)) {
+                if (!request.getConfirmedDriverID().equals(user.getId())) {
+                        userRequests.remove(request);
+                }
+                else if (!request.isPaymentRecived()) {
                     userRequests.remove(request);
                 }
             }
             else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user)) {
+                if (!request.getRiderID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (!request.isPaymentRecived()) {
                     userRequests.remove(request);
                 }
             }
         }
         return userRequests;
     }
+
+    public static void payRequest(UserRequest request) {
+        request.setPaymentReceived(true);
+        ElasticsearchRequestController.MarkAsPaid searchController =
+                new ElasticsearchRequestController.MarkAsPaid();
+        try {
+            Boolean result = searchController.execute(request.getId()).get();
+        } catch (Exception e) {
+            Log.e("markPaid", e.toString());
+        }
+
+    }
+
+    public static ArrayList<UserRequest> getAwaitingPaymentRequests(User user, Mode mode) {
+        /**
+         * Gets the completed requests BY a driver if mode == Mode.DRIVER
+         * Gets the completed requests a rider received if mode == Mode.RIDER
+         */
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
+        ElasticsearchRequestController.GetClosedRequests searchController =
+                new ElasticsearchRequestController.GetClosedRequests();
+
+        try {
+            userRequests = searchController.execute(user.getId()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        temp.addAll(userRequests);
+        for (UserRequest request: temp) {
+            if (mode == Mode.DRIVER) {
+                if (!request.getConfirmedDriverID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (request.isPaymentRecived()) {
+                    userRequests.remove(request);
+                }
+            }
+            else if (mode == Mode.RIDER) {
+                if (!request.getRiderID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (request.isPaymentRecived()) {
+                    userRequests.remove(request);
+                }
+            }
+        }
+        return userRequests;
+    }
+
 
     /**
      * get all the accepted driver for specfic request

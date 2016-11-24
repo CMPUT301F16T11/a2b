@@ -8,5 +8,6 @@ public enum RequestStatus {
     WAITING,
     ACCEPTED,
     CONFIRMED,
+    COMPLETED,
     PAID
 }

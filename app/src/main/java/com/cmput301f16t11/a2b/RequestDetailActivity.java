@@ -287,13 +287,18 @@ public class RequestDetailActivity extends AppCompatActivity {
                 payButton.setEnabled(false);
                 acceptButton.setEnabled(false);
                 break;
-            case PAID:
+            case COMPLETED:
                 if (UserController.checkMode() == Mode.DRIVER) {
                     payButton.setEnabled(false);
                 }
                 else {
                     payButton.setEnabled(true);
                 }
+                deleteButton.setEnabled(false);
+                acceptButton.setEnabled(false);
+                completeButton.setEnabled(false);
+            case PAID:
+                deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
                 completeButton.setEnabled(false);
                 break;
@@ -308,6 +313,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 delete();
+                finish();
             }
         });
 
@@ -325,7 +331,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.e("driverNotServ", e.toString());
                 }
-
                 finish();
             }
         });
@@ -333,6 +338,14 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.completeRequest(request);
+                finish();
+            }
+        });
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RequestController.payRequest(request);
+                finish();
             }
         });
     }
@@ -348,6 +361,9 @@ public class RequestDetailActivity extends AppCompatActivity {
                 break;
             case CONFIRMED:
                 status.setText(R.string.confirmed);
+                break;
+            case COMPLETED:
+                status.setText(R.string.ride_complete);
                 break;
             case PAID:
                 status.setText(R.string.paid);

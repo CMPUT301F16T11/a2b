@@ -180,6 +180,9 @@ public class UserRequest implements Parcelable {
             if (this.paymentReceived) {
                 return RequestStatus.PAID;
             }
+            if (this.completed) {
+                return RequestStatus.COMPLETED;
+            }
             return RequestStatus.CONFIRMED;
         }
     }
