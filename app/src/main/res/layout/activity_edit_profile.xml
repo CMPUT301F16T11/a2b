@@ -1,249 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:padding="16dp">
-
-    <ImageView android:id="@+id/editProfile_icon"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@mipmap/ic_a2b_icon"
-        android:scaleX="3"
-        android:scaleY="3" />
+        android:gravity="center_horizontal"
+        android:padding="16dp">
 
-    <TextView android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/editProfile_icon"
-        android:text="Username"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary" />
-
-
-    <LinearLayout android:id="@+id/editProfile_phoneRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/profile_name"
-        android:gravity="center_vertical"
-        android:weightSum="3">
-        <TextView android:id="@+id/editProfile_phoneTitle"
-            android:layout_width="0dp"
+        <ImageView android:id="@+id/editProfile_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="Phone:"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@mipmap/ic_a2b_icon"
+            android:scaleX="3"
+            android:scaleY="3" />
 
-        <EditText android:id="@+id/phone_num"
-            android:layout_width="0dp"
+        <TextView android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:inputType="phone"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/editProfile_icon"
+            android:text="Username"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary" />
 
-    <LinearLayout android:id="@+id/editProfile_emailRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/editProfile_phoneRow"
-        android:weightSum="3">
-        <TextView android:id="@+id/editProfile_emailTitle"
-            android:layout_width="0dp"
+
+        <LinearLayout android:id="@+id/editProfile_phoneRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="Email:"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/profile_name"
+            android:gravity="center_vertical"
+            android:weightSum="3">
+            <TextView android:id="@+id/editProfile_phoneTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="Phone:"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-        <EditText android:id="@+id/email"
-            android:layout_width="0dp"
+            <EditText android:id="@+id/phone_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="phone"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/editProfile_emailRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:inputType="textEmailAddress"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/editProfile_phoneRow"
+            android:weightSum="3">
+            <TextView android:id="@+id/editProfile_emailTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="Email:"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-    <TextView android:id="@+id/car_detail_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_below="@id/editProfile_emailRow"
-        android:text="@string/car_detail"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary" />
+            <EditText android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="textEmailAddress"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
 
-    <LinearLayout android:id="@+id/editProfile_yearRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/car_detail_header"
-        android:weightSum="3">
-        <TextView android:id="@+id/edit_year"
-            android:layout_width="0dp"
+        <TextView android:id="@+id/car_detail_header"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="@string/edit_car_year"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/editProfile_emailRow"
+            android:text="@string/car_detail"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary" />
 
-        <EditText android:id="@+id/edit_year_field"
-            android:layout_width="0dp"
+        <LinearLayout android:id="@+id/editProfile_yearRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:inputType="number"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/car_detail_header"
+            android:weightSum="3">
+            <TextView android:id="@+id/edit_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="@string/edit_car_year"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-    <LinearLayout android:id="@+id/editProfile_makeRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/editProfile_makeRow"
-        android:weightSum="3">
-        <TextView android:id="@+id/edit_make"
-            android:layout_width="0dp"
+            <EditText android:id="@+id/edit_year_field"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="number"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/editProfile_makeRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="@string/edit_car_make"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/editProfile_yearRow"
+            android:weightSum="3">
+            <TextView android:id="@+id/edit_make"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="@string/edit_car_make"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-        <EditText android:id="@+id/edit_make_field"
-            android:layout_width="0dp"
+            <EditText android:id="@+id/edit_make_field"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/editProfile_modelRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/editProfile_makeRow"
+            android:weightSum="3">
+            <TextView android:id="@+id/edit_model"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="@string/edit_car_model"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-    <LinearLayout android:id="@+id/editProfile_modelRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/editProfile_makeRow"
-        android:weightSum="3">
-        <TextView android:id="@+id/edit_model"
-            android:layout_width="0dp"
+            <EditText android:id="@+id/edit_model_field"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/editProfile_colorRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="@string/edit_car_model"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:layout_below="@id/editProfile_modelRow"
+            android:weightSum="3">
+            <TextView android:id="@+id/edit_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="@string/edit_car_color"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
 
-        <EditText android:id="@+id/edit_model_field"
-            android:layout_width="0dp"
+            <EditText android:id="@+id/edit_color_field"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/editProfile_buttonRow"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            android:padding="8dp"
+            android:layout_below="@id/editProfile_colorRow"
+            android:weightSum="2">
 
-    <LinearLayout android:id="@+id/editProfile_colorRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:layout_below="@id/editProfile_makeRow"
-        android:weightSum="3">
-        <TextView android:id="@+id/edit_color"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="16dp"
-            android:textAlignment="textEnd"
-            android:text="@string/edit_car_color"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimary"/>
+            <Button android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@color/colorPrimary"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:onClick="editProfile"/>
 
-        <EditText android:id="@+id/edit_color_field"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/colorAccent"/>
-    </LinearLayout>
+            <Button android:id="@+id/CancelButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@color/colorPrimary"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:onClick="cancelEdit"/>
 
-    <LinearLayout android:id="@+id/editProfile_buttonRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_alignParentBottom="true"
-        android:weightSum="2">
+        </LinearLayout>
 
-        <Button android:id="@+id/saveButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:background="@color/colorPrimary"
-            android:text="Save"
-            android:textColor="@color/white"
-            android:onClick="editProfile"/>
-
-        <Button android:id="@+id/CancelButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:background="@color/colorPrimary"
-            android:text="Cancel"
-            android:textColor="@color/white"
-            android:onClick="cancelEdit"/>
-
-    </LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

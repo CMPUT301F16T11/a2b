@@ -4,10 +4,12 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -53,7 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
         phoneNum.setText(user.getPhoneNumber(), TextView.BufferType.EDITABLE);
         email.setText(user.getEmail(), TextView.BufferType.EDITABLE);
         make.setText(user.getCar().getMake(), TextView.BufferType.EDITABLE);
-        year.setText(user.getCar().getModel(), TextView.BufferType.EDITABLE);
+        year.setText(Integer.toString(user.getCar().getYear()), TextView.BufferType.EDITABLE);
         color.setText(user.getCar().getColor(), TextView.BufferType.EDITABLE);
         model.setText(user.getCar().getModel(), TextView.BufferType.EDITABLE);
 
@@ -72,6 +74,21 @@ public class EditProfileActivity extends AppCompatActivity {
         year = (EditText) findViewById(R.id.edit_year_field);
         color = (EditText) findViewById(R.id.edit_color_field);
         model = (EditText) findViewById(R.id.edit_model_field);
+//        ArrayList<EditText> needsOnItemClickListener = new ArrayList<EditText>();
+//        needsOnItemClickListener.add(make);
+//        needsOnItemClickListener.add(email);
+//        needsOnItemClickListener.add(color);
+//        needsOnItemClickListener.add(model);
+//
+//        // set listeners
+//        for (EditText view: needsOnItemClickListener) {
+//            view.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                @Override
+//                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                    return false;
+//                }
+//            });
+//        }
 
         String phoneNumber = userPhoneNumText.getText().toString();
         String email = userEmailText.getText().toString();
@@ -84,6 +101,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         AlertDialog dlg = new AlertDialog.Builder(this).create();
         dlg.setTitle("Cannot Update Profile");
+
+
 
 
         if(!isValidEmail(email)){
@@ -164,7 +183,7 @@ public class EditProfileActivity extends AppCompatActivity {
      * @param number the number to check for validity
      * @return true if valid, false otherwise
      */
-    private Boolean isValidPhoneNumber(String number){
+    private Boolean isValidYear(String number){
         Pattern format1 = Pattern.compile("[0-9]{4}"); // 7801234567
         if (format1.matcher(number).matches()) {
             return true;
@@ -172,7 +191,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return false;
     }
 
-    private Boolean isValidYear(String number){
+    private Boolean isValidPhoneNumber(String number){
         Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
         Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}");
 
