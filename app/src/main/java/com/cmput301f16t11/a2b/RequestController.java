@@ -332,10 +332,18 @@ public class RequestController {
         }
         else {
             // driver mode
-            ElasticsearchRequestController.GetDriverRequestConfirmedByRider searchController =
-                    new ElasticsearchRequestController.GetDriverRequestConfirmedByRider();
+            ElasticsearchRequestController.GetInPrgressRequests searchController =
+                    new ElasticsearchRequestController.GetInPrgressRequests();
             try {
                 temp = searchController.execute(user.getId()).get();
+                // work around for elasticsearchrequestcontroller
+                ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
+                temp_copy.addAll(temp);
+                for (UserRequest request: temp_copy) {
+                    if (!request.getConfirmedDriverID().equals(user.getId())) {
+                        temp.remove(request);
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

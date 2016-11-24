@@ -501,36 +501,43 @@ public class ElasticsearchRequestController {
             verifySettings();
 
             ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-            String search_string =  "{\n" +
-                    "    \"query\" : {\n" +
-                    "        \"constant_score\" : {\n" +
-                    "            \"filter\" : {\n" +
-                    "                \"term\" : {\n" +
-                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
-                    "                }\n" +
-                    "            }\n" +
-                    "        }\n" +
-                    "    }\n" +
-                    "}";
 
-            Search search = new Search.Builder(search_string)
-                    .addIndex(index)
-                    .addType(inProgress)
-                    .build();
+            // workaround this bug, can't solve it
+            // workaround is in RequestController.
 
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-                    List<UserRequest> foundRequests =
-                            result.getSourceAsObjectList(UserRequest.class);
-                    requestList.addAll(foundRequests);
-                } else {
-                    Log.i("Error", "Failed to find user requests for driver");
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-            }
+
+            //TODO: Why isn't below working?
+
+//            String search_string =  "{\n" +
+//                    "    \"query\" : {\n" +
+//                    "        \"constant_score\" : {\n" +
+//                    "            \"filter\" : {\n" +
+//                    "                \"term\" : {\n" +
+//                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
+//                    "                }\n" +
+//                    "            }\n" +
+//                    "        }\n" +
+//                    "    }\n" +
+//                    "}";
+//
+//            Search search = new Search.Builder(search_string)
+//                    .addIndex(index)
+//                    .addType(inProgress)
+//                    .build();
+//
+//            try {
+//                SearchResult result = client.execute(search);
+//                if (result.isSucceeded()) {
+//                    List<UserRequest> foundRequests =
+//                            result.getSourceAsObjectList(UserRequest.class);
+//                    requestList.addAll(foundRequests);
+//                } else {
+//                    Log.i("Error", "Failed to find user requests for driver");
+//                }
+//            } catch (Exception e) {
+//                Log.i("Error", "Failed to communicate with elasticsearch server");
+//                e.printStackTrace();
+//            }
 
             return requestList;
         }
