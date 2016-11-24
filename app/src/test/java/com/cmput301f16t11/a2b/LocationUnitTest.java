@@ -17,7 +17,7 @@ public class LocationUnitTest {
     private LatLng start = new LatLng(50,50);
     //specify an end point
     private LatLng end = new LatLng(50,50);
-    private User user = UserController.getUser();
+    private User user = new User();
     /**
      * Location
      US 10.01.01
