@@ -317,7 +317,14 @@ public class RequestDetailActivity extends AppCompatActivity {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
 
                 //Once the rider accepts the ride start notification service
-                DriverNotificationService.serviceHandler(request, getParent());
+
+                //TODO: drivernotificationservice is constantly getting null pointer exception
+                try {
+                    DriverNotificationService.serviceHandler(request, getParent());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("driverNotServ", e.toString());
+                }
 
                 finish();
             }

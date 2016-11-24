@@ -201,8 +201,10 @@ public class RequestController {
          */
         // drivers only
         // (get requests accepted by the curr user)
-        ElasticsearchRequestController.GetAcceptedDriverRequests searchController =
-                new ElasticsearchRequestController.GetAcceptedDriverRequests();
+//        ElasticsearchRequestController.GetAcceptedDriverRequests searchController =
+//                new ElasticsearchRequestController.GetAcceptedDriverRequests();
+        ElasticsearchRequestController.GetAcceptedByMe searchController =
+                new ElasticsearchRequestController.GetAcceptedByMe();
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         try {
             userRequests = searchController.execute(user.getId()).get();
@@ -330,18 +332,10 @@ public class RequestController {
         }
         else {
             // driver mode
-            ElasticsearchRequestController.GetInPrgressRequests searchController =
-                    new ElasticsearchRequestController.GetInPrgressRequests();
+            ElasticsearchRequestController.GetDriverRequestConfirmedByRider searchController =
+                    new ElasticsearchRequestController.GetDriverRequestConfirmedByRider();
             try {
                 temp = searchController.execute(user.getId()).get();
-                ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
-                temp_copy.addAll(temp);
-                for (UserRequest request: temp_copy) {
-                    if (!request.getAcceptedDriverIDs().contains(user)) {
-                        temp.remove(request);
-                    }
-                }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
