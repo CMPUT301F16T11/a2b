@@ -296,6 +296,32 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class MarkAsPaid extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+            String requestId = info[0];
+
+            String script = "{ \"script\" : \" ctx._source.paymentReceived = newVal }\", \"params\" : "+
+                    "{\"newVal\" : \""  + Boolean.TRUE +"\"}}";
+
+            try {
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(inProgress).id(requestId).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+    }
+
     /**
      * Get the currently open Requests for a rider
      */
