@@ -83,6 +83,19 @@ public class RiderNotificationService extends IntentService {
     }
 
     /**
+     * Stops the  rider service on logout
+     */
+    public static void stopRiderService(){
+        requestMonitoring.clear();
+        if(self != null){
+            self.stopSelf();
+        }
+
+        self = null;
+    }
+
+
+    /**
      * determines if a service is started so there is only one service at any point
      * @return
      */
