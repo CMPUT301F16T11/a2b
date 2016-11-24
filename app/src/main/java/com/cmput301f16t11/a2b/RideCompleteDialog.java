@@ -54,8 +54,8 @@ public class RideCompleteDialog extends DialogFragment {
         RideCompleteDialog dialog = new RideCompleteDialog();
 
         Bundle args = new Bundle();
-        User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriver());
-        User rider = UserController.getUserFromId(req.getRider());
+        User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriverID());
+        User rider = UserController.getUserFromId(req.getRiderID());
         args.putString("rider", confirmedDriver.getName());
         args.putString("driver", rider.getName());
         args.putParcelable("req", req);

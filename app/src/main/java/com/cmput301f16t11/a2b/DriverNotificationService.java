@@ -61,7 +61,7 @@ public class DriverNotificationService extends IntentService {
                     UserRequest serverRequest = getInProgressRequest(request.getId());
                     if (serverRequest != null) {
                         //If the driver is accepted notify him also notify the drivers that are not chose
-                        if (serverRequest.getConfirmedDriver().equals(driver.getId())) {
+                        if (serverRequest.getConfirmedDriverID().equals(driver.getId())) {
                             sendNotificationOfRiderConfirmed(serverRequest);
                         } else {
                             sendNotificationOfRiderRejected(serverRequest);
@@ -144,7 +144,7 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that a notification will be sent regarding
      */
     private void sendNotificationOfRiderConfirmed(UserRequest request){
-        String notification = request.getRider()+ " has accepted your ride for request " + request.getId();
+        String notification = request.getRiderID()+ " has accepted your ride for request " + request.getId();
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
@@ -167,7 +167,7 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that has been rejected
      */
     private  void sendNotificationOfRiderRejected(UserRequest request){
-        String notification = request.getRider()+ " has taken another ride for request " + request.getId();
+        String notification = request.getRiderID()+ " has taken another ride for request " + request.getId();
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)

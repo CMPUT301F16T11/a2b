@@ -8,6 +8,5 @@ public enum RequestStatus {
     WAITING,
     ACCEPTED,
     CONFIRMED,
-    IN_PROGRESS,
     PAID
 }

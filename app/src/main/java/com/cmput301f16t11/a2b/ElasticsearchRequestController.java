@@ -442,6 +442,9 @@ public class ElasticsearchRequestController {
                 e.printStackTrace();
             }
 
+            for (UserRequest request: requestList) {
+                request.setInProgress();
+            }
             return requestList;
         }
     }
@@ -874,6 +877,30 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class GetAcceptedByMe extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        //TODO: finish logic
+
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
+            String search_string =  "{\n" +
+                    "    \"query\" : {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                \"terms\" : {\n" +
+                    "                    \"acceptedDriverIds\":\""+ user[0] +"\"\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+            return new ArrayList<UserRequest>();
+        }
+    }
+
     /**
      * Delete a rider request
      */
@@ -939,7 +966,7 @@ public class ElasticsearchRequestController {
                 return null;
             }
 
-            return userRequest.getAcceptedDrivers();
+            return userRequest.getAcceptedDriverIDs();
         }
 
     }

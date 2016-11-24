@@ -146,16 +146,16 @@ public class RequestDetailActivity extends AppCompatActivity {
      */
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
-        if (request.getConfirmedDriver() != null) {
+        if (request.getConfirmedDriverID() != null) {
             driverName.setText(
-                    UserController.getUserFromId(request.getConfirmedDriver()).getName());
+                    UserController.getUserFromId(request.getConfirmedDriverID()).getName());
             driverName.setTextColor(Color.rgb(6, 69, 173));
             driverName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
                     intent.putExtra("username",
-                            UserController.getUserFromId(request.getConfirmedDriver()).getName());
+                            UserController.getUserFromId(request.getConfirmedDriverID()).getName());
                     startActivity(intent);
                 }
             });
@@ -164,14 +164,14 @@ public class RequestDetailActivity extends AppCompatActivity {
         }
 
         TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
-        riderName.setText(UserController.getUserFromId(request.getRider()).getName());
+        riderName.setText(UserController.getUserFromId(request.getRiderID()).getName());
         riderName.setTextColor(Color.rgb(6, 69, 173));
         riderName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
                 intent.putExtra("username",
-                        UserController.getUserFromId(request.getRider()).getName());
+                        UserController.getUserFromId(request.getRiderID()).getName());
                 startActivity(intent);
             }
         });
@@ -241,33 +241,64 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
-        if (UserController.checkMode() ==
-                Mode.RIDER && UserController.getUser().equals(request.getRider())) {
+
+        // enable delete button if the curr user owns this request
+        if (UserController.getUser().getId().equals(request.getRiderID())) {
             deleteButton.setEnabled(true);
-            completeButton.setEnabled(false);
-            if (request.hasConfirmedRider()) {
-                payButton.setEnabled(true);
-            }
-            else {
-                payButton.setEnabled(false);
-            }
-        }
-        else if (UserController.checkMode() == Mode.DRIVER &&
-                request.getConfirmedDriver() != null &&
-                    request.getConfirmedDriver().equals(UserController.getUser())) {
-            completeButton.setEnabled(true);
-            payButton.setEnabled(false);
         }
         else {
-                payButton.setEnabled(false);
-                deleteButton.setEnabled(false);
-                completeButton.setEnabled(false);
+            deleteButton.setEnabled(false);
         }
-        // accept
-        if (UserController.checkMode() == Mode.DRIVER &&
-                !request.getAcceptedDrivers().contains(UserController.getUser())) {
-            acceptButton.setEnabled(true);
-        } else {
+
+        // set other buttons depending on request status
+        switch (request.getRequestStatus()) {
+            case WAITING:
+                if (UserController.checkMode() == Mode.RIDER) {
+                    acceptButton.setEnabled(false);
+                }
+                else if (UserController.checkMode() == Mode.DRIVER) {
+                    acceptButton.setEnabled(true);
+                }
+                completeButton.setEnabled(false);
+                payButton.setEnabled(false);
+                break;
+            case ACCEPTED:
+                if (UserController.checkMode() == Mode.DRIVER) {
+                    String curr_user = UserController.getUser().getId();
+                    ArrayList<String> driver_strings = request.getAcceptedDriverIDs();
+                    if (request.getAcceptedDriverIDs().contains(UserController.getUser().getId())) {
+                        acceptButton.setEnabled(false);
+                    }
+                    else {
+                        acceptButton.setEnabled(true);
+                    }
+                }
+                payButton.setEnabled(false);
+                completeButton.setEnabled(false);
+                break;
+            case CONFIRMED:
+                if (UserController.checkMode() == Mode.DRIVER) {
+                    completeButton.setEnabled(true);
+                }
+                else {
+                    completeButton.setEnabled(false);
+                }
+                payButton.setEnabled(false);
+                acceptButton.setEnabled(false);
+                break;
+            case PAID:
+                if (UserController.checkMode() == Mode.DRIVER) {
+                    payButton.setEnabled(false);
+                }
+                else {
+                    payButton.setEnabled(true);
+                }
+                acceptButton.setEnabled(false);
+                completeButton.setEnabled(false);
+                break;
+        }
+
+        if (UserController.checkMode() == Mode.RIDER) {
             acceptButton.setEnabled(false);
         }
 
@@ -306,8 +337,9 @@ public class RequestDetailActivity extends AppCompatActivity {
             case CONFIRMED:
                 status.setText(R.string.confirmed);
                 break;
-            case IN_PROGRESS:
+            case PAID:
                 status.setText(R.string.paid);
+                break;
         }
 
     }

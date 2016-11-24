@@ -125,7 +125,7 @@ public class RequestController {
     public static ArrayList<UserRequest> getOwnActiveRequests(User user) {
         /**
          * For use in ride mode only
-         * Gets all requests created by the user
+         * Gets all requests created by the user (active)
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
 
@@ -139,13 +139,12 @@ public class RequestController {
             }
         }
         else {
-            ElasticsearchRequestController.GetActiveRiderRequests searchController = new ElasticsearchRequestController.GetActiveRiderRequests();
+            ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
             try{
-                userRequests = searchController.execute(user.getId()).get();
-            }catch(Exception e){
-
+                userRequests = activeController.execute(user.getId()).get();
+            } catch (Exception e){
+                e.printStackTrace();
             }
-
         }
         return userRequests;
     }
@@ -165,15 +164,24 @@ public class RequestController {
          * are currently accepted by at least one driver.
          * Excludes completed requests.
          */
-        // riders only
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
-        ElasticsearchRequestController.GetAcceptedRequests searchController =
-                new ElasticsearchRequestController.GetAcceptedRequests();
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+        ArrayList<UserRequest> riderRequests = getOwnActiveRequests(user);
+        for (UserRequest request: riderRequests) {
+            if (request.getRequestStatus() == RequestStatus.ACCEPTED) {
+                userRequests.add(request);
+            }
         }
+
+
+//        // riders only
+//        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+//        ElasticsearchRequestController.GetAcceptedRequests searchController =
+//                new ElasticsearchRequestController.GetAcceptedRequests();
+//        try {
+//            userRequests = searchController.execute(user.getId()).get();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return userRequests;
     }
 
@@ -230,12 +238,12 @@ public class RequestController {
         temp.addAll(userRequests);
         for (UserRequest request: temp) {
             if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriver().equals(user)) {
+                if (!request.getConfirmedDriverID().equals(user)) {
                     userRequests.remove(request);
                 }
             }
             else if (mode == Mode.RIDER) {
-                if (!request.getRider().equals(user)) {
+                if (!request.getRiderID().equals(user)) {
                     userRequests.remove(request);
                 }
             }
@@ -329,7 +337,7 @@ public class RequestController {
                 ArrayList<UserRequest> temp_copy = new ArrayList<UserRequest>();
                 temp_copy.addAll(temp);
                 for (UserRequest request: temp_copy) {
-                    if (!request.getAcceptedDrivers().contains(user)) {
+                    if (!request.getAcceptedDriverIDs().contains(user)) {
                         temp.remove(request);
                     }
                 }

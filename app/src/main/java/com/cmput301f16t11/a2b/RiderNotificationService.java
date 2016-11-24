@@ -48,7 +48,7 @@ public class RiderNotificationService extends IntentService {
             //Added to avoid editing this list while the background thread looks at it
             synchronized (requestMonitoring) {
                 for (UserRequest request : requestMonitoring) {
-                    ArrayList<String> acceptedDrivers = request.getAcceptedDrivers();
+                    ArrayList<String> acceptedDrivers = request.getAcceptedDriverIDs();
                     ArrayList<String> serverAcceptedDrivers = getAcceptedDriversFromId(request.getId());
                     ArrayList<String> differentUser = findDifferenceRequests(acceptedDrivers, serverAcceptedDrivers);
 
@@ -202,11 +202,12 @@ public class RiderNotificationService extends IntentService {
             return null;
         }
 
-        return userRequest.getAcceptedDrivers();
+        return userRequest.getAcceptedDriverIDs();
     }
 
     /**
      * This send a notification that all the addedUsers have accepted that individual rider's request
+     *
      * @param addedUsers
      */
     private  void sendNotificationOfAcceptedDriver(ArrayList<String> addedUsers, String requestId){

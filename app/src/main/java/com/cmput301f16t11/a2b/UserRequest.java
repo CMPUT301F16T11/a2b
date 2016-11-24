@@ -123,14 +123,14 @@ public class UserRequest implements Parcelable {
     }
 
     // Getters
-    public String getConfirmedDriver() {
+    public String getConfirmedDriverID() {
         return this.confirmedDriverId;
     }
 
-    public ArrayList<String> getAcceptedDrivers() {
+    public ArrayList<String> getAcceptedDriverIDs() {
         return this.acceptedDriverIds;
     }
-    public String getRider() {
+    public String getRiderID() {
         return riderId;
     }
     public LatLng getEndLocation() {
@@ -224,9 +224,6 @@ public class UserRequest implements Parcelable {
             if (this.paymentReceived) {
                 return RequestStatus.PAID;
             }
-            if (this.inProgress) {
-                return RequestStatus.IN_PROGRESS;
-            }
             return RequestStatus.CONFIRMED;
         }
     }
@@ -292,9 +289,9 @@ public class UserRequest implements Parcelable {
 
 
     public String toString() {
-        String temp = "Rider: " + this.getRider() + "\n";
-        if (this.getConfirmedDriver() != null) {
-            temp = temp + "Confirmed Driver: " + this.getConfirmedDriver() + "\n";
+        String temp = "Rider: " + this.getRiderID() + "\n";
+        if (this.getConfirmedDriverID() != null) {
+            temp = temp + "Confirmed Driver: " + this.getConfirmedDriverID() + "\n";
         }
         if (this.getDistance() != null) {
             temp = temp + "Distance: " + this.getDistance().toString() + "\n";
