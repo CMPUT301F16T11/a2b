@@ -515,7 +515,7 @@ public class ElasticsearchRequestController {
 
             Search search = new Search.Builder(search_string)
                     .addIndex(index)
-                    .addType(closedRequest)
+                    .addType(inProgress)
                     .build();
 
             try {

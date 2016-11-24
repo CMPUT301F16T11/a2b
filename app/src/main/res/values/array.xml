@@ -7,7 +7,7 @@
         <item>Completed Requests</item>
     </string-array>
     <string-array name="requestTypesRiderArray">
-        <item>My Requests</item>
+        <item>My Active Requests</item>
         <item>My Accepted Requests</item>
         <item>My Confirmed Requests</item>
         <item>My Completed Requests</item>
