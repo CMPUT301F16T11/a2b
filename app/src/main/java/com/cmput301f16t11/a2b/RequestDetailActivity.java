@@ -88,6 +88,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                 RequestController.setRequestConfirmedDriver(request,
                                         acceptedDrivers.get(currPosition),
                                         RequestDetailActivity.this);
+                                RiderNotificationService.endNotification(request.getId());
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 // do nada
@@ -314,6 +315,10 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
+
+                //Once the rider accepts the ride start notification service
+                DriverNotificationService.serviceHandler(request, getParent());
+
                 finish();
             }
         });

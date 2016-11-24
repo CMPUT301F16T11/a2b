@@ -58,6 +58,10 @@
             android:name=".RiderNotificationService"
             android:exported="false" />
 
+        <service
+            android:name=".DriverNotificationService"
+            android:exported="false" />
+
         <activity
             android:name=".EmptyMapActivity"
             android:label="@string/title_activity_empty_map"></activity>

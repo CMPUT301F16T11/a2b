@@ -26,26 +26,20 @@ import io.searchbox.core.Get;
 
 public class DriverNotificationService extends IntentService {
     private User driver;
-    private ArrayList<UserRequest> requests = new ArrayList<>();
+    private  static ArrayList<UserRequest> requests = new ArrayList<>();
 
     //Elastic search stuff
     private static JestDroidClient client;
     private static String index = "f16t11";
-
+    private static String user = "user";
     private static String type = "inProgress";
+
     private static DriverNotificationService self;
 
     public DriverNotificationService(){
         super("intent service");
         self = this;
         driver = UserController.getUser();
-    }
-
-    public DriverNotificationService(ArrayList<UserRequest> requests) {
-        super("intent service");
-        this.requests = requests;
-        driver = UserController.getUser();
-        self = this;
     }
 
     @Override
@@ -78,7 +72,7 @@ public class DriverNotificationService extends IntentService {
 
             // Wait 3s before trying again
             try {
-                Thread.sleep(10000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -144,11 +138,12 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that a notification will be sent regarding
      */
     private void sendNotificationOfRiderConfirmed(UserRequest request){
-        String notification = request.getRiderID()+ " has accepted your ride for request " + request.getId();
+        String name = getUserName(request.getRiderID());
+        String notification = name+ " has accepted your ride.";
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
-                .setSmallIcon(R.drawable.common_plus_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.ic_notification_a2b)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -167,11 +162,12 @@ public class DriverNotificationService extends IntentService {
      * @param request the request that has been rejected
      */
     private  void sendNotificationOfRiderRejected(UserRequest request){
-        String notification = request.getRiderID()+ " has taken another ride for request " + request.getId();
+        String name = getUserName(request.getRiderID());
+        String notification = name + " has taken another ride for request  you accepted." ;
 
         Notification noti = new Notification.Builder(this)
                 .setContentTitle(notification)
-                .setSmallIcon(R.drawable.common_plus_signin_btn_icon_dark)
+                .setSmallIcon(R.drawable.ic_notification_a2b)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -182,7 +178,27 @@ public class DriverNotificationService extends IntentService {
         notificationManager.notify(0, noti);
     }
 
-    public void addRequest(UserRequest req) {
+    private String getUserName(String usernameId){
+        Get get = new Get.Builder(index, usernameId).type(user).build();
+        User user;
+        try {
+            JestResult result = client.execute(get);
+            if (result.isSucceeded()) {
+                user = result.getSourceAsObject(User.class);
+                return user.getName();
+            }
+            else{
+                Log.i("Error", "Failed to find any accepted requests");
+                return "<username not found>";
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Failed to communicate with elasticsearch server");
+            e.printStackTrace();
+            return "<username not found>";
+        }
+    }
+
+    public static void addRequest(UserRequest req) {
         synchronized (requests) {
             requests.add(req);
         }
@@ -197,12 +213,11 @@ public class DriverNotificationService extends IntentService {
 
     public static void serviceHandler(UserRequest req, Activity activity) {
         if (!DriverNotificationService.isStarted()) {
-            new DriverNotificationService();
             Intent intent = createIntentDriverNotificationService(activity);
             activity.startService(intent);
         }
 
-        DriverNotificationService.self.addRequest(req);
+        DriverNotificationService.addRequest(req);
     }
 
 }
