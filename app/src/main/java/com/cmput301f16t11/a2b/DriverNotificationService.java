@@ -27,6 +27,7 @@ import io.searchbox.core.Get;
 public class DriverNotificationService extends IntentService {
     private User driver;
     private  static ArrayList<UserRequest> requests = new ArrayList<>();
+    private static DriverNotificationService self;
 
     //Elastic search stuff
     private static JestDroidClient client;
@@ -34,7 +35,7 @@ public class DriverNotificationService extends IntentService {
     private static String user = "user";
     private static String type = "inProgress";
 
-    private static DriverNotificationService self;
+
 
     public DriverNotificationService(){
         super("intent service");
@@ -87,6 +88,18 @@ public class DriverNotificationService extends IntentService {
     public static Intent createIntentDriverNotificationService(Context context) {
         Intent intent = new Intent(context, DriverNotificationService.class);
         return intent;
+    }
+
+    /**
+     * stops the driver service when you log out
+     */
+    public static void stopDriverService(){
+        requests.clear();
+        if(self != null){
+            self.stopSelf();
+        }
+
+        self = null;
     }
 
     /**

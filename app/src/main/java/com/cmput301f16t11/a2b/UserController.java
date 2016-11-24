@@ -203,6 +203,10 @@ public class UserController {
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);
 
+        //Stop all the services if they are running
+        RiderNotificationService.stopRiderService();
+        DriverNotificationService.stopDriverService();
+
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
