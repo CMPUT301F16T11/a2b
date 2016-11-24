@@ -1,14 +1,14 @@
 package com.cmput301f16t11.a2b;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-
-import io.searchbox.client.JestResult;
-import io.searchbox.core.Get;
+import java.util.List;
 
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
@@ -476,6 +476,33 @@ public class RequestController {
         ElasticsearchUserController.AddToDriverRating addToDriverRating =
                 new ElasticsearchUserController.AddToDriverRating();
         addToDriverRating.execute(driverId,newRating.toString());
+
+    }
+    public static ArrayList<String> searchLocationName(LatLng start, LatLng end, Context context) {
+
+        String startLocationName ="";
+        String endLocationName = "";
+
+        //This is added so that we can search by a location name
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> startString = geoCoder.getFromLocation(start.latitude, end.longitude, 1);
+            List<Address> endString = geoCoder.getFromLocation(end.latitude, end.longitude, 1);
+            if (!startString.isEmpty()) {
+                startLocationName = startString.get(0).getAddressLine(0);
+            }
+            if (!endString.isEmpty()) {
+                startLocationName = endString.get(0).getAddressLine(0);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
+        ArrayList<String> locationList = new ArrayList<>();
+        locationList.add(startLocationName);
+        locationList.add(endLocationName);
+
+        return locationList;
 
     }
 }
