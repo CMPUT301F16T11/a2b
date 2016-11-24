@@ -890,7 +890,7 @@ public class ElasticsearchRequestController {
                     "    \"query\" : {\n" +
                     "        \"constant_score\" : {\n" +
                     "            \"filter\" : {\n" +
-                    "                \"terms\" : {\n" +
+                    "                \"term\" : {\n" +
                     "                    \"acceptedDriverIds\":\""+ user[0] +"\"\n" +
                     "                }\n" +
                     "            }\n" +
