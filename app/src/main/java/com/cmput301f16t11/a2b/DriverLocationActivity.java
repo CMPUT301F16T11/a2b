@@ -277,6 +277,10 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
+                    if(marker.equals(currentMarker)){
+                        return true;
+                    }
+
                     MarkerInfoDialog dialog = MarkerInfoDialog.newInstance(requestMap.get(marker));
                     dialog.setCancelable(true);
                     dialog.show(getFragmentManager().beginTransaction(), "dialog");
