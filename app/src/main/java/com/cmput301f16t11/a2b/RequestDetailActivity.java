@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -51,9 +53,11 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ListView driverList; // TODO: populate this list
     private ArrayList<User> acceptedDrivers;
     private int currPosition;
+    private saveLoad_Controller saveLoadController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        saveLoadController = new saveLoad_Controller(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }
@@ -76,6 +80,7 @@ public class RequestDetailActivity extends AppCompatActivity {
      */
     public void populateAcceptedDriversList() {
         final Context context = this;
+
         acceptedDrivers = RequestController.getAcceptedDrivers(request);
         driverList = (ListView) findViewById(R.id.accepted_list);
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -330,7 +335,6 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
-
                 //Once the rider accepts the ride start notification service
 
                 //TODO: drivernotificationservice is constantly getting null pointer exception
@@ -400,12 +404,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    private void deleteRequest(){
+    private void deleteRequest() {
         RequestController.deleteRequest(request.getId());
         finish();
     }
-
-//    private void showFinalDialog(UserRequest request) {
-//
-//    }
 }

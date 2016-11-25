@@ -1,6 +1,8 @@
 package com.cmput301f16t11.a2b;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
@@ -18,6 +20,7 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
 public class RequestController {
 
     public static ArrayList<UserRequest> nearbyRequests;
+    public static saveLoad_Controller saveLoadController;
 
 
     /**
@@ -194,23 +197,31 @@ public class RequestController {
      * @param user the driver in question
      * @return List of UserRequests currently accepted
      */
-    public static ArrayList<UserRequest> getAcceptedByUser(User user) {
+    public static ArrayList<UserRequest> getAcceptedByUser(User user, Context context) {
         /**
          * For use in driver mode only. Gets the requests that user has currently
          * accepted, excluding completed requests.
          */
         // drivers only
         // (get requests accepted by the curr user)
-//        ElasticsearchRequestController.GetAcceptedDriverRequests searchController =
-//                new ElasticsearchRequestController.GetAcceptedDriverRequests();
-        ElasticsearchRequestController.GetAcceptedByMe searchController =
-                new ElasticsearchRequestController.GetAcceptedByMe();
+        saveLoadController = new saveLoad_Controller(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // check network
+        if(!isNetworkAvailable(context)) {
+            userRequests = saveLoadController.loadFromFile("acceptedByMe.sav");
+        } else {
+            ElasticsearchRequestController.GetAcceptedByMe searchController =
+                    new ElasticsearchRequestController.GetAcceptedByMe();
+
+            try {
+                userRequests = searchController.execute(user.getId()).get();
+                saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+
         return userRequests;
     }
 
@@ -534,6 +545,15 @@ public class RequestController {
         addToDriverRating.execute(driverId,newRating.toString());
 
     }
+
+    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+    public static boolean isNetworkAvailable(Context c) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public static ArrayList<String> searchLocationName(LatLng start, LatLng end, Context context) {
 
         String startLocationName ="";

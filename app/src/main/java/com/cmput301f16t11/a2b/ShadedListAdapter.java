@@ -3,6 +3,8 @@ package com.cmput301f16t11.a2b;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,11 +32,13 @@ import java.util.List;
 //adapter = new ArrayAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
 //        android.R.id.text1, this.requests);
 public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
-    ArrayList<UserRequest> requests;
+    private ArrayList<UserRequest> requests;
+    private Context context;
 
     public ShadedListAdapter(Context cntxt, ArrayList<UserRequest> objs) {
         super(cntxt, 0, objs);
         requests = objs;
+        context = cntxt;
     }
 
     @Override
@@ -61,11 +66,20 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         final TextView riderEntry = (TextView) view.findViewById(R.id.rider_entry);
         final TextView fareEntry  = (TextView) view.findViewById(R.id.fare_entry);
         final TextView dateEntry = (TextView) view.findViewById(R.id.date_created_entry);
+        String riderName;
 
-        User rider = UserController.getUserFromId(request.getRiderID());
+
+        if(!isNetworkAvailable(context)) {
+            saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
+            HashMap<String,String> map = saveLoadController.loadFromFileMap("map.sav");
+            riderName = map.get(request.getRiderID());
+        } else {
+            User rider = UserController.getUserFromId(request.getRiderID());
+            riderName = rider.getName();
+        }
 
         try {
-            riderEntry.setText(rider.getName());
+            riderEntry.setText(riderName);
             fareEntry.setText(request.getFare().toString());
             dateEntry.setText(request.getDateString());
         } catch (NullPointerException e) {
@@ -73,5 +87,13 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         }
 
         return view;
+    }
+
+    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+    public static boolean isNetworkAvailable(Context c) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
