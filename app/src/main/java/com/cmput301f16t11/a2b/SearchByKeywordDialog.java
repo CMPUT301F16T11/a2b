@@ -12,84 +12,18 @@ import android.widget.RadioGroup;
  * Created by john on 22/11/16.
  */
 
+@Deprecated
 public class SearchByKeywordDialog extends Dialog {
 
-    public enum searchCriteria{
-        START,
-        END,
-        DESCRIPTION,
-        NOT_SET
-    }
-
-    private searchCriteria selectedCriteria;
     private String searchString;
 
     SearchByKeywordDialog(Context context){
         super(context);
         setContentView(R.layout.search_by_keyword);
-        selectedCriteria = searchCriteria.DESCRIPTION;
-
-        setOnClickListeners(context);
-    }
-
-    private void setOnClickListeners(Context context){
-        final RadioGroup selectorGroup = (RadioGroup)findViewById(R.id.searchGroup);
-        final Button okButton = (Button) findViewById(R.id.okKeyword);
-        final Button cancelButton= (Button) findViewById(R.id.cancelKeyword);
-
-        selectorGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
-                    case R.id.descriptionSelect:{
-                        selectedCriteria = searchCriteria.DESCRIPTION;
-                       return;
-                    }
-                    case R.id.startSelect:{
-                        selectedCriteria = searchCriteria.START;
-                       return;
-                    }
-                    case R.id.endSelect:{
-                        selectedCriteria = searchCriteria.END;
-                       return;
-                    }
-                    default:{
-                        selectedCriteria = searchCriteria.NOT_SET;
-                       return;
-                    }
-                }
-            }
-        });
-
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchString = getEditTextString();
-                dismiss();
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If this is set the parent activity will know the user cancelled
-                selectedCriteria = searchCriteria.NOT_SET;
-                dismiss();
-            }
-        });
-    }
-
-    public searchCriteria getSelectedCriteria() {
-        return selectedCriteria;
     }
 
     public String getSearchString(){
         return searchString;
-    }
-
-    private String getEditTextString(){
-        final EditText editText = (EditText) findViewById(R.id.textKeyword);
-        return editText.getText().toString();
     }
 
 }

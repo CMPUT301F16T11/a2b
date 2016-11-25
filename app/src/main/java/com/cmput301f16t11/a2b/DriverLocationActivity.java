@@ -20,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -67,7 +69,16 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     private Circle currentCircle;
     private int currentSearchRadius = 3000; // defaults to 3000m
     private Context context;
+    private searchCriteria currentSearchCriteria;
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
+
+
+    public enum searchCriteria{
+        START,
+        END,
+        DESCRIPTION,
+        NOT_SET
+    }
 
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -379,32 +390,63 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         searchByKeyword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final SearchByKeywordDialog dialog = new SearchByKeywordDialog(context);
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.search_by_keyword);
+                setSearchByKeyWordOnClickListeners(dialog);
                 dialog.show();
+            }
+        });
+    }
 
-                SearchByKeywordDialog.searchCriteria  criteria = dialog.getSelectedCriteria();
-                String searchString = dialog.getSearchString();
-                switch(criteria){
-                    //User hit cancel so do nothing
-                    case NOT_SET:{
-                        return;
-                    }
-                    case DESCRIPTION:{
-                        //TODO: Search by description from controller
-                        return;
-                    }
-                    case START:{
-                        //TODO: Search by start location
-                        return;
-                    }
-                    case END:{
-                        //TODO: Search by the end location
-                        return;
-                    }
+    /**
+     * Set up the listeners for specific search by keyword dialog instance
+     * @param dialog
+     */
+    private void setSearchByKeyWordOnClickListeners(final Dialog dialog) {
+        final RadioGroup selectorGroup = (RadioGroup) dialog.findViewById(R.id.searchGroup);
+        final Button okButton = (Button) dialog.findViewById(R.id.okKeyword);
+        final Button cancelButton = (Button) dialog.findViewById(R.id.cancelKeyword);
+        final EditText entry = (EditText) dialog.findViewById(R.id.textKeyword);
 
+        //defaults to start location
+        currentSearchCriteria = searchCriteria.START;
+
+        selectorGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.descriptionSelect: {
+                        currentSearchCriteria = searchCriteria.DESCRIPTION;
+                        return;
+                    }
+                    case R.id.startSelect: {
+                        currentSearchCriteria = searchCriteria.START;
+                        return;
+                    }
+                    case R.id.endSelect: {
+                        currentSearchCriteria = searchCriteria.END;
+                    }
                 }
             }
         });
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Use search string and currentSearchCriteria for queries
+                String searchString = entry.getText().toString();
+                dialog.dismiss();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //If this is set the parent activity will know the user cancelled
+                dialog.dismiss();
+            }
+        });
+
     }
 
     /**
