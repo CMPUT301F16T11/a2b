@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
@@ -315,9 +316,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                 break;
         }
 
-        //TEMPORARY FOR TESTING ONLY
-        payButton.setEnabled(true);
-
         if (UserController.checkMode() == Mode.RIDER) {
             acceptButton.setEnabled(false);
         }
@@ -358,9 +356,13 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
+                Toast toast = Toast.makeText(RequestDetailActivity.this,
+                        "Payment Complete", Toast.LENGTH_LONG);
+                toast.show();
+                finish();
 //                showFinalDialog(request);
-                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-                dialog.show(getFragmentManager(), "dialog");
+//                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+//                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
