@@ -164,13 +164,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:src="@drawable/star_empty"
-            android:tint="@color/yellow" />
+            android:tint="@color/yellow"/>
 
         <ImageView android:id="@+id/dialog_rideComplete_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:src="@drawable/star_empty"
             android:tint="@color/yellow" />
 
@@ -178,6 +180,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:src="@drawable/star_empty"
             android:tint="@color/yellow" />
 
@@ -185,6 +188,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:src="@drawable/star_empty"
             android:tint="@color/yellow" />
 
@@ -192,6 +196,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:clickable="true"
             android:src="@drawable/star_empty"
             android:tint="@color/yellow" />
 

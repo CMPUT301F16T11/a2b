@@ -3,6 +3,8 @@ package com.cmput301f16t11.a2b;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.TextKeyListener;
@@ -66,6 +68,7 @@ public class RequestListActivity extends AppCompatActivity {
     private EditText maxPrice;
     private Boolean filterMaxPrice;
     private Boolean filterMaxPricePerKM;
+    private saveLoad_Controller saveLoadController;
 
 
     @Override
@@ -73,6 +76,7 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
+        saveLoad_Controller saveLoadController = new saveLoad_Controller(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -185,7 +189,7 @@ public class RequestListActivity extends AppCompatActivity {
                         // my requests
                         requests.clear();
                         requests.addAll(
-                                RequestController.getOwnActiveRequests(UserController.getUser()));
+                                RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
 
                     }
 
@@ -196,11 +200,11 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.clear();
                         requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
-                                        UserController.getUser())));
+                                        UserController.getUser(), RequestListActivity.this)));
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
+                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();

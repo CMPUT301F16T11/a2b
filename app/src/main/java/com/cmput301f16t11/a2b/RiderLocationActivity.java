@@ -127,7 +127,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     }
 
     public void startUpNotificationService(){
-        ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser());
+        ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser(), this);
 
         //Start the rider service if it is not already started start it up and add all own active requests
         if(!RiderNotificationService.isRecieveServiceStarted()) {

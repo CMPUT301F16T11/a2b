@@ -1,11 +1,15 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,8 +18,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
@@ -48,9 +54,11 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ListView driverList; // TODO: populate this list
     private ArrayList<User> acceptedDrivers;
     private int currPosition;
+    private saveLoad_Controller saveLoadController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        saveLoadController = new saveLoad_Controller(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }
@@ -73,6 +81,7 @@ public class RequestDetailActivity extends AppCompatActivity {
      */
     public void populateAcceptedDriversList() {
         final Context context = this;
+
         acceptedDrivers = RequestController.getAcceptedDrivers(request);
         driverList = (ListView) findViewById(R.id.accepted_list);
         driverList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,6 +98,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                         acceptedDrivers.get(currPosition),
                                         RequestDetailActivity.this);
                                 RiderNotificationService.endNotification(request.getId());
+                                ((Activity) context).finish();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 // do nada
@@ -297,6 +307,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
                 completeButton.setEnabled(false);
+                break;
             case PAID:
                 deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
@@ -322,7 +333,6 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.addAcceptance(request, RequestDetailActivity.this);
-
                 //Once the rider accepts the ride start notification service
 
                 //TODO: drivernotificationservice is constantly getting null pointer exception
@@ -346,7 +356,13 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
+                Toast toast = Toast.makeText(RequestDetailActivity.this,
+                        "Payment Complete", Toast.LENGTH_LONG);
+                toast.show();
                 finish();
+//                showFinalDialog(request);
+//                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+//                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
@@ -390,8 +406,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    private void deleteRequest(){
+    private void deleteRequest() {
         RequestController.deleteRequest(request.getId());
         finish();
-        }
+    }
 }
