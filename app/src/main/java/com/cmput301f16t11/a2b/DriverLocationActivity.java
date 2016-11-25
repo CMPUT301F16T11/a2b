@@ -1,7 +1,6 @@
 package com.cmput301f16t11.a2b;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,8 +9,8 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -378,6 +377,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 final SearchByKeywordDialog dialog = new SearchByKeywordDialog(context);
                 dialog.show();
 
+
                 SearchByKeywordDialog.searchCriteria  criteria = dialog.getSelectedCriteria();
                 String searchString = dialog.getSearchString();
                 switch(criteria){
@@ -387,14 +387,27 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     }
                     case DESCRIPTION:{
                         //TODO: Search by description from controller
+                        ArrayList<UserRequest> descriptionList = RequestController.queryByKeywordDescription(searchString);
+                        //show the requests in this list
+                        RequestController.setNearbyRequests(descriptionList);
+                        //update the map
                         return;
                     }
                     case START:{
                         //TODO: Search by start location
+                        ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordDescription(searchString);
+                        //show the requests in this list
+                        RequestController.setNearbyRequests(startKeywordList);
+                        //update the map
+                        
                         return;
                     }
                     case END:{
                         //TODO: Search by the end location
+                        ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordLocation(searchString);
+                        //show the requests in this list
+                        RequestController.setNearbyRequests(endKeywordList);
+                        //update the map
                         return;
                     }
 
