@@ -189,7 +189,7 @@ public class RequestListActivity extends AppCompatActivity {
                         // my requests
                         requests.clear();
                         requests.addAll(
-                                RequestController.getOwnActiveRequests(UserController.getUser()));
+                                RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
 
                     }
 
@@ -204,7 +204,7 @@ public class RequestListActivity extends AppCompatActivity {
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser()));
+                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();

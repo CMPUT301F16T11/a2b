@@ -98,9 +98,9 @@ public class saveLoad_Controller {
         storeUserNames(offlineRequestListIn);
     }
 
-    public void saveInFileMap(HashMap<String, String> map, String FILENAME) {
+    public void saveInFileMap(HashMap<String, String> map) {
         try {
-            FileOutputStream fos = context.openFileOutput(FILENAME, 0);
+            FileOutputStream fos = context.openFileOutput("names.sav", 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
             OutputStreamWriter writer = new OutputStreamWriter(fos);
 
@@ -117,18 +117,22 @@ public class saveLoad_Controller {
     }
 
     public void clear() {
-        offlineRequestList.clear();
-        context.deleteFile(FILENAME); // delete file
+        context.deleteFile("names.sav"); // delete file
+        context.deleteFile("acceptedByMe.sav");
+        context.deleteFile("riderOwnerRequests.sav");
     }
 
     public void storeUserNames(ArrayList<UserRequest> requests) {
-        HashMap<String, String> map = new HashMap<String, String>();
+
+        HashMap<String, String> names = loadFromFileMap("names.sav");
+        if(names.size() == 0) {
+            names = new HashMap<String, String>();
+        }
         for (UserRequest request : requests) {
             String id = request.getRiderID();
             String userName = UserController.getUserFromId(id).getName();
-            map.put(id, userName);
-            saveInFileMap(map, "map.sav");
+            names.put(id, userName);
         }
-
+        saveInFileMap(names);
     }
 }

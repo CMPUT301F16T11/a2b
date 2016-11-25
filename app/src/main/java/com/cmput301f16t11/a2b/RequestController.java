@@ -125,12 +125,14 @@ public class RequestController {
      * @param user the user in question
      * @return ArrayList<UserRequest> of UserRequests in question
      */
-    public static ArrayList<UserRequest> getOwnActiveRequests(User user) {
+    public static ArrayList<UserRequest> getOwnActiveRequests(User user, Context context) {
         /**
          * For use in ride mode only
          * Gets all requests created by the user (active)
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+        // (get requests accepted by the curr user)
+        saveLoadController = new saveLoad_Controller(context);
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
@@ -142,12 +144,19 @@ public class RequestController {
             }
         }
         else {
-            ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
-            try{
-                userRequests = activeController.execute(user.getId()).get();
-            } catch (Exception e){
-                e.printStackTrace();
+
+            if(!isNetworkAvailable(context)) {
+                userRequests = saveLoadController.loadFromFile("riderOwnRequests.sav");
+            } else {
+                ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
+                try{
+                    userRequests = activeController.execute(user.getId()).get();
+                    saveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
+
         }
         return userRequests;
     }
@@ -161,14 +170,14 @@ public class RequestController {
      * @param user the user obj in question
      * @return list of UserRequests accepted by >= 1 driver
      */
-    public static ArrayList<UserRequest> getAcceptedByDrivers(User user) {
+    public static ArrayList<UserRequest> getAcceptedByDrivers(User user, Context context) {
         /**
          * For use in ride mode only. Gets the requests that user has created and
          * are currently accepted by at least one driver.
          * Excludes completed requests.
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
-        ArrayList<UserRequest> riderRequests = getOwnActiveRequests(user);
+        ArrayList<UserRequest> riderRequests = getOwnActiveRequests(user, context);
         for (UserRequest request: riderRequests) {
             if (request.getRequestStatus() == RequestStatus.ACCEPTED) {
                 userRequests.add(request);

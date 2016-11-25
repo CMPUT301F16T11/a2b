@@ -71,8 +71,8 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
         if(!isNetworkAvailable(context)) {
             saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
-            HashMap<String,String> map = saveLoadController.loadFromFileMap("map.sav");
-            riderName = map.get(request.getRiderID());
+            HashMap<String,String> dic = saveLoadController.loadFromFileMap("names.sav");
+            riderName = dic.get(request.getRiderID());
         } else {
             User rider = UserController.getUserFromId(request.getRiderID());
             riderName = rider.getName();
