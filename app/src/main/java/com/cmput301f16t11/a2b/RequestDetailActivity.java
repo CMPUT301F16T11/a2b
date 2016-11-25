@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -308,6 +310,9 @@ public class RequestDetailActivity extends AppCompatActivity {
                 break;
         }
 
+        //TEMPORARY FOR TESTING ONLY
+        payButton.setEnabled(true);
+
         if (UserController.checkMode() == Mode.RIDER) {
             acceptButton.setEnabled(false);
         }
@@ -349,6 +354,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
+//                showFinalDialog(request);
                 RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
                 dialog.show(getFragmentManager(), "dialog");
             }
@@ -397,5 +403,9 @@ public class RequestDetailActivity extends AppCompatActivity {
     private void deleteRequest(){
         RequestController.deleteRequest(request.getId());
         finish();
-        }
+    }
+
+//    private void showFinalDialog(UserRequest request) {
+//
+//    }
 }
