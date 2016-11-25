@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -94,6 +95,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                                         acceptedDrivers.get(currPosition),
                                         RequestDetailActivity.this);
                                 RiderNotificationService.endNotification(request.getId());
+                                ((Activity) context).finish();
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
                                 // do nada
@@ -302,6 +304,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
                 completeButton.setEnabled(false);
+                break;
             case PAID:
                 deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
@@ -350,7 +353,8 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
-                finish();
+                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
