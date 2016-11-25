@@ -73,6 +73,37 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class UpdateClosedRequestObject extends AsyncTask<UserRequest, Void, Boolean> {
+        /**
+         * Adds a UserRequest object to the openRequest list on the server
+         *
+         * @param requests the UserRequest obj in question
+         * @return true if successful, false otherwise
+         */
+        @Override
+        protected Boolean doInBackground(UserRequest... requests) {
+            verifySettings();
+
+            Index userIndex = new Index.Builder(requests[0]).index(index).type(closedRequest).build();
+
+            try {
+                DocumentResult result = client.execute(userIndex);
+                if (result.isSucceeded()) {
+                    requests[0].setId(result.getId());
+                } else {
+                    Log.i("Error", "Elasticsearch failed to update");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to update elasticsearch");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     /**
      * Get the 100 latest closed requests for a rider
      */
@@ -293,6 +324,31 @@ public class ElasticsearchRequestController {
                 Toast.makeText(context, context.getString(R.string.markerInfo_error), Toast.LENGTH_LONG).show();
             }
             super.onPostExecute(result);
+        }
+    }
+
+    public static class MarkAsPaid extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+            String requestId = info[0];
+
+            String script = "\"script\" : \"ctx._source.paymentReceived = true\"";
+
+            try {
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(closedRequest).id(requestId).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+                return false;
+            }
+            return true;
         }
     }
 

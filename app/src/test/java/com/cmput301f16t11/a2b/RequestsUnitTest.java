@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * Created by tothd on 10/24/2016.
@@ -107,8 +106,9 @@ public class RequestsUnitTest {
      */
     @Test
     public void testFareEstimation() {
-
-        Number fairFare = RiderLocationActivity.FairEstimation.estimateFair("distance");
+        // Expected 21.25 from a distance of 15 kms
+        Number fairFare = RiderLocationActivity.FairEstimation.estimateFair("15.0");
+        request.setFare(fairFare);
         assertEquals(fairFare, request.getFare());
         //TODO: will hard code the the correct estimation when possible
     }
@@ -131,6 +131,7 @@ public class RequestsUnitTest {
 
     @Test
     public void testUserAcceptancePending() {
+        request.setAcceptedStatus(true);
         assertTrue(user.hasAcceptedRequests(request));
     }
 

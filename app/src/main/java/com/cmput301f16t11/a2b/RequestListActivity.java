@@ -221,6 +221,15 @@ public class RequestListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 } else if (position == 3) {
+                    // awaiting payment
+                    requests.clear();
+                    requests.addAll(getFilteredRequests(
+                            RequestController.getAwaitingPaymentRequests(UserController.getUser(),
+                                    UserController.checkMode())));
+                    adapter.notifyDataSetChanged();
+                }
+
+                else if (position == 4) {
                     // completed requests
                     // if driver, display completed as driver
                     // if rider, display completed as rider
@@ -307,6 +316,9 @@ public class RequestListActivity extends AppCompatActivity {
     }
 
     private ArrayList<UserRequest> getFilteredRequests(ArrayList<UserRequest> listOfRequests) {
+        if (UserController.checkMode() == Mode.RIDER) {
+            return listOfRequests;
+        }
         if (!this.filterMaxPricePerKM && !this.filterMaxPrice) {
             return listOfRequests;
         }

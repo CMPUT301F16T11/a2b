@@ -145,6 +145,7 @@
     <string name="accepted">Accepted By Driver(s)</string>
     <string name="confirmed">Rider Has Confirmed Driver\'s Acceptance</string>
     <string name="in_progress">The Ride is in Progress</string>
+    <string name="ride_complete">The ride is complete, Driver is awaiting payment.</string>
     <string name="paid">Completed and Paid For</string>
 
     <!-- Search by keyword dialog -->

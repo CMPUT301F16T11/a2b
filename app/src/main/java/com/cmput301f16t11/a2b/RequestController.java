@@ -3,14 +3,14 @@ package com.cmput301f16t11.a2b;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-
-import io.searchbox.client.JestResult;
-import io.searchbox.core.Get;
+import java.util.List;
 
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
@@ -251,18 +251,74 @@ public class RequestController {
         temp.addAll(userRequests);
         for (UserRequest request: temp) {
             if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user)) {
+                if (!request.getConfirmedDriverID().equals(user.getId())) {
+                        userRequests.remove(request);
+                }
+                else if (!request.isPaymentRecived()) {
                     userRequests.remove(request);
                 }
             }
             else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user)) {
+                if (!request.getRiderID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (!request.isPaymentRecived()) {
                     userRequests.remove(request);
                 }
             }
         }
         return userRequests;
     }
+
+    public static void payRequest(UserRequest request) {
+        request.setPaymentReceived(true);
+        ElasticsearchRequestController.UpdateClosedRequestObject searchController =
+                new ElasticsearchRequestController.UpdateClosedRequestObject();
+        try {
+            Boolean result = searchController.execute(request).get();
+        } catch (Exception e) {
+            Log.e("markPaid", e.toString());
+        }
+
+    }
+
+    public static ArrayList<UserRequest> getAwaitingPaymentRequests(User user, Mode mode) {
+        /**
+         * Gets the completed requests BY a driver if mode == Mode.DRIVER
+         * Gets the completed requests a rider received if mode == Mode.RIDER
+         */
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
+        ElasticsearchRequestController.GetClosedRequests searchController =
+                new ElasticsearchRequestController.GetClosedRequests();
+
+        try {
+            userRequests = searchController.execute(user.getId()).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        temp.addAll(userRequests);
+        for (UserRequest request: temp) {
+            if (mode == Mode.DRIVER) {
+                if (!request.getConfirmedDriverID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (request.isPaymentRecived()) {
+                    userRequests.remove(request);
+                }
+            }
+            else if (mode == Mode.RIDER) {
+                if (!request.getRiderID().equals(user.getId())) {
+                    userRequests.remove(request);
+                }
+                else if (request.isPaymentRecived()) {
+                    userRequests.remove(request);
+                }
+            }
+        }
+        return userRequests;
+    }
+
 
     /**
      * get all the accepted driver for specfic request
@@ -498,5 +554,32 @@ public class RequestController {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    public static ArrayList<String> searchLocationName(LatLng start, LatLng end, Context context) {
+
+        String startLocationName ="";
+        String endLocationName = "";
+
+        //This is added so that we can search by a location name
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> startString = geoCoder.getFromLocation(start.latitude, end.longitude, 1);
+            List<Address> endString = geoCoder.getFromLocation(end.latitude, end.longitude, 1);
+            if (!startString.isEmpty()) {
+                startLocationName = startString.get(0).getAddressLine(0);
+            }
+            if (!endString.isEmpty()) {
+                startLocationName = endString.get(0).getAddressLine(0);
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
+        ArrayList<String> locationList = new ArrayList<>();
+        locationList.add(startLocationName);
+        locationList.add(endLocationName);
+
+        return locationList;
+
+    }
 }
 
