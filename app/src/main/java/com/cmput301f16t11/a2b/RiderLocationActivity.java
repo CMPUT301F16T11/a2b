@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -44,8 +43,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Main map activity for riders to select their pickup and drop off locations.
@@ -435,6 +432,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 //This code grabs the double from a string "12.7 km"
                 Scanner sc = new Scanner(distance);
                 double doubleDistance = sc.nextDouble();
+                ArrayList<String> locationList = RequestController.searchLocationName(
+                        tripStartMarker.getPosition(),tripEndMarker.getPosition(),context);
 
                 UserRequest request = new UserRequest(tripStartMarker.getPosition(),
                         tripEndMarker.getPosition(),
@@ -442,7 +441,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         UserController.getUser().getId(),
                         doubleDistance,
                         description.getText().toString(),
-                        context);
+                        locationList.get(0),locationList.get(1));
 
                 RequestController.addOpenRequest(request);
 

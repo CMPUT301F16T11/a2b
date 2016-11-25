@@ -15,20 +15,19 @@ import static org.junit.Assert.assertEquals;
 
 public class SearchingUnitTest {
 
-    private User rider1 =  new User("rider1","r1@email.com"); // rider
-    private User rider2 =  new User("rider2","r2@email.com"); // rider
-    private User rider3 =  new User("rider3","r3@email.com"); // rider
-    private User rider4 =  new User("rider4","r4@email.com"); // rider
+    private User rider1 =  new User("rider1","r1@email.com","7801114444"); // rider
+    private User rider2 =  new User("rider2","r2@email.com","7801112222"); // rider
+    private User rider3 =  new User("rider3","r3@email.com","7801113333"); // rider
+    private User rider4 =  new User("rider4","r4@email.com","7801114444"); // rider
 
-    private LatLng startLocation1 = new LatLng(50,50);
-    private LatLng endLocation1 = new LatLng(50,50);
-    private LatLng startLocation2 = new LatLng(50,50);
-    private LatLng endLocation2 = new LatLng(50,50);
-    private LatLng startLocation3 = new LatLng(50,50);
-    private LatLng endLocation3 = new LatLng(50,50);
-    private LatLng startLocation4 = new LatLng(50,50);
-    private LatLng endLocation4 = new LatLng(50,50);
-
+    private LatLng startLocation1 = new LatLng(53.5443890,-113.4909270);
+    private LatLng endLocation1 = new LatLng(53.5231674,-113.5256026);
+    private LatLng startLocation2 = new LatLng(53.5443890,-113.4909270);
+    private LatLng endLocation2 = new LatLng(53.5231674,-113.5256026);
+    private LatLng startLocation3 = new LatLng(53.5443890,-113.4909270);
+    private LatLng endLocation3 = new LatLng(53.5231674,-113.5256026);
+    private LatLng startLocation4 = new LatLng(53.5443890,-113.4909270);
+    private LatLng endLocation4 = new LatLng(53.5231674,-113.5256026);
     private UserRequest req1;
     private UserRequest req2;
     private UserRequest req3;
