@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,8 +18,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
@@ -353,8 +356,13 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
-                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-                dialog.show(getFragmentManager(), "dialog");
+                Toast toast = Toast.makeText(RequestDetailActivity.this,
+                        "Payment Complete", Toast.LENGTH_LONG);
+                toast.show();
+                finish();
+//                showFinalDialog(request);
+//                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+//                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
@@ -398,16 +406,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                 .create();
         dialog.show();
     }
-    private void deleteRequest(){
+    private void deleteRequest() {
         RequestController.deleteRequest(request.getId());
         finish();
-        }
-
-    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
