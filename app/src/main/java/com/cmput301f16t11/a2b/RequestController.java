@@ -261,10 +261,10 @@ public class RequestController {
 
     public static void payRequest(UserRequest request) {
         request.setPaymentReceived(true);
-        ElasticsearchRequestController.MarkAsPaid searchController =
-                new ElasticsearchRequestController.MarkAsPaid();
+        ElasticsearchRequestController.UpdateClosedRequestObject searchController =
+                new ElasticsearchRequestController.UpdateClosedRequestObject();
         try {
-            Boolean result = searchController.execute(request.getId()).get();
+            Boolean result = searchController.execute(request).get();
         } catch (Exception e) {
             Log.e("markPaid", e.toString());
         }

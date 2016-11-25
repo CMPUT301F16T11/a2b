@@ -301,6 +301,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 deleteButton.setEnabled(false);
                 acceptButton.setEnabled(false);
                 completeButton.setEnabled(false);
+                payButton.setEnabled(false);
                 break;
         }
 
