@@ -52,11 +52,14 @@ public class ProfileActivity extends AppCompatActivity {
         String username = intent.getStringExtra("username");
         if(username == null){
             user = UserController.getUserFromId(UserController.getUser().getId());
-            UserController.setUser(user);
-            UserController.saveInFile(this);
         }
         else{
             user = UserController.getUserFromName(username);
+        }
+
+        if (user.getId().equals(UserController.getUser().getId())) {
+            UserController.setUser(user);
+            UserController.saveInFile(this);
         }
 
         setTextViews();
