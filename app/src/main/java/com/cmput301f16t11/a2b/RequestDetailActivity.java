@@ -354,7 +354,6 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestController.payRequest(request);
-//                showFinalDialog(request);
                 RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
                 dialog.show(getFragmentManager(), "dialog");
             }
