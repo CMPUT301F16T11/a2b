@@ -23,7 +23,7 @@ public class UserRequest implements Parcelable {
     private Point startLocation;
     private Point endLocation;
     private String startLocationName;
-    private String endLocationString;
+    private String endLocationName;
 
     private Number fare;
     private Double distance;
@@ -53,7 +53,7 @@ public class UserRequest implements Parcelable {
         this.distance = distance;
         this.acceptedDriverIds = new ArrayList<>();
         this.startLocationName = startLocationName;
-        this.endLocationString = endLocationString;
+        this.endLocationName = endLocationString;
     }
 
     public UserRequest(LatLng start, LatLng end, Number fare, String riderId){
@@ -70,10 +70,6 @@ public class UserRequest implements Parcelable {
 
     }
 
-
-
-
-
     public void clearAcceptedDrivers(){
         acceptedDriverIds.clear();
     }
@@ -86,30 +82,41 @@ public class UserRequest implements Parcelable {
     public ArrayList<String> getAcceptedDriverIDs() {
         return this.acceptedDriverIds;
     }
+
     public String getRiderID() {
         return riderId;
     }
+
     public LatLng getEndLocation() {
         return new LatLng(this.endLocation.getLat(),this.endLocation.getLon());
     }
+
     public Number getFare() {
         return fare;
     }
+
     public LatLng getStartLocation() {
         return new LatLng(this.startLocation.getLat(), this.startLocation.getLon());
     }
 
     public boolean getAcceptedStatus(){
+
         return accepted;
     }
+
     public boolean isCompleted() {
         return completed;
     }
+
     public boolean sentNotification() {
         return true;
-    } //TODO: actually check to see if notification was  sent
-    public long getTimeCreatedInMillis() {
-        return this.timeCreatedInMillis;
+    }
+    public String getStartLocationName(){
+        return startLocationName;
+    }
+
+    public String getEndLocationName(){
+        return endLocationName;
     }
 
     public String getDateString() {
@@ -123,50 +130,70 @@ public class UserRequest implements Parcelable {
     public String getId() {
         return id;
     }
-    public String getDescription() {return description;}
 
+    public String getDescription() {
+        return description;
+    }
 
     // setters
     public void setId(String id) {
+
         this.id = id;
     }
 
     public void setConfirmedDriver(String id) {
+
         this.confirmedDriverId = id;
     }
 
     public void setStartLocation(LatLng startLocation) {
+
         this.startLocation.setLat(startLocation.latitude);
         this.startLocation.setLon(startLocation.longitude);
-
     }
 
     public void setInProgress() {
+
         this.inProgress = true;
     }
+
     public void setEndLocation(LatLng endLocation) {
         this.endLocation.setLat(endLocation.latitude);
         this.endLocation.setLon(endLocation.longitude);
     }
-    public void setPaymentReceived(boolean paymentRecived) {
-        this.paymentReceived = paymentRecived;
+
+    public void setPaymentReceived(boolean paymentReceived) {
+        this.paymentReceived = paymentReceived;
     }
+
     public void setFare(Number fare) {
         this.fare = fare;
     }
+
     public void setAcceptedStatus(Boolean bool){
+
         accepted = bool;
     }
+
     public void setCompletedStatus(boolean completed) {
+
         this.completed = completed;
     }
+
     public boolean isPaymentRecived() {
+
         return paymentReceived;
     }
+
     public boolean hasConfirmedRider() {
+
         return this.confirmedDriverId != null;
     }
-    public void  addAcceptedDriver(String id){this.acceptedDriverIds.add(id);}
+
+    public void  addAcceptedDriver(String id){
+        this.acceptedDriverIds.add(id);
+    }
+
     public RequestStatus getRequestStatus() {
         if (this.confirmedDriverId == null) {
             if (this.acceptedDriverIds.size() == 0) {
@@ -244,8 +271,6 @@ public class UserRequest implements Parcelable {
         // Not sure what goes here
         return 0;
     }
-
-
 
     public String toString() {
         String temp = "Rider: " + this.getRiderID() + "\n";

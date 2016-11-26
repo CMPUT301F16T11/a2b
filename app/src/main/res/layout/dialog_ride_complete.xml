@@ -111,8 +111,6 @@
             android:layout_weight="1"
             android:gravity="end"
             android:textStyle="bold"
-            android:maxLines="1"
-            android:minLines="1"
             android:text="@string/rideComplete_endTitle"/>
 
         <TextView android:id="@+id/dialog_rideComplete_endText"
