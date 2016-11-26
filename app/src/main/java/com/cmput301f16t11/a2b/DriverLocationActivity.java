@@ -53,7 +53,7 @@ import java.util.List;
 /**
  * This activity allows the driver to view a map, place pins, and search around
  * those pins a specific radius to see any requests in that specified area.
- * It also has a settings bar that allows the user to view profile see a more detailed
+ * It also has currentSearchCriteriaa settings bar that allows the user to view profile see a more detailed
  * list of requests or log out.
  *
  */
@@ -69,14 +69,22 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     private Circle currentCircle;
     private int currentSearchRadius = 3000; // defaults to 3000m
     private Context context;
-    private searchCriteria currentSearchCriteria;
+    private SearchCriteria currentSearchCriteria;
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
+    private SearchType currentSearchType = SearchType.BY_LOCATION;
 
 
-    public enum searchCriteria{
+    //This is used within search by keyword dialog
+    public enum SearchCriteria{
         START,
         END,
         DESCRIPTION,
+    }
+
+    //This is used to determine what type of search we are doing
+    public enum SearchType{
+        BY_LOCATION,
+        BY_KEYWORD
     }
 
     protected void onStart() {
@@ -114,6 +122,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
 
             case R.id.viewRequests:
                 Intent requestIntent = new Intent(DriverLocationActivity.this, RequestListActivity.class);
+                requestIntent.putExtra("SearchType", currentSearchType);
                 startActivity(requestIntent);
                 return true;
 
@@ -258,7 +267,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
-        RequestController.setNearbyRequests(nearbyRequests);
+        RequestController.setDisplayedRequests(nearbyRequests);
 
         return nearbyRequests;
     }
@@ -376,10 +385,10 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onClick(View v) {
                 if( currentMarker == null){
-
+                    //DO Nothing maybe display a dialog telling them to place a pin on map
                 }
                 else{
-
+                    currentSearchType = SearchType.BY_LOCATION;
                     ArrayList<UserRequest> requests = generateRequests(currentSearchRadius, currentMarker.getPosition());
                     handleRequests(requests);
                 }
@@ -409,23 +418,23 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         final EditText entry = (EditText) dialog.findViewById(R.id.textKeyword);
 
         //defaults to start location
-        currentSearchCriteria = searchCriteria.START;
+        currentSearchCriteria = SearchCriteria.START;
 
         selectorGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.descriptionSelect: {
-                        currentSearchCriteria = searchCriteria.DESCRIPTION;
+                        currentSearchCriteria = SearchCriteria.DESCRIPTION;
 
                         return;
                     }
                     case R.id.startSelect: {
-                        currentSearchCriteria = searchCriteria.START;
+                        currentSearchCriteria = SearchCriteria.START;
                         return;
                     }
                     case R.id.endSelect: {
-                        currentSearchCriteria = searchCriteria.END;
+                        currentSearchCriteria = SearchCriteria.END;
                         return;
                     }
                 }
@@ -435,10 +444,9 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Use search string and currentSearchCriteria for queries
-
 
                 String searchString = entry.getText().toString();
+                //Make sure their search string is not empty
                 if(searchString.isEmpty()){
                     AlertDialog dlg = new AlertDialog.Builder(context).create();
 
@@ -452,28 +460,32 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                             });
 
                     dlg.show();
+                    return;
                 }
+
+                currentSearchType = SearchType.BY_KEYWORD;
+
                 switch(currentSearchCriteria){
                     case DESCRIPTION: {
                         ArrayList<UserRequest> descriptionList = RequestController.queryByKeywordDescription(searchString);
                         //show the requests in this list
-                        RequestController.setNearbyRequests(descriptionList);
+                        RequestController.setDisplayedRequests(descriptionList);
                         //update the map
                         handleRequests(descriptionList);
                         break;
                     }
                     case START: {
-                        ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordLocation(searchString);
+                        ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordStartLocation(searchString);
                         //show the requests in this list
-                        RequestController.setNearbyRequests(startKeywordList);
+                        RequestController.setDisplayedRequests(startKeywordList);
                         //update the map
                         handleRequests(startKeywordList);
                         break;
                     }
                     case END: {
-                        ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordLocation(searchString);
+                        ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordEndLocation(searchString);
                         //show the requests in this list
-                        RequestController.setNearbyRequests(endKeywordList);
+                        RequestController.setDisplayedRequests(endKeywordList);
                         //update the map
                         handleRequests(endKeywordList);
                         break;

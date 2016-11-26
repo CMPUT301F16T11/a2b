@@ -19,7 +19,7 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
  */
 public class RequestController {
 
-    public static ArrayList<UserRequest> nearbyRequests;
+    public static ArrayList<UserRequest> displayedRequests;
     public static saveLoad_Controller saveLoadController;
 
 
@@ -28,8 +28,8 @@ public class RequestController {
      *
      * @param requests ArrayList<UserRequest> to set nearbyRequests to
      */
-    public static void setNearbyRequests(ArrayList<UserRequest> requests) {
-        nearbyRequests = requests;
+    public static void setDisplayedRequests(ArrayList<UserRequest> requests) {
+        displayedRequests = requests;
     }
 
     /**
@@ -38,10 +38,12 @@ public class RequestController {
      * @return ArrayList<UserRequest> nearbyRequests
      */
     public static ArrayList<UserRequest> getNearbyRequests() {
-        if (nearbyRequests == null) {
+
+        if (displayedRequests == null) {
             return new ArrayList<UserRequest>();
         }
-        return nearbyRequests;
+
+        return displayedRequests;
     }
 
     /**
@@ -507,7 +509,7 @@ public class RequestController {
     }
 
 
-    public static ArrayList<UserRequest> queryByKeywordLocation(String keywords){
+    public static ArrayList<UserRequest> queryByKeywordStartLocation(String keywords){
         ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
                 new ElasticsearchRequestController.GetRequestsByStartLocationKeyword();
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
@@ -519,6 +521,21 @@ public class RequestController {
         }
         return userRequests;
     }
+
+    public static ArrayList<UserRequest> queryByKeywordEndLocation(String keywords){
+        ElasticsearchRequestController.GetRequestsByEndLocationKeyword getRequestsByEndLocationKeyword =
+                new ElasticsearchRequestController.GetRequestsByEndLocationKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByEndLocationKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+    }
+
+
 
     public static ArrayList<UserRequest> queryByKeywordUserName(String keywords){
         ElasticsearchRequestController.GetRequestsByUserNameKeyword getRequestsByUserNameKeyword =
@@ -577,7 +594,7 @@ public class RequestController {
                 startLocationName = startString.get(0).getAddressLine(0);
             }
             if (!endString.isEmpty()) {
-                startLocationName = endString.get(0).getAddressLine(0);
+                endLocationName = endString.get(0).getAddressLine(0);
             }
         } catch (Exception e) {
             Log.i("Error", "Unable to decode address");

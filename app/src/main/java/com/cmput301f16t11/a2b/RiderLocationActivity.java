@@ -445,7 +445,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 RequestController.addOpenRequest(request);
 
-                //Add this request to be monitored
+                //Add this request to be bmonitored
                 RiderNotificationService.addRequestToBeNotified(request);
 
                 //Clear the map

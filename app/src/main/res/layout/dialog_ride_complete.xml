@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingStart="32dp"
-    android:paddingEnd="32dp"
     android:layout_gravity="center">
 
 
@@ -11,8 +9,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    android:layout_marginBottom="32dp"
-    android:layout_marginTop="32dp">
+    android:layout_marginBottom="16dp"
+    android:layout_marginTop="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -207,7 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center">
 
         <Button android:id="@+id/dialog_rideComplete_button"

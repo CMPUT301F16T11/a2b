@@ -68,6 +68,7 @@ public class RequestListActivity extends AppCompatActivity {
     private EditText maxPrice;
     private Boolean filterMaxPrice;
     private Boolean filterMaxPricePerKM;
+    private DriverLocationActivity.SearchType  searchType;
     private saveLoad_Controller saveLoadController;
 
 
@@ -78,6 +79,16 @@ public class RequestListActivity extends AppCompatActivity {
         requests = new ArrayList<UserRequest>();
         saveLoad_Controller saveLoadController = new saveLoad_Controller(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
+        //If we are in driver mode we can either be displaying nearby requests or searched requests
+        if(UserController.checkMode() == Mode.DRIVER){
+            Intent intent = getIntent();
+            searchType  =(DriverLocationActivity.SearchType)intent.getSerializableExtra("SearchType");;
+
+
+
+        }
     }
 
     @Override
@@ -152,13 +163,26 @@ public class RequestListActivity extends AppCompatActivity {
 
         // spinner stuff
         if (UserController.checkMode() == Mode.DRIVER) {
-            String[] choices = getResources().getStringArray(R.array.requestTypesDriverArray);
-            spinnerChoices = new ArrayAdapter<String>(this,
+            //Depending on the type of search our dropdown will be different
+            String [] choices;
+            switch (searchType){
+                case BY_LOCATION:
+                    choices = getResources().getStringArray(R.array.requestTypesDriverLocationArray);
+                    break;
+                case BY_KEYWORD:
+                    choices = getResources().getStringArray(R.array.requestTypesDriverKeywordArray);
+                    break;
+                default:
+                    choices = getResources().getStringArray(R.array.requestTypesDriverLocationArray);
+            }
+
+
+            spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         } else {
             // rider
             String[] choices = getResources().getStringArray(R.array.requestTypesRiderArray);
-            spinnerChoices = new ArrayAdapter<String>(this,
+            spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         }
 

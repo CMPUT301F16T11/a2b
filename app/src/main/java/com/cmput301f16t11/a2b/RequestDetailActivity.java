@@ -53,6 +53,7 @@ public class RequestDetailActivity extends AppCompatActivity {
     private UserRequest request;
     private ListView driverList; // TODO: populate this list
     private ArrayList<User> acceptedDrivers;
+    private WillingDriverAdapter willingDriverAdapter;
     private int currPosition;
     private saveLoad_Controller saveLoadController;
 
@@ -146,10 +147,11 @@ public class RequestDetailActivity extends AppCompatActivity {
 
             }
         });
-        ArrayAdapter<User> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, acceptedDrivers);
+//        ArrayAdapter<User> adapter = new ArrayAdapter<>(this,
+//                android.R.layout.simple_list_item_1, android.R.id.text1, acceptedDrivers);
+        willingDriverAdapter = new WillingDriverAdapter(this, this.acceptedDrivers);
 
-        driverList.setAdapter(adapter);
+        driverList.setAdapter(willingDriverAdapter);
     }
 
     /**
@@ -360,9 +362,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                         "Payment Complete", Toast.LENGTH_LONG);
                 toast.show();
                 finish();
-//                showFinalDialog(request);
-//                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-//                dialog.show(getFragmentManager(), "dialog");
+                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
