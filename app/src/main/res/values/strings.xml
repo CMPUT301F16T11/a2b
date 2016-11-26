@@ -67,6 +67,7 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="cancel_trip">Cancel Trip</string>
     <string name="warning_message">Please place a marker before trying to set start/end trip location.</string>
+    <string name="keyword_warning_message">Please input a valid entry</string>
     <string name="double_warning_message">"Invalid entry for amount please write an amount in format x.xx above $0.00 ."</string>
     <string name="start_location">Start Location</string>
     <string name="end_location">End Location</string>

@@ -199,9 +199,12 @@ public class UserController {
      * @param context current application context
      */
     public static void logOut(Context context) {
+        saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
         context.deleteFile(USRFILE);
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);
+
+        //delete all offline files
 
         //Stop all the services if they are running
         RiderNotificationService.stopRiderService();
