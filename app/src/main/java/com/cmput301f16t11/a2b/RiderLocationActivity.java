@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlayOptions;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -56,6 +57,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker currentMarker;
     private Context context;
     private String tripDistance = "? km";
+    private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
     private int LOCATION_PERMISSIONS = -1;
 
@@ -122,7 +124,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        startUpNotificationService();
 
     }
 
@@ -303,6 +304,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .bearing(0)
                 .tilt(0)
                 .build();
+        OfflineTileProvider offlineTiles = new OfflineTileProvider(256, 256, styleURL);
+        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(offlineTiles));
+
+        startUpNotificationService();
 
         ensureLocationPermissions();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
