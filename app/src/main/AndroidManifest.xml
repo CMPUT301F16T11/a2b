@@ -54,6 +54,8 @@
             android:label="Driver" />
         <activity android:name=".RequestListActivity" />
         <activity android:name=".RequestDetailActivity" />
+        <activity android:name=".OfflineRiderLocationActivity">
+        </activity>
 
         <service
             android:name=".RiderNotificationService"
@@ -62,6 +64,8 @@
         <service
             android:name=".DriverNotificationService"
             android:exported="false" />
+        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+
 
         <activity
             android:name=".EmptyMapActivity"
