@@ -360,9 +360,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                         "Payment Complete", Toast.LENGTH_LONG);
                 toast.show();
                 finish();
-//                showFinalDialog(request);
-//                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-//                dialog.show(getFragmentManager(), "dialog");
+                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }
