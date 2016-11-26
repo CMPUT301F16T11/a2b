@@ -592,7 +592,7 @@ public class RequestController {
                 startLocationName = startString.get(0).getAddressLine(0);
             }
             if (!endString.isEmpty()) {
-                startLocationName = endString.get(0).getAddressLine(0);
+                endLocationName = endString.get(0).getAddressLine(0);
             }
         } catch (Exception e) {
             Log.i("Error", "Unable to decode address");
