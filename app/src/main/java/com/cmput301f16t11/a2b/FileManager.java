@@ -52,7 +52,7 @@ public class FileManager {
             byte[] buffer = new byte[ins.available()];
             ins.read(buffer);
             ins.close();
-            filename = Environment.getExternalStorageDirectory().toString() + File.separator + "map";
+            filename = context.getFilesDir().toString() + File.separator + "map";
             FileOutputStream fos = new FileOutputStream(filename);
             fos.write(buffer);
             fos.close();
