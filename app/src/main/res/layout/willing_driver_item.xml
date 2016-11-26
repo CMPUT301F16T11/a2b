@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:text="Driver: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="2dp"
+        android:id="@+id/driver_name"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:text="username"
+        android:id="@+id/driver_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="2dp"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:text="Rating: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="25dp"
+        android:id="@+id/Rating_text" />
+
+    <TextView
+        android:text="rating"
+        android:id="@+id/rating_entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="47dp"
+        android:layout_alignLeft="@id/Rating_text"
+        android:layout_marginTop="25dp"/>
+
+</RelativeLayout>
