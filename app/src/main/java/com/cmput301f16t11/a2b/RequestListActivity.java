@@ -85,9 +85,6 @@ public class RequestListActivity extends AppCompatActivity {
         if(UserController.checkMode() == Mode.DRIVER){
             Intent intent = getIntent();
             searchType  =(DriverLocationActivity.SearchType)intent.getSerializableExtra("SearchType");;
-
-
-
         }
     }
 
@@ -340,15 +337,10 @@ public class RequestListActivity extends AppCompatActivity {
     }
 
     private ArrayList<UserRequest> getFilteredRequests(ArrayList<UserRequest> listOfRequests) {
-        if (UserController.checkMode() == Mode.RIDER) {
-            return listOfRequests;
-        }
-        if (!this.filterMaxPricePerKM && !this.filterMaxPrice) {
-            return listOfRequests;
-        }
-
-        ArrayList<UserRequest> tempList = new ArrayList<UserRequest>();
+        ArrayList<UserRequest> tempList = listOfRequests;
+        
         if (this.filterMaxPricePerKM) {
+            tempList.clear();
             for (UserRequest request: listOfRequests) {
                 if (RequestController.getPricePerKM(request) <= this.getCurrentPricePerKM()) {
                     tempList.add(request);
@@ -356,6 +348,7 @@ public class RequestListActivity extends AppCompatActivity {
             }
         }
         else if (this.filterMaxPrice) {
+            tempList.clear();
             for (UserRequest request: listOfRequests) {
                 if (request.getFare().doubleValue() <= this.getCurrentPrice()) {
                     tempList.add(request);
