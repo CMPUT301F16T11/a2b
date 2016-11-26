@@ -28,9 +28,6 @@ import java.util.List;
  * http://stackoverflow.com/questions/13109840/android-alternate-row-colors-in-listview
  */
 
-// for reference:
-//adapter = new ArrayAdapter<UserRequest>(this, android.R.layout.simple_list_item_1,
-//        android.R.id.text1, this.requests);
 public class WillingDriverAdapter extends ArrayAdapter<User> {
     private ArrayList<User> users;
     private Context context;
@@ -68,20 +65,6 @@ public class WillingDriverAdapter extends ArrayAdapter<User> {
         String driverRatingString = "";
         Double driverRating = 0.0;
 
-//        final TextView riderEntry = (TextView) view.findViewById(R.id.rider_entry);
-//        final TextView fareEntry  = (TextView) view.findViewById(R.id.fare_entry);
-//        final TextView dateEntry = (TextView) view.findViewById(R.id.date_created_entry);
-//        String riderName;
-
-
-//        if(!isNetworkAvailable(context)) {
-//            saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
-//            HashMap<String,String> dic = saveLoadController.loadFromFileMap("names.sav");
-//            riderName = dic.get(request.getRiderID());
-//        } else {
-//            User rider = UserController.getUserFromId(request.getRiderID());
-//            riderName = rider.getName();
-//        }
         driverRating = user.getRating();
         if(driverRating.equals(new Double(-1))){
             driverRatingString = "No rating available";
@@ -94,9 +77,7 @@ public class WillingDriverAdapter extends ArrayAdapter<User> {
         try {
             driverEntry.setText(user.getName());
             ratingEntry.setText(driverRatingString);
-//            riderEntry.setText(riderName);
-//            fareEntry.setText(request.getFare().toString());
-//            dateEntry.setText(request.getDateString());
+
         } catch (NullPointerException e) {
             Log.e("Shaded ERROR:", "No user found in request");
         }
@@ -104,11 +85,4 @@ public class WillingDriverAdapter extends ArrayAdapter<User> {
         return view;
     }
 
-    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-//    public static boolean isNetworkAvailable(Context c) {
-//        ConnectivityManager connectivityManager
-//                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-//    }
 }
