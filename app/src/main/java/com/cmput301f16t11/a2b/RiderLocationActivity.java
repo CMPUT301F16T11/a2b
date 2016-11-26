@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cmput301f16t11.a2b.cocoahero.android.gmaps.addons.master.mapbox.MapBoxOfflineTileProvider;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -37,9 +39,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,7 +307,21 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NONE); // REMOVE THIS TO GO BACK TO GOOGLE MAPS
+        // also remove data in the the else section of the only if/else in this method
 
+        // http://stackoverflow.com/questions/12421814/how-can-i-read-a-text-file-in-android
+        // nov 26
+        // all this needs to be done outside of this activity eventually
+        String path = getApplicationInfo().dataDir;
+//        File mapTileFiles = new File(path + "/map.mbtiles");
+//        try {
+//            FileManager.writeBytesToFile(context.openFileInput("map.mbtiles"), mapTileFiles);
+//        } catch (FileNotFoundException e) {
+//            Log.e("offlinerider", "map file not found");
+//        } catch (IOException e) {
+//            Log.e("offlinerider", e.toString());
+//        }
         //Set the initial spot to edmonton for now
         LatLng edmonton = new LatLng(53.5444, -113.4909);
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -305,10 +331,18 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .tilt(0)
                 .build();
 
-        if (!RequestController.isNetworkAvailable(this)) {
+        // !RequestController.isNetworkAvailable(this)
+        if (false) {
 //            OfflineTileProvider offlineTiles = new OfflineTileProvider(256, 256, styleURL);
 //            mMap.addTileOverlay(new TileOverlayOptions().tileProvider(offlineTiles));
-            Log.i("offline mode", "good luck!");
+//            Log.i("offline mode", "good luck!");
+            //https://github.com/cocoahero/android-gmaps-addons - readme
+            // temporarily here... needs to be moved to a fm etc
+            TileOverlayOptions opts = new TileOverlayOptions();
+            MapBoxOfflineTileProvider provider = new MapBoxOfflineTileProvider("map.mbtiles");
+            opts.tileProvider(provider);
+            TileOverlay overlay = mMap.addTileOverlay(opts);
+
         }
         else {
             // overlay openMaps (can be removed and only google maps used if desired
