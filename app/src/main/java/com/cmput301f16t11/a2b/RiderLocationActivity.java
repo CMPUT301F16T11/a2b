@@ -332,14 +332,14 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .build();
 
         // !RequestController.isNetworkAvailable(this)
-        if (false) {
+        if (true) {
 //            OfflineTileProvider offlineTiles = new OfflineTileProvider(256, 256, styleURL);
 //            mMap.addTileOverlay(new TileOverlayOptions().tileProvider(offlineTiles));
 //            Log.i("offline mode", "good luck!");
-            //https://github.com/cocoahero/android-gmaps-addons - readme
-            // temporarily here... needs to be moved to a fm etc
+//            https://github.com/cocoahero/android-gmaps-addons - readme
+            String filename = FileManager.writeMapFile(this);
             TileOverlayOptions opts = new TileOverlayOptions();
-            MapBoxOfflineTileProvider provider = new MapBoxOfflineTileProvider("map.mbtiles");
+            MapBoxOfflineTileProvider provider = new MapBoxOfflineTileProvider(filename);
             opts.tileProvider(provider);
             TileOverlay overlay = mMap.addTileOverlay(opts);
 

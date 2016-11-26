@@ -49,10 +49,7 @@ public class saveLoad_Controller {
 
         } catch (FileNotFoundException e) {
             offlineRequestList = new ArrayList<UserRequest>();
-        } catch (IOException e) {
-            throw new RuntimeException();
         }
-
         return offlineRequestList;
     }
 
@@ -72,10 +69,7 @@ public class saveLoad_Controller {
 
         } catch (FileNotFoundException e) {
             map = new HashMap<String, String>();
-        } catch (IOException e) {
-            throw new RuntimeException();
         }
-
         return map;
     }
 

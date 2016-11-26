@@ -2,6 +2,7 @@ package com.cmput301f16t11.a2b;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -41,24 +42,23 @@ public class FileManager {
         }
     }
 
-    public static void writeMapFile(Context context) {
+    public static String writeMapFile(Context context) {
         // taken from
-        // http://stackoverflow.com/questions/23225431/how-to-return-file-object-from-assets-in-android
+        // http://stackoverflow.com/questions/5943916/files-from-res-file-to-sdcard-on-android
         // nov 26
-        AssetManager assetManager = context.getAssets();
-
-        // taken from kelvin's offline stuff
+        InputStream ins = context.getResources().openRawResource (R.raw.map);
+        String filename = "";
         try {
-            FileOutputStream fos = context.openFileOutput("map.mbtiles", 0);
-            //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            writer.flush();
-
+            byte[] buffer = new byte[ins.available()];
+            ins.read(buffer);
+            ins.close();
+            filename = Environment.getExternalStorageDirectory().toString() + File.separator + "map";
+            FileOutputStream fos = new FileOutputStream(filename);
+            fos.write(buffer);
             fos.close();
-        } catch (FileNotFoundException e) {
-            Log.e("FileManager", "no map file found");
-        } catch (IOException e) {
-            Log.e("FileManager", e.toString());
+        } catch (Exception e) {
+            Log.e("FM", e.toString());
         }
+        return filename;
     }
 }
