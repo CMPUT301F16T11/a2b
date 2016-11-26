@@ -1,24 +1,19 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -107,12 +102,15 @@ public class RequestDetailActivity extends AppCompatActivity {
                         }
                     }
                 };
-                String messageString = "Accept " + acceptedDrivers.get(currPosition).getName() +
-                                        " as your driver?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage(messageString)
-                        .setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                if(UserController.checkMode() == Mode.RIDER) {
+                    String messageString = "Accept " + acceptedDrivers.get(currPosition).getName() +
+                            " as your driver?";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setMessage(messageString)
+                            .setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                }
+
 
                 // the below dialog wasn't working. I don't know how it was set up to work so
                 // i created the above dialog in the meanwhile for actual functionality.
