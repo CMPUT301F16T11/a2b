@@ -1,0 +1,6 @@
+
+
+This can be fixed by changing your emulated graphics to Software - GLES 2.0 in your AVD settings. This is not ideal, but it will work (and is still much faster than emulating an ARM device).
+
+I suspect this is emulator specific.
+
