@@ -304,8 +304,17 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .bearing(0)
                 .tilt(0)
                 .build();
-        OfflineTileProvider offlineTiles = new OfflineTileProvider(256, 256, styleURL);
-        mMap.addTileOverlay(new TileOverlayOptions().tileProvider(offlineTiles));
+
+        if (!RequestController.isNetworkAvailable(this)) {
+//            OfflineTileProvider offlineTiles = new OfflineTileProvider(256, 256, styleURL);
+//            mMap.addTileOverlay(new TileOverlayOptions().tileProvider(offlineTiles));
+            Log.i("offline mode", "good luck!");
+        }
+        else {
+            // overlay openMaps (can be removed and only google maps used if desired
+            OSMTileProvider onlineTiles = new OSMTileProvider(256, 256, styleURL);
+            mMap.addTileOverlay(new TileOverlayOptions().tileProvider(onlineTiles));
+        }
 
         startUpNotificationService();
 
@@ -349,6 +358,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mMap.addPolyline(new PolylineOptions()
                 .addAll(drawPoints)
                 .width(12)
+                .zIndex(99)
                 .color(Color.parseColor("#05b1fb"))//Google maps blue color
                 .geodesic(true)
         );
