@@ -56,8 +56,8 @@ public class RideCompleteDialog extends DialogFragment {
         Bundle args = new Bundle();
         User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriverID());
         User rider = UserController.getUserFromId(req.getRiderID());
-        args.putString("rider", confirmedDriver.getName());
-        args.putString("driver", rider.getName());
+        args.putString("driver", confirmedDriver.getName());
+        args.putString("rider", rider.getName());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -130,9 +130,10 @@ public class RideCompleteDialog extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (rating != 0) {
-                    UserController.updateRating(rating);
+                    UserController.updateRating(rating, confirmedDriverName);
                 }
                 RideCompleteDialog.this.getDialog().dismiss();
+                getActivity().finish();
             }
         });
 

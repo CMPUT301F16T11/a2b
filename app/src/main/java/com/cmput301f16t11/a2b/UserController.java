@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -62,17 +63,22 @@ public class UserController {
     static public Boolean canDrive() {
         return user.canDrive();
     }
-    static public void updateRating(int r) {
+    static public void updateRating(int r, String driverName) {
+        User user = UserController.getUserFromName(driverName);
         int currTotalRating = user.getTotalRating();
         int currTotal = user.getNumRatings();
 
         int newTotal = currTotal+1;
         int newTotalRating = currTotalRating + r;
-        double newRating = newTotalRating/newTotal;
+        DecimalFormat format = new DecimalFormat("#.00");
+        double newRating = Double.parseDouble(format.format(((double)newTotalRating)/newTotal));
 
         user.setRating(newRating);
         user.setNumRatings(newTotal);
         user.setTotalRating(newTotalRating);
+
+        ElasticsearchUserController.AddToDriverRating updateRatingTask = new ElasticsearchUserController.AddToDriverRating();
+        updateRatingTask.execute(user.getId(), String.valueOf(r), String.valueOf(newRating));
     }
 
     /**
