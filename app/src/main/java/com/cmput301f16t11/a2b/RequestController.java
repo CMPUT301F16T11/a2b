@@ -19,7 +19,7 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
  */
 public class RequestController {
 
-    public static ArrayList<UserRequest> nearbyRequests;
+    public static ArrayList<UserRequest> displayedRequests;
     public static saveLoad_Controller saveLoadController;
 
 
@@ -28,8 +28,8 @@ public class RequestController {
      *
      * @param requests ArrayList<UserRequest> to set nearbyRequests to
      */
-    public static void setNearbyRequests(ArrayList<UserRequest> requests) {
-        nearbyRequests = requests;
+    public static void setDisplayedRequests(ArrayList<UserRequest> requests) {
+        displayedRequests = requests;
     }
 
     /**
@@ -38,10 +38,12 @@ public class RequestController {
      * @return ArrayList<UserRequest> nearbyRequests
      */
     public static ArrayList<UserRequest> getNearbyRequests() {
-        if (nearbyRequests == null) {
+
+        if (displayedRequests == null) {
             return new ArrayList<UserRequest>();
         }
-        return nearbyRequests;
+
+        return displayedRequests;
     }
 
     /**

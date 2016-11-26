@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="requestTypesDriverArray">
+    <string-array name="requestTypesDriverLocationArray">
         <item>Nearby Requests</item>
+        <item>Accepted by Me</item>
+        <item>Confirmed Requests</item>
+        <item>Awaiting Payment</item>
+        <item>Completed Requests</item>
+    </string-array>
+    <string-array name="requestTypesDriverKeywordArray">
+        <item>Search Results</item>
         <item>Accepted by Me</item>
         <item>Confirmed Requests</item>
         <item>Awaiting Payment</item>
