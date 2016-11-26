@@ -250,33 +250,25 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        ElasticsearchRequestController.GetClosedRequests searchController =
-                new ElasticsearchRequestController.GetClosedRequests();
+        if (mode == Mode.DRIVER) {
+            ElasticsearchRequestController.GetPastDriverRequests getPastDriverRequests =
+                    new ElasticsearchRequestController.GetPastDriverRequests();
+            try{
+                userRequests = getPastDriverRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        temp.addAll(userRequests);
-        for (UserRequest request: temp) {
-            if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user.getId())) {
-                        userRequests.remove(request);
-                }
-                else if (!request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+        }else{
+            ElasticsearchRequestController.GetPastRiderRequests getPastRiderRequests =
+                    new ElasticsearchRequestController.GetPastRiderRequests();
+
+            try{
+                userRequests = getPastRiderRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (!request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
-            }
+
         }
         return userRequests;
     }

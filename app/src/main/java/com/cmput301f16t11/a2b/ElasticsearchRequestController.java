@@ -962,7 +962,7 @@ public class ElasticsearchRequestController {
                     "                 \"bool\" : {\n" +
                     "                    \"must\" : [\n" +
                     "                        { \"term\" : { \"confirmedDriverId\": \"" + user[0] + "\"} },\n" +
-                    "                        { \"term\" : { \"paymentReceived\": true } } \n" +
+                    "                        { \"term\" : { \"paymentReceived\": false } } \n" +
                     "                    ]\n" +
                     "                }\n" +
                     "            }\n" +
@@ -1017,7 +1017,7 @@ public class ElasticsearchRequestController {
                     "                 \"bool\" : {\n" +
                     "                    \"must\" : [\n" +
                     "                        { \"term\" : { \"riderId\": \"" + user[0] + "\"} },\n" +
-                    "                        { \"term\" : { \"paymentReceived\": true } } \n" +
+                    "                        { \"term\" : { \"paymentReceived\": false } } \n" +
                     "                    ]\n" +
                     "                }\n" +
                     "            }\n" +
