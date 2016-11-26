@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -16,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Controllers user and user functions
@@ -205,7 +203,8 @@ public class UserController {
      * @param context current application context
      */
     public static void logOut(Context context) {
-        saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
+        //SaveLoadController saveLoadController = new SaveLoadController(context);
+        SaveLoadController.setContext(context);
         context.deleteFile(USRFILE);
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);

@@ -233,9 +233,9 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{ \"script\" : \" if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } " +
-                    "else {ctx._source.acceptedDriverIds += newDriver }\", \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
+            String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
+                    " \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
             try {
                 DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());

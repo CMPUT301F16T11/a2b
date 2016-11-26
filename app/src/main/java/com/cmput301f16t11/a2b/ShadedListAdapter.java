@@ -5,9 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Extends ArrayAdapter and modifies view so every even numbered entry is lightly shaded in
@@ -70,8 +66,8 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
 
         if(!isNetworkAvailable(context)) {
-            saveLoad_Controller saveLoadController = new saveLoad_Controller(context);
-            HashMap<String,String> dic = saveLoadController.loadFromFileMap("names.sav");
+            SaveLoadController.setContext(context);
+            HashMap<String,String> dic = SaveLoadController.loadFromFileMap("names.sav");
             riderName = dic.get(request.getRiderID());
         } else {
             User rider = UserController.getUserFromId(request.getRiderID());

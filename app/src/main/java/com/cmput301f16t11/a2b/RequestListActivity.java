@@ -3,22 +3,17 @@ package com.cmput301f16t11.a2b;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -27,7 +22,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -69,7 +63,7 @@ public class RequestListActivity extends AppCompatActivity {
     private Boolean filterMaxPrice;
     private Boolean filterMaxPricePerKM;
     private DriverLocationActivity.SearchType  searchType;
-    private saveLoad_Controller saveLoadController;
+
 
 
     @Override
@@ -77,7 +71,7 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
-        saveLoad_Controller saveLoadController = new saveLoad_Controller(this);
+        SaveLoadController.setContext(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
