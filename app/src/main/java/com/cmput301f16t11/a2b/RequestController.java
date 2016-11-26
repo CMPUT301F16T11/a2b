@@ -507,7 +507,7 @@ public class RequestController {
     }
 
 
-    public static ArrayList<UserRequest> queryByKeywordLocation(String keywords){
+    public static ArrayList<UserRequest> queryByKeywordStartLocation(String keywords){
         ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
                 new ElasticsearchRequestController.GetRequestsByStartLocationKeyword();
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
@@ -519,6 +519,21 @@ public class RequestController {
         }
         return userRequests;
     }
+
+    public static ArrayList<UserRequest> queryByKeywordEndLocation(String keywords){
+        ElasticsearchRequestController.GetRequestsByEndLocationKeyword getRequestsByEndLocationKeyword =
+                new ElasticsearchRequestController.GetRequestsByEndLocationKeyword();
+        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
+
+        try{
+            userRequests = getRequestsByEndLocationKeyword.execute(keywords).get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return userRequests;
+    }
+
+
 
     public static ArrayList<UserRequest> queryByKeywordUserName(String keywords){
         ElasticsearchRequestController.GetRequestsByUserNameKeyword getRequestsByUserNameKeyword =

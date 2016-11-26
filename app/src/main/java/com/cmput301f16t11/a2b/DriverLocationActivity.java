@@ -463,7 +463,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                         break;
                     }
                     case START: {
-                        ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordLocation(searchString);
+                        ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordStartLocation(searchString);
                         //show the requests in this list
                         RequestController.setNearbyRequests(startKeywordList);
                         //update the map
@@ -471,7 +471,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                         break;
                     }
                     case END: {
-                        ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordLocation(searchString);
+                        ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordEndLocation(searchString);
                         //show the requests in this list
                         RequestController.setNearbyRequests(endKeywordList);
                         //update the map
