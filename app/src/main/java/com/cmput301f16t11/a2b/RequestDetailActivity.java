@@ -357,13 +357,12 @@ public class RequestDetailActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+                dialog.show(getFragmentManager(), "dialog");
                 RequestController.payRequest(request);
                 Toast toast = Toast.makeText(RequestDetailActivity.this,
                         "Payment Complete", Toast.LENGTH_LONG);
                 toast.show();
-                finish();
-                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }

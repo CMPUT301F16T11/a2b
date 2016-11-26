@@ -306,11 +306,11 @@ public class ElasticsearchUserController {
         @Override
         /**
          * info[0] = the driver id
-         * info[1] = the new rating as a double string
+         * info[1] = the rating / 5 given by the user
+         * info[2] = new average rating as double string
          */
         protected Boolean doInBackground(String... info) {
             verifySettings();
-            Double rating = Double.parseDouble(info[1]);
 
             // update scripts
             String updateNumRatings = "{\n" +
@@ -322,7 +322,13 @@ public class ElasticsearchUserController {
             String updateTotalRating = "{\n" +
                     "    \"script\" : \"ctx._source.totalRating += rating\",\n" +
                     "    \"params\" : {\n" +
-                    "        \"rating\" : "+ rating.toString() +"\n" +
+                    "        \"rating\" : "+ info[1] +"\n" +
+                    "    }\n" +
+                    "}";
+            String updateAvgRating = "{\n" +
+                    "    \"script\" : \"ctx._source.rating = rating\",\n" +
+                    "    \"params\" : {\n" +
+                    "        \"rating\" : "+ info[2] +"\n" +
                     "    }\n" +
                     "}";
 
@@ -345,6 +351,21 @@ public class ElasticsearchUserController {
             //preform the update to the total rating
             try {
                 DocumentResult result = client.execute(new Update.Builder(updateTotalRating).index(index).type(userType).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Elasticsearch failed to update user rating");
+                    return false;
+                }
+
+            } catch (Exception e) {
+                Log.i("Error", "Failed to update user rating");
+                e.printStackTrace();
+                return false;
+            }
+
+            //preform the update to the total rating
+            try {
+                DocumentResult result = client.execute(new Update.Builder(updateAvgRating).index(index).type(userType).id(info[0]).build());
 
                 if (!result.isSucceeded()) {
                     Log.i("Error", "Elasticsearch failed to update user rating");

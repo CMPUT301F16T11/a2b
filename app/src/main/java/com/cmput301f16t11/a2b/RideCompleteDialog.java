@@ -130,9 +130,10 @@ public class RideCompleteDialog extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (rating != 0) {
-                    UserController.updateRating(rating);
+                    UserController.updateRating(rating, confirmedDriverName);
                 }
                 RideCompleteDialog.this.getDialog().dismiss();
+                getActivity().finish();
             }
         });
 
