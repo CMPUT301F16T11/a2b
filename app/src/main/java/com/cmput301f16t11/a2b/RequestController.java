@@ -299,34 +299,29 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        ElasticsearchRequestController.GetClosedRequests searchController =
-                new ElasticsearchRequestController.GetClosedRequests();
 
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        temp.addAll(userRequests);
-        for (UserRequest request: temp) {
-            if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+
+        if (mode == Mode.DRIVER) {
+            ElasticsearchRequestController.GetAwaitingPaymentDriverRequests getAwaitingPaymentDriverRequests =
+                    new ElasticsearchRequestController.GetAwaitingPaymentDriverRequests();
+            try{
+                userRequests = getAwaitingPaymentDriverRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+
+        }else{
+            ElasticsearchRequestController.GetAwaitingPaymentRiderRequests getAwaitingPaymentRiderRequests =
+                    new ElasticsearchRequestController.GetAwaitingPaymentRiderRequests();
+
+            try{
+                userRequests = getAwaitingPaymentRiderRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
+
         return userRequests;
     }
 
