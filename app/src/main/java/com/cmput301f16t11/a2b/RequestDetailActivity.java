@@ -50,11 +50,11 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ArrayList<User> acceptedDrivers;
     private WillingDriverAdapter willingDriverAdapter;
     private int currPosition;
-    private saveLoad_Controller saveLoadController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        saveLoadController = new saveLoad_Controller(this);
+        SaveLoadController.setContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }

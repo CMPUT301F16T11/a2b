@@ -20,7 +20,6 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
 public class RequestController {
 
     public static ArrayList<UserRequest> displayedRequests;
-    public static saveLoad_Controller saveLoadController;
 
 
     /**
@@ -134,7 +133,7 @@ public class RequestController {
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
         // (get requests accepted by the curr user)
-        saveLoadController = new saveLoad_Controller(context);
+        SaveLoadController.setContext(context);
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
@@ -148,12 +147,12 @@ public class RequestController {
         else {
 
             if(!isNetworkAvailable(context)) {
-                userRequests = saveLoadController.loadFromFile("riderOwnRequests.sav");
+                userRequests = SaveLoadController.loadFromFile("riderOwnRequests.sav");
             } else {
                 ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
                 try{
                     userRequests = activeController.execute(user.getId()).get();
-                    saveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
+                    SaveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -215,18 +214,20 @@ public class RequestController {
          */
         // drivers only
         // (get requests accepted by the curr user)
-        saveLoadController = new saveLoad_Controller(context);
+        //saveLoadController = new SaveLoadController(context);
+        SaveLoadController.setContext(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         // check network
         if(!isNetworkAvailable(context)) {
-            userRequests = saveLoadController.loadFromFile("acceptedByMe.sav");
+            userRequests = SaveLoadController.loadFromFile("acceptedByMe.sav");
         } else {
             ElasticsearchRequestController.GetAcceptedByMe searchController =
                     new ElasticsearchRequestController.GetAcceptedByMe();
 
             try {
                 userRequests = searchController.execute(user.getId()).get();
-                saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+                //saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+                SaveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
             } catch (Exception e) {
                 e.printStackTrace();
             }
