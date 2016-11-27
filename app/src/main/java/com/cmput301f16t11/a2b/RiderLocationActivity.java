@@ -78,7 +78,20 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.location_menu, menu);
+        inflater.inflate(R.menu.location_rider_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // TODO: Change this logic to check if there are any stack items to push up to the server
+        FileController.setContext(this);
+        if (FileController.isNetworkAvailable()) {
+            menu.getItem(3).setEnabled(false);
+        }
+        else {
+            menu.getItem(3).setEnabled(true);
+        }
         return true;
     }
 
@@ -92,7 +105,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             case R.id.changeRole:
                 User user = UserController.getUser();
-                if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
+                FileController.setContext(this);
+                if (UserController.canDrive() && FileController.isNetworkAvailable()) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
                     startActivity(driverIntent);
@@ -112,6 +126,27 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             case R.id.viewRequests:
                 Intent requestIntent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                 startActivity(requestIntent);
+                return true;
+
+            case R.id.goOnline:
+                FileController.setContext(this);
+                if (FileController.isNetworkAvailable()) {
+                    // TODO: Send command stack
+                    useOnlineTiles();
+                }
+                else {
+                    AlertDialog dialog = new AlertDialog.Builder(this).create();
+                    dialog.setTitle(getString(R.string.offline_mode));
+                    dialog.setMessage(getString(R.string.offline_message));
+                    dialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.show();
+                }
                 return true;
 
             case R.id.signOut:
@@ -250,7 +285,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                         helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
 
@@ -259,7 +295,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 } else {
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         displayRideConfirmationDlg(tripDistance);
                     }
                     else{
@@ -284,7 +321,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         try {
                             Geocoder geoCoder = new Geocoder(context);
                             List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -323,7 +361,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .build();
 
         // !RequestController.isNetworkAvailable(this)
-        if (!FileController.isNetworkAvailable(this)) {
+        FileController.setContext(this);
+        if (!FileController.isNetworkAvailable()) {
             useOfflineTiles();
         }
         else {
@@ -341,7 +380,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            if (!FileController.isNetworkAvailable(this)) {
+            FileController.setContext(this);
+            if (!FileController.isNetworkAvailable()) {
                 useOfflineTiles();
             }
             else {
@@ -394,7 +434,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     private void useOfflineTiles() {
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-        String filename = FileManager.writeMapFile(this);
+        String filename = FileController.writeMapFile(this);
         TileOverlayOptions opts = new TileOverlayOptions();
         provider = new MapBoxOfflineTileProvider(filename);
         opts.tileProvider(provider);
@@ -448,9 +488,21 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     return;
                 }
 
-                OfflineRequest req = new OfflineRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
-                        userFare,userDescription );
-                //TODO: offline request
+                UserRequest req = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
+                        userFare,
+                        UserController.getUser().getName(),
+                        UserController.getUser().getId(),
+                        0.0,
+                        userDescription,
+                        "N/A",
+                        "N/A" );
+
+                //Cache this requests with the other ones
+                FileController.setContext(context);
+                ArrayList<UserRequest> request = FileController.loadFromFile("offlineRequests.sav");
+                request.add(req);
+                FileController.saveInFile(request, "offlineRequests.sav");
+
                 dialog.dismiss();
             }
         });
@@ -553,6 +605,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         tripEndMarker.getPosition(),
                         userFare,
                         UserController.getUser().getId(),
+                        UserController.getUser().getName(),
                         doubleDistance,
                         description.getText().toString(),
                         locationList.get(0),locationList.get(1));

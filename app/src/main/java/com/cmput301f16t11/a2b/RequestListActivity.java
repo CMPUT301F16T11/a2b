@@ -153,7 +153,7 @@ public class RequestListActivity extends AppCompatActivity {
         }
 
         // spinner stuff
-        if (!FileController.isNetworkAvailable()) {
+        if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable()) {
             // offline mode, accepted by me only
             String [] choices;
             choices = getResources().getStringArray(R.array.requestTypesOffline);

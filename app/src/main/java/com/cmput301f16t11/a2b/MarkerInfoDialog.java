@@ -40,9 +40,7 @@ public class MarkerInfoDialog extends DialogFragment {
         MarkerInfoDialog dialog = new MarkerInfoDialog();
 
         Bundle args = new Bundle();
-        String riderId = req.getRiderID();
-        User user = UserController.getUserFromId(riderId);
-        args.putString("rider", user.getName());
+        args.putString("rider", req.getRiderUsername());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 

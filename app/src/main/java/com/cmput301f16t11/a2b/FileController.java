@@ -13,15 +13,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -97,6 +98,32 @@ public class FileController {
 //
 //        return dic;
 //    }
+
+    /**
+     * Writes mbtiles file from res to android storage for offline maps usage
+     *
+     * @param context applicatiton context
+     * @return String of direct path to map file in android memory
+     */
+    public static String writeMapFile(Context context) {
+        // taken from
+        // http://stackoverflow.com/questions/5943916/files-from-res-file-to-sdcard-on-android
+        // nov 26
+        InputStream ins = context.getResources().openRawResource (R.raw.map);
+        String filename = "";
+        try {
+            byte[] buffer = new byte[ins.available()];
+            ins.read(buffer);
+            ins.close();
+            filename = context.getFilesDir().toString() + File.separator + "map";
+            FileOutputStream fos = new FileOutputStream(filename);
+            fos.write(buffer);
+            fos.close();
+        } catch (Exception e) {
+            Log.e("FM", e.toString());
+        }
+        return filename;
+    }
 
     /**
      * Load from file user user.

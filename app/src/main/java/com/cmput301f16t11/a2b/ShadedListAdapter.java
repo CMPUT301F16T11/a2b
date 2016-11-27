@@ -62,11 +62,9 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         final TextView riderEntry = (TextView) view.findViewById(R.id.rider_entry);
         final TextView fareEntry  = (TextView) view.findViewById(R.id.fare_entry);
         final TextView dateEntry = (TextView) view.findViewById(R.id.date_created_entry);
-        String riderName;
 
-        User rider = request.ge
-        riderName = rider.getName();
-        }
+
+        final String riderName = request.getRiderUsername();
 
         try {
             riderEntry.setText(riderName);
