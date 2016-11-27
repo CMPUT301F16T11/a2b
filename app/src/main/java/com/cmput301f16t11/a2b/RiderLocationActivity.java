@@ -15,12 +15,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301f16t11.a2b.cocoahero.android.gmaps.addons.master.mapbox.MapBoxOfflineTileProvider;
@@ -50,6 +54,7 @@ import java.util.Scanner;
 
 /**
  * Main map activity for riders to select their pickup and drop off locations.
+ * http://stackoverflow.com/questions/9731602/animated-icon-for-actionitem
  */
 public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
             DrawingLocationActivity {
@@ -74,12 +79,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(3).setEnabled(CommandStack.workRequired());
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.viewProfile:
@@ -88,7 +87,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-                User user = UserController.getUser();
                 if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
@@ -112,7 +110,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 startActivity(requestIntent);
                 return true;
 
-            case R.id.goOnline:
+
+            case R.id.refresh:
                 if (FileController.isNetworkAvailable(this)) {
                     // TODO: Send command stack
                     if (FileController.isNetworkAvailable(context)) {

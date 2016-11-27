@@ -72,7 +72,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     private Context context;
     private SearchCriteria currentSearchCriteria;
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
-    private SearchType currentSearchType = SearchType.BY_LOCATION;
 
 
     //This is used within search by keyword dialog
@@ -80,12 +79,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         START,
         END,
         DESCRIPTION,
-    }
-
-    //This is used to determine what type of search we are doing
-    public enum SearchType{
-        BY_LOCATION,
-        BY_KEYWORD
     }
 
     protected void onStart() {
@@ -123,7 +116,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
 
             case R.id.viewRequests:
                 Intent requestIntent = new Intent(DriverLocationActivity.this, RequestListActivity.class);
-                requestIntent.putExtra("SearchType", currentSearchType);
                 startActivity(requestIntent);
                 return true;
 
@@ -399,7 +391,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     //DO Nothing maybe display a dialog telling them to place a pin on map
                 }
                 else{
-                    currentSearchType = SearchType.BY_LOCATION;
                     ArrayList<UserRequest> requests = generateRequests(currentSearchRadius, currentMarker.getPosition());
                     handleRequests(requests);
                 }
@@ -471,8 +462,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     dlg.show();
                     return;
                 }
-
-                currentSearchType = SearchType.BY_KEYWORD;
 
                 switch(currentSearchCriteria){
                     case DESCRIPTION: {

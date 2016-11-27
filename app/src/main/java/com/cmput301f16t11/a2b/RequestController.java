@@ -77,8 +77,10 @@ public class RequestController {
      * @param context current application context
      */
     public static void addAcceptance(UserRequest request, Context context) {
+
         ElasticsearchRequestController.AddDriverAcceptanceToRequest addAcceptance =
                 new ElasticsearchRequestController.AddDriverAcceptanceToRequest(context);
+
         // request id driver id
         addAcceptance.execute(request.getId(), UserController.getUser().getId());
         // update saved file
