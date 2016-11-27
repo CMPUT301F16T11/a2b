@@ -1,8 +1,6 @@
 package com.cmput301f16t11.a2b;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
@@ -56,6 +54,12 @@ public class RequestController {
                 new ElasticsearchRequestController.AddDriverAcceptanceToRequest(context);
         // request id driver id
         addAcceptance.execute(request.getId(), UserController.getUser().getId());
+        // update saved file
+        FileController.setContext(context);
+        ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
+        requests = FileController.loadFromFile("acceptedByMe");
+        requests.add(request);
+        FileController.saveInFile(requests, "acceptedByMe");
     }
 
     /**
@@ -64,10 +68,16 @@ public class RequestController {
      * @see ElasticsearchRequestController
      * @param request the UserRequest obj to add
      */
-    public static void addOpenRequest(UserRequest request) {
+    public static void addOpenRequest(UserRequest request, Context context) {
         ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
                 new ElasticsearchRequestController.AddOpenRequestTask();
         addOpenRequest.execute(request);
+
+        FileController.setContext(context);
+        ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
+        requests = FileController.loadFromFile("riderOwnerRequests");
+        requests.add(request);
+        FileController.saveInFile(requests, "riderOwnerRequests");
     }
 
     /**
@@ -133,26 +143,27 @@ public class RequestController {
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
         // (get requests accepted by the curr user)
-        SaveLoadController.setContext(context);
+        FileController.setContext(context);
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
 
             try {
                 userRequests = searchController.execute(user.getId()).get();
+
             } catch(Exception e){
                 e.printStackTrace();
             }
         }
         else {
 
-            if(!isNetworkAvailable(context)) {
-                userRequests = SaveLoadController.loadFromFile("riderOwnRequests.sav");
+            if(!FileController.isNetworkAvailable(context)) {
+                userRequests = FileController.loadFromFile("riderOwnRequests.sav");
             } else {
                 ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
                 try{
                     userRequests = activeController.execute(user.getId()).get();
-                    SaveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
+                    FileController.saveInFile(userRequests, "riderOwnRequests.sav");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -185,16 +196,6 @@ public class RequestController {
             }
         }
 
-
-//        // riders only
-//        ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
-//        ElasticsearchRequestController.GetAcceptedRequests searchController =
-//                new ElasticsearchRequestController.GetAcceptedRequests();
-//        try {
-//            userRequests = searchController.execute(user.getId()).get();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
         return userRequests;
     }
 
@@ -213,21 +214,18 @@ public class RequestController {
          * accepted, excluding completed requests.
          */
         // drivers only
-        // (get requests accepted by the curr user)
-        //saveLoadController = new SaveLoadController(context);
-        SaveLoadController.setContext(context);
+        FileController.setContext(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         // check network
-        if(!isNetworkAvailable(context)) {
-            userRequests = SaveLoadController.loadFromFile("acceptedByMe.sav");
+        if(!FileController.isNetworkAvailable(context)) {
+           userRequests = FileController.loadFromFile("acceptedByMe.sav");
         } else {
             ElasticsearchRequestController.GetAcceptedByMe searchController =
                     new ElasticsearchRequestController.GetAcceptedByMe();
 
             try {
                 userRequests = searchController.execute(user.getId()).get();
-                //saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
-                SaveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+                FileController.saveInFile(userRequests, "acceptedByMe.sav");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -379,7 +377,6 @@ public class RequestController {
      * @return list of UserRequests
      */
     public static ArrayList<UserRequest> getConfirmedByRiders(User user, Mode mode) {
-        //TODO: actual logic
         /**
         * get request accepted by the current user as a driver, that are also accepted by the user
         * who originally made the request
@@ -560,13 +557,6 @@ public class RequestController {
 
     }
 
-    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-    public static boolean isNetworkAvailable(Context c) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     public static ArrayList<String> searchLocationName(LatLng start, LatLng end, Context context) {
 

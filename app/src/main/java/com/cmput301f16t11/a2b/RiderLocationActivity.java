@@ -443,7 +443,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         description.getText().toString(),
                         locationList.get(0),locationList.get(1));
 
-                RequestController.addOpenRequest(request);
+                RequestController.addOpenRequest(request, context);
 
                 //Add this request to be bmonitored
                 RiderNotificationService.addRequestToBeNotified(request);
