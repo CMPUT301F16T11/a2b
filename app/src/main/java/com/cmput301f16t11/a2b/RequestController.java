@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import static com.cmput301f16t11.a2b.Mode.DRIVER;
 
@@ -629,6 +630,46 @@ public class RequestController {
 
         return locationList;
 
+    }
+
+    /**
+     * Uses an offline request that has characteristic
+     * @param request request that has been set offline and is ready to be converted
+     * @param context context for the geocoder to use
+     * @return a valid request able to pushed to elastic search server
+     */
+    public static UserRequest convertOfflineRequestToOnlineRequest(UserRequest request, Context context){
+
+        //Set the start and end location of it
+        try {
+            Geocoder geoCoder = new Geocoder(context);
+            List<Address> start = geoCoder.getFromLocation(request.getStartLocation().latitude, request.getStartLocation().longitude, 1);
+            List<Address> end = geoCoder.getFromLocation(request.getEndLocation().latitude, request.getEndLocation().longitude, 1);
+            if(!start.isEmpty()){
+                request.setStartLocationName(start.get(0).getAddressLine(0));
+            }
+            if(!end.isEmpty()) {
+                request.setEndLocationName(end.get(0).getAddressLine(0));
+            }
+        } catch (Exception e) {
+            Log.i("Error", "Unable to decode address");
+            e.printStackTrace();
+        }
+        DistanceCalculator calc = new DistanceCalculator();
+        calc.execute(request.getStartLocation(), request.getEndLocation());
+
+        String dist = "";
+        try{
+            dist = calc.get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        Scanner sc = new Scanner(dist);
+        double doubleDistance = sc.nextDouble();
+
+        request.setDistance(doubleDistance);
+
+        return request;
     }
 }
 
