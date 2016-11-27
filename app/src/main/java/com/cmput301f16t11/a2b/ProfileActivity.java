@@ -52,10 +52,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();  // Always call the superclass method first;
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
-        if(username == null){
+        if (username == null) {
             user = UserController.getUserFromId(UserController.getUser().getId());
-        }
-        else{
+        } else {
             user = UserController.getUserFromName(username);
         }
 
@@ -63,13 +62,12 @@ public class ProfileActivity extends AppCompatActivity {
             UserController.setUser(user);
             UserController.saveInFile(this);
         }
-
         setTextViews();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (UserController.getUser().equals(user)) {
+        if (UserController.getUser().equals(user) && FileController.isNetworkAvailable(this)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.profile_menu, menu);
 
