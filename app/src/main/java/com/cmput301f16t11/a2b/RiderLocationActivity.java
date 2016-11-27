@@ -426,7 +426,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     private void useOfflineTiles() {
         mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-        String filename = FileManager.writeMapFile(this);
+        String filename = FileController.writeMapFile(this);
         TileOverlayOptions opts = new TileOverlayOptions();
         provider = new MapBoxOfflineTileProvider(filename);
         opts.tileProvider(provider);
