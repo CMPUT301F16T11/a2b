@@ -214,7 +214,6 @@ public class UserController {
     public static void logOut(Context context) {
 
         FileController.setContext(context);
-        context.deleteFile(USRFILE);
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);
 

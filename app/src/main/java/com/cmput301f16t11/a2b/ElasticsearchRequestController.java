@@ -46,7 +46,7 @@ public class ElasticsearchRequestController {
         /**
          * Adds a UserRequest object to the openRequest list on the server
          *
-         * @param requests the UserRequest obj in question
+         * D@param requests the UserRequest obj in question
          * @return true if successful, false otherwise
          */
         @Override

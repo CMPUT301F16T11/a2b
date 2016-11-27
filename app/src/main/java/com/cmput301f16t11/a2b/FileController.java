@@ -113,7 +113,6 @@ public class FileController {
         } catch (FileNotFoundException f) {
             Log.i("File", "No saved user");
         }
-
         return user;
 
         }
@@ -193,6 +192,7 @@ public class FileController {
         context.deleteFile("names.sav"); // delete file
         context.deleteFile("acceptedByMe.sav");
         context.deleteFile("riderOwnerRequests.sav");
+        context.deleteFile("user.sav");
     }
 
     /**
