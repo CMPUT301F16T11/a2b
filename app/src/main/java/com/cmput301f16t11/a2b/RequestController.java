@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +26,10 @@ public class RequestController {
      *
      * @param requests ArrayList<UserRequest> to set nearbyRequests to
      */
-    public static void setDisplayedRequests(ArrayList<UserRequest> requests) {
+    public static void setDisplayedRequests(ArrayList<UserRequest> requests, Context con) {
         displayedRequests = requests;
+        FileController.setContext(con);
+        FileController.saveInFile(requests, "nearby.sav");
     }
 
     /**
@@ -57,9 +60,9 @@ public class RequestController {
         // update saved file
         FileController.setContext(context);
         ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
-        requests = FileController.loadFromFile("acceptedByMe");
+        requests = FileController.loadFromFile("acceptedByMe.sav");
         requests.add(request);
-        FileController.saveInFile(requests, "acceptedByMe");
+        FileController.saveInFile(requests, "acceptedByMe.sav");
     }
 
     /**
@@ -75,9 +78,9 @@ public class RequestController {
 
         FileController.setContext(context);
         ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
-        requests = FileController.loadFromFile("riderOwnerRequests");
+        requests = FileController.loadFromFile("riderOwnerRequests.sav");
         requests.add(request);
-        FileController.saveInFile(requests, "riderOwnerRequests");
+        FileController.saveInFile(requests, "riderOwnerRequests.sav");
     }
 
     /**
@@ -157,7 +160,7 @@ public class RequestController {
         }
         else {
 
-            if(!FileController.isNetworkAvailable(context)) {
+            if(!FileController.isNetworkAvailable()) {
                 userRequests = FileController.loadFromFile("riderOwnRequests.sav");
             } else {
                 ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
@@ -222,7 +225,7 @@ public class RequestController {
         FileController.setContext(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         // check network
-        if(!FileController.isNetworkAvailable(context)) {
+        if(!FileController.isNetworkAvailable()) {
            userRequests = FileController.loadFromFile("acceptedByMe.sav");
         } else {
             ElasticsearchRequestController.GetAcceptedByMe searchController =
@@ -248,29 +251,41 @@ public class RequestController {
      * @param mode drive/ride mode
      * @return list of completed UserRequests
      */
-    public static ArrayList<UserRequest> getCompletedRequests(User user, Mode mode) {
+    public static ArrayList<UserRequest> getCompletedRequests(User user, Mode mode, Context con) {
         /**
          * Gets the completed requests BY a driver if mode == Mode.DRIVER
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        FileController.setContext(con);
+
         if (mode == Mode.DRIVER) {
-            ElasticsearchRequestController.GetPastDriverRequests getPastDriverRequests =
-                    new ElasticsearchRequestController.GetPastDriverRequests();
-            try{
-                userRequests = getPastDriverRequests.execute(user.getId()).get();
-            }catch (Exception e){
-                e.printStackTrace();
+            if(FileController.isNetworkAvailable()) {
+                ElasticsearchRequestController.GetPastDriverRequests getPastDriverRequests =
+                        new ElasticsearchRequestController.GetPastDriverRequests();
+                try{
+                    userRequests = getPastDriverRequests.execute(user.getId()).get();
+                    FileController.saveInFile(userRequests, "completedRequestsDriver.sav");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            } else {
+                userRequests = FileController.loadFromFile("completedRequestsDriver.sav");
             }
 
         }else{
-            ElasticsearchRequestController.GetPastRiderRequests getPastRiderRequests =
-                    new ElasticsearchRequestController.GetPastRiderRequests();
+            if(FileController.isNetworkAvailable()) {
+                ElasticsearchRequestController.GetPastRiderRequests getPastRiderRequests =
+                        new ElasticsearchRequestController.GetPastRiderRequests();
 
-            try{
-                userRequests = getPastRiderRequests.execute(user.getId()).get();
-            }catch (Exception e){
-                e.printStackTrace();
+                try{
+                    userRequests = getPastRiderRequests.execute(user.getId()).get();
+                    FileController.saveInFile(userRequests, "completedRequestsRider.sav");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            } else {
+                userRequests = FileController.loadFromFile("completedRequestsRider.sav");
             }
 
         }
