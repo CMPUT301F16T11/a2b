@@ -1,6 +1,8 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,12 +72,15 @@ public class CommandStack {
         FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE, con);
     }
 
-    public static boolean workRequired(){
-        try {
-            return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
-        } catch (NullPointerException e) {
-            return false;
+    public static boolean workRequired() {
+        if (!(AddCommands==null) & !(AcceptedCommands==null)) {
+            return (AddCommands.size()>0) || (AcceptedCommands.size()>0);
+        } else if (!(AddCommands==null)) {
+            return AddCommands.size()>0;
+        } else if (!(AcceptedCommands==null)) {
+            return AcceptedCommands.size()>0;
         }
+        return false;
     }
 
     public static void handleStack(Context context){
@@ -83,15 +88,25 @@ public class CommandStack {
             for(UserRequest request: AcceptedCommands){
                 if(isValidCommand(request)){
                     RequestController.addAcceptanceOffline(request);
+                    try {
+                        DriverNotificationService.serviceHandler(request, (Activity) context);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("driverNotServ", e.toString());
+                    }
                 }
             }
         }
         if (!(AddCommands==null)) {
             ArrayList<UserRequest> filledOutRequests = new ArrayList<>();
             for (UserRequest request : AddCommands) {
-                filledOutRequests.add(RequestController.convertOfflineRequestToOnlineRequest(request, context));
+                UserRequest temp = RequestController.convertOfflineRequestToOnlineRequest(request, context);
+                filledOutRequests.add(temp);
             }
             RequestController.addBatchOpenRequests(filledOutRequests, context);
+            for (UserRequest request : filledOutRequests) {
+                RiderNotificationService.addRequestToBeNotified(request);
+            }
         }
 
         clearCommands();

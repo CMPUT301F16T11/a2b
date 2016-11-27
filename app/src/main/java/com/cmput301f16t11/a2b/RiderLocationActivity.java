@@ -117,7 +117,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     // TODO: Send command stack
                     if (FileController.isNetworkAvailable(context)) {
                         if(CommandStack.workRequired()){
-                            CommandStack.handleStack(getApplicationContext());
+                            CommandStack.handleStack(this);
                         }
                         useOnlineTiles();
                     }
