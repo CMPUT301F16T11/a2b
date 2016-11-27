@@ -482,6 +482,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 UserRequest req = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
                         userFare,
+                        UserController.getUser().getName(),
                         UserController.getUser().getId(),
                         0.0,
                         userDescription,
@@ -596,6 +597,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         tripEndMarker.getPosition(),
                         userFare,
                         UserController.getUser().getId(),
+                        UserController.getUser().getName(),
                         doubleDistance,
                         description.getText().toString(),
                         locationList.get(0),locationList.get(1));

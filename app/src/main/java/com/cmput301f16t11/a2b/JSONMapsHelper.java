@@ -39,7 +39,7 @@ class JSONMapsHelper{
      */
     public void drawPathCoordinates(Marker startLocation, Marker endLocation){
 
-        String url = createURl(startLocation, endLocation);
+        String url = createURl(startLocation.getPosition(), endLocation.getPosition());
         urlParser impl  = new urlParser();
         impl.execute(url);
     }
@@ -50,11 +50,11 @@ class JSONMapsHelper{
      * @param endLocation
      * @return A valid String url request for calculated route
      */
-    private String createURl(Marker startLocation, Marker endLocation){
-        double latStart = startLocation.getPosition().latitude;
-        double lonStart = startLocation.getPosition().longitude;
-        double latEnd   = endLocation.getPosition().latitude;
-        double lonEnd   = endLocation.getPosition().longitude;
+    public static String createURl(LatLng startLocation, LatLng endLocation){
+        double latStart = startLocation.latitude;
+        double lonStart = startLocation.longitude;
+        double latEnd   = endLocation.latitude;
+        double lonEnd   = endLocation.longitude;
 
         StringBuilder url = new StringBuilder();
         url.append("https://maps.googleapis.com/maps/api/directions/json");
@@ -78,7 +78,7 @@ class JSONMapsHelper{
      * @param url
      * @return JSON string object
      */
-    public String getJsonFromUrlRequest(String url){
+    public static String getJsonFromUrlRequest(String url){
 
         //Make the url request alot of things can go wrong here
         HttpURLConnection urlConnection = null;
@@ -110,7 +110,7 @@ class JSONMapsHelper{
      * @param is Buffered Reader of input stream
      * @return return the results from the reader
      */
-    private String readInStream(BufferedReader is){
+    private  static String readInStream(BufferedReader is){
 
         try {
             StringBuilder builder = new StringBuilder();
@@ -162,7 +162,7 @@ class JSONMapsHelper{
      * @param result JSON obj of the result
      * @return String distance
      */
-    private String getDistance(String result){
+    public static String getDistance(String result){
         try{
             JSONObject jsonObject = new JSONObject(result);
             JSONArray array = jsonObject.getJSONArray("routes");
@@ -249,3 +249,5 @@ class JSONMapsHelper{
 
     }
 }
+
+
