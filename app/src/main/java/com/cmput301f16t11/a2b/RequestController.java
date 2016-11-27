@@ -40,12 +40,31 @@ public class RequestController {
      */
     public static ArrayList<UserRequest> getNearbyRequests() {
 
+        return RequestController.getDisplayedRequests();
+    }
+
+    /**
+     * To be run on startup to ensure backed up data is loaded
+     *
+     * @param context application context
+     */
+    public static void loadDisplayedRequests(Context context) {
+        displayedRequests = FileController.loadFromFile("nearby.sav");
+    }
+
+    /**
+     * Gets the static variable displayedrequests
+     *
+     * @return arraylist of userrequest objects
+     */
+    public static ArrayList<UserRequest> getDisplayedRequests() {
         if (displayedRequests == null) {
             return new ArrayList<UserRequest>();
         }
-
         return displayedRequests;
     }
+
+
 
     /**
      * Adds an acceptance to the request specified by the current user (driver mode only)
@@ -218,7 +237,7 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
-        //TODO actual logic
+        //TODO: command stack stuff
         return new ArrayList<UserRequest>();
     }
 

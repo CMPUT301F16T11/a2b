@@ -107,6 +107,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     UserController.setMode(Mode.DRIVER);
                     Intent intent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     showNotADriverDialog();
@@ -154,6 +155,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
         context = this;
         setContentView(R.layout.activity_rider_location);
+        RequestController.loadDisplayedRequests(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

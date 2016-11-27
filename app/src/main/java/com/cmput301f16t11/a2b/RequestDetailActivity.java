@@ -65,8 +65,13 @@ public class RequestDetailActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Intent intent = getIntent();
         request = gson.fromJson(intent.getStringExtra("request"), UserRequest.class);
-        populateAcceptedDriversList();
-        populateFields();
+        if(FileController.isNetworkAvailable(this)) {
+            populateAcceptedDriversList();
+            populateFields();
+        }
+        else{
+            populateOfflineFields();
+        }
         setButtons();
         setStatus();
     }
@@ -128,6 +133,7 @@ public class RequestDetailActivity extends AppCompatActivity {
      */
     public void populateFields() {
         TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
+
         if (request.getConfirmedDriverID() != null) {
             driverName.setText(
                     UserController.getUserFromId(request.getConfirmedDriverID()).getName());
@@ -194,6 +200,29 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     }
 
+    private void populateOfflineFields(){
+        TextView driverName = (TextView) findViewById(R.id.request_detail_driver);
+        TextView startLocation = (TextView) findViewById(R.id.request_detail_pickup);
+        TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
+        TextView endLocation = (TextView) findViewById(R.id.request_detail_dropoff);
+        TextView fare = (TextView) findViewById(R.id.request_detail_fare);
+        TextView description = (TextView) findViewById(R.id.activity_requestDetail_descripText);
+
+        if(request.getConfirmedDriverID() != null){
+            driverName.setText(UserController.getUser().getName());
+        }
+        else{
+            driverName.setText("No confirmed driver :(");
+        }
+
+        startLocation.setText(getString(R.string.address_na));
+        endLocation.setText(getString(R.string.address_na));
+        riderName.setText(request.getRiderUsername());
+        fare.setText("$" + request.getFare().toString());
+        description.setText(request.getDescription());
+
+    }
+
     /**
      * Gets an address from a LatLng obj using geocoder
      *
@@ -225,7 +254,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
 
         // enable delete button if the curr user owns this request
-        if (UserController.getUser().getId().equals(request.getRiderID())) {
+        if (UserController.getUser().getId().equals(request.getRiderID()) && FileController.isNetworkAvailable(this)) {
             deleteButton.setVisibility(View.VISIBLE);
         }
         else {

@@ -132,4 +132,35 @@ Third Party Libraries
 	The cartography of the map tiles is licensed over CC-BY-SA 2.0 (available at 
 	in doc/licensing/CreativeCommons.txt or https://creativecommons.org/licenses/by-sa/2.0/?). 
 
+	Design patterns:
+	Singleton
+		- UserController: One static instance of User that gets set on sign in is shared by all
+		activities.
+
+	Builder pattern
+		- Jests Builder classes are used to build commands that are executed by the JEST client
+		- When app is in offline mode, instructions are created and and put on a command stack 
+		that is to be executed when connectivity has been regained. This updates updates the
+		info on the server.
+
+	Templepate pattern
+		- App takes advantage of the hooks provided by Activity class 
+
+	Addapted pattern
+		- Addapted OSM map tiles to work with the google maps APIs
+	
+	Proxy pattern
+		- Used the proxy pattern for representing full UserRequests when the user was not online.
+		Full UserRequests were substitued in when the user came back online and more information 
+		was avaiable. 
+
+	State pattern
+		- User held state information, whether a user was a currently a driver or a rider. 
+		- Request held state information, whether a user was unaccepted, accepted, confiremed, i
+		nprogress, completed, payment recived.
+		- App held state informatoion, whether or not it was to operate in offline or online mode.
+
+
+For more information, documentation and examples, please see the wiki!
+
 
