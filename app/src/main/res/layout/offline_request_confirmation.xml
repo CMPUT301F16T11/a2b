@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="250dp">
 
 
@@ -13,7 +13,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:text="Request will be sent when you regain connection."
+        android:text="Regain connection and select update data to send requests."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -69,7 +69,8 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"/>
 
     <Button
         android:text="@string/confirm_trip"
@@ -77,7 +78,8 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"/>
+        android:layout_alignLeft="@id/cancel_offline"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="134dp"/>
 
 </RelativeLayout>
