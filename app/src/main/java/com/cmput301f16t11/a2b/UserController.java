@@ -62,6 +62,7 @@ public class UserController {
     static public Boolean canDrive() {
         return user.canDrive();
     }
+
     static public void updateRating(int r, String driverName) {
         User user = UserController.getUserFromName(driverName);
         int currTotalRating = user.getTotalRating();
@@ -167,17 +168,6 @@ public class UserController {
     public static void saveInFile(Activity activity) {
         FileController.setContext(activity);
         FileController.saveInFileUser(user, USRFILE);
-//         try {
-//             // Try to convert user to JSON and save it
-//             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
-//             OutputStreamWriter writer = new OutputStreamWriter(fos);
-//             Gson gson = new Gson();
-//             gson.toJson(user, writer);
-//             writer.flush();
-//         } catch (Exception e) {
-//             Log.i("Error", "Couldn't save file");
-//             throw new RuntimeException();
-//         }
     }
 
     /**
@@ -274,9 +264,6 @@ public class UserController {
         return users;
     }
 
-
-
-    // offline - not implemented
 
     /**
      * NOT IMPLEMENTED

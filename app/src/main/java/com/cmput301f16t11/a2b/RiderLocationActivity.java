@@ -59,7 +59,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker currentMarker;
     private Context context;
     private String tripDistance = "? km";
-    private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private final String stylevURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
     MapBoxOfflineTileProvider provider;
     TileOverlay overlay;
 

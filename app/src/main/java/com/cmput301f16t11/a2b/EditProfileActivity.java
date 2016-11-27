@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
  *
  */
 public class EditProfileActivity extends AppCompatActivity {
-    private User user;
 
+    private User user;
     AlertDialog dialog;
 
     EditText locale;
