@@ -119,7 +119,11 @@ public class RequestController {
     public static void addBatchOpenRequests(ArrayList<UserRequest> requests, Context con){
         ElasticsearchRequestController.AddBatchOpenRequestTask addBatchOpenRequestTask =
                 new ElasticsearchRequestController.AddBatchOpenRequestTask();
-        addBatchOpenRequestTask.execute(requests);
+        try{
+            addBatchOpenRequestTask.execute(requests).get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         // Save in File
         ArrayList<UserRequest> allRequests = FileController.loadFromFile(riderRequests, con);
@@ -248,8 +252,10 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
-        //TODO: command stack stuff
-        return new ArrayList<UserRequest>();
+       if(CommandStack.getAcceptedCommands() == null){
+            return new ArrayList<>();
+        }
+        return CommandStack.getAcceptedCommands();
     }
 
     /**
@@ -444,7 +450,7 @@ public class RequestController {
 
     public static ArrayList<UserRequest> getOfflineRequests() {
         //TODO: actual logic
-        return new ArrayList<UserRequest>();
+        return CommandStack.getAddCommands();
     }
 
     /**

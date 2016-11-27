@@ -352,7 +352,7 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                     }
                     else if(UserController.checkMode() == Mode.RIDER ||
-                            FileController.isNetworkAvailable(context)) {
+                            !FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
                                 RequestController.getCompletedRequests(UserController.getUser(),
@@ -364,15 +364,25 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                     }
                     else {
-                        // offline mode
-                        //Offline acceptances
-                        requests.clear();
-                        requests.addAll(RequestController.getCompletedRequests(
-                                UserController.getUser(), UserController.checkMode(), context));
-                        try {
-                            requests.remove(RequestController.getDeletedRequest());
-                        } catch (Exception e) {
-                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        if(FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(RequestController.getCompletedRequests(
+                                    UserController.getUser(), UserController.checkMode(), context));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
+                        }
+                         //Offline acceptances driver
+                        else {
+                            requests.clear();
+                            requests.addAll(RequestController.getOfflineAcceptances());
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
 
                     }

@@ -4,11 +4,13 @@ import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -236,16 +238,32 @@ public class    RiderNotificationService extends IntentService {
         notification = notification.substring(0, notification.length()-3);
         notification = notification + " has accepted  your request ";
 
-        Notification noti = new Notification.Builder(this)
-                .setContentTitle(notification)
-                .setSmallIcon(R.drawable.ic_notification_a2b)
-                .build();
+
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+        Intent intent = new Intent(this, RequestDetailActivity.class);
+
+
+        Gson gson = new Gson();
+        UserRequest requestToDisplay = RequestController.getOpenRequestById(requestId);
+
+        String request = gson.toJson(requestToDisplay);
+        intent.putExtra("request", request);
+
+        PendingIntent contentIntent =
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // hide the notification after its selected
+
+
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle(notification)
+                .setSmallIcon(R.drawable.ic_notification_a2b)
+                .setContentIntent(contentIntent)
+                .build();
         noti.flags |= Notification.FLAG_AUTO_CANCEL;
-        notificationManager.notify(0, noti);
+
+        notificationManager.notify(1, noti);
     }
 
     /**
