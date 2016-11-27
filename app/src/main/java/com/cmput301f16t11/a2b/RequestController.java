@@ -118,7 +118,11 @@ public class RequestController {
     public static void addBatchOpenRequests(ArrayList<UserRequest> requests, Context con){
         ElasticsearchRequestController.AddBatchOpenRequestTask addBatchOpenRequestTask =
                 new ElasticsearchRequestController.AddBatchOpenRequestTask();
-        addBatchOpenRequestTask.execute(requests);
+        try{
+            addBatchOpenRequestTask.execute(requests).get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         // Save in File
         ArrayList<UserRequest> allRequests = FileController.loadFromFile(riderRequests, con);
