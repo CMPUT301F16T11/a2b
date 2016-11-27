@@ -199,6 +199,11 @@ public class RequestController {
         return userRequests;
     }
 
+    public static ArrayList<UserRequest> getOfflineAcceptances() {
+        //TODO actual logic
+        return new ArrayList<UserRequest>();
+    }
+
     /**
      * Gets the request that the user has currently accepted excluding completed
      * NOT WORKING

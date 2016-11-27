@@ -139,11 +139,11 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onResume() {
         super.onResume();
-//        if (!FileController.isNetworkAvailable(this)) {
-//            Intent intent = new Intent(this, RequestListActivity.class);
-//            setResult(Activity.RESULT_OK, intent);
-//            startActivity(intent);
-//        }
+        if (!FileController.isNetworkAvailable(this)) {
+            Intent intent = new Intent(this, RequestListActivity.class);
+            setResult(Activity.RESULT_OK, intent);
+            startActivity(intent);
+        }
     }
 
     @Override
