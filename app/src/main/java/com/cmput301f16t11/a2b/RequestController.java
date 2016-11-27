@@ -274,6 +274,11 @@ public class RequestController {
         return userRequests;
     }
 
+    /**
+     * Mark a given request as paid for
+     * @param request that has been paid for
+     */
+
     public static void payRequest(UserRequest request) {
         request.setPaymentReceived(true);
         ElasticsearchRequestController.UpdateClosedRequestObject searchController =
@@ -285,6 +290,14 @@ public class RequestController {
         }
 
     }
+
+    /**
+     * Get a users requests that have been completed but not yet paid for
+     *
+     * @param user the current user
+     * @param mode the mode that the user is in
+     * @return
+     */
 
     public static ArrayList<UserRequest> getAwaitingPaymentRequests(User user, Mode mode) {
         /**
@@ -426,6 +439,7 @@ public class RequestController {
      *
      * @param ur the UserRequest to be movved
      */
+    @Deprecated
     public static void moveToInProgress(UserRequest ur){
         ElasticsearchRequestController.MoveToInProgresseRequest moveToInProgresseRequest = new ElasticsearchRequestController.MoveToInProgresseRequest();
         moveToInProgresseRequest.execute(ur);
@@ -437,7 +451,7 @@ public class RequestController {
      *
      * @param ur the UserRequest to be moved
      */
-
+    @Deprecated
     public static void moveToClosed(UserRequest ur){
         ElasticsearchRequestController.MoveToClosedRequest moveToClosedRequest = new ElasticsearchRequestController.MoveToClosedRequest();
         moveToClosedRequest.execute(ur);
@@ -496,7 +510,12 @@ public class RequestController {
         searchController.execute(request);
     }
 
-
+    /**
+     * Fetch requests whose start Locations match a given keyword
+     *
+     * @param keywords keywords to search by
+     * @return ArrayList of UserRequest
+     */
     public static ArrayList<UserRequest> queryByKeywordStartLocation(String keywords){
         ElasticsearchRequestController.GetRequestsByStartLocationKeyword getRequestsByStartLocationKeyword =
                 new ElasticsearchRequestController.GetRequestsByStartLocationKeyword();
@@ -510,6 +529,12 @@ public class RequestController {
         return userRequests;
     }
 
+    /**
+     * Fetch requests whose end Locations match a given keyword
+     *
+     * @param keywords keywords to search by
+     * @return ArrayList of UserRequest
+     */
     public static ArrayList<UserRequest> queryByKeywordEndLocation(String keywords){
         ElasticsearchRequestController.GetRequestsByEndLocationKeyword getRequestsByEndLocationKeyword =
                 new ElasticsearchRequestController.GetRequestsByEndLocationKeyword();
@@ -524,7 +549,7 @@ public class RequestController {
     }
 
 
-
+    @Deprecated
     public static ArrayList<UserRequest> queryByKeywordUserName(String keywords){
         ElasticsearchRequestController.GetRequestsByUserNameKeyword getRequestsByUserNameKeyword =
                 new ElasticsearchRequestController.GetRequestsByUserNameKeyword();
@@ -539,6 +564,12 @@ public class RequestController {
 
     }
 
+    /**
+     * Fetch requests whose descriptions match a given keyword
+     *
+     * @param keywords keywords to search by
+     * @return ArrayList of UserRequest
+     */
     public static ArrayList<UserRequest> queryByKeywordDescription(String keywords){
         ElasticsearchRequestController.GetRequestsByDescriptionKeyword getRequestsByDescriptionKeyword=
                 new ElasticsearchRequestController.GetRequestsByDescriptionKeyword();
@@ -567,6 +598,15 @@ public class RequestController {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    /**
+     * Get location names from Lat Lon coordinates
+     *
+     * @param start LatLng start location
+     * @param end LatLng end location
+     * @param context current context
+     * @return
+     */
 
     public static ArrayList<String> searchLocationName(LatLng start, LatLng end, Context context) {
 
