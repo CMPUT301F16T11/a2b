@@ -78,18 +78,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // TODO: Change this logic to check if there are any stack items to push up to the server
-        if (FileController.isNetworkAvailable(this)) {
-            menu.getItem(3).setEnabled(false);
-        }
-        else {
-            menu.getItem(3).setEnabled(true);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.viewProfile:
@@ -98,7 +86,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-                User user = UserController.getUser();
                 if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
