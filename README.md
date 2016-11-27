@@ -142,6 +142,7 @@ Third Party Libraries
 		- When app is in offline mode, instructions are created and and put on a command stack 
 		that is to be executed when connectivity has been regained. This updates updates the
 		info on the server.
+		-RiderNotificationService and DriverNotificaton system utilize the Android notification builder 
 
 	Templepate pattern
 		- App takes advantage of the hooks provided by Activity class 
