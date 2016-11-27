@@ -365,10 +365,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         if (mMap != null) {
             if (!FileController.isNetworkAvailable(this)) {
                 useOfflineTiles();
-                CommandStack.setCommands(FileController.loadFromFile(CommandStack.FILENAME));
             }
             else {
                 useOnlineTiles();
+                if(CommandStack.workRequired()){
+                    CommandStack.handleStack(this);
+                }
             }
         }
     }

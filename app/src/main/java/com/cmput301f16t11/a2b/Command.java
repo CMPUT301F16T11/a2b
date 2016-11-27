@@ -15,17 +15,5 @@ public class Command{
                 return this.status;
         }
 
-        public boolean isValidCommand(){
-                ElasticsearchRequestController.GetOpenRequestById getId = new ElasticsearchRequestController.GetOpenRequestById();
-                getId.execute(request.getId());
-                try{
-                        if(!(getId.get()==null)){
-                                return true;
-                        }
 
-                }catch(Exception e){
-                        e.printStackTrace();
-                }
-                return false;
-        }
 }

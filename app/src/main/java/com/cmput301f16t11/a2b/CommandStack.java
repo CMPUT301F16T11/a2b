@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -9,62 +11,67 @@ import java.util.ArrayList;
 
 public class CommandStack {
 
-    private static ArrayList<Command> Commands = new ArrayList<>();
+    private static ArrayList<UserRequest> AcceptedCommands = new ArrayList<>();
+    private static ArrayList<UserRequest> AddCommands = new ArrayList<>();
 
-    public static String FILENAME = "Offline.sav";
+    public static String ACCEPTFILE = "OfflineAcceptance.sav";
+    public static String ADDFILE = "OfflineAdd.sav";
 
-    public static void setCommands(ArrayList<Command> commands){
-        Commands = commands;
+    public static void setAcceptedCommands(ArrayList<UserRequest> commands){
+        AcceptedCommands = commands;
+    }
+    public static void setAddCommands(ArrayList<UserRequest> commands){
+        AddCommands = commands;
     }
     public static void clearCommands(){
-        Commands.clear();
+        AcceptedCommands.clear();
+        AddCommands.clear();
     }
-    public static Command checkStack(int i){
-        return Commands.get(i);
+    public static UserRequest checkAccepted(int i){
+        return AcceptedCommands.get(i);
     }
-
-    public static void addCommand(Command command){
-        Commands.add(command);
-        FileController.saveInFile(Commands,CommandStack.FILENAME);
+    public static UserRequest checkAdd(int i){
+        return AddCommands.get(i);
     }
-    public static boolean handleCommand(Command command){
-
-
-        if(command.getStatus()){
-            ElasticsearchRequestController.AddOpenRequestTask addTask = new ElasticsearchRequestController.AddOpenRequestTask();
-            addTask.execute(command.getRequest());
-            try{
-                return addTask.get();
-            }catch (Exception e){
-
-                e.printStackTrace();
+    public static boolean isValidCommand(UserRequest request){
+        ElasticsearchRequestController.GetOpenRequestById getId = new ElasticsearchRequestController.GetOpenRequestById();
+        getId.execute(request.getId());
+        try{
+            if(!(getId.get()==null)){
+                return true;
             }
 
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        else {
-            ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline addAcceptance = new ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline();
-            addAcceptance.execute(command.getRequest().getId(),UserController.getUser().getId());
-            try{
-                return  addAcceptance.get();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    return false;
+        return false;
     }
-    public void handleStack(){
-        for(Command command : Commands){
-            if(!command.getStatus()){
-                if(command.isValidCommand()){
-                    handleCommand(command);
-                }
-            }else{
-                handleCommand(command);
+
+    public static void addAddCommand(UserRequest command){
+        AddCommands.add(command);
+        FileController.saveInFile(AddCommands,CommandStack.ADDFILE);
+    }
+    public static void addAcceptedCommand(UserRequest command){
+        AcceptedCommands.add(command);
+        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE);
+    }
+
+    public static boolean workRequired(){
+        return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
+    }
+
+    public static void handleStack(Context context ){
+        for(UserRequest request: AcceptedCommands){
+            if(isValidCommand(request)){
+                RequestController.addAcceptance(request,context);
             }
         }
-        Commands.clear();
+        RequestController.addBatchOpenRequests(AddCommands);
+        clearCommands();
         //delete save file
-        File savFile = new File(CommandStack.FILENAME);
-        savFile.delete();
+        File accSavFile = new File(CommandStack.ACCEPTFILE);
+        File addsavFile = new File(CommandStack.ADDFILE);
+        accSavFile.delete();
+        addsavFile.delete();
     }
 }
