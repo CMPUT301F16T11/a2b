@@ -80,6 +80,12 @@ public class RequestController {
         FileController.saveInFile(requests, "riderOwnerRequests");
     }
 
+    public static void addBatchOpenRequests(ArrayList<UserRequest> requests){
+        ElasticsearchRequestController.AddBatchOpenRequestTask addBatchOpenRequestTask =
+                new ElasticsearchRequestController.AddBatchOpenRequestTask();
+        addBatchOpenRequestTask.execute(requests);
+    }
+
     /**
      * sets the request's confirmed driver
      *
