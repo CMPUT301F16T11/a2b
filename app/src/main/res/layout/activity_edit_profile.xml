@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <RelativeLayout
+    <RelativeLayout android:id="@+id/parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -30,13 +30,42 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimary" />
 
+        <LinearLayout android:id="@+id/editProfile_localeRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@id/profile_name"
+            android:gravity="center_vertical"
+            android:weightSum="3">
+            <TextView android:id="@+id/editProfile_localeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="16dp"
+                android:textAlignment="textEnd"
+                android:text="@string/locale"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimary"/>
+
+            <EditText android:id="@+id/locale"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:inputType="text"
+                android:text="Edmonton"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
 
         <LinearLayout android:id="@+id/editProfile_phoneRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_below="@id/profile_name"
+            android:layout_below="@id/editProfile_localeRow"
             android:gravity="center_vertical"
             android:weightSum="3">
             <TextView android:id="@+id/editProfile_phoneTitle"

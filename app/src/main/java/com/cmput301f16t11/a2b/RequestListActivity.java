@@ -71,7 +71,7 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
-        SaveLoadController.setContext(this);
+        FileController.setContext(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 

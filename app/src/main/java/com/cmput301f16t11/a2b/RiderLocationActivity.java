@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cmput301f16t11.a2b.cocoahero.android.gmaps.addons.master.mapbox.MapBoxOfflineTileProvider;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
@@ -37,8 +39,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.TileOverlay;
+import com.google.android.gms.maps.model.TileOverlayOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +69,9 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker currentMarker;
     private Context context;
     private String tripDistance = "? km";
+    private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    MapBoxOfflineTileProvider provider;
+    TileOverlay overlay;
 
     private int LOCATION_PERMISSIONS = -1;
 
@@ -122,7 +138,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        startUpNotificationService();
 
     }
 
@@ -294,7 +309,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         //Set the initial spot to edmonton for now
         LatLng edmonton = new LatLng(53.5444, -113.4909);
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -304,9 +318,33 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .tilt(0)
                 .build();
 
+        // !RequestController.isNetworkAvailable(this)
+        if (FileController.isNetworkAvailable(this)) {
+            useOfflineTiles();
+
+        }
+        else {
+            useOnlineTiles();
+        }
+
+        startUpNotificationService();
+
         ensureLocationPermissions();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         setButtonListeners();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMap != null) {
+            if (!RequestController.isNetworkAvailable(this)) {
+                useOfflineTiles();
+            }
+            else {
+                useOnlineTiles();
+            }
+        }
     }
 
     /**
@@ -344,10 +382,31 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mMap.addPolyline(new PolylineOptions()
                 .addAll(drawPoints)
                 .width(12)
+                .zIndex(99)
                 .color(Color.parseColor("#05b1fb"))//Google maps blue color
                 .geodesic(true)
         );
 
+    }
+
+    private void useOfflineTiles() {
+        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+        String filename = FileManager.writeMapFile(this);
+        TileOverlayOptions opts = new TileOverlayOptions();
+        provider = new MapBoxOfflineTileProvider(filename);
+        opts.tileProvider(provider);
+        overlay = mMap.addTileOverlay(opts);
+
+    }
+
+    private void useOnlineTiles() {
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        try{
+            provider.close();
+            overlay.remove();
+        } catch (Exception e) {
+            Log.e("riderlocation", "No offline data to remove");
+        }
     }
 
     public void displayRideConfirmationDlg(final String distance){
@@ -443,7 +502,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         description.getText().toString(),
                         locationList.get(0),locationList.get(1));
 
-                RequestController.addOpenRequest(request);
+                RequestController.addOpenRequest(request, context);
 
                 //Add this request to be bmonitored
                 RiderNotificationService.addRequestToBeNotified(request);
@@ -517,6 +576,20 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (RequestController.isNetworkAvailable(this) && mMap != null) {
+//            mMap.setMapType(GoogleMap.MAP_TYPE_NONE); // REMOVE THIS TO GO BACK TO GOOGLE MAPS
+//            String filename = FileManager.writeMapFile(this);
+//            TileOverlayOptions opts = new TileOverlayOptions();
+//            provider = new MapBoxOfflineTileProvider(filename);
+//            opts.tileProvider(provider);
+//            TileOverlay overlay = mMap.addTileOverlay(opts);
+//
+//        }
+//    }
+
     private void showNotADriverDialog() {
         final Context context = this;
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -531,6 +604,16 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.not_a_driver).setPositiveButton("OK", dialogClickListener).show();
 
+    }
+
+    @Override
+    public void onDestroy() {
+        try {
+            provider.close();
+        } catch (Exception e) {
+            Log.i("riderlocation", "no offline maps saved");
+        }
+        super.onDestroy();
     }
 }
 

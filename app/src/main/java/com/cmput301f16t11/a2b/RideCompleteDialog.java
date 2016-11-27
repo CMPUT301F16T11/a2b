@@ -90,13 +90,6 @@ public class RideCompleteDialog extends DialogFragment {
 
         return builder.create();
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        return layout;
-    }
-
 
     /**
      * Finds all views from the dialog
@@ -123,8 +116,8 @@ public class RideCompleteDialog extends DialogFragment {
     public void setViews() {
         driver.setText(confirmedDriverName);
         rider.setText(riderName);
-        pickup.setText(req.getStartLocation().toString());
-        dropoff.setText(req.getEndLocation().toString());
+        pickup.setText(req.getStartLocationName());
+        dropoff.setText(req.getEndLocationName());
         fare.setText(req.getFare().toString());
 
         okButton.setOnClickListener(new View.OnClickListener() {

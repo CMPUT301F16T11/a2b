@@ -152,4 +152,5 @@
     <!-- Search by keyword dialog -->
     <string name="search_by_keyword">Search By Keyword</string>
     <string name="description">Description</string>
+    <string name="locale">Locale:</string>
 </resources>
