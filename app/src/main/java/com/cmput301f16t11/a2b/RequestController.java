@@ -251,7 +251,6 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
-        //TODO: command stack stuff
        if(CommandStack.getAcceptedCommands() == null){
             return new ArrayList<>();
         }
