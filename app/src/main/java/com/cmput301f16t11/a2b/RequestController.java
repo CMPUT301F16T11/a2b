@@ -19,6 +19,7 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
 public class RequestController {
 
     public static ArrayList<UserRequest> displayedRequests;
+    public static UserRequest deletedRequest;
 
     // FileNames
     final static String riderRequests = "riderOwnerRequests.sav";
@@ -543,19 +544,29 @@ public class RequestController {
      * Deletes a request
      *
      * @see ElasticsearchRequestController
-     * @param id the id of the request to be deleted
+     * @param request the request to be deleted
      * @return true if successful, false otherwise
      */
-    public static Boolean deleteRequest(String id) {
+    public static Boolean deleteRequest(UserRequest request) {
+        deletedRequest = request;
         ElasticsearchRequestController.DeleteRiderRequests deleteRequestsById =
                 new ElasticsearchRequestController.DeleteRiderRequests();
         try {
-            deleteRequestsById.execute(id);
+            deleteRequestsById.execute(request.getId());
 
         } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Gets the request that has been delete
+     *
+     * @return te request in question
+     */
+    public static UserRequest getDeletedRequest() {
+        return deletedRequest;
     }
 
     /**

@@ -300,4 +300,27 @@ public class UserRequest implements Parcelable {
                 this.getDateString() + "\n";
         return temp;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        UserRequest request;
+        try {
+            request = (UserRequest) obj;
+        } catch (Exception e) {
+            return false;
+        }
+        if (request.getFare().equals(this.getFare())
+                && request.getStartLocation().equals(this.getStartLocation()) &&
+                request.getEndLocation().equals(this.getEndLocation()) &&
+                request.getDateString().equals(this.getDateString())) {
+            return true;
+        }
+        return false;
+    }
 }

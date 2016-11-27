@@ -324,7 +324,6 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 delete();
-                finish();
             }
         });
 
@@ -409,13 +408,13 @@ public class RequestDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteRequest();
+                        finish();
                     }
                 })
                 .create();
         dialog.show();
     }
     private void deleteRequest() {
-        RequestController.deleteRequest(request.getId());
-        finish();
+        RequestController.deleteRequest(request);
     }
 }
