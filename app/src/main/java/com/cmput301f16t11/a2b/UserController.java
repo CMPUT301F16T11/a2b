@@ -194,16 +194,6 @@ public class UserController {
         } else {
             return false;
         }
-//        try {
-//            FileInputStream fis = activity.openFileInput(USRFILE);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//            user = new Gson().fromJson(in, User.class);
-//        } catch (FileNotFoundException f) {
-//            Log.i("File", "No saved user");
-//            return false;
-//        }
-//
-//        return true;
     }
 
     /**

@@ -30,7 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     EditText year;
     EditText color;
     EditText model;
-    //TODO : WE can consider having profile picture implementation later for part 5
+    //TODO : WE can consider having profile picture implementation later for part 6
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,21 +97,6 @@ public class EditProfileActivity extends AppCompatActivity {
         year = (EditText) findViewById(R.id.edit_year_field);
         color = (EditText) findViewById(R.id.edit_color_field);
         model = (EditText) findViewById(R.id.edit_model_field);
-//        ArrayList<EditText> needsOnItemClickListener = new ArrayList<EditText>();
-//        needsOnItemClickListener.add(make);
-//        needsOnItemClickListener.add(email);
-//        needsOnItemClickListener.add(color);
-//        needsOnItemClickListener.add(model);
-//
-//        // set listeners
-//        for (EditText view: needsOnItemClickListener) {
-//            view.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                @Override
-//                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                    return false;
-//                }
-//            });
-//        }
 
         String phoneNumber = userPhoneNumText.getText().toString();
         String email = userEmailText.getText().toString();

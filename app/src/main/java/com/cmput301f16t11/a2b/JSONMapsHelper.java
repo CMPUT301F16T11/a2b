@@ -34,8 +34,9 @@ class JSONMapsHelper{
     /**
      * This sets up the async task and calls it. This async task does alot of communication with google maps
      * but then simply draws the correct route from these two locations on the map inside the activity.
-     * @param startLocation
-     * @param endLocation
+     *
+     * @param startLocation the beginning location (Marker)
+     * @param endLocation the end location (Marker)
      */
     public void drawPathCoordinates(Marker startLocation, Marker endLocation){
 
@@ -46,8 +47,9 @@ class JSONMapsHelper{
 
     /**
      * This functions creates a URL JSON request from two google map markers
-     * @param startLocation
-     * @param endLocation
+     *
+     * @param startLocation (LatLng) the starting location
+     * @param endLocation (LatLng) the ending location
      * @return A valid String url request for calculated route
      */
     public static String createURl(LatLng startLocation, LatLng endLocation){
@@ -75,10 +77,10 @@ class JSONMapsHelper{
     /**
      * This function connects with google server and get a JSON object able to draw the route
      * from a proper URL request.
-     * @param url
+     * @param url URL Request (String)
      * @return JSON string object
      */
-    public static String getJsonFromUrlRequest(String url){
+    public static String getJsonFromUrlRequest(String url) {
 
         //Make the url request alot of things can go wrong here
         HttpURLConnection urlConnection = null;
@@ -183,8 +185,8 @@ class JSONMapsHelper{
     /**
      * This is just copied and pasted from :http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
      * Decoded poly line from jason object and turns them into a more understandable latLng list
-     * @param encoded
-     * @return
+     * @param encoded encoded string value
+     * @return a list of decoded LatLng objs
      */
     private List<LatLng> decodePoly(String encoded){
         List<LatLng> poly = new ArrayList<LatLng>();

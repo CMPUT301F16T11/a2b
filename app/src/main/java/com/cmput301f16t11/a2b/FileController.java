@@ -31,6 +31,16 @@ import java.util.ArrayList;
  *
  * This work contains a derivative of a stackoverflow answer to "Files from res file to sdcard on
  * android," by "DMcP89," a stackoverflow user.
+ * It is used under CC-BY-SA 2.0 by CMPUT301F16T11.
+ * Available here: http://stackoverflow.com/questions/5943916/files-from-res-file-to-sdcard-on-android
+ * Date accessed: Nov. 25, 2016
+ *
+ * This work contains code from a stackoverflow answer to
+ * "Detect whether there is an Internet connection available on Android [duplicate]," by
+ * "dan," edited by, "Palec," stackoverflow users.
+ * It is used under CC-BY-SA 2.0 by CMPUT301F16T11.
+ * Available here: http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+ * Date accessed: Nov. 26, 2016
  */
 public class FileController {
 
@@ -63,7 +73,6 @@ public class FileController {
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
             Gson gson = new Gson();
 
-            // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
             Type listType = new TypeToken<ArrayList<UserRequest>>() {
             }.getType();
 
@@ -71,40 +80,11 @@ public class FileController {
 
         } catch (FileNotFoundException e) {
             requests = new ArrayList<UserRequest>();
-        } catch (IOException e) {
-            throw new RuntimeException();
         }
 
         return requests;
     }
 
-//    /**
-//     * Load from file map hash map.
-//     *
-//     * @param FILENAME the filename
-//     * @return the hash map
-//     */
-//    public static HashMap<String, String> loadFromFileMap(String FILENAME) {
-//        HashMap<String, String> dic;
-//        try {
-//            FileInputStream fis = context.openFileInput(FILENAME);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//            Gson gson = new Gson();
-//
-//            // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-//            Type listType = new TypeToken<HashMap<String, String>>() {
-//            }.getType();
-//
-//            dic = gson.fromJson(in, listType);
-//
-//        } catch (FileNotFoundException e) {
-//            dic = new HashMap<String, String>();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//
-//        return dic;
-//    }
 
     /**
      * Writes mbtiles file from res to android storage for offline maps usage
@@ -113,9 +93,6 @@ public class FileController {
      * @return String of direct path to map file in android memory
      */
     public static String writeMapFile(Context context) {
-        // taken from
-        // http://stackoverflow.com/questions/5943916/files-from-res-file-to-sdcard-on-android
-        // nov 26
         InputStream ins = context.getResources().openRawResource (R.raw.map);
         String filename = "";
         try {
@@ -178,28 +155,6 @@ public class FileController {
         }
     }
 
-//    /**
-//     * Save in file map.
-//     *
-//     * @param map the map
-//     */
-//    public static void saveInFileMap(HashMap<String, String> map, String FILENAME) {
-//        try {
-//            FileOutputStream fos = context.openFileOutput(FILENAME, 0);
-//            OutputStreamWriter writer = new OutputStreamWriter(fos);
-//
-//            Gson gson = new Gson();
-//            gson.toJson(map, writer);
-//            writer.flush();
-//
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//    }
-
     /**
      * Save in file user.
      *
@@ -232,23 +187,6 @@ public class FileController {
         context.deleteFile("nearbyNames.sav");
     }
 
-//    /**
-//     * Store user names.
-//     *
-//     * @param requests the requests
-//     */
-//    public static void storeUserNames(ArrayList<UserRequest> requests, String FILENAME) {
-//
-//        HashMap<String, String> names = new HashMap<String, String>();
-//        String userName = UserController.getName();
-//        loadFromFileMap(FILENAME);
-//        for (UserRequest request : requests) {
-//            String id = request.getRiderID();
-//            userName = UserController.getUserFromId(id).getName();
-//            names.put(id, userName);
-//        }
-//        saveInFileMap(names, FILENAME);
-//    }
 
     /**
      * Is network available boolean.
@@ -256,7 +194,6 @@ public class FileController {
      *
      * @return the boolean
      */
-// http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
     public static boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
