@@ -1,12 +1,11 @@
 Welcome to a2b, a CMPUT301 project! 
 
 
-** Please Note**
-** Older Android emulators have problems sending location. While the app    ** 
-** run fine on the emulator, the current location may not work. We          **
-** recommend using the app on emulator sdk 24 and above. The assignment     **
-** required functionality will run on 18 and above, however for the full    **
-** experience we recommend 24 and above.                                    **
+** Please Note **
+Older Android emulators have problems sending location. While the app 
+run fine on the emulator, the current location may not work. We        
+recommend using the app on emulator sdk 24 and above. The assignment
+required functionality will run on 18 and above, however for the full experience we recommend 24 and above.           
 
 If you want details on this issue and how to get it working on older APIs, 
 this guide details it: 
