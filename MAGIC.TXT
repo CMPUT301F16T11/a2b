@@ -1,0 +1,5 @@
+HERE IS THE MAGIC 
+http://stackoverflow.com/questions/13695393/open-street-maps-with-android-google-maps-api-v2
+
+AS WELL AS THIS (3RD PARTY STUFF NEEDS TO BE INCLUDED LIKE JESTDROID ETC)
+https://github.com/cocoahero/android-gmaps-addons

@@ -3,6 +3,8 @@ package com.cmput301f16t11.a2b;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -70,6 +72,11 @@ public class ProfileActivity extends AppCompatActivity {
         if (UserController.getUser().equals(user)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.profile_menu, menu);
+
+            // Taken from stackoverflow.com/questions/31953503/how-to-set-icon-color-of-menuitem on Nov 26 2016
+            Drawable drawable = menu.getItem(0).getIcon();
+            drawable.mutate();
+            drawable.setColorFilter(getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
         }
         return true;
     }

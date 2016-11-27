@@ -90,13 +90,6 @@ public class RideCompleteDialog extends DialogFragment {
 
         return builder.create();
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        return layout;
-    }
-
 
     /**
      * Finds all views from the dialog
