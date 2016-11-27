@@ -145,9 +145,9 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             startActivity(intent);
         } else{
             if(CommandStack.workRequired()){
-                CommandStack.handleStack(this);
+                CommandStack.handleStack();
             }
-        }
+    }
     }
 
     @Override
