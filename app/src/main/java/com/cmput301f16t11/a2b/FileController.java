@@ -4,7 +4,6 @@ package com.cmput301f16t11.a2b;
  * Created by kelvinliang on 2016-11-23.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,20 +19,34 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
+/**
+ * The type File controller. Handles Saving and loading of files
+ * for offline use.
+ */
 public class FileController {
 
-    private static ArrayList<UserRequest> offlineRequestList;
     private static Context context;
+
+    /**
+     * Set context.
+     *
+     * @param con the con
+     */
     public static void setContext(Context con){
         context = con;
     }
 
+    /**
+     * Load from file array list.
+     *
+     * @param FILENAME the filename that is to be loaded from
+     * @return the array list of requests
+     */
     public static ArrayList<UserRequest> loadFromFile(String FILENAME) {
         ArrayList<UserRequest> requests;
 
@@ -57,6 +70,12 @@ public class FileController {
         return requests;
     }
 
+    /**
+     * Load from file map hash map.
+     *
+     * @param FILENAME the filename
+     * @return the hash map
+     */
     public static HashMap<String, String> loadFromFileMap(String FILENAME) {
         HashMap<String, String> dic;
         try {
@@ -79,6 +98,12 @@ public class FileController {
         return dic;
     }
 
+    /**
+     * Load from file user user.
+     *
+     * @param USRFILE the usrfile
+     * @return the user
+     */
     public static User loadFromFileUser(String USRFILE) {
         User user = new User();
         try {
@@ -94,6 +119,12 @@ public class FileController {
 
         }
 
+    /**
+     * Save in file.
+     *
+     * @param offlineRequestListIn the offline request list in
+     * @param FILENAME             the filename
+     */
     public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
@@ -113,6 +144,11 @@ public class FileController {
         storeUserNames(offlineRequestListIn);
     }
 
+    /**
+     * Save in file map.
+     *
+     * @param map the map
+     */
     public static void saveInFileMap(HashMap<String, String> map) {
         try {
             FileOutputStream fos = context.openFileOutput("names.sav", 0);
@@ -131,6 +167,12 @@ public class FileController {
         }
     }
 
+    /**
+     * Save in file user.
+     *
+     * @param user     the user
+     * @param FILENAME the filename
+     */
     public static void saveInFileUser(User user, String FILENAME) {
         try {
             // Try to convert user to JSON and save it
@@ -145,12 +187,20 @@ public class FileController {
         }
     }
 
+    /**
+     * Clear.
+     */
     public static void clear() {
         context.deleteFile("names.sav"); // delete file
         context.deleteFile("acceptedByMe.sav");
         context.deleteFile("riderOwnerRequests.sav");
     }
 
+    /**
+     * Store user names.
+     *
+     * @param requests the requests
+     */
     public static void storeUserNames(ArrayList<UserRequest> requests) {
 
         HashMap<String, String> names = new HashMap<String, String>();
@@ -163,7 +213,14 @@ public class FileController {
         saveInFileMap(names);
     }
 
-    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
+    /**
+     * Is network available boolean.
+     * checks if there is a network connection
+     *
+     * @param c the c
+     * @return the boolean
+     */
+// http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
     public static boolean isNetworkAvailable(Context c) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
