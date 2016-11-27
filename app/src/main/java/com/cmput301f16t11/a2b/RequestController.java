@@ -218,7 +218,7 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
-        //TODO actual logic
+        //TODO: command stack stuff
         return new ArrayList<UserRequest>();
     }
 

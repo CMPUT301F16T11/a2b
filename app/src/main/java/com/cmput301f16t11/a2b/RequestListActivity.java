@@ -236,10 +236,7 @@ public class RequestListActivity extends AppCompatActivity {
                         else {
                             // already accepted requests
                             requests.clear();
-                            requests.addAll(
-                                    getFilteredRequests(RequestController.getAcceptedByUser(
-                                            UserController.getUser(), RequestListActivity.this)));
-
+                            requests.addAll(getFilteredRequests(RequestController.getNearbyRequests()));
                         }
 
                     }
@@ -264,11 +261,10 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                         else {
                             // offline mode
-                            // requests accepted while offline (pending sending to server)
+                            // Accepted by me
                             requests.clear();
-                            requests.addAll(
-                                    getFilteredRequests(RequestController.getOfflineAcceptances()));
-                            ArrayList<UserRequest> test = RequestController.getOfflineAcceptances();
+                            requests.addAll(getFilteredRequests(RequestController.getAcceptedByUser(UserController.getUser(),
+                                    context)));
                         }
                     } else {
                         // users
@@ -292,21 +288,27 @@ public class RequestListActivity extends AppCompatActivity {
                     }
                     else {
                         // offline mode
-                        // already completed requests
+                        //Offline acceptances
                         requests.clear();
-                        requests.addAll(getFilteredRequests(
-                                RequestController.getCompletedRequests(UserController.getUser(),
-                                        UserController.checkMode(), RequestListActivity.this)));
+                        requests.addAll(RequestController.getOfflineAcceptances());
+
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 } else if (position == 3) {
-                    // awaiting payment
-                    requests.clear();
-                    requests.addAll(getFilteredRequests(
-                            RequestController.getAwaitingPaymentRequests(UserController.getUser(),
-                                    UserController.checkMode())));
-                    adapter.notifyDataSetChanged();
+                    if(UserController.checkMode() == Mode.DRIVER) {
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getAwaitingPaymentRequests(UserController.getUser(),
+                                        UserController.checkMode())));
+                        adapter.notifyDataSetChanged();
+                    }
+                    //Completed Requests
+                    else{
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode(), RequestListActivity.this)));
+                    }
                 }
 
                 else if (position == 4) {
