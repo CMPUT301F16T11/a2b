@@ -321,7 +321,6 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(getFilteredRequests(
                                 RequestController.getAwaitingPaymentRequests(UserController.getUser(),
                                         UserController.checkMode())));
-                        adapter.notifyDataSetChanged();
                     }
                     //Completed Requests
                     else{
@@ -329,6 +328,7 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
                     }
+                    adapter.notifyDataSetChanged();
                 }
 
                 else if (position == 4) {
