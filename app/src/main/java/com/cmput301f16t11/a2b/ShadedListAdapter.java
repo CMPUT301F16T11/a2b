@@ -62,18 +62,18 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         final TextView riderEntry = (TextView) view.findViewById(R.id.rider_entry);
         final TextView fareEntry  = (TextView) view.findViewById(R.id.fare_entry);
         final TextView dateEntry = (TextView) view.findViewById(R.id.date_created_entry);
-        String riderName;
 
+        final String riderName = request.getRiderUsername();
 
-        if(!FileController.isNetworkAvailable(context)) {
-            FileController.setContext(context);
-            HashMap<String, String> dic = new HashMap<String, String>();
-            dic = FileController.loadFromFileMap("names.sav");
-            riderName = dic.get(request.getRiderID());
-        } else {
-            User rider = UserController.getUserFromId(request.getRiderID());
-            riderName = rider.getName();
-        }
+//        if(!FileController.isNetworkAvailable(context)) {
+//            FileController.setContext(context);
+//            HashMap<String, String> dic = new HashMap<String, String>();
+//            dic = FileController.loadFromFileMap("names.sav");
+//            riderName = dic.get(request.getRiderID());
+//        } else {
+//            User rider = UserController.getUserFromId(request.getRiderID());
+//            riderName = rider.getName();
+//        }
 
         try {
             riderEntry.setText(riderName);
