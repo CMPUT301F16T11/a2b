@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -139,11 +140,16 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     @Override
     public void onResume() {
         super.onResume();
-        if (!FileController.isNetworkAvailable(this)) {
+        FileController.setContext(this);
+        if (!FileController.isNetworkAvailable()) {
             Intent intent = new Intent(this, RequestListActivity.class);
             setResult(Activity.RESULT_OK, intent);
             startActivity(intent);
-        }
+        } else{
+            if(CommandStack.workRequired()){
+                CommandStack.handleStack();
+            }
+    }
     }
 
     @Override
@@ -278,7 +284,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
         ArrayList<UserRequest> nearbyRequests = new ArrayList<>();
 
         nearbyRequests = RequestController.getNearbyRequestsGeoFilter(distanceKm, center.latitude, center.longitude );
-        RequestController.setDisplayedRequests(nearbyRequests);
+        RequestController.setDisplayedRequests(nearbyRequests, this);
 
         return nearbyRequests;
     }
@@ -478,7 +484,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     case DESCRIPTION: {
                         ArrayList<UserRequest> descriptionList = RequestController.queryByKeywordDescription(searchString);
                         //show the requests in this list
-                        RequestController.setDisplayedRequests(descriptionList);
+                        RequestController.setDisplayedRequests(descriptionList, DriverLocationActivity.this);
                         //update the map
                         handleRequests(descriptionList);
                         break;
@@ -486,7 +492,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     case START: {
                         ArrayList<UserRequest> startKeywordList = RequestController.queryByKeywordStartLocation(searchString);
                         //show the requests in this list
-                        RequestController.setDisplayedRequests(startKeywordList);
+                        RequestController.setDisplayedRequests(startKeywordList, DriverLocationActivity.this);
                         //update the map
                         handleRequests(startKeywordList);
                         break;
@@ -494,7 +500,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                     case END: {
                         ArrayList<UserRequest> endKeywordList = RequestController.queryByKeywordEndLocation(searchString);
                         //show the requests in this list
-                        RequestController.setDisplayedRequests(endKeywordList);
+                        RequestController.setDisplayedRequests(endKeywordList, DriverLocationActivity.this);
                         //update the map
                         handleRequests(endKeywordList);
                         break;
