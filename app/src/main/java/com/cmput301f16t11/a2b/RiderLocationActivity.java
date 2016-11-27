@@ -448,9 +448,20 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     return;
                 }
 
-                OfflineRequest req = new OfflineRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
-                        userFare,userDescription );
-                //TODO: offline request
+                UserRequest req = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
+                        userFare,
+                        UserController.getUser().getId(),
+                        0.0,
+                        userDescription,
+                        "N/A",
+                        "N/A" );
+
+                //Cache this requests with the other ones
+                FileController.setContext(context);
+                ArrayList<UserRequest> request = FileController.loadFromFile("offlineRequests.sav");
+                request.add(req);
+                FileController.saveInFile(request, "offlineRequests.sav");
+
                 dialog.dismiss();
             }
         });
