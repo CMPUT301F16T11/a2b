@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -154,6 +155,28 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
         context = this;
         setContentView(R.layout.activity_rider_location);
+
+        CommandStack.setDirectory(getFilesDir());
+        if(new File(getFilesDir(),CommandStack.ACCEPTFILE).exists()){
+            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE));
+        }else{
+            try {
+                new File(getFilesDir(),CommandStack.ACCEPTFILE).createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if(new File(getFilesDir(),CommandStack.ADDFILE).exists()){
+            CommandStack.setAddCommands(FileController.loadFromFile(CommandStack.ADDFILE));
+        }
+        else{
+            try {
+                new File(getFilesDir(),CommandStack.ADDFILE).createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -385,7 +408,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             else {
                 useOnlineTiles();
                 if(CommandStack.workRequired()){
-                    CommandStack.handleStack();
+                    CommandStack.handleStack(this);
                 }
             }
         }
@@ -503,6 +526,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 CommandStack.addAddCommand(req);
 
                 dialog.dismiss();
+                resetMap();
             }
         });
 

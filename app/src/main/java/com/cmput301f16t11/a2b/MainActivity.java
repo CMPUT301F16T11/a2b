@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.File;
-
 /**
  * Main activity to load activities for testing purposes.
  *
@@ -20,12 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
-        if(new File(CommandStack.ACCEPTFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE));
-        }
-        if(new File(CommandStack.ADDFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ADDFILE));
-        }
+//
         //Intent intent = new Intent(this, RequestListActivity.class);
         startActivity(intent);
         finish();

@@ -1,6 +1,9 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -8,12 +11,16 @@ import java.util.ArrayList;
  */
 
 public class CommandStack {
-
+    private static File directory;
     private static ArrayList<UserRequest> AcceptedCommands = new ArrayList<>();
     private static ArrayList<UserRequest> AddCommands = new ArrayList<>();
 
     public static String ACCEPTFILE = "OfflineAcceptance.sav";
     public static String ADDFILE = "OfflineAdd.sav";
+
+    public static void setDirectory(File file){
+        directory = file;
+    }
 
     public static void setAcceptedCommands(ArrayList<UserRequest> commands){
         AcceptedCommands = commands;
@@ -58,18 +65,28 @@ public class CommandStack {
         return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
     }
 
-    public static void handleStack(){
+    public static void handleStack(Context context){
         for(UserRequest request: AcceptedCommands){
             if(isValidCommand(request)){
                 RequestController.addAcceptanceOffline(request);
             }
         }
-        RequestController.addBatchOpenRequests(AddCommands);
+        ArrayList<UserRequest> filledOutRequests = new ArrayList<>();
+        for(UserRequest request: AddCommands){
+            filledOutRequests.add(RequestController.convertOfflineRequestToOnlineRequest(request,context));
+        }
+        RequestController.addBatchOpenRequests(filledOutRequests);
         clearCommands();
         //delete save file
-        File accSavFile = new File(CommandStack.ACCEPTFILE);
-        File addsavFile = new File(CommandStack.ADDFILE);
+        File accSavFile = new File(directory,CommandStack.ACCEPTFILE);
+        File addSavFile = new File(directory,CommandStack.ADDFILE);
         accSavFile.delete();
-        addsavFile.delete();
+        addSavFile.delete();
+        try {
+            new File(directory,CommandStack.ADDFILE).createNewFile();
+            new File(directory,CommandStack.ACCEPTFILE).createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

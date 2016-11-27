@@ -47,7 +47,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -147,7 +146,7 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             startActivity(intent);
         } else{
             if(CommandStack.workRequired()){
-                CommandStack.handleStack();
+                CommandStack.handleStack(this);
             }
     }
     }

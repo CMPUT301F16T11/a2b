@@ -60,7 +60,7 @@ public class OfflineBehaviorUnitTest{
     public void testOfflineAcceptedRequest(){
 
         //push onto command stack
-        Command command1 = new Command(request,false);
+
         //grab saved list of requests from the command stack
         CommandStack.addCommand(command1);
         //check and see if this list same as given one using test case
