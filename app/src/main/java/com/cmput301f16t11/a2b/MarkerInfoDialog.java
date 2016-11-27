@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,8 @@ public class MarkerInfoDialog extends DialogFragment {
         req = getArguments().getParcelable("req");
         riderName = getArguments().getString("rider");
         setViews();
+        setButtons(parent);
+
 
         return builder.create();
     }
@@ -78,8 +81,7 @@ public class MarkerInfoDialog extends DialogFragment {
         endText = (TextView)parent.findViewById(R.id.dialog_requestInfo_endText);
         fareText = (TextView)parent.findViewById(R.id.dialog_requestInfo_fareText);
         description = (TextView)parent.findViewById(R.id.dialog_requestInfo_descripText);
-        acceptButton = (Button)parent.findViewById(R.id.dialog_markerInfo_accept);
-        cancelButton = (Button)parent.findViewById(R.id.dialog_markerInfo_cancel);
+
     }
 
 
@@ -114,17 +116,33 @@ public class MarkerInfoDialog extends DialogFragment {
         fareText.setText(req.getFare().toString());
         description.setText(req.getDescription());
 
-        // Set the button click listeners
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ElasticsearchRequestController.AddDriverAcceptanceToRequest addDriverTask = new ElasticsearchRequestController.AddDriverAcceptanceToRequest(getActivity());
-                addDriverTask.execute(req.getId(), UserController.getUser().getId());
-                DriverNotificationService.serviceHandler(req, getActivity());
-                getDialog().dismiss();
-            }
-        });
+    }
 
+    public void setButtons(View parent) {
+        acceptButton = (Button)parent.findViewById(R.id.dialog_markerInfo_accept);
+        cancelButton = (Button)parent.findViewById(R.id.dialog_markerInfo_cancel);
+
+
+        // set other buttons depending on request status
+        switch (req.getRequestStatus()) {
+            case WAITING:
+                acceptButton.setVisibility(View.VISIBLE);
+                // Set the button click listeners
+                acceptButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ElasticsearchRequestController.AddDriverAcceptanceToRequest addDriverTask = new ElasticsearchRequestController.AddDriverAcceptanceToRequest(getActivity());
+                        addDriverTask.execute(req.getId(), UserController.getUser().getId());
+                        DriverNotificationService.serviceHandler(req, getActivity());
+                        RequestController.addAcceptance(req, getActivity());
+                        getDialog().dismiss();
+                    }
+                });
+                break;
+            case ACCEPTED:
+                acceptButton.setVisibility(View.GONE);
+                break;
+        }
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +150,6 @@ public class MarkerInfoDialog extends DialogFragment {
                 getDialog().dismiss();
             }
         });
-
     }
 
 }
