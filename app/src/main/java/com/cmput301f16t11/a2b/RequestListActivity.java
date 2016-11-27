@@ -180,11 +180,11 @@ public class RequestListActivity extends AppCompatActivity {
         }
 
         // spinner stuff
-        if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable()) {
+        if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable(this)) {
             // offline mode, accepted by me only
             String [] choices;
             choices = getResources().getStringArray(R.array.requestTypesOffline);
-            spinnerChoices = new ArrayAdapter<String>(this,
+            spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         }
         else if (UserController.checkMode() == Mode.DRIVER) {
@@ -224,7 +224,7 @@ public class RequestListActivity extends AppCompatActivity {
 
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        if (FileController.isNetworkAvailable()) {
+                        if (FileController.isNetworkAvailable(context)) {
                             try {
                                 requests.clear();
                                 requests.addAll(
@@ -256,7 +256,7 @@ public class RequestListActivity extends AppCompatActivity {
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        if (FileController.isNetworkAvailable()) {
+                        if (FileController.isNetworkAvailable(context)) {
                             requests.clear();
                             requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
@@ -284,7 +284,7 @@ public class RequestListActivity extends AppCompatActivity {
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
                     if (UserController.checkMode() == Mode.RIDER ||
-                            FileController.isNetworkAvailable()) {
+                            FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(
                                 getFilteredRequests(RequestController.getConfirmedByRiders(

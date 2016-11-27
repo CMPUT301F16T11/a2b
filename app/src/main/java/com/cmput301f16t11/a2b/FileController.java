@@ -70,9 +70,7 @@ public class FileController {
             requests = gson.fromJson(in, listType);
 
         } catch (FileNotFoundException e) {
-            requests = new ArrayList<UserRequest>();
-        } catch (IOException e) {
-            throw new RuntimeException();
+            requests = new ArrayList<>();
         }
 
         return requests;
@@ -256,10 +254,10 @@ public class FileController {
      *
      * @return the boolean
      */
-// http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-    public static boolean isNetworkAvailable() {
+
+    public static boolean isNetworkAvailable(Context passedInContext) {
         ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) passedInContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

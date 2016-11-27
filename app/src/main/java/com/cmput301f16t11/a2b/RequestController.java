@@ -175,7 +175,7 @@ public class RequestController {
         }
         else {
 
-            if(!FileController.isNetworkAvailable()) {
+            if(!FileController.isNetworkAvailable(context)) {
                 userRequests = FileController.loadFromFile("riderOwnRequests.sav");
             } else {
                 ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
@@ -240,7 +240,7 @@ public class RequestController {
         FileController.setContext(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         // check network
-        if(!FileController.isNetworkAvailable()) {
+        if(!FileController.isNetworkAvailable(context)) {
            userRequests = FileController.loadFromFile("acceptedByMe.sav");
         } else {
             ElasticsearchRequestController.GetAcceptedByMe searchController =
@@ -275,7 +275,7 @@ public class RequestController {
         FileController.setContext(con);
 
         if (mode == Mode.DRIVER) {
-            if(FileController.isNetworkAvailable()) {
+            if(FileController.isNetworkAvailable(con)) {
                 ElasticsearchRequestController.GetPastDriverRequests getPastDriverRequests =
                         new ElasticsearchRequestController.GetPastDriverRequests();
                 try{
@@ -289,7 +289,7 @@ public class RequestController {
             }
 
         }else{
-            if(FileController.isNetworkAvailable()) {
+            if(FileController.isNetworkAvailable(con)) {
                 ElasticsearchRequestController.GetPastRiderRequests getPastRiderRequests =
                         new ElasticsearchRequestController.GetPastRiderRequests();
 
