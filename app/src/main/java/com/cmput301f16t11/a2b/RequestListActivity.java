@@ -284,7 +284,11 @@ public class RequestListActivity extends AppCompatActivity {
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        if(FileController.isNetworkAvailable(RequestListActivity.this)) {
+                            requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                        } else {
+                            requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        }
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
