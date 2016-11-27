@@ -105,13 +105,14 @@ public class FileController {
      * @return the user
      */
     public static User loadFromFileUser(String USRFILE) {
-        User user = new User();
+        User user;
         try {
             FileInputStream fis = context.openFileInput(USRFILE);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
             user = new Gson().fromJson(in, User.class);
         } catch (FileNotFoundException f) {
             Log.i("File", "No saved user");
+            return null;
         }
         return user;
 

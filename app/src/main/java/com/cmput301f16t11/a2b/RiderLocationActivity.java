@@ -91,12 +91,18 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-                if (UserController.canDrive()) {
+                User user = UserController.getUser();
+                if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
                     startActivity(driverIntent);
                     finish();
 
+                }
+                else if (UserController.canDrive()) {
+                    UserController.setMode(Mode.DRIVER);
+                    Intent intent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     showNotADriverDialog();

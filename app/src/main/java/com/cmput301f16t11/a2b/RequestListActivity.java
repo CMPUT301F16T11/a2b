@@ -153,7 +153,14 @@ public class RequestListActivity extends AppCompatActivity {
         }
 
         // spinner stuff
-        if (UserController.checkMode() == Mode.DRIVER) {
+        if (!FileController.isNetworkAvailable(this)) {
+            // offline mode, accepted by me only
+            String [] choices;
+            choices = getResources().getStringArray(R.array.requestTypesOffline);
+            spinnerChoices = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_dropdown_item, choices);
+        }
+        else if (UserController.checkMode() == Mode.DRIVER) {
             //Depending on the type of search our dropdown will be different
             String [] choices;
             switch (searchType){
@@ -166,8 +173,6 @@ public class RequestListActivity extends AppCompatActivity {
                 default:
                     choices = getResources().getStringArray(R.array.requestTypesDriverLocationArray);
             }
-
-
             spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         } else {
@@ -184,6 +189,7 @@ public class RequestListActivity extends AppCompatActivity {
         spinner.setFocusable(true);
         spinner.requestFocus();
         spinner.setAdapter(spinnerChoices);
+        final Context context = this;
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -191,13 +197,23 @@ public class RequestListActivity extends AppCompatActivity {
 
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        try {
+                        if (FileController.isNetworkAvailable(context)) {
+                            try {
+                                requests.clear();
+                                requests.addAll(
+                                        getFilteredRequests(RequestController.getNearbyRequests()));
+                            } catch (NullPointerException e) {
+                                Log.i("No requests found", "driver mode");
+                            }
+                        }
+                        else {
+                            // already accepted requests
                             requests.clear();
                             requests.addAll(
-                                    getFilteredRequests(RequestController.getNearbyRequests()));
-                        } catch (NullPointerException e) {
-                            Log.i("No requests found", "driver mode");
+                                    getFilteredRequests(RequestController.getAcceptedByUser(
+                                            UserController.getUser(), RequestListActivity.this)));
                         }
+
                     }
                     else {
                         // rider mode!
@@ -211,11 +227,21 @@ public class RequestListActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
-                    if (UserController.checkMode().equals(Mode.DRIVER)) {
-                        requests.clear();
-                        requests.addAll(
+                    if (UserController.checkMode() == Mode.DRIVER) {
+                        if (FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
                                         UserController.getUser(), RequestListActivity.this)));
+                        }
+                        else {
+                            // offline mode
+                            // requests accepted while offline (pending sending to server)
+                            requests.clear();
+                            requests.addAll(
+                                    getFilteredRequests(RequestController.getOfflineAcceptances()));
+                            ArrayList<UserRequest> test = RequestController.getOfflineAcceptances();
+                        }
                     } else {
                         // users
                         requests.clear();
@@ -229,10 +255,21 @@ public class RequestListActivity extends AppCompatActivity {
                     // accepted them
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
-                    requests.clear();
-                    requests.addAll(
-                            getFilteredRequests(RequestController.getConfirmedByRiders(
-                                    UserController.getUser(), UserController.checkMode())));
+                    if (UserController.checkMode() == Mode.RIDER ||
+                            FileController.isNetworkAvailable(context)) {
+                        requests.clear();
+                        requests.addAll(
+                                getFilteredRequests(RequestController.getConfirmedByRiders(
+                                        UserController.getUser(), UserController.checkMode())));
+                    }
+                    else {
+                        // offline mode
+                        // already completed requests
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode())));
+                    }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 } else if (position == 3) {

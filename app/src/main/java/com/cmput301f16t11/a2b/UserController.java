@@ -188,7 +188,7 @@ public class UserController {
      */
     public static Boolean loadFromFile(Activity activity) {
         FileController.setContext(activity);
-        User user = FileController.loadFromFileUser(USRFILE);
+        user = FileController.loadFromFileUser(USRFILE);
         if(user != null) {
             return true;
         } else {
