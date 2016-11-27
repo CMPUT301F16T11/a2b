@@ -319,7 +319,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .build();
 
         // !RequestController.isNetworkAvailable(this)
-        if (FileController.isNetworkAvailable(this)) {
+        if (!FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
 
         }

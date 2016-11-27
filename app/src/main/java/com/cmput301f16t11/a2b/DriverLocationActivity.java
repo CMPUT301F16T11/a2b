@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -133,6 +134,16 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        if (!FileController.isNetworkAvailable(this)) {
+//            Intent intent = new Intent(this, RequestListActivity.class);
+//            setResult(Activity.RESULT_OK, intent);
+//            startActivity(intent);
+//        }
     }
 
     @Override
