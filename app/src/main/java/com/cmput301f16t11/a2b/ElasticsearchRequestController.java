@@ -361,8 +361,10 @@ public class ElasticsearchRequestController {
         }
     }
 
+    @Deprecated
     public static class MarkAsPaid extends AsyncTask<String, Void, Boolean> {
 
+        @Deprecated
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
@@ -574,60 +576,6 @@ public class ElasticsearchRequestController {
                 Log.i("Error", "Failed to communicate with elasticsearch server");
                 e.printStackTrace();
             }
-
-            return requestList;
-        }
-    }
-
-    public static class GetDriverRequestConfirmedByRider extends AsyncTask<String, Void, ArrayList<UserRequest>> {
-        /**
-         * Gets in progress requests
-         *
-         * @param user the userId of the driver
-         * @return ArrayList of in progress UserRequests
-         */
-        @Override
-        protected ArrayList<UserRequest> doInBackground(String... user) {
-            verifySettings();
-
-            ArrayList<UserRequest> requestList = new ArrayList<UserRequest>();
-
-            // workaround this bug, can't solve it
-            // workaround is in RequestController.
-
-
-            //TODO: Why isn't below working?
-
-//            String search_string =  "{\n" +
-//                    "    \"query\" : {\n" +
-//                    "        \"constant_score\" : {\n" +
-//                    "            \"filter\" : {\n" +
-//                    "                \"term\" : {\n" +
-//                    "                    \"confirmedDriverId\":\""+ user[0] +"\"\n" +
-//                    "                }\n" +
-//                    "            }\n" +
-//                    "        }\n" +
-//                    "    }\n" +
-//                    "}";
-//
-//            Search search = new Search.Builder(search_string)
-//                    .addIndex(index)
-//                    .addType(inProgress)
-//                    .build();
-//
-//            try {
-//                SearchResult result = client.execute(search);
-//                if (result.isSucceeded()) {
-//                    List<UserRequest> foundRequests =
-//                            result.getSourceAsObjectList(UserRequest.class);
-//                    requestList.addAll(foundRequests);
-//                } else {
-//                    Log.i("Error", "Failed to find user requests for driver");
-//                }
-//            } catch (Exception e) {
-//                Log.i("Error", "Failed to communicate with elasticsearch server");
-//                e.printStackTrace();
-//            }
 
             return requestList;
         }
@@ -1133,9 +1081,18 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     *  Fetch requests that have been accepted by the current user (in Driver mode)
+     */
+
     public static class GetAcceptedByMe extends AsyncTask<String, Void, ArrayList<UserRequest>> {
 
-        //TODO: finish logic
+        /**
+         * Fetch requests that have been accepted by the current user (in Driver mode)
+         *
+         * @param user id of the driver
+         * @return ArrayList of UserRequests that the driver has accepted
+         */
 
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
@@ -1247,9 +1204,10 @@ public class ElasticsearchRequestController {
     }
 
 
-
+    @Deprecated
     public static class GetRequestsByUserNameKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
 
+        @Deprecated
         @Override
         protected ArrayList<UserRequest> doInBackground(String... user) {
             verifySettings();
@@ -1280,7 +1238,17 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Fetch requests whose descriptions match a given keyword
+     */
     public static class GetRequestsByDescriptionKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        /**
+         * Fetch requests whose descriptions match a given keyword
+         *
+         * @param description keyword to search by
+         * @return ArrayList of UserRequest
+         */
 
         @Override
         protected ArrayList<UserRequest> doInBackground(String... description) {
@@ -1318,7 +1286,18 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Fetch requests whose start Locations match a given keyword
+     */
+
     public static class GetRequestsByStartLocationKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        /**
+         * Fetch requests whose start Locations match a given keyword
+         *
+         * @param description keywords to search by
+         * @return ArrayList of UserRequest
+         */
 
         @Override
         protected ArrayList<UserRequest> doInBackground(String... description) {
@@ -1356,7 +1335,18 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Fetch requests whose end Locations match a given keyword
+     */
+
     public static class GetRequestsByEndLocationKeyword extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+
+        /**
+         * Fetch requests whose end Locations match a given keyword
+         *
+         * @param description keyword to search by
+         * @return ArrayList of UserRequest
+         */
 
         @Override
         protected ArrayList<UserRequest> doInBackground(String... description) {
@@ -1394,6 +1384,9 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * verify the Elastic Search settings
+     */
 
     private static void verifySettings() {
         // Initialize client if necessary
