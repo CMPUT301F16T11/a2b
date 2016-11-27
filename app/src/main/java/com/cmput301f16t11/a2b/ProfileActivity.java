@@ -3,8 +3,13 @@ package com.cmput301f16t11.a2b;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,17 +45,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-
-        // adding edit button functionality
-        Button edit = (Button) findViewById(R.id.editProfile);
-        edit.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v) {
-                launchProfileEditor();
-            }
-        });
-
     }
 
     @Override
@@ -59,21 +53,42 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
         if(username == null){
-            user = UserController.getUser();
+            user = UserController.getUserFromId(UserController.getUser().getId());
         }
         else{
             user = UserController.getUserFromName(username);
         }
 
-        // set buttons
-        Button editButton = (Button) findViewById(R.id.editProfile);
-        if (user.equals(UserController.getUser())) {
-            editButton.setEnabled(true);
+        if (user.getId().equals(UserController.getUser().getId())) {
+            UserController.setUser(user);
+            UserController.saveInFile(this);
         }
-        else {
-            editButton.setVisibility(View.GONE);
-        }
+
         setTextViews();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (UserController.getUser().equals(user)) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.profile_menu, menu);
+
+            // Taken from stackoverflow.com/questions/31953503/how-to-set-icon-color-of-menuitem on Nov 26 2016
+            Drawable drawable = menu.getItem(0).getIcon();
+            drawable.mutate();
+            drawable.setColorFilter(getResources().getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Only option available is profile editor
+        if (item.getItemId()==R.id.edit_profile) {
+            launchProfileEditor();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

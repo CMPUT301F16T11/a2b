@@ -20,7 +20,6 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
 public class RequestController {
 
     public static ArrayList<UserRequest> displayedRequests;
-    public static saveLoad_Controller saveLoadController;
 
 
     /**
@@ -134,7 +133,7 @@ public class RequestController {
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest>();
         // (get requests accepted by the curr user)
-        saveLoadController = new saveLoad_Controller(context);
+        SaveLoadController.setContext(context);
 
         if (UserController.checkMode() == DRIVER) {
             ElasticsearchRequestController.GetActiveDriverRequests searchController = new ElasticsearchRequestController.GetActiveDriverRequests();
@@ -148,12 +147,12 @@ public class RequestController {
         else {
 
             if(!isNetworkAvailable(context)) {
-                userRequests = saveLoadController.loadFromFile("riderOwnRequests.sav");
+                userRequests = SaveLoadController.loadFromFile("riderOwnRequests.sav");
             } else {
                 ElasticsearchRequestController.GetActiveRiderRequests activeController = new ElasticsearchRequestController.GetActiveRiderRequests();
                 try{
                     userRequests = activeController.execute(user.getId()).get();
-                    saveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
+                    SaveLoadController.saveInFile(userRequests, "riderOwnRequests.sav");
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -215,18 +214,20 @@ public class RequestController {
          */
         // drivers only
         // (get requests accepted by the curr user)
-        saveLoadController = new saveLoad_Controller(context);
+        //saveLoadController = new SaveLoadController(context);
+        SaveLoadController.setContext(context);
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
         // check network
         if(!isNetworkAvailable(context)) {
-            userRequests = saveLoadController.loadFromFile("acceptedByMe.sav");
+            userRequests = SaveLoadController.loadFromFile("acceptedByMe.sav");
         } else {
             ElasticsearchRequestController.GetAcceptedByMe searchController =
                     new ElasticsearchRequestController.GetAcceptedByMe();
 
             try {
                 userRequests = searchController.execute(user.getId()).get();
-                saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+                //saveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
+                SaveLoadController.saveInFile(userRequests, "acceptedByMe.sav");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -250,33 +251,25 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        ElasticsearchRequestController.GetClosedRequests searchController =
-                new ElasticsearchRequestController.GetClosedRequests();
+        if (mode == Mode.DRIVER) {
+            ElasticsearchRequestController.GetPastDriverRequests getPastDriverRequests =
+                    new ElasticsearchRequestController.GetPastDriverRequests();
+            try{
+                userRequests = getPastDriverRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        temp.addAll(userRequests);
-        for (UserRequest request: temp) {
-            if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user.getId())) {
-                        userRequests.remove(request);
-                }
-                else if (!request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+        }else{
+            ElasticsearchRequestController.GetPastRiderRequests getPastRiderRequests =
+                    new ElasticsearchRequestController.GetPastRiderRequests();
+
+            try{
+                userRequests = getPastRiderRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (!request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
-            }
+
         }
         return userRequests;
     }
@@ -299,34 +292,29 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
-        ArrayList<UserRequest> temp = new ArrayList<UserRequest>();
-        ElasticsearchRequestController.GetClosedRequests searchController =
-                new ElasticsearchRequestController.GetClosedRequests();
 
-        try {
-            userRequests = searchController.execute(user.getId()).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        temp.addAll(userRequests);
-        for (UserRequest request: temp) {
-            if (mode == Mode.DRIVER) {
-                if (!request.getConfirmedDriverID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+
+        if (mode == Mode.DRIVER) {
+            ElasticsearchRequestController.GetAwaitingPaymentDriverRequests getAwaitingPaymentDriverRequests =
+                    new ElasticsearchRequestController.GetAwaitingPaymentDriverRequests();
+            try{
+                userRequests = getAwaitingPaymentDriverRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            else if (mode == Mode.RIDER) {
-                if (!request.getRiderID().equals(user.getId())) {
-                    userRequests.remove(request);
-                }
-                else if (request.isPaymentRecived()) {
-                    userRequests.remove(request);
-                }
+
+        }else{
+            ElasticsearchRequestController.GetAwaitingPaymentRiderRequests getAwaitingPaymentRiderRequests =
+                    new ElasticsearchRequestController.GetAwaitingPaymentRiderRequests();
+
+            try{
+                userRequests = getAwaitingPaymentRiderRequests.execute(user.getId()).get();
+            }catch (Exception e){
+                e.printStackTrace();
             }
+
         }
+
         return userRequests;
     }
 

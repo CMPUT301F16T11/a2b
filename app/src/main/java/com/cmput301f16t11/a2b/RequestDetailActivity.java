@@ -1,24 +1,19 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,11 +50,11 @@ public class RequestDetailActivity extends AppCompatActivity {
     private ArrayList<User> acceptedDrivers;
     private WillingDriverAdapter willingDriverAdapter;
     private int currPosition;
-    private saveLoad_Controller saveLoadController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        saveLoadController = new saveLoad_Controller(this);
+        SaveLoadController.setContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }
@@ -107,43 +102,17 @@ public class RequestDetailActivity extends AppCompatActivity {
                         }
                     }
                 };
-                String messageString = "Accept " + acceptedDrivers.get(currPosition).getName() +
-                                        " as your driver?";
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage(messageString)
-                        .setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                if(UserController.checkMode() == Mode.RIDER) {
+                    String messageString = "Accept " + acceptedDrivers.get(currPosition).getName() +
+                            " as your driver?";
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setMessage(messageString)
+                            .setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
+                }
 
-                // the below dialog wasn't working. I don't know how it was set up to work so
-                // i created the above dialog in the meanwhile for actual functionality.
-                // At whatever point someone can re-enable the below dialog as long as they get it
-                // working. (since visually its more consistent with the app)
-                /*
-                final User driver = acceptedDrivers.get(position);
-                final Dialog dlg = new Dialog(context);
-                dlg.setContentView(R.layout.request_details_confirm_driver_dlg);
 
-                final TextView username = (TextView)dlg.findViewById(R.id.driverUsername);
-                final Button cancelButton = (Button)dlg.findViewById(R.id.cancelDriver);
-                final Button confirmButton = (Button)dlg.findViewById(R.id.acceptDriver);
 
-                username.setText(driver.getName());
-
-                cancelButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dlg.dismiss();
-                    }
-                });
-
-                confirmButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        RequestController.setRequestConfirmedDriver(request, driver,
-                                RequestDetailActivity.this);
-                    }
-                });
-                */
 
             }
         });
@@ -257,69 +226,69 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         // enable delete button if the curr user owns this request
         if (UserController.getUser().getId().equals(request.getRiderID())) {
-            deleteButton.setEnabled(true);
+            deleteButton.setVisibility(View.VISIBLE);
         }
         else {
-            deleteButton.setEnabled(false);
+            deleteButton.setVisibility(View.GONE);
         }
 
         // set other buttons depending on request status
         switch (request.getRequestStatus()) {
             case WAITING:
                 if (UserController.checkMode() == Mode.RIDER) {
-                    acceptButton.setEnabled(false);
+                    acceptButton.setVisibility(View.GONE);
                 }
                 else if (UserController.checkMode() == Mode.DRIVER) {
-                    acceptButton.setEnabled(true);
+                    acceptButton.setVisibility(View.VISIBLE);
                 }
-                completeButton.setEnabled(false);
-                payButton.setEnabled(false);
+                completeButton.setVisibility(View.GONE);
+                payButton.setVisibility(View.GONE);
                 break;
             case ACCEPTED:
                 if (UserController.checkMode() == Mode.DRIVER) {
                     String curr_user = UserController.getUser().getId();
                     ArrayList<String> driver_strings = request.getAcceptedDriverIDs();
                     if (request.getAcceptedDriverIDs().contains(UserController.getUser().getId())) {
-                        acceptButton.setEnabled(false);
+                        acceptButton.setVisibility(View.GONE);
                     }
                     else {
-                        acceptButton.setEnabled(true);
+                        acceptButton.setVisibility(View.VISIBLE);
                     }
                 }
-                payButton.setEnabled(false);
-                completeButton.setEnabled(false);
+                payButton.setVisibility(View.GONE);
+                completeButton.setVisibility(View.GONE);
                 break;
             case CONFIRMED:
                 if (UserController.checkMode() == Mode.DRIVER) {
-                    completeButton.setEnabled(true);
+                    completeButton.setVisibility(View.VISIBLE);
                 }
                 else {
-                    completeButton.setEnabled(false);
+                    completeButton.setVisibility(View.GONE);
                 }
-                payButton.setEnabled(false);
-                acceptButton.setEnabled(false);
+                payButton.setVisibility(View.GONE);
+                acceptButton.setVisibility(View.GONE);
                 break;
             case COMPLETED:
                 if (UserController.checkMode() == Mode.DRIVER) {
-                    payButton.setEnabled(false);
+                    payButton.setVisibility(View.GONE);
                 }
                 else {
-                    payButton.setEnabled(true);
+                    payButton.setVisibility(View.VISIBLE);
                 }
-                deleteButton.setEnabled(false);
-                acceptButton.setEnabled(false);
-                completeButton.setEnabled(false);
+                deleteButton.setVisibility(View.GONE);
+                acceptButton.setVisibility(View.GONE);
+                completeButton.setVisibility(View.GONE);
                 break;
             case PAID:
-                deleteButton.setEnabled(false);
-                acceptButton.setEnabled(false);
-                completeButton.setEnabled(false);
-                payButton.setEnabled(false);
+                deleteButton.setVisibility(View.GONE);
+                acceptButton.setVisibility(View.GONE);
+                completeButton.setVisibility(View.GONE);
+                payButton.setVisibility(View.GONE);
                 break;
         }
 
         if (UserController.checkMode() == Mode.RIDER) {
-            acceptButton.setEnabled(false);
+            acceptButton.setVisibility(View.GONE);
         }
 
         // onClick Listeners
@@ -357,13 +326,12 @@ public class RequestDetailActivity extends AppCompatActivity {
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
+                dialog.show(getFragmentManager(), "dialog");
                 RequestController.payRequest(request);
                 Toast toast = Toast.makeText(RequestDetailActivity.this,
                         "Payment Complete", Toast.LENGTH_LONG);
                 toast.show();
-                finish();
-                RideCompleteDialog dialog = RideCompleteDialog.newInstance(request);
-                dialog.show(getFragmentManager(), "dialog");
             }
         });
     }

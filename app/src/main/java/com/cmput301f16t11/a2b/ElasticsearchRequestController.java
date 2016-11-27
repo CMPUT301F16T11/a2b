@@ -233,9 +233,9 @@ public class ElasticsearchRequestController {
 
             // update script
 
-            String script = "{ \"script\" : \" if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } " +
-                    "else {ctx._source.acceptedDriverIds += newDriver }\", \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
+            String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
+                    " \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
             try {
                 DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
@@ -713,6 +713,7 @@ public class ElasticsearchRequestController {
     /**
      * Gets the current closed requests
      */
+    @Deprecated
     public static class GetClosedRequests extends
                                     AsyncTask<String, Void, ArrayList<UserRequest>>  {
         /**
@@ -936,6 +937,117 @@ public class ElasticsearchRequestController {
             return accepted;
         }
     }
+
+
+    /**
+     * Get the requests for a driver that are closed but payment has not been recived
+     */
+    public static class GetAwaitingPaymentDriverRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Get a rider's requests that have been accepted by a driver
+         *
+         * @param user the id of the driver who was confirmed requests
+         * @return
+         */
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+
+            String search_string = "{\n" +
+                    "  \"query\": {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                 \"bool\" : {\n" +
+                    "                    \"must\" : [\n" +
+                    "                        { \"term\" : { \"confirmedDriverId\": \"" + user[0] + "\"} },\n" +
+                    "                        { \"term\" : { \"paymentReceived\": false } } \n" +
+                    "                    ]\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(closedRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
+
+    /**
+     * Get the requests for a rider that are closed but payment has not been recived
+     */
+    public static class GetAwaitingPaymentRiderRequests extends AsyncTask<String, Void, ArrayList<UserRequest>> {
+        /**
+         * Get a rider's requests that have been accepted by a driver
+         *
+         * @param user the id of the rider who was created the requests
+         * @return
+         */
+        @Override
+        protected ArrayList<UserRequest> doInBackground(String... user) {
+            verifySettings();
+
+            ArrayList<UserRequest> accepted = new ArrayList<UserRequest>();
+
+            String search_string = "{\n" +
+                    "  \"query\": {\n" +
+                    "        \"constant_score\" : {\n" +
+                    "            \"filter\" : {\n" +
+                    "                 \"bool\" : {\n" +
+                    "                    \"must\" : [\n" +
+                    "                        { \"term\" : { \"riderId\": \"" + user[0] + "\"} },\n" +
+                    "                        { \"term\" : { \"paymentReceived\": false } } \n" +
+                    "                    ]\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "}";
+
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex(index)
+                    .addType(closedRequest)
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    List<UserRequest> foundRequests = result.getSourceAsObjectList(UserRequest.class);
+                    accepted.addAll(foundRequests);
+                } else {
+                    Log.i("Error", "Failed to find any accepted requests");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+            }
+
+            return accepted;
+        }
+    }
+
 
     /**
      * Get a driver's inProgress Requests

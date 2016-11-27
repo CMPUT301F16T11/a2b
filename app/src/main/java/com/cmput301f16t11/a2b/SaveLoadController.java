@@ -4,12 +4,12 @@ package com.cmput301f16t11.a2b;
  * Created by kelvinliang on 2016-11-23.
  */
 
-import android.app.DownloadManager;
 import android.content.Context;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,20 +20,20 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static android.provider.Telephony.Mms.Part.FILENAME;
-
 
 // code from LonelyTwitter
-public class saveLoad_Controller {
-    private Context context;
-    private ArrayList<UserRequest> offlineRequestList;
+public class SaveLoadController {
+
+    private static ArrayList<UserRequest> offlineRequestList;
     //private static final String FILENAME = "file.sav";
-
-    public saveLoad_Controller(Context context) {
-        this.context = context;
+    private static Context context;
+//    public SaveLoadController(Context context) {
+//        this.context = context;
+//    }
+    public static void setContext(Context con){
+        context = con;
     }
-
-    public ArrayList<UserRequest> loadFromFile(String FILENAME) {
+    public static  ArrayList<UserRequest> loadFromFile(String FILENAME) {
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -53,7 +53,7 @@ public class saveLoad_Controller {
         return offlineRequestList;
     }
 
-    public HashMap<String, String> loadFromFileMap(String FILENAME) {
+    public static HashMap<String, String> loadFromFileMap(String FILENAME) {
         HashMap<String, String> map;
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -73,7 +73,7 @@ public class saveLoad_Controller {
         return map;
     }
 
-    public void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
+    public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
@@ -92,7 +92,7 @@ public class saveLoad_Controller {
         storeUserNames(offlineRequestListIn);
     }
 
-    public void saveInFileMap(HashMap<String, String> map) {
+    public static void saveInFileMap(HashMap<String, String> map) {
         try {
             FileOutputStream fos = context.openFileOutput("names.sav", 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
@@ -110,13 +110,13 @@ public class saveLoad_Controller {
         }
     }
 
-    public void clear() {
+    public static void clear() {
         context.deleteFile("names.sav"); // delete file
         context.deleteFile("acceptedByMe.sav");
         context.deleteFile("riderOwnerRequests.sav");
     }
 
-    public void storeUserNames(ArrayList<UserRequest> requests) {
+    public static void storeUserNames(ArrayList<UserRequest> requests) {
 
         HashMap<String, String> names = loadFromFileMap("names.sav");
         if(names.size() == 0) {

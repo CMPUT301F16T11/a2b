@@ -56,8 +56,8 @@ public class RideCompleteDialog extends DialogFragment {
         Bundle args = new Bundle();
         User confirmedDriver = UserController.getUserFromId(req.getConfirmedDriverID());
         User rider = UserController.getUserFromId(req.getRiderID());
-        args.putString("rider", confirmedDriver.getName());
-        args.putString("driver", rider.getName());
+        args.putString("driver", confirmedDriver.getName());
+        args.putString("rider", rider.getName());
         args.putParcelable("req", req);
         dialog.setArguments(args);
 
@@ -90,13 +90,6 @@ public class RideCompleteDialog extends DialogFragment {
 
         return builder.create();
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        return layout;
-    }
-
 
     /**
      * Finds all views from the dialog
@@ -123,16 +116,17 @@ public class RideCompleteDialog extends DialogFragment {
     public void setViews() {
         driver.setText(confirmedDriverName);
         rider.setText(riderName);
-        pickup.setText(req.getStartLocation().toString());
-        dropoff.setText(req.getEndLocation().toString());
+        pickup.setText(req.getStartLocationName());
+        dropoff.setText(req.getEndLocationName());
         fare.setText(req.getFare().toString());
 
         okButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (rating != 0) {
-                    UserController.updateRating(rating);
+                    UserController.updateRating(rating, confirmedDriverName);
                 }
                 RideCompleteDialog.this.getDialog().dismiss();
+                getActivity().finish();
             }
         });
 

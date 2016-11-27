@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ import java.util.regex.Pattern;
 public class EditProfileActivity extends AppCompatActivity {
     private User user;
 
+    AlertDialog dialog;
+
+    EditText locale;
     EditText phoneNum;
     EditText email;
     EditText make;
@@ -45,7 +50,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
         TextView username = (TextView) findViewById(R.id.profile_name);
 
+        locale = (EditText) findViewById(R.id.locale);
+        locale.setKeyListener(null);
         phoneNum = (EditText) findViewById(R.id.phone_num);
+        phoneNum.requestFocus();
         email = (EditText) findViewById(R.id.email);
         make = (EditText) findViewById(R.id.edit_make_field);
         year = (EditText) findViewById(R.id.edit_year_field);
@@ -60,6 +68,21 @@ public class EditProfileActivity extends AppCompatActivity {
         model.setText(user.getCar().getModel(), TextView.BufferType.EDITABLE);
 
         username.setText(user.getName());
+        locale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+                builder.setMessage("Edit locale coming soon!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EditProfileActivity.this.dialog.dismiss();
+                        }
+                    });
+                dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
     /**

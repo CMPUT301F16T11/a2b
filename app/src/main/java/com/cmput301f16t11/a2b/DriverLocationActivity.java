@@ -449,8 +449,6 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
                 //Make sure their search string is not empty
                 if(searchString.isEmpty()){
                     AlertDialog dlg = new AlertDialog.Builder(context).create();
-
-
                     dlg.setMessage(getString(R.string.keyword_warning_message));
                     dlg.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
