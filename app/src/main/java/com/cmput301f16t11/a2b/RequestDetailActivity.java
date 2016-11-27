@@ -254,7 +254,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
 
         // enable delete button if the curr user owns this request
-        if (UserController.getUser().getId().equals(request.getRiderID())) {
+        if (UserController.getUser().getId().equals(request.getRiderID()) && FileController.isNetworkAvailable(this)) {
             deleteButton.setVisibility(View.VISIBLE);
         }
         else {
