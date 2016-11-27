@@ -29,6 +29,9 @@ import java.util.HashMap;
 /**
  * The type File controller. Handles Saving and loading of files
  * for offline use.
+ *
+ * This work contains a derivative of a stackoverflow answer to "Files from res file to sdcard on
+ * android," by "DMcP89," a stackoverflow user.
  */
 public class FileController {
 

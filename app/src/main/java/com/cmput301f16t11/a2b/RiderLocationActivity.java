@@ -472,6 +472,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     doubleWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    useOfflineTiles();
                                     dialog.dismiss();
                                 }
                             });
@@ -675,20 +676,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             return rate;
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (RequestController.isNetworkAvailable(this) && mMap != null) {
-//            mMap.setMapType(GoogleMap.MAP_TYPE_NONE); // REMOVE THIS TO GO BACK TO GOOGLE MAPS
-//            String filename = FileManager.writeMapFile(this);
-//            TileOverlayOptions opts = new TileOverlayOptions();
-//            provider = new MapBoxOfflineTileProvider(filename);
-//            opts.tileProvider(provider);
-//            TileOverlay overlay = mMap.addTileOverlay(opts);
-//
-//        }
-//    }
 
     private void showNotADriverDialog() {
         final Context context = this;
