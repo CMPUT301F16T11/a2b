@@ -20,6 +20,7 @@ public class UserRequest implements Parcelable {
     private ArrayList<String> acceptedDriverIds; // all the rider ids
     private String confirmedDriverId;
     private String riderId;
+    private String riderUsername;
     private Point startLocation;
     private Point endLocation;
     private String startLocationName;
@@ -38,11 +39,12 @@ public class UserRequest implements Parcelable {
     @JestId
     private String id;
 
-    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, Double distance, String description,
+    public UserRequest(LatLng start, LatLng end, Number fare, String riderId, String riderUsername, Double distance, String description,
                        String startLocationName, String endLocationString) {
         this.startLocation = new Point(start.latitude, start.longitude);
         this.endLocation = new Point(end.latitude, end.longitude);
         this.fare = fare;
+        this.riderUsername = riderUsername;
         this.riderId = riderId;
         this.timeCreatedInMillis = Calendar.getInstance().getTimeInMillis();
         this.accepted = false;
@@ -134,6 +136,8 @@ public class UserRequest implements Parcelable {
     public String getDescription() {
         return description;
     }
+
+    public String getRiderUsername(){return riderUsername;}
 
     // setters
     public void setId(String id) {
