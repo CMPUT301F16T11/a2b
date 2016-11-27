@@ -68,9 +68,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (UserController.loadFromFile(this)) {
             Intent intent = new Intent(this, RiderLocationActivity.class);
             startActivity(intent);
+            finish();
         }
 
         // Set up the login form.
+        
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.user);
         box = (CheckBox) findViewById(R.id.user_sign_in_checkbox);
 
