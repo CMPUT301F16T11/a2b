@@ -156,24 +156,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         CommandStack.setDirectory(getFilesDir());
         if(new File(getFilesDir(),CommandStack.ACCEPTFILE).exists()){
             CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE, this));
-        }else{
-            try {
-                new File(getFilesDir(),CommandStack.ACCEPTFILE).createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         if(new File(getFilesDir(),CommandStack.ADDFILE).exists()){
             CommandStack.setAddCommands(FileController.loadFromFile(CommandStack.ADDFILE, this));
         }
-        else{
-            try {
-                new File(getFilesDir(),CommandStack.ADDFILE).createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -181,6 +168,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Method to start the notification service for requests created by the user.
+     * If the notification service isn't started this method starts the service
+     */
     public void startUpNotificationService(){
         ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser(), this);
 
@@ -503,8 +494,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 UserRequest req = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
                         userFare,
-                        UserController.getUser().getName(),
                         UserController.getUser().getId(),
+                        UserController.getUser().getName(),
                         0.0,
                         userDescription,
                         "N/A",
