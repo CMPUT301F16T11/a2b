@@ -71,6 +71,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private String tripDistance = "? km";
     private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
     MapBoxOfflineTileProvider provider;
+    TileOverlay overlay;
 
     private int LOCATION_PERMISSIONS = -1;
 
@@ -322,12 +323,28 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             useOfflineTiles();
 
         }
+        else {
+            useOnlineTiles();
+        }
 
         startUpNotificationService();
 
         ensureLocationPermissions();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         setButtonListeners();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mMap != null) {
+            if (!FileController.isNetworkAvailable(this)) {
+                useOfflineTiles();
+            }
+            else {
+                useOnlineTiles();
+            }
+        }
     }
 
     /**
@@ -373,13 +390,23 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     }
 
     private void useOfflineTiles() {
-        mMap.setMapType(GoogleMap.MAP_TYPE_NONE); // REMOVE THIS TO GO BACK TO GOOGLE MAPS
+        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         String filename = FileManager.writeMapFile(this);
         TileOverlayOptions opts = new TileOverlayOptions();
         provider = new MapBoxOfflineTileProvider(filename);
         opts.tileProvider(provider);
-        TileOverlay overlay = mMap.addTileOverlay(opts);
+        overlay = mMap.addTileOverlay(opts);
 
+    }
+
+    private void useOnlineTiles() {
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        try{
+            provider.close();
+            overlay.remove();
+        } catch (Exception e) {
+            Log.e("riderlocation", "No offline data to remove");
+        }
     }
 
     public void displayRideConfirmationDlg(final String distance){
