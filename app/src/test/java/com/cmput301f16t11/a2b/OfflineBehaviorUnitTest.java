@@ -50,6 +50,7 @@ public class OfflineBehaviorUnitTest{
         requestList.add(request);
         requestList.add(request1);
         requestList.add(request2);
+        CommandStack.clearCommands();
     }
     /**
     US 08.01.01
@@ -58,16 +59,12 @@ public class OfflineBehaviorUnitTest{
     @Test
     public void testOfflineAcceptedRequest(){
 
-        //set them to accepted
-        request.setAcceptedStatus(true);
-        request1.setAcceptedStatus(true);
-        request2.setAcceptedStatus(true);
         //push onto command stack
-
+        Command command1 = new Command(request,false);
         //grab saved list of requests from the command stack
-
+        CommandStack.addCommand(command1);
         //check and see if this list same as given one using test case
-        assertTrue(requestList.equals(loadedList));
+        assertFalse(CommandStack.checkStack(0).getStatus());
     }
 
     /**
@@ -76,15 +73,14 @@ public class OfflineBehaviorUnitTest{
      */
     @Test
     public void testOfflineMadeRequests(){
-
+        Command command1 = new Command(request,true);
         //push requestList onto the stack
-        SaveLoadController.saveInFile(requestList,"riderOwnRequests.sav");
+        CommandStack.addCommand(command1);
         //go offline
-
         //grab saved list of requests from the command stack
-
+        assertTrue(CommandStack.checkStack(0).getStatus());
         //check that saved list is the same list before going offline
-        assertEquals(requestList,loadedList);
+
     }
 
     /**

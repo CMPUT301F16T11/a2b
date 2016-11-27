@@ -4,7 +4,6 @@ package com.cmput301f16t11.a2b;
  * Created by kelvinliang on 2016-11-23.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,14 +26,14 @@ import java.util.HashMap;
 
 public class FileController {
 
-    private static ArrayList<UserRequest> offlineRequestList;
+
     private static Context context;
     public static void setContext(Context con){
         context = con;
     }
 
-    public static ArrayList<UserRequest> loadFromFile(String FILENAME) {
-        ArrayList<UserRequest> requests;
+    public static ArrayList<Command> loadFromFile(String FILENAME) {
+        ArrayList<Command> requests;
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -43,13 +41,13 @@ public class FileController {
             Gson gson = new Gson();
 
             // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-            Type listType = new TypeToken<ArrayList<UserRequest>>() {
+            Type listType = new TypeToken<ArrayList<Command>>() {
             }.getType();
 
             requests = gson.fromJson(in, listType);
 
         } catch (FileNotFoundException e) {
-            requests = new ArrayList<UserRequest>();
+            requests = new ArrayList<Command>();
         } catch (IOException e) {
             throw new RuntimeException();
         }
@@ -94,7 +92,7 @@ public class FileController {
 
         }
 
-    public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
+    public static void saveInFile(ArrayList<Command> offlineRequestListIn, String FILENAME) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
@@ -151,11 +149,12 @@ public class FileController {
         context.deleteFile("riderOwnerRequests.sav");
     }
 
-    public static void storeUserNames(ArrayList<UserRequest> requests) {
+    public static void storeUserNames(ArrayList<Command> requests) {
 
         HashMap<String, String> names = new HashMap<String, String>();
         loadFromFileMap("names.sav");
-        for (UserRequest request : requests) {
+        for (Command command : requests) {
+            UserRequest request = command.getRequest();
             String id = request.getRiderID();
             String userName = UserController.getUserFromId(id).getName();
             names.put(id, userName);

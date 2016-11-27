@@ -5,13 +5,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +17,6 @@ import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
 import io.searchbox.core.Index;
-import io.searchbox.core.MultiGet;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
@@ -199,7 +195,45 @@ public class ElasticsearchRequestController {
         }
     }
 
+    public static class AddDriverAcceptanceToRequestOffline extends AsyncTask<String, Void, Boolean> {
 
+
+        /**
+         * Adds a driver acceptance to a request
+         *
+         * @param info id of the driver (string)
+         * @return true if successful, false otherwise
+         */
+        @Override
+        protected Boolean doInBackground(String... info) {
+            verifySettings();
+
+
+            // update an existing request
+            //TO DO: check it the request exists first
+
+            // update script
+
+
+            String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
+                    " \"params\" : {\"newDriver\" :\"" + info[1] + "\"}}";
+
+            try {
+                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+
+                if (!result.isSucceeded()) {
+                    Log.i("Error", "Failed to find user requests for rider");
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to communicate with elasticsearch server");
+                e.printStackTrace();
+
+                return false;
+            }
+
+            return true;
+        }
+    }
     /**
      * Add a driver acceptance to a request
      * info[0] is the request ID
