@@ -314,12 +314,6 @@ public class ElasticsearchRequestController {
             verifySettings();
 
 
-            // update an existing request
-            //TO DO: check it the request exists first
-
-            // update script
-
-
             String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
                     " \"params\" : {\"newDriver\" :\""  + info[1] +"\"}}";
 
@@ -1399,7 +1393,6 @@ public class ElasticsearchRequestController {
          * @param description keyword to search by
          * @return ArrayList of UserRequest
          */
-
         @Override
         protected ArrayList<UserRequest> doInBackground(String... description) {
             verifySettings();
@@ -1437,15 +1430,8 @@ public class ElasticsearchRequestController {
     }
 
     /**
-     *
-     */
-
-
-
-    /**
      * verify the Elastic Search settings
      */
-
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
@@ -1457,7 +1443,4 @@ public class ElasticsearchRequestController {
             client = (JestDroidClient) factory.getObject();
         }
     }
-
-
-
 }

@@ -304,7 +304,7 @@ public class RequestDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FileController.setContext(RequestDetailActivity.this);
-                if(FileController.isNetworkAvailable()){
+                if(FileController.isNetworkAvailable(RequestDetailActivity.this)){
                     RequestController.addAcceptance(request, RequestDetailActivity.this);
                 }else{
                     CommandStack.addAcceptedCommand(request);
