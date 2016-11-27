@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -50,9 +53,7 @@ import java.util.ArrayList;
  *
  */
 public class RequestListActivity extends AppCompatActivity {
-    /**
 
-     */
     private ArrayList<UserRequest> requests;
     private ShadedListAdapter adapter;
     private ListView listView;
@@ -64,7 +65,33 @@ public class RequestListActivity extends AppCompatActivity {
     private Boolean filterMaxPricePerKM;
     private DriverLocationActivity.SearchType  searchType;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       if(!FileController.isNetworkAvailable(this) && UserController.checkMode() == Mode.DRIVER){
+           MenuInflater inflater = getMenuInflater();
+           inflater.inflate(R.menu.offline_request_detail, menu);
+       }
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.changeRole:
+                Intent driverIntent = new Intent(this, RiderLocationActivity.class);
+                UserController.setMode(Mode.RIDER);
+                startActivity(driverIntent);
+                finish();
+                break;
+            case R.id.signOut:
+                UserController.logOut(this);
+                finish();
+                }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
