@@ -1,7 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import android.content.Context;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -60,10 +58,10 @@ public class CommandStack {
         return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
     }
 
-    public static void handleStack(Context context ){
+    public static void handleStack(){
         for(UserRequest request: AcceptedCommands){
             if(isValidCommand(request)){
-                RequestController.addAcceptance(request,context);
+                RequestController.addAcceptanceOffline(request);
             }
         }
         RequestController.addBatchOpenRequests(AddCommands);

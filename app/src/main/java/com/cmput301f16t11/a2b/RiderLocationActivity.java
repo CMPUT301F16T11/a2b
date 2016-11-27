@@ -369,7 +369,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             else {
                 useOnlineTiles();
                 if(CommandStack.workRequired()){
-                    CommandStack.handleStack(this);
+                    CommandStack.handleStack();
                 }
             }
         }
@@ -484,9 +484,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 //Cache this requests with the other ones
                 FileController.setContext(context);
-                ArrayList<UserRequest> request = FileController.loadFromFile("offlineRequests.sav");
-                request.add(req);
-                FileController.saveInFile(request, "offlineRequests.sav");
+                CommandStack.addAddCommand(req);
 
                 dialog.dismiss();
             }

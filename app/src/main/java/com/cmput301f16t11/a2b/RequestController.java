@@ -63,6 +63,14 @@ public class RequestController {
         FileController.saveInFile(requests, "acceptedByMe");
     }
 
+    public static void addAcceptanceOffline(UserRequest request) {
+        ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline addAcceptance =
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline();
+        // request id driver id
+        addAcceptance.execute(request.getId(), UserController.getUser().getId());
+        // update saved file
+    }
+
     /**
      * Uses elasticsearch controller to add an open request
      *
