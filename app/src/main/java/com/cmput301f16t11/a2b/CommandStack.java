@@ -62,7 +62,11 @@ public class CommandStack {
     }
 
     public static boolean workRequired(){
-        return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
+        try {
+            return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
 
     public static void handleStack(Context context){
