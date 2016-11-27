@@ -252,7 +252,10 @@ public class RequestController {
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
         //TODO: command stack stuff
-        return new ArrayList<UserRequest>();
+       if(CommandStack.getAcceptedCommands() == null){
+            return new ArrayList<>();
+        }
+        return CommandStack.getAcceptedCommands();
     }
 
     /**
@@ -447,7 +450,7 @@ public class RequestController {
 
     public static ArrayList<UserRequest> getOfflineRequests() {
         //TODO: actual logic
-        return new ArrayList<UserRequest>();
+        return CommandStack.getAddCommands();
     }
 
     /**

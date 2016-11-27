@@ -259,8 +259,7 @@ public class RequestListActivity extends AppCompatActivity {
                         else {
                             // Pending requests
                             requests.clear();
-                            requests.addAll(
-                                RequestController.getOfflineRequests());
+                            requests.addAll(RequestController.getOfflineRequests());
                         }
 
                     }
@@ -306,18 +305,26 @@ public class RequestListActivity extends AppCompatActivity {
                                         UserController.getUser(), UserController.checkMode())));
                     }
                     else if(UserController.checkMode() == Mode.RIDER ||
-                            FileController.isNetworkAvailable(context)) {
+                            !FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
                                 RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
                     }
                     else {
-                        // offline mode
-                        //Offline acceptances
-                        requests.clear();
-                        requests.addAll(RequestController.getCompletedRequests(
-                                UserController.getUser(), UserController.checkMode(), context));
+                        
+
+
+                        if(FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(RequestController.getCompletedRequests(
+                                    UserController.getUser(), UserController.checkMode(), context));
+                        }
+                         //Offline acceptances driver
+                        else{
+                            requests.clear();
+                            requests.addAll(RequestController.getOfflineAcceptances());
+                        }
 
                     }
                     adapter.notifyDataSetChanged();

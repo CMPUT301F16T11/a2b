@@ -30,6 +30,10 @@ public class CommandStack {
     public static void setAddCommands(ArrayList<UserRequest> commands){
         AddCommands = commands;
     }
+
+    public static ArrayList<UserRequest> getAddCommands(){return AddCommands;}
+    public static ArrayList<UserRequest> getAcceptedCommands(){return AcceptedCommands;}
+
     public static void clearCommands(){
         AcceptedCommands = new ArrayList<>();
         AddCommands = new ArrayList<>();

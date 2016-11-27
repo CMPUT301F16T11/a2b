@@ -214,12 +214,12 @@ public class RequestDetailActivity extends AppCompatActivity {
             driverName.setText("No confirmed driver :(");
         }
 
-        startLocation.setText(getString(R.string.address_na));
-        endLocation.setText(getString(R.string.address_na));
+
+        startLocation.setText(request.getStartLocationName());
+        endLocation.setText(request.getStartLocationName());
         riderName.setText(request.getRiderUsername());
         fare.setText("$" + request.getFare().toString());
         description.setText(request.getDescription());
-
     }
 
     /**
