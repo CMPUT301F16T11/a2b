@@ -180,6 +180,18 @@ public class UserRequest implements Parcelable {
         this.completed = completed;
     }
 
+    public void setStartLocationName(String startLocationName){
+        this.startLocationName = startLocationName;
+    }
+
+    public void setEndLocationName(String endLocationName){
+        this.endLocationName = endLocationName;
+    }
+
+    public void setDistance(Double distance){
+        this.distance = distance;
+    }
+
     public boolean isPaymentRecived() {
 
         return paymentReceived;
