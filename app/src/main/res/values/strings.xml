@@ -140,6 +140,9 @@
     <string name="empty_wallet">0.00</string>
     <string name="car_detail">Car Details</string>
     <string name="not_a_driver">You need to be a driver to do that! Please create a new rider/driver account instead of a rider only account.</string>
+    <string name="go_online">Update Data</string>
+    <string name="offline_mode">Offline Mode</string>
+    <string name="offline_message">Please connect to the internet to update your offline changes</string>
 
     <!-- Request Status Strings -->
     <string name="waiting">Waiting for a Driver to Accept</string>
@@ -153,4 +156,5 @@
     <string name="search_by_keyword">Search By Keyword</string>
     <string name="description">Description</string>
     <string name="locale">Locale:</string>
+
 </resources>

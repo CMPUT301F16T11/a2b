@@ -78,7 +78,19 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.location_menu, menu);
+        inflater.inflate(R.menu.location_rider_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // TODO: Change this logic to check if there are any stack items to push up to the server
+        if (FileController.isNetworkAvailable(this)) {
+            menu.getItem(3).setEnabled(false);
+        }
+        else {
+            menu.getItem(3).setEnabled(true);
+        }
         return true;
     }
 
@@ -112,6 +124,26 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             case R.id.viewRequests:
                 Intent requestIntent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                 startActivity(requestIntent);
+                return true;
+
+            case R.id.goOnline:
+                if (FileController.isNetworkAvailable(this)) {
+                    // TODO: Send command stack
+                    useOnlineTiles();
+                }
+                else {
+                    AlertDialog dialog = new AlertDialog.Builder(this).create();
+                    dialog.setTitle(getString(R.string.offline_mode));
+                    dialog.setMessage(getString(R.string.offline_message));
+                    dialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.show();
+                }
                 return true;
 
             case R.id.signOut:
