@@ -1,0 +1,271 @@
+{
+  "f16t11" : {
+    "aliases" : { },
+    "mappings" : {
+      "openRequest" : {
+        "properties" : {
+          "accepted" : {
+            "type" : "boolean"
+          },
+          "acceptedDriverIds" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "completed" : {
+            "type" : "boolean"
+          },
+          "confirmedDriverId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "distance" : {
+            "type" : "double"
+          },
+          "endLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "endLocationName" : {
+            "type" : "string"
+          },
+          "endLocationString" : {
+            "type" : "string"
+          },
+          "fare" : {
+            "type" : "integer"
+          },
+          "paymentReceived" : {
+            "type" : "boolean"
+          },
+          "riderId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "startLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "startLocationName" : {
+            "type" : "string"
+          },
+          "timeCreatedInMillis" : {
+            "type" : "long"
+          }
+        }
+      },
+      "users" : {
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "userName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "user" : {
+        "properties" : {
+          "canDrive" : {
+            "type" : "boolean"
+          },
+          "car" : {
+            "properties" : {
+              "color" : {
+                "type" : "string"
+              },
+              "make" : {
+                "type" : "string"
+              },
+              "model" : {
+                "type" : "string"
+              },
+              "year" : {
+                "type" : "long"
+              }
+            }
+          },
+          "driverCompletions" : {
+            "type" : "long"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "numRatings" : {
+            "type" : "long"
+          },
+          "passWord" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "rating" : {
+            "type" : "double"
+          },
+          "totalRating" : {
+            "type" : "long"
+          },
+          "userName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inProgress" : {
+        "properties" : {
+          "accepted" : {
+            "type" : "boolean"
+          },
+          "acceptedDriverIds" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "completed" : {
+            "type" : "boolean"
+          },
+          "confirmedDriverId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "distance" : {
+            "type" : "double"
+          },
+          "endLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "endLocationName" : {
+            "type" : "string"
+          },
+          "endLocationString" : {
+            "type" : "string"
+          },
+          "fare" : {
+            "type" : "integer"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "paymentReceived" : {
+            "type" : "boolean"
+          },
+          "riderId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "startLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "startLocationName" : {
+            "type" : "string"
+          },
+          "timeCreatedInMillis" : {
+            "type" : "long"
+          }
+        }
+      },
+      "closedRequest" : {
+        "properties" : {
+          "accepted" : {
+            "type" : "boolean"
+          },
+          "acceptedDriverIds" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "completed" : {
+            "type" : "boolean"
+          },
+          "confirmedDriverId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "distance" : {
+            "type" : "double"
+          },
+          "endLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "endLocationName" : {
+            "type" : "string"
+          },
+          "endLocationString" : {
+            "type" : "string"
+          },
+          "fare" : {
+            "type" : "integer"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "paymentReceived" : {
+            "type" : "boolean"
+          },
+          "riderId" : {
+            "type" : "string",
+            "index" : "not_analyzed"
+          },
+          "startLocation" : {
+            "properties" : {
+              "location" : {
+                "type" : "geo_point"
+              }
+            }
+          },
+          "startLocationName" : {
+            "type" : "string"
+          },
+          "timeCreatedInMillis" : {
+            "type" : "long"
+          }
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "creation_date" : "1478470470278",
+        "number_of_shards" : "5",
+        "uuid" : "olVFdHcqRUeN4ZQd3b6sFA",
+        "version" : {
+          "created" : "1070299"
+        },
+        "number_of_replicas" : "1"
+      }
+    },
+    "warmers" : { }
+  }
+}
