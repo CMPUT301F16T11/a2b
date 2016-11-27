@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // If the user has a persistent session move right to next activity
         if (UserController.loadFromFile(this)) {
             Intent intent = new Intent(this, RiderLocationActivity.class);
+            UserController.setMode(Mode.RIDER);
             startActivity(intent);
             finish();
         }
 
         // Set up the login form.
-        
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.user);
         box = (CheckBox) findViewById(R.id.user_sign_in_checkbox);
 
@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
         });
+
         /**
          * The following segment of LoginActivity contains a derivative of
          */
@@ -127,8 +128,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-
-
         // Check for a valid user address
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.field_required));
@@ -155,7 +154,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 UserController.saveInFile(this);
             }
 
-
             //Generate save initial Save Files
             RequestController.getCompletedRequests(UserController.getUser(), UserController.checkMode(), LoginActivity.this);
             RequestController.getOwnActiveRequests(UserController.getUser(), LoginActivity.this);
@@ -163,7 +161,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             Intent intent = new Intent(this, RiderLocationActivity.class);
             startActivity(intent);
-
         }
     }
 

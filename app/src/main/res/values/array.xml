@@ -27,5 +27,11 @@
         <item>Offline Acceptances</item>
         <item>Completed Requests</item>
     </string-array>
+    <string-array name="requestTypesOfflineRider">
+        <item>Pending Requests</item>
+        <item>My Active Requests</item>
+        <item>My Completed Requests</item>
+
+    </string-array>
 
 </resources>

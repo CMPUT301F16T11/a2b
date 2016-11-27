@@ -433,6 +433,11 @@ public class RequestController {
         return (request.getFare().doubleValue() / request.getDistance());
     }
 
+    public static ArrayList<UserRequest> getOfflineRequests() {
+        //TODO: actual logic
+        return new ArrayList<UserRequest>();
+    }
+
     /**
      * get requests accepted by the current user as a driver, that are also accepted by the user
      * who originally made the request

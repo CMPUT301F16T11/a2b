@@ -99,12 +99,12 @@ public class ElasticsearchRequestController {
 
                 if (bulkResult.isSucceeded()) {
                     // populate id (Not sure we neet this)
-//                    List<BulkResult.BulkResultItem> documentResults = bulkResult.getItems();
-//                    int i = 0;
-//                    for(BulkResult.BulkResultItem resultItem: documentResults){
-//                        requests[0].get(i).setId(resultItem.id);
-//                        i++;
-//                    }
+                    List<BulkResult.BulkResultItem> documentResults = bulkResult.getItems();
+                    int i = 0;
+                    for(BulkResult.BulkResultItem resultItem: documentResults){
+                        requests[0].get(i).setId(resultItem.id);
+                        i++;
+                    }
                 } else {
                     Log.i("Error", "Elasticsearch failed to add user");
                     return false;
