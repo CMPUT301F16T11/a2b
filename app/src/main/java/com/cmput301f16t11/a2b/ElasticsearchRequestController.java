@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Bulk;
+import io.searchbox.core.BulkResult;
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Get;
@@ -68,6 +70,56 @@ public class ElasticsearchRequestController {
             return true;
         }
     }
+
+
+    /**
+     * Adds an open request to elastic search server
+     */
+    public static class AddBatchOpenRequestTask extends AsyncTask<ArrayList<UserRequest>, Void, Boolean> {
+        /**
+         * Adds a UserRequest object to the openRequest list on the server
+         *
+         * @param requests the UserRequest obj in question
+         * @return true if successful, false otherwise
+         */
+        @Override
+        protected Boolean doInBackground(ArrayList<UserRequest>... requests) {
+            verifySettings();
+
+            ArrayList<Index> requestIndexes = new ArrayList<Index>();
+
+            for(UserRequest userRequest: requests[0]){
+                requestIndexes.add(new Index.Builder(userRequest).build());
+            }
+
+            Bulk bulk = new Bulk.Builder().defaultIndex(index).defaultType(openRequest).addAction(requestIndexes).build();
+
+            try {
+                BulkResult bulkResult = client.execute(bulk);
+
+                if (bulkResult.isSucceeded()) {
+                    // populate id (Not sure we neet this)
+//                    List<BulkResult.BulkResultItem> documentResults = bulkResult.getItems();
+//                    int i = 0;
+//                    for(BulkResult.BulkResultItem resultItem: documentResults){
+//                        requests[0].get(i).setId(resultItem.id);
+//                        i++;
+//                    }
+                } else {
+                    Log.i("Error", "Elasticsearch failed to add user");
+                    return false;
+                }
+            } catch (Exception e) {
+                Log.i("Error", "Failed to add user to elasticsearch");
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+    }
+
+
 
     public static class UpdateClosedRequestObject extends AsyncTask<UserRequest, Void, Boolean> {
         /**
@@ -1383,6 +1435,12 @@ public class ElasticsearchRequestController {
             return accepted;
         }
     }
+
+    /**
+     *
+     */
+
+
 
     /**
      * verify the Elastic Search settings
