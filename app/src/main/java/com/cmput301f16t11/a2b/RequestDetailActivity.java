@@ -303,7 +303,13 @@ public class RequestDetailActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestController.addAcceptance(request, RequestDetailActivity.this);
+                FileController.setContext(RequestDetailActivity.this);
+                if(FileController.isNetworkAvailable()){
+                    RequestController.addAcceptance(request, RequestDetailActivity.this);
+                }else{
+                    CommandStack.addAcceptedCommand(request);
+                }
+
                 //Once the rider accepts the ride start notification service
 
                 //TODO: drivernotificationservice is constantly getting null pointer exception

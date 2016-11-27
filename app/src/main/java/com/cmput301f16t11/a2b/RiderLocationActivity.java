@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -41,17 +40,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +75,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // TODO: Change this logic to check if there are any stack items to push up to the server
-        if (FileController.isNetworkAvailable(this)) {
+        FileController.setContext(this);
+        if (FileController.isNetworkAvailable()) {
             menu.getItem(3).setEnabled(false);
         }
         else {
@@ -104,7 +95,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             case R.id.changeRole:
                 User user = UserController.getUser();
-                if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
+                FileController.setContext(this);
+                if (UserController.canDrive() && FileController.isNetworkAvailable()) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
                     startActivity(driverIntent);
@@ -127,7 +119,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.goOnline:
-                if (FileController.isNetworkAvailable(this)) {
+                FileController.setContext(this);
+                if (FileController.isNetworkAvailable()) {
                     // TODO: Send command stack
                     useOnlineTiles();
                 }
@@ -285,7 +278,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                         helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
 
@@ -294,7 +288,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 } else {
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         displayRideConfirmationDlg(tripDistance);
                     }
                     else{
@@ -319,7 +314,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    if(FileController.isNetworkAvailable(context)) {
+                    FileController.setContext(context);
+                    if(FileController.isNetworkAvailable()) {
                         try {
                             Geocoder geoCoder = new Geocoder(context);
                             List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -363,7 +359,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .build();
 
         // !RequestController.isNetworkAvailable(this)
-        if (!FileController.isNetworkAvailable(this)) {
+        FileController.setContext(this);
+        if (!FileController.isNetworkAvailable()) {
             useOfflineTiles();
         }
         else {
@@ -381,11 +378,15 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            if (!FileController.isNetworkAvailable(this)) {
+            FileController.setContext(this);
+            if (!FileController.isNetworkAvailable()) {
                 useOfflineTiles();
             }
             else {
                 useOnlineTiles();
+                if(CommandStack.workRequired()){
+                    CommandStack.handleStack();
+                }
             }
         }
     }
@@ -480,6 +481,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     doubleWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    useOfflineTiles();
                                     dialog.dismiss();
                                 }
                             });
@@ -499,9 +501,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 //Cache this requests with the other ones
                 FileController.setContext(context);
-                ArrayList<UserRequest> request = FileController.loadFromFile("offlineRequests.sav");
-                request.add(req);
-                FileController.saveInFile(request, "offlineRequests.sav");
+                CommandStack.addAddCommand(req);
 
                 dialog.dismiss();
             }
@@ -649,7 +649,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setEnabled(false);
 
         mMap.clear();
-        if(!FileController.isNetworkAvailable(context)){
+        FileController.setContext(context);
+        if(!FileController.isNetworkAvailable()){
             useOfflineTiles();
         }
         else{

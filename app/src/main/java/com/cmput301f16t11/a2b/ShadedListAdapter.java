@@ -33,8 +33,8 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
 
     public ShadedListAdapter(Context cntxt, ArrayList<UserRequest> objs) {
         super(cntxt, 0, objs);
-        requests = objs;
-        context = cntxt;
+        this.requests = objs;
+        this.context = cntxt;
     }
 
     @Override
@@ -63,17 +63,8 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         final TextView fareEntry  = (TextView) view.findViewById(R.id.fare_entry);
         final TextView dateEntry = (TextView) view.findViewById(R.id.date_created_entry);
 
-        final String riderName = request.getRiderUsername();
 
-//        if(!FileController.isNetworkAvailable(context)) {
-//            FileController.setContext(context);
-//            HashMap<String, String> dic = new HashMap<String, String>();
-//            dic = FileController.loadFromFileMap("names.sav");
-//            riderName = dic.get(request.getRiderID());
-//        } else {
-//            User rider = UserController.getUserFromId(request.getRiderID());
-//            riderName = rider.getName();
-//        }
+        final String riderName = request.getRiderUsername();
 
         try {
             riderEntry.setText(riderName);

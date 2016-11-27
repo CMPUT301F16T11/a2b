@@ -5,14 +5,14 @@ Third party licensing:
 ** the material used. This is why the date accessed is listed as Nov. 11 for many. 
 
 
-This work, "RequestListActivity," contains a derivative
+This work, a2b, contains a derivative
 "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
 used under CC-BY-SA by CMPUT301F16T11.
 (Available here:
 http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
 Date accessed: Nov. 11, 2016
 
-This work, "ShadedListAdapter," contains a derivative of an answer to
+This work, a2b, contains a derivative of an answer to
 "Android Alternate row Colors in ListView" by "Suraj Bajaj," a user on Stack Overflow.
 It is used under CC-BY-SA by CMPUT301F16T11.
 It is available here:
@@ -20,64 +20,73 @@ http://stackoverflow.com/questions/13109840/android-alternate-row-colors-in-list
 Date accessed: Nov. 11, 2016
 
 
-This work, "RequestListActivity," contains a derivative
+This work, a2b, contains a derivative
 "Android - How to create clickable listview?" by "Delpes," a stackoverflow user,
 used under CC-BY-SA by CMPUT301F16T11.
 (Available here:
 http://stackoverflow.com/questions/13281197/android-how-to-create-clickable-listview)
 Date accessed: Nov. 11, 2016
 
-This work, "RequestListActivity," contains a derivative of example code from "Radio Buttons,"
+This work, a2b, contains a derivative of example code from "Radio Buttons,"
 from Android Developer Tutorials. It is used under Apache 2.0 by CMPUT301F16T11.
 Available here:
 https://developer.android.com/guide/topics/ui/controls/radiobutton.html
 Accessed Nov. 18, 2016
 
-This work, "RequestListActivity," contains a derivative of example code from "Show Keyboard
+This work, a2b, contains a derivative of example code from "Show Keyboard
 Automatically," answer by "Feonix," a stackoverflow user. Used under CC-BY-SA by
 CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/14759253/show-keyboard-automatically
 Accessed Nov. 18, 2016
 
-The following dialog contained in "RequestDetailActivity" is a derivative of an answer to
+This work, a2b, contains a derivative of an answer to
 "How to display a Yes/No dialog box on Android?" by "Steve Haley," a user on
 stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/2478517/how-to-display-a-yes-no-dialog-box-on-android
 Date accessed: Nov. 11, 2016
 
-The work in JSONMapHelper is a derivative of 
+This work, a2b, contains a derivative of 
 Draw path between two points using Google Maps Android API v2 by "zeeshan0026" a user on
 stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
 Date accessed: Nov. 9, 2016
 
-The work in RiderNotificationService is a derivative of
+The work, a2b, contains a derivative of
 Using Service to run background and create notification by "Konstantin Loginov" a user on 
 stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/14702621/answer-draw-path-between-two-points-using-google-maps-android-api-v2
 Date accessed: Nov. 9, 2016
 
-The work is RiderLocationActivity involving reveres geocoding is a derivatve of
+The work, a2b, contains a derivatve of
 How to reverse Geocode in google maps api 2 android by "ianhanniballake"
 a user on stack overflow, used under CC-BY-SA by CMPUT301F16T11.
 Available here:
 http://stackoverflow.com/questions/15191037/how-to-reverse-geocode-in-google-maps-api-2-android
 Date accessed: Nov. 10, 2016
 
-The following work, activity_request_list.xml, contains a derivative of an answer to
+This work, a2b, contains a derivative of an answer to
 "Adding EditText alongside RadioButton" by "codeMagic," a stack overflow user.
 It is used under CC-BY-SA by CMPUT301F16T11. Accessed on Nov. 18, 2016.
 Available here: 
     http://stackoverflow.com/questions/17795156/adding-edittext-alongside-radiobutton
 Date accessed: Nov. 10, 2016
 
-The following work, LoginActivity, contains a derivaitive to an answer to 
+This work, a2b, contains a derivaitive to an answer to 
 'Android execute function after pressing "Enter" for EditText," by "AL Sweigart,"
 a stack overflow user. It is used under CC-BY-SA by CMPUT301F16T11. 
 Available here: 
 http://stackoverflow.com/questions/8233586/android-execute-function-after-pressing-enter-for-edittext
 Date accessed: Nov. 18, 2016
+
+This work, a2b, contains a derivative of an answer to "TileProvider 
+using local tiles" on Stack Overflow by "Alex Vasilkov," a stack overflow user. 
+It is used under CC-BY-SA by CMPUT301F16T11. 
+Available here:
+http://stackoverflow.com/questions/14784841/tileprovider-using-local-tiles
+Date accessed: Nov. 25, 2016
+
+
