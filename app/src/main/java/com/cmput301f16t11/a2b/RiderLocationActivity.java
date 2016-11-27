@@ -97,6 +97,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     UserController.setMode(Mode.DRIVER);
                     startActivity(driverIntent);
                     finish();
+
                 }
                 else if (UserController.canDrive()) {
                     UserController.setMode(Mode.DRIVER);
@@ -125,26 +126,14 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
-        if (permission==PackageManager.PERMISSION_DENIED) {
-            Boolean waiting = true;
-
-            while (waiting) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSIONS);
-            }
-        }*/
 
         context = this;
-
         setContentView(R.layout.activity_rider_location);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
     public void startUpNotificationService(){
@@ -261,14 +250,21 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
-                    helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
+                    if(FileController.isNetworkAvailable(context)) {
+                        JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
+                        helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
 
-                    setLocation.setEnabled(false);
+                        setLocation.setEnabled(false);
+                    }
 
                 } else {
 
-                    displayRideConfirmationDlg(tripDistance);
+                    if(FileController.isNetworkAvailable(context)) {
+                        displayRideConfirmationDlg(tripDistance);
+                    }
+                    else{
+                        displayOfflineRideConfirmationDlg();
+                    }
                 }
 
             }
@@ -288,19 +284,21 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    try {
-                        Geocoder geoCoder = new Geocoder(context);
-                        List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                        String address = "";
-                        if (!matches.isEmpty()) {
-                            address = matches.get(0).getAddressLine(0) + ' ' + matches.get(0).getLocality();
+                    if(FileController.isNetworkAvailable(context)) {
+                        try {
+                            Geocoder geoCoder = new Geocoder(context);
+                            List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                            String address = "";
+                            if (!matches.isEmpty()) {
+                                address = matches.get(0).getAddressLine(0) + ' ' + matches.get(0).getLocality();
+                            }
+
+                            currentMarker.setTitle(address);
+                            currentMarker.showInfoWindow();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-
-                        currentMarker.setTitle(address);
-                        currentMarker.showInfoWindow();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
 
                 }
@@ -327,7 +325,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         // !RequestController.isNetworkAvailable(this)
         if (!FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
-
         }
         else {
             useOnlineTiles();
@@ -415,6 +412,61 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
+    public void displayOfflineRideConfirmationDlg(){
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.offline_request_confirmation);
+        dialog.show();
+
+        final EditText fare = (EditText)dialog.findViewById(R.id.fare_value);
+        final EditText description = (EditText)dialog.findViewById(R.id.description_value);
+        final Button cancel = (Button)dialog.findViewById(R.id.cancel_offline);
+        final Button confirm = (Button)dialog.findViewById(R.id.ok_offline);
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double userFare = 0.00;
+                String userDescription = description.getText().toString();
+                try {
+                    userFare = Double.parseDouble(fare.getText().toString());
+
+                } catch (NumberFormatException e) {
+                    //Tell them they have not entered a double
+                    e.printStackTrace();
+                }
+                if (userFare == 0.00) {
+                    AlertDialog doubleWarning = new AlertDialog.Builder(context).create();
+                    doubleWarning.setMessage(getString(R.string.double_warning_message));
+                    doubleWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    doubleWarning.show();
+                    return;
+                }
+
+                OfflineRequest req = new OfflineRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
+                        userFare,userDescription );
+                //TODO: offline request
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+    }
+
     public void displayRideConfirmationDlg(final String distance){
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.rider_confirmation_dialog);
@@ -422,7 +474,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         final TextView from = (TextView)dialog.findViewById(R.id.rideConf_startText);
         final TextView to = (TextView)dialog.findViewById(R.id.rideConf_endText);
         final TextView distanceDlg = (TextView)dialog.findViewById(R.id.rideConf_distanceText);
-        //final EditText description = (EditText)dialog.findViewById(R.id.rideConf_descripText);
         final Button cancel = (Button)dialog.findViewById(R.id.cancelRequest);
         final Button confirm = (Button)dialog.findViewById(R.id.confirmRequest);
         final EditText amount= (EditText)dialog.findViewById(R.id.rideConf_fareText);
@@ -453,8 +504,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         amount.setHint(Double.toString(fairAmount));
 
         //set up the on click listeners for dialog
-
-
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
