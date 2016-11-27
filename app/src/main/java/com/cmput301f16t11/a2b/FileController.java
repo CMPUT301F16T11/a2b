@@ -81,7 +81,6 @@ public class FileController {
         } catch (FileNotFoundException e) {
             requests = new ArrayList<UserRequest>();
         }
-
         return requests;
     }
 
@@ -194,9 +193,10 @@ public class FileController {
      *
      * @return the boolean
      */
-    public static boolean isNetworkAvailable() {
+
+    public static boolean isNetworkAvailable(Context passedInContext) {
         ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                = (ConnectivityManager) passedInContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
