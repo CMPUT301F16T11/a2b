@@ -256,7 +256,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .title(address)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
+
                     tripStartMarker.showInfoWindow();
+
+
                     currentMarker = null;
                     setLocation.setText(R.string.set_end);
                     cancelTrip.setEnabled(true);
@@ -321,6 +324,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    }
+                    else{
+
+                        currentMarker.setTitle(getString(R.string.address_na));
+                        currentMarker.showInfoWindow();
                     }
 
                 }
@@ -496,10 +504,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 dialog.dismiss();
             }
         });
-
-
-
-
     }
 
     public void displayRideConfirmationDlg(final String distance){
@@ -636,6 +640,12 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setEnabled(false);
 
         mMap.clear();
+        if(!FileController.isNetworkAvailable(context)){
+            useOfflineTiles();
+        }
+        else{
+            useOnlineTiles();
+        }
     }
 
     /**
@@ -666,20 +676,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             return rate;
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (RequestController.isNetworkAvailable(this) && mMap != null) {
-//            mMap.setMapType(GoogleMap.MAP_TYPE_NONE); // REMOVE THIS TO GO BACK TO GOOGLE MAPS
-//            String filename = FileManager.writeMapFile(this);
-//            TileOverlayOptions opts = new TileOverlayOptions();
-//            provider = new MapBoxOfflineTileProvider(filename);
-//            opts.tileProvider(provider);
-//            TileOverlay overlay = mMap.addTileOverlay(opts);
-//
-//        }
-//    }
 
     private void showNotADriverDialog() {
         final Context context = this;
