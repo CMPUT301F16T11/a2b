@@ -107,6 +107,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     UserController.setMode(Mode.DRIVER);
                     Intent intent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     showNotADriverDialog();
