@@ -112,7 +112,6 @@ public class FileController {
             user = new Gson().fromJson(in, User.class);
         } catch (FileNotFoundException f) {
             Log.i("File", "No saved user");
-            user = null;
         }
 
         return user;
