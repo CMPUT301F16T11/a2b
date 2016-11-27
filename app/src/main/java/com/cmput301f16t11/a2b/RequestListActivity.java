@@ -187,6 +187,12 @@ public class RequestListActivity extends AppCompatActivity {
             spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         }
+        else if (UserController.checkMode() == Mode.RIDER && !FileController.isNetworkAvailable(this)) {
+            String [] choices;
+            choices = getResources().getStringArray(R.array.requestTypesOfflineRider);
+            spinnerChoices = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                    choices);
+        }
         else if (UserController.checkMode() == Mode.DRIVER) {
             //Depending on the type of search our dropdown will be different
             String [] choices;
@@ -243,12 +249,19 @@ public class RequestListActivity extends AppCompatActivity {
                     else {
                         // rider mode!
                         // my requests
-                        requests.clear();
-                        requests.addAll(
-                                RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        if (FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(
+                                    RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        }
+                        else {
+                            // Pending requests
+                            requests.clear();
+                            requests.addAll(
+                                RequestController.getOfflineRequests());
+                        }
 
                     }
-
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
@@ -285,6 +298,13 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(
                                 getFilteredRequests(RequestController.getConfirmedByRiders(
                                         UserController.getUser(), UserController.checkMode())));
+                    }
+                    else if(UserController.checkMode() == Mode.RIDER ||
+                            FileController.isNetworkAvailable(context)) {
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode(), RequestListActivity.this)));
                     }
                     else {
                         // offline mode
