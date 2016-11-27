@@ -319,7 +319,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .build();
 
         // !RequestController.isNetworkAvailable(this)
-        if (!RequestController.isNetworkAvailable(this)) {
+        if (FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
 
         }
@@ -502,7 +502,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         description.getText().toString(),
                         locationList.get(0),locationList.get(1));
 
-                RequestController.addOpenRequest(request);
+                RequestController.addOpenRequest(request, context);
 
                 //Add this request to be bmonitored
                 RiderNotificationService.addRequestToBeNotified(request);

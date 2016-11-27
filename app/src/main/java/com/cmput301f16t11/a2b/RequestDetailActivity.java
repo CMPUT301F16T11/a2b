@@ -54,7 +54,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SaveLoadController.setContext(this);
+        FileController.setContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }

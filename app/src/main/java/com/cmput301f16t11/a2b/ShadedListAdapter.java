@@ -65,9 +65,10 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         String riderName;
 
 
-        if(!isNetworkAvailable(context)) {
-            SaveLoadController.setContext(context);
-            HashMap<String,String> dic = SaveLoadController.loadFromFileMap("names.sav");
+        if(!FileController.isNetworkAvailable(context)) {
+            FileController.setContext(context);
+            HashMap<String, String> dic = new HashMap<String, String>();
+            dic = FileController.loadFromFileMap("names.sav");
             riderName = dic.get(request.getRiderID());
         } else {
             User rider = UserController.getUserFromId(request.getRiderID());
@@ -85,11 +86,4 @@ public class ShadedListAdapter extends ArrayAdapter<UserRequest> {
         return view;
     }
 
-    // http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-    public static boolean isNetworkAvailable(Context c) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }
