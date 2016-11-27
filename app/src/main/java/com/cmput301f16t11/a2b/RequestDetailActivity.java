@@ -54,7 +54,6 @@ public class RequestDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        FileController.setContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
     }
@@ -332,11 +331,10 @@ public class RequestDetailActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FileController.setContext(RequestDetailActivity.this);
                 if(FileController.isNetworkAvailable(RequestDetailActivity.this)){
                     RequestController.addAcceptance(request, RequestDetailActivity.this);
                 }else{
-                    CommandStack.addAcceptedCommand(request);
+                    CommandStack.addAcceptedCommand(request, RequestDetailActivity.this);
                 }
 
                 //Once the rider accepts the ride start notification service

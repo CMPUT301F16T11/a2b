@@ -75,7 +75,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // TODO: Change this logic to check if there are any stack items to push up to the server
-        FileController.setContext(this);
         if (FileController.isNetworkAvailable(this)) {
             menu.getItem(3).setEnabled(false);
         }
@@ -95,7 +94,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             case R.id.changeRole:
                 User user = UserController.getUser();
-                FileController.setContext(this);
                 if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
@@ -120,7 +118,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.goOnline:
-                FileController.setContext(this);
                 if (FileController.isNetworkAvailable(this)) {
                     // TODO: Send command stack
                     useOnlineTiles();
@@ -280,7 +277,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                         helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
@@ -290,7 +286,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 } else {
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         displayRideConfirmationDlg(tripDistance);
                     }
@@ -316,7 +311,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         try {
                             Geocoder geoCoder = new Geocoder(context);
@@ -360,8 +354,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .tilt(0)
                 .build();
 
-        // !RequestController.isNetworkAvailable(this)
-        FileController.setContext(this);
         if (!FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
         }
@@ -380,14 +372,13 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            FileController.setContext(this);
             if (!FileController.isNetworkAvailable(this)) {
                 useOfflineTiles();
             }
             else {
                 useOnlineTiles();
                 if(CommandStack.workRequired()){
-                    CommandStack.handleStack();
+                    CommandStack.handleStack(RiderLocationActivity.this);
                 }
             }
         }
@@ -502,8 +493,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         "N/A" );
 
                 //Cache this requests with the other ones
-                FileController.setContext(context);
-                CommandStack.addAddCommand(req);
+                CommandStack.addAddCommand(req, context);
 
                 dialog.dismiss();
             }
@@ -651,7 +641,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setEnabled(false);
 
         mMap.clear();
-        FileController.setContext(context);
         if(!FileController.isNetworkAvailable(context)){
             useOfflineTiles();
         }

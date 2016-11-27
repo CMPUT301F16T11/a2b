@@ -166,8 +166,7 @@ public class UserController {
      * Stores it in internal storage as JSON in user.sav file\
      */
     public static void saveInFile(Activity activity) {
-        FileController.setContext(activity);
-        FileController.saveInFileUser(user, USRFILE);
+        FileController.saveInFileUser(user, USRFILE, activity);
     }
 
     /**
@@ -177,8 +176,7 @@ public class UserController {
      * @return true if successful, false if no saved user
      */
     public static Boolean loadFromFile(Activity activity) {
-        FileController.setContext(activity);
-        user = FileController.loadFromFileUser(USRFILE);
+        user = FileController.loadFromFileUser(USRFILE, activity);
         if(user != null) {
             return true;
         } else {
@@ -193,12 +191,11 @@ public class UserController {
      */
     public static void logOut(Context context) {
 
-        FileController.setContext(context);
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);
 
         //delete all offline files
-        FileController.clear();
+        FileController.clear(context);
 
         //Stop all the services if they are running
         RiderNotificationService.stopRiderService();

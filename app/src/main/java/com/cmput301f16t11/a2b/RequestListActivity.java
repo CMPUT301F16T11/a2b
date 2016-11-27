@@ -98,7 +98,6 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
-        FileController.setContext(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
@@ -282,7 +281,7 @@ public class RequestListActivity extends AppCompatActivity {
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                        requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
@@ -310,7 +309,8 @@ public class RequestListActivity extends AppCompatActivity {
                         // offline mode
                         //Offline acceptances
                         requests.clear();
-                        requests.addAll(RequestController.getOfflineAcceptances());
+                        requests.addAll(RequestController.getCompletedRequests(
+                                UserController.getUser(), UserController.checkMode(), context));
 
                     }
                     adapter.notifyDataSetChanged();
