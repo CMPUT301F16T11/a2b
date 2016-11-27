@@ -31,6 +31,7 @@ import java.util.ArrayList;
  */
 public class FileController {
 
+
     private static Context context;
 
     /**
@@ -42,6 +43,8 @@ public class FileController {
         context = con;
     }
 
+
+
     /**
      * Load from file array list.
      *
@@ -50,6 +53,7 @@ public class FileController {
      */
     public static ArrayList<UserRequest> loadFromFile(String FILENAME) {
         ArrayList<UserRequest> requests;
+
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -145,6 +149,7 @@ public class FileController {
 
         }
 
+
     /**
      * Save in file.
      *
@@ -152,6 +157,7 @@ public class FileController {
      * @param FILENAME             the filename
      */
     public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
+
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));

@@ -145,7 +145,11 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
             Intent intent = new Intent(this, RequestListActivity.class);
             setResult(Activity.RESULT_OK, intent);
             startActivity(intent);
-        }
+        } else{
+            if(CommandStack.workRequired()){
+                CommandStack.handleStack();
+            }
+    }
     }
 
     @Override
