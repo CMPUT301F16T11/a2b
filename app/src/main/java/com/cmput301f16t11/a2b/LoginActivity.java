@@ -159,6 +159,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
             //Generate save initial Save Files
+            RequestController.getCompletedRequests(UserController.getUser(), UserController.checkMode(), LoginActivity.this);
+            RequestController.getOwnActiveRequests(UserController.getUser(), LoginActivity.this);
+            RequestController.getAcceptedByUser(UserController.getUser(), LoginActivity.this);
 
             Intent intent = new Intent(this, RiderLocationActivity.class);
             startActivity(intent);

@@ -75,33 +75,6 @@ public class FileController {
         return requests;
     }
 
-//    /**
-//     * Load from file map hash map.
-//     *
-//     * @param FILENAME the filename
-//     * @return the hash map
-//     */
-//    public static HashMap<String, String> loadFromFileMap(String FILENAME) {
-//        HashMap<String, String> dic;
-//        try {
-//            FileInputStream fis = context.openFileInput(FILENAME);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//            Gson gson = new Gson();
-//
-//            // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-//            Type listType = new TypeToken<HashMap<String, String>>() {
-//            }.getType();
-//
-//            dic = gson.fromJson(in, listType);
-//
-//        } catch (FileNotFoundException e) {
-//            dic = new HashMap<String, String>();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//
-//        return dic;
-//    }
 
     /**
      * Writes mbtiles file from res to android storage for offline maps usage
@@ -175,27 +148,6 @@ public class FileController {
         }
     }
 
-//    /**
-//     * Save in file map.
-//     *
-//     * @param map the map
-//     */
-//    public static void saveInFileMap(HashMap<String, String> map, String FILENAME) {
-//        try {
-//            FileOutputStream fos = context.openFileOutput(FILENAME, 0);
-//            OutputStreamWriter writer = new OutputStreamWriter(fos);
-//
-//            Gson gson = new Gson();
-//            gson.toJson(map, writer);
-//            writer.flush();
-//
-//            fos.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException();
-//        } catch (IOException e) {
-//            throw new RuntimeException();
-//        }
-//    }
 
     /**
      * Save in file user.
@@ -229,23 +181,6 @@ public class FileController {
         context.deleteFile("nearbyNames.sav");
     }
 
-//    /**
-//     * Store user names.
-//     *
-//     * @param requests the requests
-//     */
-//    public static void storeUserNames(ArrayList<UserRequest> requests, String FILENAME) {
-//
-//        HashMap<String, String> names = new HashMap<String, String>();
-//        String userName = UserController.getName();
-//        loadFromFileMap(FILENAME);
-//        for (UserRequest request : requests) {
-//            String id = request.getRiderID();
-//            userName = UserController.getUserFromId(id).getName();
-//            names.put(id, userName);
-//        }
-//        saveInFileMap(names, FILENAME);
-//    }
 
     /**
      * Is network available boolean.
