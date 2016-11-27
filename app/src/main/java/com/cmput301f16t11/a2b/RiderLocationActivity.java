@@ -338,7 +338,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            if (!RequestController.isNetworkAvailable(this)) {
+            if (!FileController.isNetworkAvailable(this)) {
                 useOfflineTiles();
             }
             else {
