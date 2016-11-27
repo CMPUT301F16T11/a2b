@@ -449,7 +449,9 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineRequests() {
-        //TODO: actual logic
+        if(CommandStack.getAddCommands() == null){
+            return new ArrayList<>();
+        }
         return CommandStack.getAddCommands();
     }
 
