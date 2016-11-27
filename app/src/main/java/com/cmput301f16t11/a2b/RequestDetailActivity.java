@@ -333,6 +333,12 @@ public class RequestDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(FileController.isNetworkAvailable(RequestDetailActivity.this)){
                     RequestController.addAcceptance(request, RequestDetailActivity.this);
+                    try {
+                        DriverNotificationService.serviceHandler(request, getParent());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("driverNotServ", e.toString());
+                    }
                 }else{
                     CommandStack.addAcceptedCommand(request, RequestDetailActivity.this);
                 }

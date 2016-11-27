@@ -4,10 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Main activity to load activities for testing purposes.
@@ -23,13 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
-        if(new File(CommandStack.ACCEPTFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE, this));
-        }
-        if(new File(CommandStack.ADDFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ADDFILE, this));
-        }
 
+        //Intent intent = new Intent(this, RequestListActivity.class);
 
 
 
