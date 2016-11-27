@@ -30,10 +30,7 @@ import java.util.HashMap;
  */
 public class FileController {
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 6a70fac3924707fcaf105bcec8c96a2a8e1904c5
     private static Context context;
 
     /**
@@ -46,9 +43,7 @@ public class FileController {
     }
 
 
-    public static ArrayList<Command> loadFromFile(String FILENAME) {
-        ArrayList<Command> requests;
-=======
+
     /**
      * Load from file array list.
      *
@@ -57,7 +52,7 @@ public class FileController {
      */
     public static ArrayList<UserRequest> loadFromFile(String FILENAME) {
         ArrayList<UserRequest> requests;
->>>>>>> 6a70fac3924707fcaf105bcec8c96a2a8e1904c5
+
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -65,13 +60,13 @@ public class FileController {
             Gson gson = new Gson();
 
             // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-            Type listType = new TypeToken<ArrayList<Command>>() {
+            Type listType = new TypeToken<ArrayList<UserRequest>>() {
             }.getType();
 
             requests = gson.fromJson(in, listType);
 
         } catch (FileNotFoundException e) {
-            requests = new ArrayList<Command>();
+            requests = new ArrayList<UserRequest>();
         } catch (IOException e) {
             throw new RuntimeException();
         }
@@ -128,9 +123,7 @@ public class FileController {
 
         }
 
-<<<<<<< HEAD
-    public static void saveInFile(ArrayList<Command> offlineRequestListIn, String FILENAME) {
-=======
+
     /**
      * Save in file.
      *
@@ -138,7 +131,7 @@ public class FileController {
      * @param FILENAME             the filename
      */
     public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
->>>>>>> 6a70fac3924707fcaf105bcec8c96a2a8e1904c5
+
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
             //BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
@@ -209,21 +202,17 @@ public class FileController {
         context.deleteFile("riderOwnerRequests.sav");
     }
 
-<<<<<<< HEAD
-    public static void storeUserNames(ArrayList<Command> requests) {
-=======
+
     /**
      * Store user names.
      *
      * @param requests the requests
      */
     public static void storeUserNames(ArrayList<UserRequest> requests) {
->>>>>>> 6a70fac3924707fcaf105bcec8c96a2a8e1904c5
 
         HashMap<String, String> names = new HashMap<String, String>();
         loadFromFileMap("names.sav");
-        for (Command command : requests) {
-            UserRequest request = command.getRequest();
+        for (UserRequest request: requests) {
             String id = request.getRiderID();
             String userName = UserController.getUserFromId(id).getName();
             names.put(id, userName);
