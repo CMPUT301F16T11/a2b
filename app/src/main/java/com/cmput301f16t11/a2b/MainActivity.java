@@ -24,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
         if(new File(CommandStack.ACCEPTFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE));
+            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE, this));
         }
         if(new File(CommandStack.ADDFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ADDFILE));
+            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ADDFILE, this));
         }
 
 

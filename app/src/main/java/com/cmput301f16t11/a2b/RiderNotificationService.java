@@ -27,7 +27,7 @@ import io.searchbox.core.Get;
  * driver that accepts that ride.
  * Will be terminated when the user
  */
-public class RiderNotificationService extends IntentService {
+public class    RiderNotificationService extends IntentService {
 
     //Elastic search stuff
     private static JestDroidClient client;

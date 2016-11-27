@@ -44,18 +44,12 @@ import java.util.ArrayList;
  */
 public class FileController {
 
-
-    private static Context context;
-
-    /**
-     * Set context.
-     *
-     * @param con the con
-     */
-    public static void setContext(Context con){
-        context = con;
-    }
-
+    // FileNames
+    final static String riderRequests = "riderOwnerRequests.sav";
+    final static String nearbyRequests = "nearby.sav";
+    final static String acceptedByDriver = "acceptedByMe.sav";
+    final static String completedByDriver = "completedRequestsDriver.sav";
+    final static String users = "user.sav";
 
 
     /**
@@ -64,9 +58,8 @@ public class FileController {
      * @param FILENAME the filename that is to be loaded from
      * @return the array list of requests
      */
-    public static ArrayList<UserRequest> loadFromFile(String FILENAME) {
+    public static ArrayList<UserRequest> loadFromFile(String FILENAME, Context context) {
         ArrayList<UserRequest> requests;
-
 
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
@@ -114,7 +107,7 @@ public class FileController {
      * @param USRFILE the usrfile
      * @return the user
      */
-    public static User loadFromFileUser(String USRFILE) {
+    public static User loadFromFileUser(String USRFILE, Context context) {
         User user;
         try {
             FileInputStream fis = context.openFileInput(USRFILE);
@@ -135,7 +128,7 @@ public class FileController {
      * @param offlineRequestListIn the offline request list in
      * @param FILENAME             the filename
      */
-    public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME) {
+    public static void saveInFile(ArrayList<UserRequest> offlineRequestListIn, String FILENAME, Context context) {
 
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
@@ -153,14 +146,14 @@ public class FileController {
             throw new RuntimeException();
         }
     }
-    
+
     /**
      * Save in file user.
      *
      * @param user     the user
      * @param FILENAME the filename
      */
-    public static void saveInFileUser(User user, String FILENAME) {
+    public static void saveInFileUser(User user, String FILENAME, Context context) {
         try {
             // Try to convert user to JSON and save it
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
@@ -177,13 +170,12 @@ public class FileController {
     /**
      * Clear.
      */
-    public static void clear() {
-        context.deleteFile("acceptedByMeNames.sav"); // delete file
-        context.deleteFile("acceptedByMe.sav");
-        context.deleteFile("riderOwnerRequests.sav");
-        context.deleteFile("riderOwnerRequestsNames.sav");
-        context.deleteFile("user.sav");
-        context.deleteFile("nearbyNames.sav");
+    public static void clear(Context context) {
+        context.deleteFile(acceptedByDriver);
+        context.deleteFile(completedByDriver);
+        context.deleteFile(riderRequests);
+        context.deleteFile(users);
+        context.deleteFile(nearbyRequests);
     }
 
 

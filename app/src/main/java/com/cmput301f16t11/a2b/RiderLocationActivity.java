@@ -15,12 +15,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301f16t11.a2b.cocoahero.android.gmaps.addons.master.mapbox.MapBoxOfflineTileProvider;
@@ -49,6 +53,7 @@ import java.util.Scanner;
 
 /**
  * Main map activity for riders to select their pickup and drop off locations.
+ * http://stackoverflow.com/questions/9731602/animated-icon-for-actionitem
  */
 public class RiderLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
             DrawingLocationActivity {
@@ -59,7 +64,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker currentMarker;
     private Context context;
     private String tripDistance = "? km";
-    private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private final String stylevURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
     MapBoxOfflineTileProvider provider;
     TileOverlay overlay;
 
@@ -73,19 +78,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // TODO: Change this logic to check if there are any stack items to push up to the server
-        FileController.setContext(this);
-        if (FileController.isNetworkAvailable(this)) {
-            menu.getItem(3).setEnabled(false);
-        }
-        else {
-            menu.getItem(3).setEnabled(true);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.viewProfile:
@@ -94,8 +86,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.changeRole:
-                User user = UserController.getUser();
-                FileController.setContext(this);
                 if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
@@ -119,8 +109,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 startActivity(requestIntent);
                 return true;
 
-            case R.id.goOnline:
-                FileController.setContext(this);
+
+            case R.id.refresh:
                 if (FileController.isNetworkAvailable(this)) {
                     // TODO: Send command stack
                     useOnlineTiles();
@@ -280,7 +270,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                         helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
@@ -290,7 +279,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 } else {
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         displayRideConfirmationDlg(tripDistance);
                     }
@@ -316,7 +304,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    FileController.setContext(context);
                     if(FileController.isNetworkAvailable(context)) {
                         try {
                             Geocoder geoCoder = new Geocoder(context);
@@ -360,8 +347,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .tilt(0)
                 .build();
 
-        // !RequestController.isNetworkAvailable(this)
-        FileController.setContext(this);
         if (!FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
         }
@@ -380,14 +365,13 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            FileController.setContext(this);
             if (!FileController.isNetworkAvailable(this)) {
                 useOfflineTiles();
             }
             else {
                 useOnlineTiles();
                 if(CommandStack.workRequired()){
-                    CommandStack.handleStack();
+                    CommandStack.handleStack(RiderLocationActivity.this);
                 }
             }
         }
@@ -502,8 +486,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         "N/A" );
 
                 //Cache this requests with the other ones
-                FileController.setContext(context);
-                CommandStack.addAddCommand(req);
+                CommandStack.addAddCommand(req, context);
 
                 dialog.dismiss();
             }
@@ -651,7 +634,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setEnabled(false);
 
         mMap.clear();
-        FileController.setContext(context);
         if(!FileController.isNetworkAvailable(context)){
             useOfflineTiles();
         }

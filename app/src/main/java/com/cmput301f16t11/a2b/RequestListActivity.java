@@ -1,9 +1,12 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -63,7 +66,6 @@ public class RequestListActivity extends AppCompatActivity {
     private EditText maxPrice;
     private Boolean filterMaxPrice;
     private Boolean filterMaxPricePerKM;
-    private DriverLocationActivity.SearchType  searchType;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,6 +87,25 @@ public class RequestListActivity extends AppCompatActivity {
                 startActivity(driverIntent);
                 finish();
                 break;
+            case R.id.refresh:
+                if (FileController.isNetworkAvailable(this)) {
+                    // TODO: Send command stack
+                    this.recreate();
+                }
+                else {
+                    AlertDialog dialog = new AlertDialog.Builder(this).create();
+                    dialog.setTitle(getString(R.string.offline_mode));
+                    dialog.setMessage(getString(R.string.offline_message));
+                    dialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    dialog.show();
+                }
+                break;
             case R.id.signOut:
                 UserController.logOut(this);
                 finish();
@@ -98,15 +119,7 @@ public class RequestListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
-        FileController.setContext(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-
-        //If we are in driver mode we can either be displaying nearby requests or searched requests
-        if(UserController.checkMode() == Mode.DRIVER){
-            Intent intent = getIntent();
-            searchType  =(DriverLocationActivity.SearchType)intent.getSerializableExtra("SearchType");;
-        }
     }
 
     @Override
@@ -183,7 +196,7 @@ public class RequestListActivity extends AppCompatActivity {
         if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable(this)) {
             // offline mode, accepted by me only
             String [] choices;
-            choices = getResources().getStringArray(R.array.requestTypesOffline);
+            choices = getResources().getStringArray(R.array.requestTypesOfflineDriver);
             spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         }
@@ -194,18 +207,7 @@ public class RequestListActivity extends AppCompatActivity {
                     choices);
         }
         else if (UserController.checkMode() == Mode.DRIVER) {
-            //Depending on the type of search our dropdown will be different
-            String [] choices;
-            switch (searchType){
-                case BY_LOCATION:
-                    choices = getResources().getStringArray(R.array.requestTypesDriverLocationArray);
-                    break;
-                case BY_KEYWORD:
-                    choices = getResources().getStringArray(R.array.requestTypesDriverKeywordArray);
-                    break;
-                default:
-                    choices = getResources().getStringArray(R.array.requestTypesDriverLocationArray);
-            }
+            String [] choices = getResources().getStringArray(R.array.requestTypesDriver);
             spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
         } else {
@@ -282,7 +284,11 @@ public class RequestListActivity extends AppCompatActivity {
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                        if(FileController.isNetworkAvailable(RequestListActivity.this)) {
+                            requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                        } else {
+                            requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        }
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
@@ -310,7 +316,8 @@ public class RequestListActivity extends AppCompatActivity {
                         // offline mode
                         //Offline acceptances
                         requests.clear();
-                        requests.addAll(RequestController.getOfflineAcceptances());
+                        requests.addAll(RequestController.getCompletedRequests(
+                                UserController.getUser(), UserController.checkMode(), context));
 
                     }
                     adapter.notifyDataSetChanged();
@@ -321,7 +328,6 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(getFilteredRequests(
                                 RequestController.getAwaitingPaymentRequests(UserController.getUser(),
                                         UserController.checkMode())));
-                        adapter.notifyDataSetChanged();
                     }
                     //Completed Requests
                     else{
@@ -329,6 +335,7 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
                     }
+                    adapter.notifyDataSetChanged();
                 }
 
                 else if (position == 4) {

@@ -1,5 +1,7 @@
 package com.cmput301f16t11.a2b;
 
+import android.content.Context;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -45,26 +47,26 @@ public class CommandStack {
         return false;
     }
 
-    public static void addAddCommand(UserRequest command){
+    public static void addAddCommand(UserRequest command, Context con){
         AddCommands.add(command);
-        FileController.saveInFile(AddCommands,CommandStack.ADDFILE);
+        FileController.saveInFile(AddCommands,CommandStack.ADDFILE, con);
     }
-    public static void addAcceptedCommand(UserRequest command){
+    public static void addAcceptedCommand(UserRequest command, Context con){
         AcceptedCommands.add(command);
-        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE);
+        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE, con);
     }
 
     public static boolean workRequired(){
         return ((AddCommands.size() > 0) || (AcceptedCommands.size() > 0));
     }
 
-    public static void handleStack(){
+    public static void handleStack(Context con){
         for(UserRequest request: AcceptedCommands){
             if(isValidCommand(request)){
                 RequestController.addAcceptanceOffline(request);
             }
         }
-        RequestController.addBatchOpenRequests(AddCommands);
+        RequestController.addBatchOpenRequests(AddCommands, con);
         clearCommands();
         //delete save file
         File accSavFile = new File(CommandStack.ACCEPTFILE);
