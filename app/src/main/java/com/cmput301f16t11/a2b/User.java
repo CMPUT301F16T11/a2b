@@ -211,26 +211,6 @@ public class User {
 
     public double getRating() {return rating;}
 
-//    public UserRequest getLatestActiveDriverRequest() {
-//        /**
-//         * Automatically considers current mode of user (driver or rider) and returns the latests
-//         * active request MADE AS A RIDER if mode == RIDER, and the latest active ACCEPTED REQUEST
-//         * AS A DRIVER if mode == DRIVER.
-//         */
-//        return this.activeRequestsAsDriver.get(activeRequestsAsDriver.size() - 1);
-//
-//    }
-//
-//    public UserRequest getLatestActiveRiderRequest() {
-//        /**
-//         * Returns latest active request
-//         */
-//        return this.activeRequestsAsRider.get(activeRequestsAsRider.size() - 1);
-//    }
-
-//    public Mode getMode() {
-//        return this.mode;
-//    }
 
     /**
      * get user id

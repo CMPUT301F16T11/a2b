@@ -62,6 +62,7 @@ public class UserController {
     static public Boolean canDrive() {
         return user.canDrive();
     }
+
     static public void updateRating(int r, String driverName) {
         User user = UserController.getUserFromName(driverName);
         int currTotalRating = user.getTotalRating();
@@ -165,19 +166,7 @@ public class UserController {
      * Stores it in internal storage as JSON in user.sav file\
      */
     public static void saveInFile(Activity activity) {
-        FileController.setContext(activity);
-        FileController.saveInFileUser(user, USRFILE);
-//         try {
-//             // Try to convert user to JSON and save it
-//             FileOutputStream fos = activity.openFileOutput(USRFILE, 0);
-//             OutputStreamWriter writer = new OutputStreamWriter(fos);
-//             Gson gson = new Gson();
-//             gson.toJson(user, writer);
-//             writer.flush();
-//         } catch (Exception e) {
-//             Log.i("Error", "Couldn't save file");
-//             throw new RuntimeException();
-//         }
+        FileController.saveInFileUser(user, USRFILE, activity);
     }
 
     /**
@@ -187,23 +176,12 @@ public class UserController {
      * @return true if successful, false if no saved user
      */
     public static Boolean loadFromFile(Activity activity) {
-        FileController.setContext(activity);
-        user = FileController.loadFromFileUser(USRFILE);
+        user = FileController.loadFromFileUser(USRFILE, activity);
         if(user != null) {
             return true;
         } else {
             return false;
         }
-//        try {
-//            FileInputStream fis = activity.openFileInput(USRFILE);
-//            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-//            user = new Gson().fromJson(in, User.class);
-//        } catch (FileNotFoundException f) {
-//            Log.i("File", "No saved user");
-//            return false;
-//        }
-//
-//        return true;
     }
 
     /**
@@ -213,12 +191,11 @@ public class UserController {
      */
     public static void logOut(Context context) {
 
-        FileController.setContext(context);
         UserController.setUser(null);
         UserController.setMode(Mode.RIDER);
 
         //delete all offline files
-        FileController.clear();
+        FileController.clear(context);
 
         //Stop all the services if they are running
         RiderNotificationService.stopRiderService();
@@ -284,9 +261,6 @@ public class UserController {
         return users;
     }
 
-
-
-    // offline - not implemented
 
     /**
      * NOT IMPLEMENTED

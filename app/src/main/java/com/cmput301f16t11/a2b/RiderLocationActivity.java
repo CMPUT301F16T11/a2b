@@ -60,7 +60,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private Marker currentMarker;
     private Context context;
     private String tripDistance = "? km";
-    private final String styleURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    private final String stylevURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
     MapBoxOfflineTileProvider provider;
     TileOverlay overlay;
 
@@ -75,14 +75,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // TODO: Change this logic to check if there are any stack items to push up to the server
-        FileController.setContext(this);
-        if (FileController.isNetworkAvailable()) {
-            menu.getItem(3).setEnabled(false);
-        }
-        else {
-            menu.getItem(3).setEnabled(true);
-        }
+        menu.getItem(3).setEnabled(CommandStack.workRequired());
         return true;
     }
 
@@ -96,8 +89,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
             case R.id.changeRole:
                 User user = UserController.getUser();
-                FileController.setContext(this);
-                if (UserController.canDrive() && FileController.isNetworkAvailable()) {
+                if (UserController.canDrive() && FileController.isNetworkAvailable(this)) {
                     Intent driverIntent = new Intent(RiderLocationActivity.this, DriverLocationActivity.class);
                     UserController.setMode(Mode.DRIVER);
                     startActivity(driverIntent);
@@ -108,6 +100,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     UserController.setMode(Mode.DRIVER);
                     Intent intent = new Intent(RiderLocationActivity.this, RequestListActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     showNotADriverDialog();
@@ -120,10 +113,14 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 return true;
 
             case R.id.goOnline:
-                FileController.setContext(this);
-                if (FileController.isNetworkAvailable()) {
+                if (FileController.isNetworkAvailable(this)) {
                     // TODO: Send command stack
-                    useOnlineTiles();
+                    if (FileController.isNetworkAvailable(context)) {
+                        if(CommandStack.workRequired()){
+                            CommandStack.handleStack(getApplicationContext());
+                        }
+                        useOnlineTiles();
+                    }
                 }
                 else {
                     AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -155,10 +152,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
         context = this;
         setContentView(R.layout.activity_rider_location);
+        RequestController.loadDisplayedRequests(this);
 
         CommandStack.setDirectory(getFilesDir());
         if(new File(getFilesDir(),CommandStack.ACCEPTFILE).exists()){
-            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE));
+            CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE, this));
         }else{
             try {
                 new File(getFilesDir(),CommandStack.ACCEPTFILE).createNewFile();
@@ -167,7 +165,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             }
         }
         if(new File(getFilesDir(),CommandStack.ADDFILE).exists()){
-            CommandStack.setAddCommands(FileController.loadFromFile(CommandStack.ADDFILE));
+            CommandStack.setAddCommands(FileController.loadFromFile(CommandStack.ADDFILE, this));
         }
         else{
             try {
@@ -301,8 +299,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     currentMarker = null;
                     setLocation.setText(R.string.confirm_trip);
 
-                    FileController.setContext(context);
-                    if(FileController.isNetworkAvailable()) {
+                    if(FileController.isNetworkAvailable(context)) {
                         JSONMapsHelper helper = new JSONMapsHelper((RiderLocationActivity) context);
                         helper.drawPathCoordinates(tripStartMarker, tripEndMarker);
 
@@ -311,8 +308,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 } else {
 
-                    FileController.setContext(context);
-                    if(FileController.isNetworkAvailable()) {
+                    if(FileController.isNetworkAvailable(context)) {
                         displayRideConfirmationDlg(tripDistance);
                     }
                     else{
@@ -337,8 +333,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                             .position(latLng)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
 
-                    FileController.setContext(context);
-                    if(FileController.isNetworkAvailable()) {
+                    if(FileController.isNetworkAvailable(context)) {
                         try {
                             Geocoder geoCoder = new Geocoder(context);
                             List<Address> matches = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -381,9 +376,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                 .tilt(0)
                 .build();
 
-        // !RequestController.isNetworkAvailable(this)
-        FileController.setContext(this);
-        if (!FileController.isNetworkAvailable()) {
+        if (!FileController.isNetworkAvailable(this)) {
             useOfflineTiles();
         }
         else {
@@ -401,15 +394,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     public void onResume() {
         super.onResume();
         if (mMap != null) {
-            FileController.setContext(this);
-            if (!FileController.isNetworkAvailable()) {
+            if (!FileController.isNetworkAvailable(this)) {
                 useOfflineTiles();
             }
             else {
                 useOnlineTiles();
-                if(CommandStack.workRequired()){
-                    CommandStack.handleStack(this);
-                }
             }
         }
     }
@@ -504,6 +493,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     doubleWarning.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
+                                    useOfflineTiles();
                                     dialog.dismiss();
                                 }
                             });
@@ -522,8 +512,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                         "N/A" );
 
                 //Cache this requests with the other ones
-                FileController.setContext(context);
-                CommandStack.addAddCommand(req);
+                CommandStack.addAddCommand(req, context);
 
                 dialog.dismiss();
                 resetMap();
@@ -672,8 +661,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         cancelTrip.setEnabled(false);
 
         mMap.clear();
-        FileController.setContext(context);
-        if(!FileController.isNetworkAvailable()){
+        if(!FileController.isNetworkAvailable(context)){
             useOfflineTiles();
         }
         else{

@@ -67,18 +67,6 @@ public class ElasticsearchUserController {
 
                     User user = result.getSourceAsObject(User.class);
 
-//                    // ensure that the users id is set.
-//                    // this is for debugging purposes and can be removed in production
-//                    if (user == null) {
-//                        // parse the response for the id
-//                        JsonObject jsonResponse = result.getJsonObject();
-//                        JsonObject hits = jsonResponse.getAsJsonObject("hits");
-//                        JsonArray actualHits = hits.getAsJsonArray("hits");
-//                        JsonObject firstHit = actualHits.get(0).getAsJsonObject();
-//                        String id = firstHit.get("_id").toString();
-//                        user.setId(id);
-//                    }
-
                     if (user!=null && user.getName().equals(params[0])) {
                         return user;
                     }
@@ -208,7 +196,6 @@ public class ElasticsearchUserController {
      * Input: User object
      * Output: Boolean representing elasticsearch result
      */
-
     public static class UpdateUserInfoTask extends AsyncTask<User, Void, Boolean> {
         /**
          * Updates a user account's details
@@ -240,8 +227,6 @@ public class ElasticsearchUserController {
 
             return true;
         }
-
-
     }
 
     public static class getUsersFromIds extends AsyncTask<ArrayList<String>,Void,ArrayList<User>>{
@@ -268,9 +253,7 @@ public class ElasticsearchUserController {
                 e.printStackTrace();
                 return users;
             }
-
             return users;
-
         }
     }
 
@@ -377,19 +360,15 @@ public class ElasticsearchUserController {
                 e.printStackTrace();
                 return false;
             }
-
             return true;
         }
     }
-
 
     private static void verifySettings() {
         // Initialize client if necessary
         if (client == null) {
             DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://35.164.200.4:9200");
-            //DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
             DroidClientConfig config = builder.build();
-
             JestClientFactory factory = new JestClientFactory();
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();

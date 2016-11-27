@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -50,9 +53,7 @@ import java.util.ArrayList;
  *
  */
 public class RequestListActivity extends AppCompatActivity {
-    /**
 
-     */
     private ArrayList<UserRequest> requests;
     private ShadedListAdapter adapter;
     private ListView listView;
@@ -64,14 +65,39 @@ public class RequestListActivity extends AppCompatActivity {
     private Boolean filterMaxPricePerKM;
     private DriverLocationActivity.SearchType  searchType;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       if(!FileController.isNetworkAvailable(this) && UserController.checkMode() == Mode.DRIVER){
+           MenuInflater inflater = getMenuInflater();
+           inflater.inflate(R.menu.offline_request_detail, menu);
+       }
 
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.changeRole:
+                Intent driverIntent = new Intent(this, RiderLocationActivity.class);
+                UserController.setMode(Mode.RIDER);
+                startActivity(driverIntent);
+                finish();
+                break;
+            case R.id.signOut:
+                UserController.logOut(this);
+                finish();
+                }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
         requests = new ArrayList<UserRequest>();
-        FileController.setContext(this);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
@@ -153,12 +179,18 @@ public class RequestListActivity extends AppCompatActivity {
         }
 
         // spinner stuff
-        if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable()) {
+        if (UserController.checkMode() == Mode.DRIVER && !FileController.isNetworkAvailable(this)) {
             // offline mode, accepted by me only
             String [] choices;
             choices = getResources().getStringArray(R.array.requestTypesOffline);
-            spinnerChoices = new ArrayAdapter<String>(this,
+            spinnerChoices = new ArrayAdapter<>(this,
                     android.R.layout.simple_spinner_dropdown_item, choices);
+        }
+        else if (UserController.checkMode() == Mode.RIDER && !FileController.isNetworkAvailable(this)) {
+            String [] choices;
+            choices = getResources().getStringArray(R.array.requestTypesOfflineRider);
+            spinnerChoices = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                    choices);
         }
         else if (UserController.checkMode() == Mode.DRIVER) {
             //Depending on the type of search our dropdown will be different
@@ -197,7 +229,7 @@ public class RequestListActivity extends AppCompatActivity {
 
                     // Driver Mode
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        if (FileController.isNetworkAvailable()) {
+                        if (FileController.isNetworkAvailable(context)) {
                             try {
                                 requests.clear();
                                 requests.addAll(
@@ -209,27 +241,31 @@ public class RequestListActivity extends AppCompatActivity {
                         else {
                             // already accepted requests
                             requests.clear();
-                            requests.addAll(
-                                    getFilteredRequests(RequestController.getAcceptedByUser(
-                                            UserController.getUser(), RequestListActivity.this)));
-
+                            requests.addAll(getFilteredRequests(RequestController.getNearbyRequests()));
                         }
 
                     }
                     else {
                         // rider mode!
                         // my requests
-                        requests.clear();
-                        requests.addAll(
-                                RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        if (FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(
+                                    RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                        }
+                        else {
+                            // Pending requests
+                            requests.clear();
+                            requests.addAll(
+                                RequestController.getOfflineRequests());
+                        }
 
                     }
-
                     adapter.notifyDataSetChanged();
                 } else if (position == 1) {
                     // Accepted by Me (for drivers: by ME, for riders: by at least 1 driver
                     if (UserController.checkMode() == Mode.DRIVER) {
-                        if (FileController.isNetworkAvailable()) {
+                        if (FileController.isNetworkAvailable(context)) {
                             requests.clear();
                             requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
@@ -237,16 +273,15 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                         else {
                             // offline mode
-                            // requests accepted while offline (pending sending to server)
+                            // Accepted by me
                             requests.clear();
-                            requests.addAll(
-                                    getFilteredRequests(RequestController.getOfflineAcceptances()));
-                            ArrayList<UserRequest> test = RequestController.getOfflineAcceptances();
+                            requests.addAll(getFilteredRequests(RequestController.getAcceptedByUser(UserController.getUser(),
+                                    context)));
                         }
                     } else {
                         // users
                         requests.clear();
-                        requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                        requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
                     }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
@@ -257,29 +292,43 @@ public class RequestListActivity extends AppCompatActivity {
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
                     if (UserController.checkMode() == Mode.RIDER ||
-                            FileController.isNetworkAvailable()) {
+                            FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(
                                 getFilteredRequests(RequestController.getConfirmedByRiders(
                                         UserController.getUser(), UserController.checkMode())));
                     }
-                    else {
-                        // offline mode
-                        // already completed requests
+                    else if(UserController.checkMode() == Mode.RIDER ||
+                            FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
                                 RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
                     }
+                    else {
+                        // offline mode
+                        //Offline acceptances
+                        requests.clear();
+                        requests.addAll(RequestController.getCompletedRequests(
+                                UserController.getUser(), UserController.checkMode(), context));
+
+                    }
                     adapter.notifyDataSetChanged();
 //                    populateRequestList();
                 } else if (position == 3) {
-                    // awaiting payment
-                    requests.clear();
-                    requests.addAll(getFilteredRequests(
-                            RequestController.getAwaitingPaymentRequests(UserController.getUser(),
-                                    UserController.checkMode())));
-                    adapter.notifyDataSetChanged();
+                    if(UserController.checkMode() == Mode.DRIVER) {
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getAwaitingPaymentRequests(UserController.getUser(),
+                                        UserController.checkMode())));
+                        adapter.notifyDataSetChanged();
+                    }
+                    //Completed Requests
+                    else{
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode(), RequestListActivity.this)));
+                    }
                 }
 
                 else if (position == 4) {

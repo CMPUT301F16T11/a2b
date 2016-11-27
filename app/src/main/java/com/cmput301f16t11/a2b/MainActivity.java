@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+
 /**
  * Main activity to load activities for testing purposes.
  *
@@ -18,8 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Testing Login Activity atm
         Intent intent = new Intent(this, LoginActivity.class);
-//
+
         //Intent intent = new Intent(this, RequestListActivity.class);
+
         startActivity(intent);
         finish();
     }

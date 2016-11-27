@@ -29,8 +29,8 @@ public class CommandStack {
         AddCommands = commands;
     }
     public static void clearCommands(){
-        AcceptedCommands.clear();
-        AddCommands.clear();
+        AcceptedCommands = new ArrayList<>();
+        AddCommands = new ArrayList<>();
     }
     public static UserRequest checkAccepted(int i){
         return AcceptedCommands.get(i);
@@ -38,6 +38,7 @@ public class CommandStack {
     public static UserRequest checkAdd(int i){
         return AddCommands.get(i);
     }
+
     public static boolean isValidCommand(UserRequest request){
         ElasticsearchRequestController.GetOpenRequestById getId = new ElasticsearchRequestController.GetOpenRequestById();
         getId.execute(request.getId());
@@ -52,13 +53,21 @@ public class CommandStack {
         return false;
     }
 
-    public static void addAddCommand(UserRequest command){
+
+    public static void addAddCommand(UserRequest command, Context con){
+        if (AddCommands==null) {
+            AddCommands = new ArrayList<>();
+        }
         AddCommands.add(command);
-        FileController.saveInFile(AddCommands,CommandStack.ADDFILE);
+        FileController.saveInFile(AddCommands,CommandStack.ADDFILE, con);
     }
-    public static void addAcceptedCommand(UserRequest command){
+
+    public static void addAcceptedCommand(UserRequest command, Context con){
+        if (AcceptedCommands==null) {
+            AcceptedCommands = new ArrayList<>();
+        }
         AcceptedCommands.add(command);
-        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE);
+        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE, con);
     }
 
     public static boolean workRequired(){
@@ -70,27 +79,26 @@ public class CommandStack {
     }
 
     public static void handleStack(Context context){
-        for(UserRequest request: AcceptedCommands){
-            if(isValidCommand(request)){
-                RequestController.addAcceptanceOffline(request);
+        if (!(AcceptedCommands==null)) {
+            for(UserRequest request: AcceptedCommands){
+                if(isValidCommand(request)){
+                    RequestController.addAcceptanceOffline(request);
+                }
             }
         }
-        ArrayList<UserRequest> filledOutRequests = new ArrayList<>();
-        for(UserRequest request: AddCommands){
-            filledOutRequests.add(RequestController.convertOfflineRequestToOnlineRequest(request,context));
+        if (!(AddCommands==null)) {
+            ArrayList<UserRequest> filledOutRequests = new ArrayList<>();
+            for (UserRequest request : AddCommands) {
+                filledOutRequests.add(RequestController.convertOfflineRequestToOnlineRequest(request, context));
+            }
+            RequestController.addBatchOpenRequests(filledOutRequests, context);
         }
-        RequestController.addBatchOpenRequests(filledOutRequests);
+
         clearCommands();
         //delete save file
         File accSavFile = new File(directory,CommandStack.ACCEPTFILE);
         File addSavFile = new File(directory,CommandStack.ADDFILE);
         accSavFile.delete();
         addSavFile.delete();
-        try {
-            new File(directory,CommandStack.ADDFILE).createNewFile();
-            new File(directory,CommandStack.ACCEPTFILE).createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

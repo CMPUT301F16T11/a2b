@@ -1,7 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import android.location.Address;
-
 import java.io.Serializable;
 
 /**

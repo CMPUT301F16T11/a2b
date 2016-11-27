@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * THe following is a derivative of an answer to "TileProvider using local tiles" on
+ * The following is a derivative of an answer to "TileProvider using local tiles" on
  * Stack Overflow by "Alex Vasilkov," a stack overflow user. It is used under CC-BY-SA by
  * CMPUT301F16T11.
  *

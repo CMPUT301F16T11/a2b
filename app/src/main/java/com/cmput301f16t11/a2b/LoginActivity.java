@@ -3,8 +3,6 @@ package com.cmput301f16t11.a2b;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -18,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -26,7 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -71,7 +67,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // If the user has a persistent session move right to next activity
         if (UserController.loadFromFile(this)) {
             Intent intent = new Intent(this, RiderLocationActivity.class);
+            UserController.setMode(Mode.RIDER);
             startActivity(intent);
+            finish();
         }
 
         // Set up the login form.
@@ -95,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent);
             }
         });
+
         /**
          * The following segment of LoginActivity contains a derivative of
          */
@@ -129,8 +128,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-
-
         // Check for a valid user address
         if (TextUtils.isEmpty(username)) {
             mUsernameView.setError(getString(R.string.field_required));
@@ -157,12 +154,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 UserController.saveInFile(this);
             }
 
-
             //Generate save initial Save Files
+            RequestController.getCompletedRequests(UserController.getUser(), UserController.checkMode(), LoginActivity.this);
+            RequestController.getOwnActiveRequests(UserController.getUser(), LoginActivity.this);
+            RequestController.getAcceptedByUser(UserController.getUser(), LoginActivity.this);
 
             Intent intent = new Intent(this, RiderLocationActivity.class);
             startActivity(intent);
-
         }
     }
 
