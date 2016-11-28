@@ -39,6 +39,19 @@ public class UserRequest implements Parcelable {
     @JestId
     private String id;
 
+    /**
+     * Instantiates a new User request.
+     *
+     * @param start             the start
+     * @param end               the end
+     * @param fare              the fare
+     * @param riderId           the rider id
+     * @param riderUsername     the rider username
+     * @param distance          the distance
+     * @param description       the description
+     * @param startLocationName the start location name
+     * @param endLocationString the end location string
+     */
     public UserRequest(LatLng start, LatLng end, Number fare, String riderId, String riderUsername, Double distance, String description,
                        String startLocationName, String endLocationString) {
         this.startLocation = new Point(start.latitude, start.longitude);
@@ -58,6 +71,14 @@ public class UserRequest implements Parcelable {
         this.endLocationName = endLocationString;
     }
 
+    /**
+     * Instantiates a new User request.
+     *
+     * @param start   the start
+     * @param end     the end
+     * @param fare    the fare
+     * @param riderId the rider id
+     */
     public UserRequest(LatLng start, LatLng end, Number fare, String riderId){
         this.startLocation = new Point(start.latitude,start.longitude);
         this.endLocation = new Point(end.latitude,end.longitude);
@@ -72,144 +93,306 @@ public class UserRequest implements Parcelable {
 
     }
 
+    /**
+     * Clear accepted drivers.
+     */
     public void clearAcceptedDrivers(){
         acceptedDriverIds.clear();
     }
 
-    // Getters
+    /**
+     * Gets confirmed driver id.
+     *
+     * @return the confirmed driver id
+     */
+// Getters
     public String getConfirmedDriverID() {
         return this.confirmedDriverId;
     }
 
+    /**
+     * Gets accepted driver i ds.
+     *
+     * @return the accepted driver i ds
+     */
     public ArrayList<String> getAcceptedDriverIDs() {
         return this.acceptedDriverIds;
     }
 
+    /**
+     * Gets rider id.
+     *
+     * @return the rider id
+     */
     public String getRiderID() {
         return riderId;
     }
 
+    /**
+     * Gets end location.
+     *
+     * @return the end location
+     */
     public LatLng getEndLocation() {
         return new LatLng(this.endLocation.getLat(),this.endLocation.getLon());
     }
 
+    /**
+     * Gets fare.
+     *
+     * @return the fare
+     */
     public Number getFare() {
         return fare;
     }
 
+    /**
+     * Gets start location.
+     *
+     * @return the start location
+     */
     public LatLng getStartLocation() {
         return new LatLng(this.startLocation.getLat(), this.startLocation.getLon());
     }
 
+    /**
+     * Get accepted status boolean.
+     *
+     * @return the boolean
+     */
     public boolean getAcceptedStatus(){
 
         return accepted;
     }
 
+    /**
+     * Is completed boolean.
+     *
+     * @return the boolean
+     */
     public boolean isCompleted() {
         return completed;
     }
 
+    /**
+     * Sent notification boolean.
+     *
+     * @return the boolean
+     */
     public boolean sentNotification() {
         return true;
     }
+
+    /**
+     * Get start location name string.
+     *
+     * @return the string
+     */
     public String getStartLocationName(){
         return startLocationName;
     }
 
+    /**
+     * Get end location name string.
+     *
+     * @return the string
+     */
     public String getEndLocationName(){
         return endLocationName;
     }
 
+    /**
+     * Gets date string.
+     *
+     * @return the date string
+     */
     public String getDateString() {
         return new Date(this.timeCreatedInMillis).toString();
     }
 
+    /**
+     * Gets distance.
+     *
+     * @return the distance
+     */
     public Double getDistance() {
         return this.distance;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Gets description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Get rider username string.
+     *
+     * @return the string
+     */
     public String getRiderUsername(){return riderUsername;}
 
-    // setters
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+// setters
     public void setId(String id) {
 
         this.id = id;
     }
 
+    /**
+     * Sets confirmed driver.
+     *
+     * @param id the id
+     */
     public void setConfirmedDriver(String id) {
 
         this.confirmedDriverId = id;
     }
 
+    /**
+     * Sets start location.
+     *
+     * @param startLocation the start location
+     */
     public void setStartLocation(LatLng startLocation) {
 
         this.startLocation.setLat(startLocation.latitude);
         this.startLocation.setLon(startLocation.longitude);
     }
 
+    /**
+     * Sets in progress.
+     */
     public void setInProgress() {
 
         this.inProgress = true;
     }
 
+    /**
+     * Sets end location.
+     *
+     * @param endLocation the end location
+     */
     public void setEndLocation(LatLng endLocation) {
         this.endLocation.setLat(endLocation.latitude);
         this.endLocation.setLon(endLocation.longitude);
     }
 
+    /**
+     * Sets payment received.
+     *
+     * @param paymentReceived the payment received
+     */
     public void setPaymentReceived(boolean paymentReceived) {
         this.paymentReceived = paymentReceived;
     }
 
+    /**
+     * Sets fare.
+     *
+     * @param fare the fare
+     */
     public void setFare(Number fare) {
         this.fare = fare;
     }
 
+    /**
+     * Set accepted status.
+     *
+     * @param bool the bool
+     */
     public void setAcceptedStatus(Boolean bool){
 
         accepted = bool;
     }
 
+    /**
+     * Sets completed status.
+     *
+     * @param completed the completed
+     */
     public void setCompletedStatus(boolean completed) {
 
         this.completed = completed;
     }
 
+    /**
+     * Set start location name.
+     *
+     * @param startLocationName the start location name
+     */
     public void setStartLocationName(String startLocationName){
         this.startLocationName = startLocationName;
     }
 
+    /**
+     * Set end location name.
+     *
+     * @param endLocationName the end location name
+     */
     public void setEndLocationName(String endLocationName){
         this.endLocationName = endLocationName;
     }
 
+    /**
+     * Set distance.
+     *
+     * @param distance the distance
+     */
     public void setDistance(Double distance){
         this.distance = distance;
     }
 
+    /**
+     * Is payment recived boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPaymentRecived() {
 
         return paymentReceived;
     }
 
+    /**
+     * Has confirmed rider boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasConfirmedRider() {
 
         return this.confirmedDriverId != null;
     }
 
+    /**
+     * Add accepted driver.
+     *
+     * @param id the id
+     */
     public void  addAcceptedDriver(String id){
         this.acceptedDriverIds.add(id);
     }
 
+    /**
+     * Gets request status.
+     *
+     * @return the request status
+     */
     public RequestStatus getRequestStatus() {
         if (this.confirmedDriverId == null) {
             if (this.acceptedDriverIds.size() == 0) {
@@ -268,7 +451,6 @@ public class UserRequest implements Parcelable {
 
     /**
      * Static variable to create user requests from a parcel
-     *
      */
     public static final Parcelable.Creator<UserRequest> CREATOR =
             new Parcelable.Creator<UserRequest>() {

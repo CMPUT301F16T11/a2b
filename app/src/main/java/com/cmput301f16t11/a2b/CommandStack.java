@@ -10,40 +10,95 @@ import java.util.ArrayList;
 /**
  * Created by tothd on 11/26/2016.
  */
-
 public class CommandStack {
     private static File directory;
     private static ArrayList<UserRequest> AcceptedCommands = new ArrayList<>();
     private static ArrayList<UserRequest> AddCommands = new ArrayList<>();
 
+    /**
+     * The constant ACCEPTFILE.
+     */
     public static String ACCEPTFILE = "OfflineAcceptance.sav";
+    /**
+     * The constant ADDFILE.
+     */
     public static String ADDFILE = "OfflineAdd.sav";
 
+    /**
+     * Set directory.
+     *
+     * @param file the file
+     */
     public static void setDirectory(File file){
         directory = file;
     }
 
+    /**
+     * Set accepted commands.
+     *
+     * @param commands the commands
+     */
     public static void setAcceptedCommands(ArrayList<UserRequest> commands){
         AcceptedCommands = commands;
     }
+
+    /**
+     * Set add commands.
+     *
+     * @param commands the commands
+     */
     public static void setAddCommands(ArrayList<UserRequest> commands){
         AddCommands = commands;
     }
 
+    /**
+     * Get add commands array list.
+     *
+     * @return the array list
+     */
     public static ArrayList<UserRequest> getAddCommands(){return AddCommands;}
+
+    /**
+     * Get accepted commands array list.
+     *
+     * @return the array list
+     */
     public static ArrayList<UserRequest> getAcceptedCommands(){return AcceptedCommands;}
 
+    /**
+     * Clear commands.
+     */
     public static void clearCommands(){
         AcceptedCommands = new ArrayList<>();
         AddCommands = new ArrayList<>();
     }
+
+    /**
+     * Check accepted user request.
+     *
+     * @param i the
+     * @return the user request
+     */
     public static UserRequest checkAccepted(int i){
         return AcceptedCommands.get(i);
     }
+
+    /**
+     * Check add user request.
+     *
+     * @param i the
+     * @return the user request
+     */
     public static UserRequest checkAdd(int i){
         return AddCommands.get(i);
     }
 
+    /**
+     * Is valid command boolean.
+     *
+     * @param request the request
+     * @return the boolean
+     */
     public static boolean isValidCommand(UserRequest request){
         ElasticsearchRequestController.GetOpenRequestById getId = new ElasticsearchRequestController.GetOpenRequestById();
         getId.execute(request.getId());
@@ -59,6 +114,12 @@ public class CommandStack {
     }
 
 
+    /**
+     * Add add command.
+     *
+     * @param command the command
+     * @param con     the con
+     */
     public static void addAddCommand(UserRequest command, Context con){
         if (AddCommands==null) {
             AddCommands = new ArrayList<>();
@@ -69,6 +130,12 @@ public class CommandStack {
         }
     }
 
+    /**
+     * Add accepted command.
+     *
+     * @param command the command
+     * @param con     the con
+     */
     public static void addAcceptedCommand(UserRequest command, Context con){
         if (AcceptedCommands==null) {
             AcceptedCommands = new ArrayList<>();
@@ -79,6 +146,11 @@ public class CommandStack {
         }
     }
 
+    /**
+     * Work required boolean.
+     *
+     * @return the boolean
+     */
     public static boolean workRequired() {
         if (!(AddCommands==null) & !(AcceptedCommands==null)) {
             return (AddCommands.size()>0) || (AcceptedCommands.size()>0);
@@ -90,6 +162,11 @@ public class CommandStack {
         return false;
     }
 
+    /**
+     * Handle stack.
+     *
+     * @param context the context
+     */
     public static void handleStack(Context context){
         if (!(AcceptedCommands==null)) {
             for(UserRequest request: AcceptedCommands){
