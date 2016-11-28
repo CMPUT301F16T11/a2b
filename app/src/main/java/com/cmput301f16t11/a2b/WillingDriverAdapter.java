@@ -20,6 +20,7 @@ import java.util.ArrayList;
  * It is used under CC-BY-SA by CMPUT301F16T11.
  * It is available here:
  * http://stackoverflow.com/questions/13109840/android-alternate-row-colors-in-listview
+ *
  */
 
 public class WillingDriverAdapter extends ArrayAdapter<User> {

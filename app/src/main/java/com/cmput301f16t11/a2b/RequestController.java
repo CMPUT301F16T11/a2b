@@ -717,6 +717,8 @@ public class RequestController {
      * @param request request that has been set offline and is ready to be converted
      * @param context context for the geocoder to use
      * @return a valid request able to pushed to elastic search server
+     *
+     * Adapter Pattern
      */
     public static UserRequest convertOfflineRequestToOnlineRequest(UserRequest request, Context context){
 

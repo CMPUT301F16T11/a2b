@@ -24,6 +24,9 @@ import io.searchbox.core.Get;
  * This notification handler sets up when a driver accepts a rider ride. It then waits on the rider
  * to confirm and update the request with confirmed driver. It periodically checks the server for differences.
  * Sends a notification if the rider confirms or rejects a driver acceptance
+ *
+ * BUILDER PATTERN USED
+ * (android notification builder)
  */
 
 public class DriverNotificationService extends IntentService {

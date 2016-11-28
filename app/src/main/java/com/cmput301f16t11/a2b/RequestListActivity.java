@@ -54,6 +54,7 @@ import java.util.ArrayList;
  * http://stackoverflow.com/questions/14759253/show-keyboard-automatically
  * Accessed Nov. 18, 2016
  *
+ * STATE DESIGN PATTERN
  */
 public class RequestListActivity extends AppCompatActivity {
 

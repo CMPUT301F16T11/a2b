@@ -20,6 +20,10 @@ import java.util.ArrayList;
 /**
  * Controllers user and user functions
  * static so it can be shared by all activities
+ *
+ * SINGLETON DESIGN PATTERN
+ * STATE DESIGN PATTERN (mode)
+ * STATE DESIGN PATTERN (user)
  */
 public class UserController {
     private static User user = null;

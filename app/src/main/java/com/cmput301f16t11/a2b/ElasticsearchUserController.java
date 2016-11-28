@@ -27,6 +27,9 @@ import io.searchbox.core.Update;
 
 /**
  * Elasticsearch controller to deal with user stuff on the elasticsearch server
+ *
+ * BUILDER PATTERN USED
+ * Jests Builder classes are used to build commands executed by the client
  */
 
 public class ElasticsearchUserController {
