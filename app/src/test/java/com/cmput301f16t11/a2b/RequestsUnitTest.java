@@ -135,5 +135,17 @@ public class RequestsUnitTest {
         assertTrue(user.hasAcceptedRequests(request));
     }
 
+    /**
+     * US 05.03.01
+     * As, a driver I want to see if my acceptance was accepted
+     */
+
+    @Test
+    public void testAcceptedDriverAcceptance() {
+        request.setConfirmedDriver("kf3232");
+        assertTrue(request.getRequestStatus().equals(RequestStatus.CONFIRMED));
+        assertTrue(request.getConfirmedDriverID().equals("kf3232"));
+    }
+
 
 }

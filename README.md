@@ -164,6 +164,13 @@ Third Party Libraries
 		nprogress, completed, payment recived.
 		- App held state informatoion, whether or not it was to operate in offline or online mode.
 
+	Decorator pattern
+		- ShadedListAdapter makes use of a decorator pattern
+
+	Observer pattern
+		- Most activities have click listeners which are observers that are observing 
+		various UI elements	
+
 
 For more information, documentation and examples, please see the wiki!
 

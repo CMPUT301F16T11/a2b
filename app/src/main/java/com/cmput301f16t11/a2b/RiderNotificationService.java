@@ -1,13 +1,11 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,7 +14,6 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Get;
@@ -26,7 +23,7 @@ import io.searchbox.core.Get;
  * continuously checks the server for that specific request and send a notification if there is an added
  * driver that accepts that ride.
  * Will be terminated when the user
- *
+ * <p/>
  * BUILDER PATTERN USED
  * (android notification builder)
  */
@@ -41,6 +38,9 @@ public class    RiderNotificationService extends IntentService {
     private static ArrayList<UserRequest> requestMonitoring = new ArrayList<>();
     private static RiderNotificationService self;
 
+    /**
+     * Instantiates a new Rider notification service.
+     */
     public RiderNotificationService(){
         super("Driver Notification service");
         this.self = this;
@@ -80,6 +80,9 @@ public class    RiderNotificationService extends IntentService {
 
     /**
      * This is static call that allows the user to retrieve a valid intent to start a service
+     *
+     * @param context the context
+     * @return the intent
      */
     public static Intent createIntentStartNotificationService(Context context) {
 
@@ -102,6 +105,7 @@ public class    RiderNotificationService extends IntentService {
 
     /**
      * determines if a service is started so there is only one service at any point
+     *
      * @return boolean true if service is started, false otherwise
      */
     public static Boolean isRecieveServiceStarted(){
@@ -116,7 +120,7 @@ public class    RiderNotificationService extends IntentService {
      * Adds a request to monitor on the driver side
      *
      * @param request request to monitor
-     * @param userId the driver
+     * @param userId  the driver
      */
     public void addDriverToMonitor(UserRequest request, String userId){
         int index = requestMonitoring.indexOf(request);
@@ -141,6 +145,8 @@ public class    RiderNotificationService extends IntentService {
 
     /**
      * Removes a request from the request that are being montiored
+     *
+     * @param id the id
      */
     public static void endNotification(String id){
 

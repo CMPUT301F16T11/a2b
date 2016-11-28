@@ -120,8 +120,6 @@ public class RequestDetailActivity extends AppCompatActivity {
 
             }
         });
-//        ArrayAdapter<User> adapter = new ArrayAdapter<>(this,
-//                android.R.layout.simple_list_item_1, android.R.id.text1, acceptedDrivers);
         willingDriverAdapter = new WillingDriverAdapter(this, this.acceptedDrivers);
 
         driverList.setAdapter(willingDriverAdapter);

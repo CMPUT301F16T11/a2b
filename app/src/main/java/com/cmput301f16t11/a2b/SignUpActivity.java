@@ -357,8 +357,6 @@ public class SignUpActivity extends AppCompatActivity {
             checkUserTask.execute(username);
             try {
                 result = checkUserTask.get();
-//                            errorMsg.setText(result.getId());
-//                            errorMsg.setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 Log.i("Error", "Failed to get result from asynctask");
             }
