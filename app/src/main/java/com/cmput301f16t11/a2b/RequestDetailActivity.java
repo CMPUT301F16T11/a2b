@@ -293,6 +293,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 else {
                     completeButton.setVisibility(View.GONE);
                 }
+                deleteButton.setVisibility(View.GONE);
                 payButton.setVisibility(View.GONE);
                 acceptButton.setVisibility(View.GONE);
                 break;

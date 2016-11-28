@@ -93,15 +93,16 @@ public class RequestController {
     }
 
     public static void addAcceptanceOffline(UserRequest request, Context context) {
-        ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline addAcceptance =
-                new ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline();
-        // request id driver id
-        addAcceptance.execute(request.getId(), UserController.getUser().getId());
         // update saved file
         ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
         requests = FileController.loadFromFile(acceptedByDriver, context);
         requests.add(request);
         FileController.saveInFile(requests, acceptedByDriver, context);
+        ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline addAcceptance =
+                new ElasticsearchRequestController.AddDriverAcceptanceToRequestOffline();
+        // request id driver id
+        addAcceptance.execute(request.getId(), UserController.getUser().getId());
+
     }
 
     /**
