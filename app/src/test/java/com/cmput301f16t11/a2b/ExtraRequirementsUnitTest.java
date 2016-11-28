@@ -110,6 +110,7 @@ public class ExtraRequirementsUnitTest {
 
     }
 }
+
 class MockRequestListActivity {
     private static boolean filterMaxPricePerKM;
     private static boolean filterMaxPrice;
