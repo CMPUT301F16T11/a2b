@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -249,6 +250,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         Button acceptButton = (Button) findViewById(R.id.request_detail_accept);
         Button completeButton = (Button) findViewById(R.id.request_detail_complete);
         Button payButton = (Button) findViewById(R.id.request_detail_pay);
+        final Context context = this;
 
         // enable delete button if the curr user owns this request
         if (UserController.getUser().getId().equals(request.getRiderID()) && FileController.isNetworkAvailable(this)) {
@@ -331,7 +333,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                 if(FileController.isNetworkAvailable(RequestDetailActivity.this)){
                     RequestController.addAcceptance(request, RequestDetailActivity.this);
                     try {
-                        DriverNotificationService.serviceHandler(request, getParent());
+                        Context context = getParent();
+                        DriverNotificationService.serviceHandler(request, RequestDetailActivity.this);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e("driverNotServ", e.toString());
@@ -340,15 +343,6 @@ public class RequestDetailActivity extends AppCompatActivity {
                     CommandStack.addAcceptedCommand(request, RequestDetailActivity.this);
                 }
 
-                //Once the rider accepts the ride start notification service
-
-                //TODO: drivernotificationservice is constantly getting null pointer exception
-                try {
-                    DriverNotificationService.serviceHandler(request, getParent());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e("driverNotServ", e.toString());
-                }
                 finish();
             }
         });
