@@ -108,7 +108,13 @@ public class RequestController {
     public static void addOpenRequest(UserRequest request, Context context) {
         ElasticsearchRequestController.AddOpenRequestTask addOpenRequest =
                 new ElasticsearchRequestController.AddOpenRequestTask();
-        addOpenRequest.execute(request);
+        try{
+            addOpenRequest.execute(request).get();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
 
         ArrayList<UserRequest> requests = new ArrayList<UserRequest>();
         requests = FileController.loadFromFile(riderRequests, context);
