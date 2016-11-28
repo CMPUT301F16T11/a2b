@@ -206,7 +206,9 @@ public class CommandStack {
                 UserRequest temp = RequestController.convertOfflineRequestToOnlineRequest(request, context);
                 filledOutRequests.add(temp);
             }
-            RequestController.addBatchOpenRequests(filledOutRequests, context);
+            if(filledOutRequests.size()>0) {
+                RequestController.addBatchOpenRequests(filledOutRequests, context);
+            }
             for (UserRequest request : filledOutRequests) {
                 RiderNotificationService.addRequestToBeNotified(request);
             }
