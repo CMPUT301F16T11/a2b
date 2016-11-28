@@ -200,7 +200,7 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             startService(intent);
 
             for(UserRequest request : currentOpenRequests){
-                RiderNotificationService.addRequestToBeNotified(request);
+                RiderNotificationService.serviceHandler(request, this);
             }
         }
     }
@@ -665,8 +665,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 RequestController.addOpenRequest(request, context);
 
-                //Add this request to be bmonitored
-                RiderNotificationService.addRequestToBeNotified(request);
+                //Add this request to be monitored
+                RiderNotificationService.serviceHandler(request, RiderLocationActivity.this);
 
                 //Clear the map
                 resetMap();

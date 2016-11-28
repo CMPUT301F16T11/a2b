@@ -1,5 +1,6 @@
 package com.cmput301f16t11.a2b;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -103,6 +104,15 @@ public class    RiderNotificationService extends IntentService {
     }
 
 
+    public static void serviceHandler(UserRequest req, Context activity) {
+        if (!RiderNotificationService.isRecieveServiceStarted()) {
+            Intent intent = RiderNotificationService.createIntentStartNotificationService(activity);
+            activity.startService(intent);
+        }
+
+        RiderNotificationService.addRequestToBeNotified(req);
+    }
+
     /**
      * determines if a service is started so there is only one service at any point
      *
@@ -143,6 +153,8 @@ public class    RiderNotificationService extends IntentService {
        }
     }
 
+
+
     /**
      * Removes a request from the request that are being montiored
      *
@@ -158,6 +170,9 @@ public class    RiderNotificationService extends IntentService {
                     requestMonitoring.remove(i);
                     break;
                 }
+            }
+            if (requestMonitoring.size()>0) {
+                RiderNotificationService.stopRiderService();
             }
         }
     }

@@ -189,7 +189,7 @@ public class CommandStack {
             }
             RequestController.addBatchOpenRequests(filledOutRequests, context);
             for (UserRequest request : filledOutRequests) {
-                RiderNotificationService.addRequestToBeNotified(request);
+                RiderNotificationService.serviceHandler(request, context);
             }
         }
 
