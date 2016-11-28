@@ -141,6 +141,11 @@ public class RideCompleteDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Method to empty stars above selected star.
+     *
+     * @param num index of the star touched by the user
+     */
     public void emptyStars(int num) {
         for (int i = rating-1; i > num; i--) {
             ImageView curr = starList.get(i);
@@ -148,6 +153,11 @@ public class RideCompleteDialog extends DialogFragment {
         }
     }
 
+    /**
+     * Method to fill the stars including and below the selected star.
+     *
+     * @param num index of the star touched by the user
+     */
     public void fillStars(int num) {
         for (int i = num; i > rating-1; i--) {
             ImageView curr = starList.get(i);

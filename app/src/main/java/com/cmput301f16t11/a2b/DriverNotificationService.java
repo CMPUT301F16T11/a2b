@@ -209,6 +209,12 @@ public class DriverNotificationService extends IntentService {
         notificationManager.notify(0, noti);
     }
 
+    /**
+     * Method to get the username from elasticsearch
+     *
+     * @param usernameId ID of the user
+     * @return Name of the desired user
+     */
     private String getUserName(String usernameId){
         Get get = new Get.Builder(index, usernameId).type(user).build();
         User user;
@@ -229,12 +235,22 @@ public class DriverNotificationService extends IntentService {
         }
     }
 
+    /**
+     * Method to synchronously add a request to the list to be monitored.
+     *
+     * @param req request to be monitored
+     */
     public static void addRequest(UserRequest req) {
         synchronized (requests) {
             requests.add(req);
         }
     }
 
+    /**
+     * Method to tell us if the service is started or not.
+     *
+     * @return Boolean
+     */
     public static Boolean isStarted() {
         if (self==null) {
             return false;
@@ -242,6 +258,12 @@ public class DriverNotificationService extends IntentService {
         return true;
     }
 
+    /**
+     * Method to add a request to be monitored and start service if necessary
+     *
+     * @param req request being accepted by driver
+     * @param activity activity where they accepted from
+     */
     public static void serviceHandler(UserRequest req, Activity activity) {
         if (!DriverNotificationService.isStarted()) {
             Intent intent = createIntentDriverNotificationService(activity);
