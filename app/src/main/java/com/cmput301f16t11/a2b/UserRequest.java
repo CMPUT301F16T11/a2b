@@ -174,14 +174,6 @@ public class UserRequest implements Parcelable {
         return completed;
     }
 
-    /**
-     * Sent notification boolean.
-     *
-     * @return the boolean
-     */
-    public boolean sentNotification() {
-        return true;
-    }
 
     /**
      * Get start location name string.

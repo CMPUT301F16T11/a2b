@@ -63,7 +63,10 @@ public class ExtraRequirementsUnitTest {
     @Test
     public void testRateDriver(){
         user.setRating(5.0);
-        assertEquals(5.0,user.getRating());}
+        assertEquals(5.0,user.getRating());
+
+    }
+
     /**
      US 03.04.01 (added 2016-11-14)
      As a driver, in my profile I can provide details about the vehicle I drive.
@@ -74,6 +77,7 @@ public class ExtraRequirementsUnitTest {
         assertEquals("Toyota",user.getCar().getMake());
         assertEquals("Corolla",user.getCar().getModel());
         assertEquals(2016,user.getCar().getYear());
+
     }
 
     /**
@@ -105,9 +109,10 @@ public class ExtraRequirementsUnitTest {
      */
     @Test
     public void testSearchByAddressOrNearby(){
-        //TODO: Not sure how this should be done
-
-
+        String address = "22 Jump Street";
+        String keyword = "Jump";
+        request.setStartLocationName(address);
+        assertTrue(request.getStartLocationName().toLowerCase().contains(keyword.toLowerCase()));
     }
 }
 

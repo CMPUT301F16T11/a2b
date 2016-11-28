@@ -45,6 +45,11 @@ public class AcceptingUnitTest {
 
         user.getActiveRequestsAsDriver().get(0).setAcceptedStatus(true);
         assertTrue(request.getAcceptedStatus());
+
+
+        request.setPaymentReceived(true);
+        assertTrue(request.isPaymentRecived());
+
     }
 
     @Test
@@ -86,19 +91,10 @@ public class AcceptingUnitTest {
 
     @Test
     public void testNotificationOfferAccepted(){
-        user.addActiveDriverRequest(request);
-        //get the list of requests
-        ArrayList<UserRequest> requestList = user.getActiveRequestsAsDriver();
-        requestList.get(0).setAcceptedStatus(true);
 
-        //check if any are accepted
-        for(UserRequest r: requestList)
-            if(request.getAcceptedStatus()){
-                request = r;
-            }
-
-        //test if notification was sent
-        assertEquals(request.sentNotification(),true);
+        user.setId("someId");
+       request.setConfirmedDriver(user.getId());
+        assertTrue(request.getConfirmedDriverID().equals(user.getId()));
 
     }
 
