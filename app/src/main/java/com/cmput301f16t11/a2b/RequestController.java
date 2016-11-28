@@ -26,6 +26,7 @@ public class RequestController {
     final static String nearbyRequests = "nearby.sav";
     final static String acceptedByDriver = "acceptedByMe.sav";
     final static String completedByDriver = "completedRequestsDriver.sav";
+    final static String completedRide = "completedRides.sav";
 
 
     /**
@@ -341,12 +342,12 @@ public class RequestController {
 
                 try{
                     userRequests = getPastRiderRequests.execute(user.getId()).get();
-                    FileController.saveInFile(userRequests, completedByDriver, con);
+                    FileController.saveInFile(userRequests, completedRide, con);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
             } else {
-                userRequests = FileController.loadFromFile(completedByDriver, con);
+                userRequests = FileController.loadFromFile(completedRide, con);
             }
 
         }

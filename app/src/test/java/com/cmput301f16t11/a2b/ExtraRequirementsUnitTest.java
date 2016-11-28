@@ -66,6 +66,7 @@ public class ExtraRequirementsUnitTest {
         assertEquals(5.0,user.getRating());
 
     }
+
     /**
      US 03.04.01 (added 2016-11-14)
      As a driver, in my profile I can provide details about the vehicle I drive.
@@ -109,6 +110,7 @@ public class ExtraRequirementsUnitTest {
     @Test
     public void testSearchByAddressOrNearby(){
         //TODO: Not sure how this should be done
+
 
     }
 }

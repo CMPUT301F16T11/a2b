@@ -46,8 +46,10 @@ public class AcceptingUnitTest {
         user.getActiveRequestsAsDriver().get(0).setAcceptedStatus(true);
         assertTrue(request.getAcceptedStatus());
 
+
         request.setPaymentReceived(true);
         assertTrue(request.isPaymentRecived());
+
     }
 
     @Test
@@ -89,6 +91,7 @@ public class AcceptingUnitTest {
 
     @Test
     public void testNotificationOfferAccepted(){
+
         user.setId("someId");
        request.setConfirmedDriver(user.getId());
         assertTrue(request.getConfirmedDriverID().equals(user.getId()));

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -106,10 +107,15 @@ public class RequestsUnitTest {
     @Test
     public void testFareEstimation() {
         // Expected 21.25 from a distance of 15 kms
-        Number fairFare = RiderLocationActivity.FairEstimation.estimateFair("15.0");
+        Double fairFare = RiderLocationActivity.FairEstimation.estimateFair("15.0");
+
         request.setFare(fairFare);
+
+        Number zero = 0;
+        // check that the fare is not being set to the defalult of zero
+        assertFalse(request.getFare().equals(zero));
+        // the fare is set correctly in request
         assertEquals(fairFare, request.getFare());
-        //TODO: will hard code the the correct estimation when possible
     }
 
     /**
