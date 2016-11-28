@@ -26,6 +26,9 @@ import io.searchbox.core.Get;
  * continuously checks the server for that specific request and send a notification if there is an added
  * driver that accepts that ride.
  * Will be terminated when the user
+ *
+ * BUILDER PATTERN USED
+ * (android notification builder)
  */
 public class    RiderNotificationService extends IntentService {
 

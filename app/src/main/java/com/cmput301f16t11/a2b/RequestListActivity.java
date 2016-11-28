@@ -54,6 +54,7 @@ import java.util.ArrayList;
  * http://stackoverflow.com/questions/14759253/show-keyboard-automatically
  * Accessed Nov. 18, 2016
  *
+ * STATE DESIGN PATTERN
  */
 public class RequestListActivity extends AppCompatActivity {
 
@@ -237,6 +238,11 @@ public class RequestListActivity extends AppCompatActivity {
                                 requests.clear();
                                 requests.addAll(
                                         getFilteredRequests(RequestController.getNearbyRequests()));
+                                try {
+                                    requests.remove(RequestController.getDeletedRequest());
+                                } catch (Exception e) {
+                                    Log.i("RequestList", "No deleted data was being shown. Carry on");
+                                }
                             } catch (NullPointerException e) {
                                 Log.i("No requests found", "driver mode");
                             }
@@ -245,6 +251,11 @@ public class RequestListActivity extends AppCompatActivity {
                             // already accepted requests
                             requests.clear();
                             requests.addAll(getFilteredRequests(RequestController.getNearbyRequests()));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
 
                     }
@@ -255,12 +266,23 @@ public class RequestListActivity extends AppCompatActivity {
                             requests.clear();
                             requests.addAll(
                                     RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                            try {
+                                UserRequest request = RequestController.getDeletedRequest();
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
                         else {
                             // Pending requests
                             requests.clear();
                             requests.addAll(
                                 RequestController.getOfflineRequests());
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
 
                     }
@@ -273,6 +295,11 @@ public class RequestListActivity extends AppCompatActivity {
                             requests.addAll(
                                 getFilteredRequests(RequestController.getAcceptedByUser(
                                         UserController.getUser(), RequestListActivity.this)));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
                         else {
                             // offline mode
@@ -280,14 +307,29 @@ public class RequestListActivity extends AppCompatActivity {
                             requests.clear();
                             requests.addAll(getFilteredRequests(RequestController.getAcceptedByUser(UserController.getUser(),
                                     context)));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
                     } else {
                         // users
                         requests.clear();
                         if(FileController.isNetworkAvailable(RequestListActivity.this)) {
                             requests.addAll(RequestController.getAcceptedByDrivers(UserController.getUser(), RequestListActivity.this));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         } else {
                             requests.addAll(RequestController.getOwnActiveRequests(UserController.getUser(), RequestListActivity.this));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
                         }
                     }
                     adapter.notifyDataSetChanged();
@@ -304,20 +346,45 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(
                                 getFilteredRequests(RequestController.getConfirmedByRiders(
                                         UserController.getUser(), UserController.checkMode())));
+                        try {
+                            requests.remove(RequestController.getDeletedRequest());
+                        } catch (Exception e) {
+                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        }
                     }
                     else if(UserController.checkMode() == Mode.RIDER ||
-                            FileController.isNetworkAvailable(context)) {
+                            !FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
                                 RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
+                        try {
+                            requests.remove(RequestController.getDeletedRequest());
+                        } catch (Exception e) {
+                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        }
                     }
                     else {
-                        // offline mode
-                        //Offline acceptances
-                        requests.clear();
-                        requests.addAll(RequestController.getCompletedRequests(
-                                UserController.getUser(), UserController.checkMode(), context));
+                        if(FileController.isNetworkAvailable(context)) {
+                            requests.clear();
+                            requests.addAll(RequestController.getCompletedRequests(
+                                    UserController.getUser(), UserController.checkMode(), context));
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
+                        }
+                         //Offline acceptances driver
+                        else {
+                            requests.clear();
+                            requests.addAll(RequestController.getOfflineAcceptances());
+                            try {
+                                requests.remove(RequestController.getDeletedRequest());
+                            } catch (Exception e) {
+                                Log.i("RequestList", "No deleted data was being shown. Carry on");
+                            }
+                        }
 
                     }
                     adapter.notifyDataSetChanged();
@@ -328,12 +395,22 @@ public class RequestListActivity extends AppCompatActivity {
                         requests.addAll(getFilteredRequests(
                                 RequestController.getAwaitingPaymentRequests(UserController.getUser(),
                                         UserController.checkMode())));
+                        try {
+                            requests.remove(RequestController.getDeletedRequest());
+                        } catch (Exception e) {
+                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        }
                     }
                     //Completed Requests
                     else{
                         requests.clear();
                         requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
+                        try {
+                            requests.remove(RequestController.getDeletedRequest());
+                        } catch (Exception e) {
+                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -347,6 +424,11 @@ public class RequestListActivity extends AppCompatActivity {
                             RequestController.getCompletedRequests(UserController.getUser(),
                             UserController.checkMode(), RequestListActivity.this)));
                     adapter.notifyDataSetChanged();
+                    try {
+                        requests.remove(RequestController.getDeletedRequest());
+                    } catch (Exception e) {
+                        Log.i("RequestList", "No deleted data was being shown. Carry on");
+                    }
                 }
             }
 
@@ -357,11 +439,6 @@ public class RequestListActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     *
-     * @param v
-     */
     public void radioButtonOnClickListener(View v) {
         // here is where the above cited android developers tutorial code is used
         // check if button is checked
@@ -472,5 +549,11 @@ public class RequestListActivity extends AppCompatActivity {
             spinner.setSelection(pos + 1, false);
         }
         spinner.setSelection(pos, false);
+        try {
+            requests.remove(RequestController.getDeletedRequest());
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Log.i("RequestList", "no deleted requests in list");
+        }
     }
 }

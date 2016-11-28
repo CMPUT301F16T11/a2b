@@ -156,24 +156,11 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         CommandStack.setDirectory(getFilesDir());
         if(new File(getFilesDir(),CommandStack.ACCEPTFILE).exists()){
             CommandStack.setAcceptedCommands(FileController.loadFromFile(CommandStack.ACCEPTFILE, this));
-        }else{
-            try {
-                new File(getFilesDir(),CommandStack.ACCEPTFILE).createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         if(new File(getFilesDir(),CommandStack.ADDFILE).exists()){
             CommandStack.setAddCommands(FileController.loadFromFile(CommandStack.ADDFILE, this));
         }
-        else{
-            try {
-                new File(getFilesDir(),CommandStack.ADDFILE).createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -181,6 +168,10 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Method to start the notification service for requests created by the user.
+     * If the notification service isn't started this method starts the service
+     */
     public void startUpNotificationService(){
         ArrayList<UserRequest>  currentOpenRequests = RequestController.getOwnActiveRequests(UserController.getUser(), this);
 
@@ -414,7 +405,44 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
-            mMap.setMyLocationEnabled(true);
+//            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(
+                            this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                            PackageManager.PERMISSION_GRANTED) {
+                        mMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+                    AlertDialog dialog = new AlertDialog.Builder(this).create();
+                    dialog.setTitle(getString(R.string.location_req_short));
+                    dialog.setMessage(getString(R.string.location_req_long));
+                    dialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                    System.exit(0);
+                                }
+                            });
+                    dialog.show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
@@ -503,8 +531,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
 
                 UserRequest req = new UserRequest(tripStartMarker.getPosition(), tripEndMarker.getPosition(),
                         userFare,
-                        UserController.getUser().getName(),
                         UserController.getUser().getId(),
+                        UserController.getUser().getName(),
                         0.0,
                         userDescription,
                         "N/A",

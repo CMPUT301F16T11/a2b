@@ -19,6 +19,7 @@ import static com.cmput301f16t11.a2b.Mode.DRIVER;
 public class RequestController {
 
     public static ArrayList<UserRequest> displayedRequests;
+    public static UserRequest deletedRequest;
 
     // FileNames
     final static String riderRequests = "riderOwnerRequests.sav";
@@ -118,7 +119,11 @@ public class RequestController {
     public static void addBatchOpenRequests(ArrayList<UserRequest> requests, Context con){
         ElasticsearchRequestController.AddBatchOpenRequestTask addBatchOpenRequestTask =
                 new ElasticsearchRequestController.AddBatchOpenRequestTask();
-        addBatchOpenRequestTask.execute(requests);
+        try{
+            addBatchOpenRequestTask.execute(requests).get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         // Save in File
         ArrayList<UserRequest> allRequests = FileController.loadFromFile(riderRequests, con);
@@ -247,8 +252,10 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineAcceptances() {
-        //TODO: command stack stuff
-        return new ArrayList<UserRequest>();
+       if(CommandStack.getAcceptedCommands() == null){
+            return new ArrayList<>();
+        }
+        return CommandStack.getAcceptedCommands();
     }
 
     /**
@@ -442,8 +449,10 @@ public class RequestController {
     }
 
     public static ArrayList<UserRequest> getOfflineRequests() {
-        //TODO: actual logic
-        return new ArrayList<UserRequest>();
+        if(CommandStack.getAddCommands() == null){
+            return new ArrayList<>();
+        }
+        return CommandStack.getAddCommands();
     }
 
     /**
@@ -543,19 +552,29 @@ public class RequestController {
      * Deletes a request
      *
      * @see ElasticsearchRequestController
-     * @param id the id of the request to be deleted
+     * @param request the request to be deleted
      * @return true if successful, false otherwise
      */
-    public static Boolean deleteRequest(String id) {
+    public static Boolean deleteRequest(UserRequest request) {
+        deletedRequest = request;
         ElasticsearchRequestController.DeleteRiderRequests deleteRequestsById =
                 new ElasticsearchRequestController.DeleteRiderRequests();
         try {
-            deleteRequestsById.execute(id);
+            deleteRequestsById.execute(request.getId());
 
         } catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Gets the request that has been delete
+     *
+     * @return te request in question
+     */
+    public static UserRequest getDeletedRequest() {
+        return deletedRequest;
     }
 
     /**
@@ -698,6 +717,8 @@ public class RequestController {
      * @param request request that has been set offline and is ready to be converted
      * @param context context for the geocoder to use
      * @return a valid request able to pushed to elastic search server
+     *
+     * Adapter Pattern
      */
     public static UserRequest convertOfflineRequestToOnlineRequest(UserRequest request, Context context){
 
