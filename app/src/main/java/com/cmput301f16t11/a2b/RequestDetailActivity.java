@@ -215,7 +215,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
 
         startLocation.setText(request.getStartLocationName());
-        endLocation.setText(request.getStartLocationName());
+        endLocation.setText(request.getEndLocationName());
         riderName.setText(request.getRiderUsername());
         fare.setText("$" + request.getFare().toString());
         description.setText(request.getDescription());
