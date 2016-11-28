@@ -376,8 +376,8 @@ public class RequestListActivity extends AppCompatActivity {
                         //Online driver mode
                         if(FileController.isNetworkAvailable(context)) {
                             requests.clear();
-                            requests.addAll(RequestController.getCompletedRequests(
-                                    UserController.getUser(), UserController.checkMode(), context));
+                            requests.addAll(RequestController.getConfirmedByRiders(
+                                    UserController.getUser(), UserController.checkMode()));
                             try {
                                 requests.remove(RequestController.getDeletedRequest());
                             } catch (Exception e) {
