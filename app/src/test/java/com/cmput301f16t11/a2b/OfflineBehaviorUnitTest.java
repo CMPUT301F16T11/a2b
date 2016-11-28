@@ -56,32 +56,33 @@ public class OfflineBehaviorUnitTest{
     US 08.01.01
     As an driver, I want to see requests that I already accepted while offline.
      */
-    @Test
-    public void testOfflineAcceptedRequest(){
-
-        //push onto command stack
-
-        //grab saved list of requests from the command stack
-        CommandStack.addCommand(command1);
-        //check and see if this list same as given one using test case
-        assertFalse(CommandStack.checkStack(0).getStatus());
-    }
-
-    /**
-     * US 08.02.01
-     As a rider, I want to see requests that I have made while offline.
-     */
-    @Test
-    public void testOfflineMadeRequests(){
-        Command command1 = new Command(request,true);
-        //push requestList onto the stack
-        CommandStack.addCommand(command1);
-        //go offline
-        //grab saved list of requests from the command stack
-        assertTrue(CommandStack.checkStack(0).getStatus());
-        //check that saved list is the same list before going offline
-
-    }
+//    @Test
+//    public void testOfflineAcceptedRequest(){
+//
+//        //push onto command stack
+//        CommandStack.addAcceptedCommand();
+//
+//        //grab saved list of requests from the command stack
+//        CommandStack.add();
+//        //check and see if this list same as given one using test case
+//        assertFalse(CommandStack.checkStack(0).getStatus());
+//    }
+//
+//    /**
+//     * US 08.02.01
+//     As a rider, I want to see requests that I have made while offline.
+//     */
+//    @Test
+//    public void testOfflineMadeRequests(){
+//        Command command1 = new Command(request,true);
+//        //push requestList onto the stack
+//        CommandStack.addCommand(command1);
+//        //go offline
+//        //grab saved list of requests from the command stack
+//        assertTrue(CommandStack.checkStack(0).getStatus());
+//        //check that saved list is the same list before going offline
+//
+//    }
 
     /**
     US 08.03.01
