@@ -410,10 +410,21 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                     }
                     //Completed Requests
-                    else{
+                    else if (!FileController.isNetworkAvailable(context)){
                         requests.clear();
                         requests.addAll(getFilteredRequests(RequestController.getCompletedRequests(UserController.getUser(),
                                         UserController.checkMode(), RequestListActivity.this)));
+                        try {
+                            requests.remove(RequestController.getDeletedRequest());
+                        } catch (Exception e) {
+                            Log.i("RequestList", "No deleted data was being shown. Carry on");
+                        }
+                    }
+                    else {
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getAwaitingPaymentRequests(UserController.getUser(),
+                                        UserController.checkMode())));
                         try {
                             requests.remove(RequestController.getDeletedRequest());
                         } catch (Exception e) {
