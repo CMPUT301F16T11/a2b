@@ -45,8 +45,6 @@ public class AcceptingUnitTest {
 
         user.getActiveRequestsAsDriver().get(0).setAcceptedStatus(true);
         assertTrue(request.getAcceptedStatus());
-
-        //TODO: accept offered payment upon completion
     }
 
     @Test
@@ -96,8 +94,6 @@ public class AcceptingUnitTest {
         //check if any are accepted
         for(UserRequest r: requestList)
             if(request.getAcceptedStatus()){
-                //if there are any accepted send notification
-                //driver.notifyUser(r); TODO: create working notifyUser method
                 request = r;
             }
 

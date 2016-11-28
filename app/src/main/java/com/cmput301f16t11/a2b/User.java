@@ -410,4 +410,8 @@ public class User {
         return request.getAcceptedStatus();
     }
 
+    public void notifyUser(UserRequest r) {
+        //TODO:connect this with Rider/DriverNotificationService
+    }
+
 }
