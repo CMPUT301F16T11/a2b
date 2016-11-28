@@ -2,6 +2,7 @@ package com.cmput301f16t11.a2b;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ExpandedMenuView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -116,7 +118,8 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
                     // TODO: Send command stack
                     if (FileController.isNetworkAvailable(context)) {
                         if(CommandStack.workRequired()){
-                            CommandStack.handleStack(this);
+                            RunCommandStackProgressDialog();
+
                         }
                         useOnlineTiles();
                     }
@@ -143,6 +146,29 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Run the command stack stuff in the background with a progress dialog. This ensures the user does not
+     * think the app crashed.
+     */
+    private void RunCommandStackProgressDialog(){
+        final ProgressDialog dialog = ProgressDialog.show(this, getString(R.string.refreshing), getString(R.string.rider_refreshing_message), false);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                CommandStack.handleStack(context);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override

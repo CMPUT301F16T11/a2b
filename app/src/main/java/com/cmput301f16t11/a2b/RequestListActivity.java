@@ -1,6 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -90,8 +91,15 @@ public class RequestListActivity extends AppCompatActivity {
                 break;
             case R.id.refresh:
                 if (FileController.isNetworkAvailable(this)) {
-                    // TODO: Send command stack
-                    this.recreate();
+                    if (FileController.isNetworkAvailable(this)) {
+                        if (CommandStack.workRequired()) {
+                            RunCommandStackProgressDialog();
+                        }
+                    }
+                    Intent intent = new Intent(this, DriverLocationActivity.class);
+                    startActivity(intent);
+                    //We want to finish if we are going into online mode
+                    finish();
                 }
                 else {
                     AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -119,7 +127,7 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-        requests = new ArrayList<UserRequest>();
+        requests = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -556,4 +564,29 @@ public class RequestListActivity extends AppCompatActivity {
             Log.i("RequestList", "no deleted requests in list");
         }
     }
+
+    /**
+     * Run the command stack stuff in the background with a progress dialog. This ensures the user does not
+     * think the app crashed.
+     */
+    private void RunCommandStackProgressDialog(){
+        final ProgressDialog dialog = ProgressDialog.show(this, getString(R.string.refreshing), getString(R.string.rider_refreshing_message), false);
+        final Context context = this;
+        new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                CommandStack.handleStack(context);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        }).start();
+    }
+
 }
