@@ -166,8 +166,12 @@ public class EditProfileActivity extends AppCompatActivity {
             user.setEmail(email);
             user.setCar(new Vehicle(newMake, newModel, newColor, Integer.parseInt(newYear)));
             UserController.setUser(user);
-            UserController.updateUserInDb();
             UserController.saveInFile(this);
+            if (FileController.isNetworkAvailable(this)) {
+                UserController.updateUserInDb();
+            } else {
+                CommandStack.setEditProfile(true);
+            }
         }
         finish();
     }
@@ -195,6 +199,7 @@ public class EditProfileActivity extends AppCompatActivity {
         return false;
     }
 
+    
     private Boolean isValidPhoneNumber(String number){
         Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
         Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}");

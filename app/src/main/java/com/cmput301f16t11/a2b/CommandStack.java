@@ -14,6 +14,7 @@ public class CommandStack {
     private static File directory;
     private static ArrayList<UserRequest> AcceptedCommands = new ArrayList<>();
     private static ArrayList<UserRequest> AddCommands = new ArrayList<>();
+    private static boolean EditProfile = false;
 
     /**
      * The constant ACCEPTFILE.
@@ -31,6 +32,15 @@ public class CommandStack {
      */
     public static void setDirectory(File file){
         directory = file;
+    }
+
+    /**
+     * Method to set/clear need for updating user in DB.
+     *
+     * @param bool Boolean to edit
+     */
+    public static void setEditProfile(Boolean bool) {
+        EditProfile = bool;
     }
 
     /**
@@ -64,6 +74,15 @@ public class CommandStack {
      * @return the array list
      */
     public static ArrayList<UserRequest> getAcceptedCommands(){return AcceptedCommands;}
+
+    /**
+     * Method to tell command stack if the profile needs to be edited
+     *
+     * @return EditProfile boolean
+     */
+    public static boolean getEditProfile() {
+        return EditProfile;
+    }
 
     /**
      * Clear commands.
@@ -153,13 +172,13 @@ public class CommandStack {
      */
     public static boolean workRequired() {
         if (!(AddCommands==null) & !(AcceptedCommands==null)) {
-            return (AddCommands.size()>0) || (AcceptedCommands.size()>0);
+            return (AddCommands.size()>0) || (AcceptedCommands.size()>0) || EditProfile;
         } else if (!(AddCommands==null)) {
-            return AddCommands.size()>0;
+            return AddCommands.size()>0 || EditProfile;
         } else if (!(AcceptedCommands==null)) {
-            return AcceptedCommands.size()>0;
+            return AcceptedCommands.size()>0 || EditProfile;
         }
-        return false;
+        return EditProfile;
     }
 
     /**
@@ -191,6 +210,10 @@ public class CommandStack {
             for (UserRequest request : filledOutRequests) {
                 RiderNotificationService.addRequestToBeNotified(request);
             }
+        }
+        if (EditProfile) {
+            UserController.updateUserInDbOffline();
+            EditProfile = false;
         }
 
         clearCommands();

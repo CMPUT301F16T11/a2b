@@ -96,6 +96,18 @@ public class UserController {
         updateUserInfoTask.execute(UserController.getUser());
     }
 
+    /**
+     * Updates a user value in elasticsearchserver using offline -> online elasticsearch query
+     *
+     * @see ElasticsearchUserController
+     */
+    static public void updateUserInDbOffline(){
+        user.setRating(UserController.getUserFromId(user.getId()).getRating());
+        ElasticsearchUserController.UpdateUserInfoOfflineTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoOfflineTask();
+        updateUserInfoTask.execute(UserController.getUser());
+    }
+
+
     // getters
 
     /**

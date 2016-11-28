@@ -229,6 +229,57 @@ public class ElasticsearchUserController {
         }
     }
 
+    /**
+     * AsyncTask used to overwrite an existing user in the database
+     *
+     * Input: User object
+     * Output: Boolean representing elasticsearch result
+     */
+    public static class UpdateUserInfoOfflineTask extends AsyncTask<User, Void, Boolean> {
+        /**
+         * Updates a user account's details
+         *
+         * @param users new user obj
+         * @return true if successful, false otherwise
+         */
+        @Override
+        protected Boolean doInBackground(User... users) {
+            verifySettings();
+
+            // Pretty much the same as AddUserTask but an existing id is specified so the entry
+            // gets overwritten
+
+            Index userIndex = new Index.Builder(users[0]).index(index).type(userType).id(users[0].getId()).build();
+            boolean waiting = true;
+            while (waiting) {
+                try {
+                    DocumentResult result = client.execute(userIndex);
+                    if (result.isSucceeded()) {
+                        waiting = false;
+                    } else {
+                        try {
+                            Thread.sleep(3000);
+                        } catch (Exception e) {
+                            Log.i("Error", "Failed to sleep");
+                            e.printStackTrace();
+                        }
+                    }
+
+                } catch (Exception e) {
+                    Log.i("Error", "Failed to add user to elasticsearch");
+                    e.printStackTrace();
+                    try {
+                        Thread.sleep(3000);
+                    } catch (Exception f) {
+                        Log.i("Error", "Failed to sleep");
+                        f.printStackTrace();
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
     public static class getUsersFromIds extends AsyncTask<ArrayList<String>,Void,ArrayList<User>>{
         @Override
         protected ArrayList<User> doInBackground(ArrayList<String> ... userIds) {
