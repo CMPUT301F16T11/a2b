@@ -244,7 +244,7 @@ public class RequestListActivity extends AppCompatActivity {
                             try {
                                 requests.clear();
                                 requests.addAll(
-                                        getFilteredRequests(RequestController.getNearbyRequests()));
+                                        getFilteredRequests(RequestController.getDisplayedRequests()));
                                 try {
                                     requests.remove(RequestController.getDeletedRequest());
                                 } catch (Exception e) {
@@ -521,8 +521,8 @@ public class RequestListActivity extends AppCompatActivity {
     }
 
     private ArrayList<UserRequest> getFilteredRequests(ArrayList<UserRequest> listOfRequests) {
-        ArrayList<UserRequest> tempList = listOfRequests;
-        
+        ArrayList<UserRequest> tempList = new ArrayList<UserRequest>();
+
         if (this.filterMaxPricePerKM) {
             tempList.clear();
             for (UserRequest request: listOfRequests) {
@@ -538,6 +538,9 @@ public class RequestListActivity extends AppCompatActivity {
                     tempList.add(request);
                 }
             }
+        }
+        else {
+            return listOfRequests;
         }
         return tempList;
     }
