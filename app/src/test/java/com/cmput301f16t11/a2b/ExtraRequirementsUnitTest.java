@@ -64,7 +64,7 @@ public class ExtraRequirementsUnitTest {
     public void testRateDriver(){
         user.setRating(5.0);
         assertEquals(5.0,user.getRating());
-        //TODO: same as previous???
+
     }
     /**
      US 03.04.01 (added 2016-11-14)
@@ -76,7 +76,7 @@ public class ExtraRequirementsUnitTest {
         assertEquals("Toyota",user.getCar().getMake());
         assertEquals("Corolla",user.getCar().getModel());
         assertEquals(2016,user.getCar().getYear());
-        //TODO: same as previous???
+
     }
 
     /**
