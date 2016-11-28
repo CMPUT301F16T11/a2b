@@ -1,7 +1,6 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -11,11 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.text.DecimalFormat;
 
 /**
@@ -39,7 +34,6 @@ public class ProfileActivity extends AppCompatActivity {
      *
      */
     private User user;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

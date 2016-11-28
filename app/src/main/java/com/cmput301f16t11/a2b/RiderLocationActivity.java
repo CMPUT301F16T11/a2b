@@ -15,18 +15,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ExpandedMenuView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cmput301f16t11.a2b.cocoahero.android.gmaps.addons.master.mapbox.MapBoxOfflineTileProvider;
@@ -70,8 +65,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
     private final String stylevURL = "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png";
     MapBoxOfflineTileProvider provider;
     TileOverlay overlay;
-
-    private int LOCATION_PERMISSIONS = -1;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -431,7 +424,6 @@ public class RiderLocationActivity extends AppCompatActivity implements OnMapRea
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     0);
-//            mMap.setMyLocationEnabled(true);
         }
     }
 

@@ -3,17 +3,7 @@ package com.cmput301f16t11.a2b;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -263,35 +253,5 @@ public class UserController {
         }
 
         return users;
-    }
-
-
-    /**
-     * NOT IMPLEMENTED
-     */
-    public static void setOffline() {
-
-    }
-
-    /**
-     * NOT IMPLEMENTED
-     */
-    public static void goOnline() {
-
-    }
-
-    /**
-     * NOT IMPLEMENTED
-     */
-    public static void updateRequestList() {
-
-    }
-
-    /**
-     * NOT IMPLEMENTED
-     * @return
-     */
-    public static ArrayList<UserRequest> getRequestList() {
-        return new ArrayList<UserRequest>();
     }
 }

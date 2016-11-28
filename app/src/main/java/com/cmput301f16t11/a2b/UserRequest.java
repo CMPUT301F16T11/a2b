@@ -242,8 +242,6 @@ public class UserRequest implements Parcelable {
      * @param flags : int
      */
     public void writeToParcel(Parcel out, int flags) {
-        //out.writeParcelable(startLocation, flags);
-        //out.writeParcelable(endLocation, flags);
         out.writeInt((int)fare);
         out.writeLong(timeCreatedInMillis);
         out.writeInt((int)requestId);

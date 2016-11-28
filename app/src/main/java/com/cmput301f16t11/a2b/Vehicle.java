@@ -24,15 +24,6 @@ public class Vehicle {
         this.year = year;
     }
 
-
-    public Boolean isSet(){
-
-        if(make.isEmpty()){
-            return false;
-        }
-        return true;
-    }
-
     public String getMake() {
         return make;
     }

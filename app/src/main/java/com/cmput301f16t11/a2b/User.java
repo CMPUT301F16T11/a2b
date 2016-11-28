@@ -406,21 +406,6 @@ public class User {
         this.activeRequestsAsRider.remove(request);
     }
 
-    public int numberOfActiveRiderRequests() {
-
-        return this.activeRequestsAsRider.size();
-    }
-
-    public int numberOfActiveDriverRequests() {
-        return this.activeRequestsAsDriver.size();
-    }
-
-    public void notifyUser(UserRequest r) {//TODO:connect this with Rider/DriverNotificationService
-    }
-//    public void setMode(Mode mode) {
-//        this.mode = mode;
-//    }
-
     public boolean hasAcceptedRequests(UserRequest request) {
         return request.getAcceptedStatus();
     }

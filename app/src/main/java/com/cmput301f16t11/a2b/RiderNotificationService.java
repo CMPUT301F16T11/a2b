@@ -1,13 +1,11 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,7 +14,6 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Get;

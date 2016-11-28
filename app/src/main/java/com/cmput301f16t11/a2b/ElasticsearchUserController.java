@@ -3,9 +3,6 @@ package com.cmput301f16t11.a2b;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.google.common.math.DoubleMath;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;

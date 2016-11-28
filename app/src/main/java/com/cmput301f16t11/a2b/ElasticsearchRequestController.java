@@ -262,13 +262,7 @@ public class ElasticsearchRequestController {
         @Override
         protected Boolean doInBackground(String... info) {
             verifySettings();
-
-
-            // update an existing request
-            //TO DO: check it the request exists first
-
             // update script
-
 
             String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
                     " \"params\" : {\"newDriver\" :\"" + info[1] + "\"}}";
@@ -372,11 +366,7 @@ public class ElasticsearchRequestController {
             String requestId = info[0];
             String driverId = info[1];
 
-            // update an existing request
-            //TO DO: check it the request exists first
-
             // update script
-
             String script = "{ \"script\" : \" ctx._source.confirmedDriverId = newDriver }\", \"params\" : "+
                     "{\"newDriver\" : \""  + driverId +"\"}}";
 

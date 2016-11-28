@@ -1,6 +1,5 @@
 package com.cmput301f16t11.a2b;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -341,7 +340,6 @@ public class RequestListActivity extends AppCompatActivity {
                         }
                     }
                     adapter.notifyDataSetChanged();
-//                    populateRequestList();
                 } else if (position == 2) {
                     // confirmed requests
                     // if rider this will be requests the USER has confirmed after a driver has
@@ -399,7 +397,6 @@ public class RequestListActivity extends AppCompatActivity {
 
                     }
                     adapter.notifyDataSetChanged();
-//                    populateRequestList();
                 } else if (position == 3) {
                     if(UserController.checkMode() == Mode.DRIVER) {
                         requests.clear();
