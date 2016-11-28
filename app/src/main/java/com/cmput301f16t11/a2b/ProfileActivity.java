@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.File;
 import java.text.DecimalFormat;
 
 /**
@@ -46,22 +48,26 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();  // Always call the superclass method first;
         Intent intent = getIntent();
         String username = intent.getStringExtra("username");
-        if (username == null) {
-            user = UserController.getUserFromId(UserController.getUser().getId());
-        } else {
-            user = UserController.getUserFromName(username);
-        }
+        if (FileController.isNetworkAvailable(this)) {
+            if (username == null) {
+                user = UserController.getUserFromId(UserController.getUser().getId());
+            } else {
+                user = UserController.getUserFromName(username);
+            }
 
-        if (user.getId().equals(UserController.getUser().getId())) {
-            UserController.setUser(user);
-            UserController.saveInFile(this);
+            if (user.getId().equals(UserController.getUser().getId())) {
+                UserController.setUser(user);
+                UserController.saveInFile(this);
+            }
+        } else {
+            user = UserController.getUser();
         }
         setTextViews();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (UserController.getUser().equals(user) && FileController.isNetworkAvailable(this)) {
+        if (UserController.getUser().equals(user)) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.profile_menu, menu);
 
