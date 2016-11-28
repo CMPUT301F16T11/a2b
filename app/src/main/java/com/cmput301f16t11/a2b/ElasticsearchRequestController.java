@@ -88,36 +88,42 @@ public class ElasticsearchRequestController {
         @Override
         protected Boolean doInBackground(ArrayList<UserRequest>... requests) {
             verifySettings();
-
             ArrayList<Index> requestIndexes = new ArrayList<Index>();
-
             for(UserRequest userRequest: requests[0]){
                 requestIndexes.add(new Index.Builder(userRequest).build());
             }
-
             Bulk bulk = new Bulk.Builder().defaultIndex(index).defaultType(openRequest).addAction(requestIndexes).build();
-
-            try {
-                BulkResult bulkResult = client.execute(bulk);
-
-                if (bulkResult.isSucceeded()) {
-                    // populate id (Not sure we neet this)
-                    List<BulkResult.BulkResultItem> documentResults = bulkResult.getItems();
-                    int i = 0;
-                    for(BulkResult.BulkResultItem resultItem: documentResults){
-                        requests[0].get(i).setId(resultItem.id);
-                        i++;
+            Boolean waiting = true;
+            while(waiting) {
+                try {
+                    BulkResult bulkResult = client.execute(bulk);
+                    if (bulkResult.isSucceeded()) {
+                        // populate id (Not sure we neet this)
+                        List<BulkResult.BulkResultItem> documentResults = bulkResult.getItems();
+                        int i = 0;
+                        waiting = false;
+                        for (BulkResult.BulkResultItem resultItem : documentResults) {
+                            requests[0].get(i).setId(resultItem.id);
+                            i++;
+                        }
+                    } else {
+                        Log.i("Error", "Elasticsearch failed to add user");
+                        try{
+                            Thread.sleep(600);
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
                     }
-                } else {
-                    Log.i("Error", "Elasticsearch failed to add user");
-                    return false;
+                } catch (Exception e) {
+                    Log.i("Error", "Failed to add user to elasticsearch");
+                    e.printStackTrace();
+                    try{
+                        Thread.sleep(600);
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to add user to elasticsearch");
-                e.printStackTrace();
-                return false;
             }
-
             return true;
         }
     }
@@ -267,17 +273,29 @@ public class ElasticsearchRequestController {
             String script = "{ \"script\" : \"if (ctx._source.acceptedDriverIds == []) {ctx._source.acceptedDriverIds = [newDriver] } else if(ctx._source.acceptedDriverIds.contains(newDriver) == false)  {ctx._source.acceptedDriverIds += newDriver }\"," +
                     " \"params\" : {\"newDriver\" :\"" + info[1] + "\"}}";
 
-            try {
-                DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
-
-                if (!result.isSucceeded()) {
-                    Log.i("Error", "Failed to find user requests for rider");
+            Boolean waiting = true;
+            while (waiting) {
+                try {
+                    DocumentResult result = client.execute(new Update.Builder(script).index(index).type(openRequest).id(info[0]).build());
+                    if (!result.isSucceeded()) {
+                        Log.i("Error", "Elasticsearch failed to add acceptance, waiting for server");
+                        try {
+                            Thread.sleep(600);
+                        } catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+                    }
+                    else if (result.isSucceeded()) {
+                        waiting = false;
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Elasticsearch failed to add acceptance, waiting for server");
+                    try{
+                        Thread.sleep(600);
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-
-                return false;
             }
 
             return true;

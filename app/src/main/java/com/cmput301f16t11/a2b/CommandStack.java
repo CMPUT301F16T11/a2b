@@ -171,7 +171,7 @@ public class CommandStack {
         if (!(AcceptedCommands==null)) {
             for(UserRequest request: AcceptedCommands){
                 if(isValidCommand(request)){
-                    RequestController.addAcceptanceOffline(request);
+                    RequestController.addAcceptanceOffline(request, context);
                     try {
                         DriverNotificationService.serviceHandler(request, (Activity) context);
                     } catch (Exception e) {
