@@ -109,9 +109,10 @@ public class ExtraRequirementsUnitTest {
      */
     @Test
     public void testSearchByAddressOrNearby(){
-        //TODO: Not sure how this should be done
-
-
+        String address = "22 Jump Street";
+        String keyword = "Jump";
+        request.setStartLocationName(address);
+        assertTrue(request.getStartLocationName().toLowerCase().contains(keyword.toLowerCase()));
     }
 }
 class MockRequestListActivity {
