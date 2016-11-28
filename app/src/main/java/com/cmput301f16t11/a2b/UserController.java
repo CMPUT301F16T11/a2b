@@ -53,10 +53,22 @@ public class UserController {
         return mode;
     }
 
+
+    /**
+     * Tells us if the user is also a driver or just a rider
+     *
+     * @return Boolean alerting if they are also a driver
+     */
     static public Boolean canDrive() {
         return user.canDrive();
     }
 
+    /**
+     * Method to update rating of a driver upon ride completion.
+     *
+     * @param r the rating out of 5 given to the driver
+     * @param driverName Username of the driver being rated
+     */
     static public void updateRating(int r, String driverName) {
         User user = UserController.getUserFromName(driverName);
         int currTotalRating = user.getTotalRating();

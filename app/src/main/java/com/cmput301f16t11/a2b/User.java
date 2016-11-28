@@ -19,7 +19,6 @@ public class User {
 
 
     private String userName;
-    private String passWord;
     private String email;
     private String phoneNumber;
     private Vehicle car;
@@ -42,10 +41,11 @@ public class User {
     }
 
     /**
-     * constructor for user with name and email
+     * constructor for user with name, email and phone
      *
      * @param name  username
      * @param email email
+     * @param phone phone #
      */
 
     User(String name, String email, String phone) {
@@ -63,6 +63,15 @@ public class User {
         rating = -1;
     }
 
+
+    /**
+     * Constructor with user info and vehicle object
+     *
+     * @param name username
+     * @param email email
+     * @param phone phone #
+     * @param car car Object
+     */
     User(String name, String email, String phone, Vehicle car) {
 //        mode = Mode.RIDER;
         requestsAsRider = new ArrayList<UserRequest>();
@@ -79,27 +88,6 @@ public class User {
         rating = -1;
     }
 
-
-    /**
-     * constructor to fill all fields
-     *
-     * @param name  username
-     * @param pass  password?
-     * @param email email address
-     * @param phone phone number
-     */
-    User(String name, String pass, String email, String phone) {
-//        mode = Mode.RIDER;
-        requestsAsRider = new ArrayList<UserRequest>();
-        requestsAsDriver = new ArrayList<UserRequest>();
-        activeRequestsAsRider = new ArrayList<UserRequest>();
-        activeRequestsAsDriver = new ArrayList<UserRequest>();
-        userName = name;
-        passWord = pass;
-        this.email = email;
-        phoneNumber = phone;
-        this.id = null;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -122,6 +110,12 @@ public class User {
 
 
     //Getters
+
+    /**
+     * Gets current user's car
+     *
+     * @return User's vehicle object
+     */
     public Vehicle getCar(){return car;}
     /**
      * gets user name  of user
@@ -146,9 +140,6 @@ public class User {
      */
     public Boolean canDrive() {
         return this.canDrive;
-    }
-    public String getPassWord() {
-        return passWord;
     }
 
     /**
@@ -200,15 +191,25 @@ public class User {
 
     }
 
+
+    /**
+     * Method to get the number of times a user has been rated
+     * @return numRatings
+     */
+    public int getNumRatings() {return numRatings;}
+
+    /**
+     * Method to get the summation of ratings user has received
+     * @return totalRating
+     */
+    public int getTotalRating() {return totalRating;}
+
+
     /**
      * Method to get the user's current rating
      *
      * @return rating : int
      */
-    public int getNumRatings() {return numRatings;}
-
-    public int getTotalRating() {return totalRating;}
-
     public double getRating() {return rating;}
 
 
@@ -255,11 +256,6 @@ public class User {
         this.email = email;
     }
 
-    /**
-     * set password
-     *
-     * @param pass new password
-     */
 
     /**
      * Allow a rider to drive or remove the ability of a rider/driver to drive
@@ -268,9 +264,6 @@ public class User {
      */
     public void setDriveAbility(Boolean ability) {
         this.canDrive = ability;
-    }
-    public void setPassWord(String pass) {
-        this.passWord = pass;
     }
 
     /**
@@ -282,10 +275,22 @@ public class User {
         this.id = id;
     }
 
+    /**
+     * Set user rating
+     * @param i Double rating
+     */
     public void setRating(double i) {rating = i;}
 
+    /**
+     * Set user total rating
+     * @param i int new rating summation
+     */
     public void setTotalRating(int i) {totalRating = i;}
 
+    /**
+     * Set number of user ratings
+     * @param i int new number of ratings
+     */
     public void setNumRatings(int i) {numRatings = i;}
 
     /**
@@ -398,14 +403,18 @@ public class User {
     }
 
 
-
+    /**
+     * Remove an active request from the list of active rider requests
+     */
     public void removeActiveRiderRequest(UserRequest request) {
-        /**
-         * Remove an active request from the list of active rider requests
-         */
         this.activeRequestsAsRider.remove(request);
     }
 
+    /**
+     * Method to see if the request has been accepted
+     * @param request UserRequest in question
+     * @return true/false accepted status
+     */
     public boolean hasAcceptedRequests(UserRequest request) {
         return request.getAcceptedStatus();
     }

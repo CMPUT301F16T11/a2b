@@ -328,6 +328,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Check if the username entered is valid and unique
+     */
     public void checkUser() {
         String username = usr.getText().toString();
         // Nothing Entered

@@ -199,7 +199,12 @@ public class EditProfileActivity extends AppCompatActivity {
         return false;
     }
 
-    
+    /**
+     * Makes sure the number meets one of the valid formats
+     *
+     * @param number inputted phone number
+     * @return boolean true/false if valid
+     */
     private Boolean isValidPhoneNumber(String number){
         Pattern format1 = Pattern.compile("[0-9]{10}"); // 7801234567
         Pattern format2 = Pattern.compile("[0-9]{3}\\-[0-9]{3}\\-[0-9]{4}");
@@ -210,6 +215,12 @@ public class EditProfileActivity extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Method to ensure the inputted email is valid
+     *
+     * @param email inputted email
+     * @return boolean true/false
+     */
     private Boolean isValidEmail(String email){
         Pattern format = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

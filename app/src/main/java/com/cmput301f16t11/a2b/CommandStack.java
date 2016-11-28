@@ -187,6 +187,7 @@ public class CommandStack {
      * @param context the context
      */
     public static void handleStack(Context context){
+
         if (!(AcceptedCommands==null)) {
             for(UserRequest request: AcceptedCommands){
                 if(isValidCommand(request)){

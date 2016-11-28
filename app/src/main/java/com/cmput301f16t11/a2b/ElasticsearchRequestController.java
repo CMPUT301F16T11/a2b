@@ -905,21 +905,22 @@ public class ElasticsearchRequestController {
 
             UserRequest userRequest = null;
 
-            try {
-                JestResult result = client.execute(get);
-                if (result.isSucceeded()) {
-                    userRequest = result.getSourceAsObject(UserRequest.class);
-                }else{
-                    Log.i("Error","Filed to find request");
-                    return null;
-                }
-            } catch (Exception e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-                return null;
-            }
 
-            return userRequest;
+            while(true) {
+                try {
+                    JestResult result = client.execute(get);
+                    if (result.isSucceeded()) {
+                        userRequest = result.getSourceAsObject(UserRequest.class);
+                        return userRequest;
+                    } else {
+                        Log.i("Error", "Filed to find request");
+                        return null;
+                    }
+                } catch (Exception e) {
+                    Log.i("Error", "Failed to communicate with elasticsearch server");
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
