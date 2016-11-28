@@ -144,6 +144,8 @@
     <string name="offline_mode">Offline Mode</string>
     <string name="offline_message">Please connect to the internet to update your offline changes</string>
     <string name="address_na">Address Not Available</string>
+    <string name="location_req_short">Location Required</string>
+    <string name="location_req_long">This app requires location permissions to function.</string>
 
     <!-- Request Status Strings -->
     <string name="waiting">Waiting for a Driver to Accept</string>
