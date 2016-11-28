@@ -22,7 +22,7 @@ then changing that path to /usr/lib/jvm/java-8-oracle.
 USE CASE VIDEO:
 	https://youtu.be/Ac_TLTTdzjc
 COMMERCIAL VIDEO:
-	https://youtu.be/RAOcT5V4Ml8
+	https://youtu.be/Tcfc0kAWmp8
 
 
 Permissions required: 
