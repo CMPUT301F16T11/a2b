@@ -160,4 +160,9 @@
     <string name="description">Description</string>
     <string name="locale">Locale:</string>
 
+    <!-- Progress dlg keyword -->
+    <string name="refreshing">Refreshing...</string>
+    <string name="rider_refreshing_message">Sending requests made while offline....</string>
+    <string name="driver_refreshing_message">Sending acceptances made while offline....</string>
+
 </resources>

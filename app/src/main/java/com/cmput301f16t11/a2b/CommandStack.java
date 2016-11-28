@@ -64,16 +64,20 @@ public class CommandStack {
         if (AddCommands==null) {
             AddCommands = new ArrayList<>();
         }
-        AddCommands.add(command);
-        FileController.saveInFile(AddCommands,CommandStack.ADDFILE, con);
+        if(!AddCommands.contains(command)) {
+            AddCommands.add(command);
+            FileController.saveInFile(AddCommands, CommandStack.ADDFILE, con);
+        }
     }
 
     public static void addAcceptedCommand(UserRequest command, Context con){
         if (AcceptedCommands==null) {
             AcceptedCommands = new ArrayList<>();
         }
-        AcceptedCommands.add(command);
-        FileController.saveInFile(AcceptedCommands,CommandStack.ACCEPTFILE, con);
+        if(!AcceptedCommands.contains(command)) {
+            AcceptedCommands.add(command);
+            FileController.saveInFile(AcceptedCommands, CommandStack.ACCEPTFILE, con);
+        }
     }
 
     public static boolean workRequired() {

@@ -307,6 +307,8 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> result = new ArrayList<UserRequest> ();
+
 
         if (mode == Mode.DRIVER) {
             if(FileController.isNetworkAvailable(con)) {
@@ -338,7 +340,12 @@ public class RequestController {
             }
 
         }
-        return userRequests;
+        for (UserRequest request: userRequests) {
+            if (request.isPaymentRecived()) {
+                result.add(request);
+            }
+        }
+        return result;
     }
 
     /**
@@ -372,6 +379,7 @@ public class RequestController {
          * Gets the completed requests a rider received if mode == Mode.RIDER
          */
         ArrayList<UserRequest> userRequests = new ArrayList<UserRequest> ();
+        ArrayList<UserRequest> result = new ArrayList<UserRequest>();
 
 
         if (mode == Mode.DRIVER) {
@@ -392,10 +400,13 @@ public class RequestController {
             }catch (Exception e){
                 e.printStackTrace();
             }
-
         }
-
-        return userRequests;
+        for (UserRequest request: userRequests) {
+            if (!request.isPaymentRecived()) {
+                result.add(request);
+            }
+        }
+        return result;
     }
 
 
