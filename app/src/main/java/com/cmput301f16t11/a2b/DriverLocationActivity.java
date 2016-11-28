@@ -328,6 +328,17 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        //Set the initial spot to edmonton for now
+        LatLng edmonton = new LatLng(53.5444, -113.4909);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(edmonton)      // Sets the center of the map to location user
+                .zoom(11)
+                .bearing(0)
+                .tilt(0)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
         //Check if we have the right permissions to use location
         Boolean i = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (i) {

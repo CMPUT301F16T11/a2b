@@ -75,6 +75,9 @@ Reuse Statement:
 	license http://www.apache.org/licenses/LICENSE-2.0. 
 	Unless required by applicable law, software distributed under this license is distributed under 
 	an "as is" basis. NO WARRANTY, CONDITIONS, expressed or implied are provided. 
+	All third party libraries as well as attributions are used as per their reuse statements and licenses, 
+	which are compatible with this resuse statement and description. Please see third party libraries 
+	in this file and doc/licensing/license_list for more details. 
 	See the license for more details. 
 
 Third Party Attributions
@@ -147,8 +150,8 @@ Third Party Libraries
 	Templepate pattern
 		- App takes advantage of the hooks provided by Activity class 
 
-	Addapted pattern
-		- Addapted OSM map tiles to work with the google maps APIs
+	Adapter pattern
+		- Addapted Offline Requests to Online Requests
 	
 	Proxy pattern
 		- Used the proxy pattern for representing full UserRequests when the user was not online.
