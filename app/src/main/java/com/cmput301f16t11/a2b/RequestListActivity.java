@@ -401,8 +401,8 @@ public class RequestListActivity extends AppCompatActivity {
                     if(UserController.checkMode() == Mode.DRIVER) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
-                                RequestController.getAwaitingPaymentRequests(UserController.getUser(),
-                                        UserController.checkMode())));
+                                RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode(), RequestListActivity.this)));
                         try {
                             requests.remove(RequestController.getDeletedRequest());
                         } catch (Exception e) {
