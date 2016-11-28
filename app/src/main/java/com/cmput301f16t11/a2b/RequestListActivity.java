@@ -348,7 +348,7 @@ public class RequestListActivity extends AppCompatActivity {
                     // accepted them
                     // if driver, this will be requests ANOTHER USER has confirmed as a rider
                     // after accepted by the curr user
-                    if (UserController.checkMode() == Mode.RIDER ||
+                    if (UserController.checkMode() == Mode.RIDER &&
                             FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(
@@ -360,7 +360,8 @@ public class RequestListActivity extends AppCompatActivity {
                             Log.i("RequestList", "No deleted data was being shown. Carry on");
                         }
                     }
-                    else if(UserController.checkMode() == Mode.RIDER ||
+                    //Offline rider mode
+                    else if(UserController.checkMode() == Mode.RIDER &&
                             !FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
@@ -372,7 +373,9 @@ public class RequestListActivity extends AppCompatActivity {
                             Log.i("RequestList", "No deleted data was being shown. Carry on");
                         }
                     }
+                    //Driver mode
                     else {
+                        //Online driver mode
                         if(FileController.isNetworkAvailable(context)) {
                             requests.clear();
                             requests.addAll(RequestController.getCompletedRequests(
