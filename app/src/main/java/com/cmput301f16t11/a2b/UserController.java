@@ -91,6 +91,7 @@ public class UserController {
      * @see ElasticsearchUserController
      */
     static public void updateUserInDb(){
+        user.setRating(UserController.getUserFromId(user.getId()).getRating());
         ElasticsearchUserController.UpdateUserInfoTask updateUserInfoTask = new ElasticsearchUserController.UpdateUserInfoTask();
         updateUserInfoTask.execute(UserController.getUser());
     }
