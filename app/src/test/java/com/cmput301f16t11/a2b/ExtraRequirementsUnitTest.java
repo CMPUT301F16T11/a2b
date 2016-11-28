@@ -115,6 +115,7 @@ public class ExtraRequirementsUnitTest {
         assertTrue(request.getStartLocationName().toLowerCase().contains(keyword.toLowerCase()));
     }
 }
+
 class MockRequestListActivity {
     private static boolean filterMaxPricePerKM;
     private static boolean filterMaxPrice;

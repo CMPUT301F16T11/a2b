@@ -1,9 +1,11 @@
 package com.cmput301f16t11.a2b;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,14 +56,28 @@ public class ProfileActivity extends AppCompatActivity {
             } else {
                 user = UserController.getUserFromName(username);
             }
-
-            if (user.getId().equals(UserController.getUser().getId())) {
-                UserController.setUser(user);
-                UserController.saveInFile(this);
+            try {
+                if (user.getId().equals(UserController.getUser().getId())) {
+                    UserController.setUser(user);
+                    UserController.saveInFile(this);
+                }
+            } catch (Exception e) {
+                // show dialog
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("There was a problem communicating with the server. Please try again")
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .create();
+                dialog.show();
             }
-        } else {
-            user = UserController.getUser();
         }
+            else {
+                user = UserController.getUser();
+            }
         setTextViews();
     }
 
