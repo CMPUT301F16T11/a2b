@@ -19,6 +19,11 @@ running on emulator in the lab machine. After you have this emulator set up plea
 to: /usr/lib/jvm/java-8-oracle. This is done by going file-> Project Structure-> Sdk location-> Jdk path and 
 then changing that path to /usr/lib/jvm/java-8-oracle.
 
+USE CASE VIDEO:
+	https://youtu.be/Ac_TLTTdzjc
+COMMERCIAL VIDEO:
+	https://youtu.be/RAOcT5V4Ml8
+
 
 Permissions required: 
 	Location 
