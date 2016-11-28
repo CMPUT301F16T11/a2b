@@ -64,8 +64,6 @@ public class UserProfileUnitTest {
         user = new User("user", "password", "user@ualberta.ca");
         user.setName("name1");
         assertEquals("name1", user.getName());
-        user.setPassWord("7801234567");
-        assertEquals("7801234567", user.getPassWord());
         user.setEmail("test@ualberta.ca");
         assertEquals("test@ualberta.ca", user.getEmail());
         //TODO: Perhaps this is more of a view test instead of controller
