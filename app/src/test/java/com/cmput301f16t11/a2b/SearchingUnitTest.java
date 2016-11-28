@@ -70,7 +70,6 @@ public class SearchingUnitTest {
     @Test
     public void testGetRequests() {
 
-        //TODO: not searching by keyword, need to add this functionality
         User user1 = new User();
         User user2 = new User();
 

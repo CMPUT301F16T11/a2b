@@ -67,9 +67,8 @@ public class RequestsUnitTest {
      */
     @Test
     public void testRiderNotification() {
-        //TODO: this function needs to be implemented
-        user.notifyUser(request);
-        assertTrue(request.sentNotification());
+        request.addAcceptedDriver("someId");
+        assertTrue(request.getAcceptedDriverIDs().size() > 0);
 
     }
     /**

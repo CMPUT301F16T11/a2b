@@ -61,11 +61,13 @@ public class UserProfileUnitTest {
      */
     @Test
     public void testChangeInfo() {
-        user = new User("user", "password", "user@ualberta.ca");
+        user = new User("user", "user@ualberta.ca","7801112222");
         user.setName("name1");
         assertEquals("name1", user.getName());
         user.setEmail("test@ualberta.ca");
         assertEquals("test@ualberta.ca", user.getEmail());
-        //TODO: Perhaps this is more of a view test instead of controller
+        user.setPhoneNumber("7801113454");
+        assertEquals("7801113454",user.getPhoneNumber());
+
     }
 }
