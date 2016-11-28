@@ -49,6 +49,7 @@ public class FileController {
     final static String nearbyRequests = "nearby.sav";
     final static String acceptedByDriver = "acceptedByMe.sav";
     final static String completedByDriver = "completedRequestsDriver.sav";
+    final static String completedRide = "completedRides.sav";
     final static String users = "user.sav";
 
 
@@ -176,6 +177,7 @@ public class FileController {
         context.deleteFile(riderRequests);
         context.deleteFile(users);
         context.deleteFile(nearbyRequests);
+        context.deleteFile(completedRide);
     }
 
 

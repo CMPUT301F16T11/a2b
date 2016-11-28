@@ -1,7 +1,7 @@
 package com.cmput301f16t11.a2b;
 
 /**
- * Created by toth on 11/18/2016.
+ * Vehicle class models all the values for our app we need to represent for a vehicle
  */
 public class Vehicle {
     private String make;

@@ -8,7 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Created by tothd on 11/26/2016.
+ * This stack is a stack that keeps tracks of the commands to perform once we get a connection
+ * Basically keep tracks of all pending actions while we are offline
  */
 public class CommandStack {
     private static File directory;

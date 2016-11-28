@@ -74,7 +74,9 @@ public class DriverLocationActivity extends AppCompatActivity implements OnMapRe
     private HashMap<Marker, UserRequest> requestMap = new HashMap<Marker, UserRequest>();
 
 
-    //This is used within search by keyword dialog
+    /**
+     * Used to determine what search criteria the search by keyword is using
+     */
     public enum SearchCriteria{
         START,
         END,

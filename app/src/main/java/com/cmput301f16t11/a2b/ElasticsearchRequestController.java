@@ -256,6 +256,9 @@ public class ElasticsearchRequestController {
         }
     }
 
+    /**
+     * Static class to Add a driver acceptance once our app goes from offline to online
+     */
     public static class AddDriverAcceptanceToRequestOffline extends AsyncTask<String, Void, Boolean> {
 
 
