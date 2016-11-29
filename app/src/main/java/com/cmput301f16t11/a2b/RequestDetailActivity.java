@@ -149,18 +149,22 @@ public class RequestDetailActivity extends AppCompatActivity {
             driverName.setText("No confirmed driver :(");
         }
 
-        TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
-        riderName.setText(UserController.getUserFromId(request.getRiderID()).getName());
-        riderName.setTextColor(Color.rgb(6, 69, 173));
-        riderName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
-                intent.putExtra("username",
-                        UserController.getUserFromId(request.getRiderID()).getName());
-                startActivity(intent);
-            }
-        });
+        try {
+            TextView riderName = (TextView) findViewById(R.id.request_detail_rider);
+            riderName.setText(UserController.getUserFromId(request.getRiderID()).getName());
+            riderName.setTextColor(Color.rgb(6, 69, 173));
+            riderName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RequestDetailActivity.this, ProfileActivity.class);
+                    intent.putExtra("username",
+                            UserController.getUserFromId(request.getRiderID()).getName());
+                    startActivity(intent);
+                }
+            });
+        } catch (Exception e) {
+            Log.e(":(", ":(");
+        }
 
         TextView startLocation = (TextView) findViewById(R.id.request_detail_pickup);
         final String location_string_start = getLocationString(request.getStartLocation());

@@ -398,16 +398,24 @@ public class RequestListActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 } else if (position == 3) {
-                    if(UserController.checkMode() == Mode.DRIVER) {
+                    if(UserController.checkMode() == Mode.DRIVER &&
+                            FileController.isNetworkAvailable(context)) {
                         requests.clear();
                         requests.addAll(getFilteredRequests(
-                                RequestController.getCompletedRequests(UserController.getUser(),
-                                        UserController.checkMode(), RequestListActivity.this)));
+                                RequestController.getAwaitingPaymentRequests(UserController.getUser(),
+                                        UserController.checkMode())));
                         try {
                             requests.remove(RequestController.getDeletedRequest());
                         } catch (Exception e) {
                             Log.i("RequestList", "No deleted data was being shown. Carry on");
                         }
+
+                    }
+                    else if (UserController.checkMode() == Mode.DRIVER) {
+                        requests.clear();
+                        requests.addAll(getFilteredRequests(
+                                RequestController.getCompletedRequests(UserController.getUser(),
+                                        UserController.checkMode(), RequestListActivity.this)));
                     }
                     //Completed Requests
                     else if (!FileController.isNetworkAvailable(context)){

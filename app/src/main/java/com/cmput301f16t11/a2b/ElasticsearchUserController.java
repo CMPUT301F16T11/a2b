@@ -49,7 +49,7 @@ public class ElasticsearchUserController {
 
             verifySettings();
 
-            if (params[0]=="" | params[0]==null) {
+            if (params[0] == "" | params[0] == null) {
                 return new User();
             }
 
@@ -60,27 +60,26 @@ public class ElasticsearchUserController {
                     .addType(userType)
                     .build();
 
-            try {
-                SearchResult result = client.execute(search);
-                if (result.isSucceeded()) {
-
-
-                    User user = result.getSourceAsObject(User.class);
-
-                    if (user!=null && user.getName().equals(params[0])) {
-                        return user;
-                    }
-                    else {
+            Boolean waiting = true;
+            while (waiting) {
+                try {
+                    SearchResult result = client.execute(search);
+                    if (result.isSucceeded()) {
+                        User user = result.getSourceAsObject(User.class);
+                        waiting = false;
+                        if (user != null && user.getName().equals(params[0])) {
+                            return user;
+                        } else {
+                            return new User();
+                        }
+                    } else {
                         return new User();
                     }
-                } else {
-                    return new User();
+                } catch (IOException e) {
+                    Log.i("Error", "Failed to communicate with elasticsearch server");
                 }
-            } catch (IOException e) {
-                Log.i("Error", "Failed to communicate with elasticsearch server");
-                e.printStackTrace();
-                return new User();
             }
+            return null;
         }
     }
 
